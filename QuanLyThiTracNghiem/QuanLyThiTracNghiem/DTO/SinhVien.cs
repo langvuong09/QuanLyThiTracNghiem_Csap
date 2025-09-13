@@ -8,5 +8,22 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
 {
     internal class SinhVien
     {
+        public int maSinhVien {  get; set; }
+        public string hoVaTen { get; set; }
+        public string email {  get; set; }
+        public string gioiTinh { get; set; }
+        public DateTime ngaySinh { get; set; }
+        public string anhDaiDien { get; set; }
+
+        public SinhVien() { }
+        public SinhVien(int maSinhVien, string hoVaTen, string email, string gioiTinh, DateTime ngaySinh, string anhDaiDien)
+        {
+            this.maSinhVien = maSinhVien;
+            this.hoVaTen = hoVaTen;
+            this.email = email;
+            this.gioiTinh = gioiTinh;
+            this.ngaySinh = ngaySinh;
+            this.anhDaiDien = anhDaiDien;
+        }
     }
 }

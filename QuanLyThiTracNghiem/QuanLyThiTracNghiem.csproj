@@ -10,11 +10,11 @@
 
   <ItemGroup>
     <Folder Include="Libs\" />
-    <Folder Include="MyCustom\" />
     <Folder Include="Database\" />
-    <Folder Include="QuanLyThiTracNghiem\GUI\" />
-    <Folder Include="QuanLyThiTracNghiem\BUS\" />
-    <Folder Include="QuanLyThiTracNghiem\DAO\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="9.4.0" />
   </ItemGroup>
 
 </Project>

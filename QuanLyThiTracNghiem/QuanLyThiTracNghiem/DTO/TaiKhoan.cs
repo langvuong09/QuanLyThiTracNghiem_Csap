@@ -3,14 +3,16 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
 {
     internal class TaiKhoan
     {
-        public int Id { get; set; }
+        public string userId { get; set; }
         public string password { get; set; }
+        public int trangThai {  get; set; }
 
         public TaiKhoan() { }
-        public TaiKhoan(int Id, string password)
+        public TaiKhoan(string userId, string password, int trangThai)
         {
-            this.Id = Id;
+            this.userId = userId;
             this.password = password;
+            this.trangThai = trangThai;
         }
     }
 }
