@@ -16,6 +16,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
         {
             this.Id = Id;
             this.password = password;
+
         }
     }
 }
