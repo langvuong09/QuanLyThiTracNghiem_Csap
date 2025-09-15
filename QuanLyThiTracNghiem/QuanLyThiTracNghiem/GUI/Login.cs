@@ -19,6 +19,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         {
             XuLyDangNhap();
         }
+        private void btnSignUp_Click(object sender, EventArgs e)
+        {
+            SignUp signUp = new SignUp();
+            signUp.Show();
+            this.Hide();
+        }
 
         private void XuLyDangNhap()
         {
@@ -45,5 +51,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 this.Hide();
             }
         }
+
     }
 }

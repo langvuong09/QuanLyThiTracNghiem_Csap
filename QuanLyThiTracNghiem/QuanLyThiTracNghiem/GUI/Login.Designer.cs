@@ -58,6 +58,7 @@
             btnSignUp.TabIndex = 1;
             btnSignUp.Text = "Đăng ký";
             btnSignUp.UseVisualStyleBackColor = true;
+            btnSignUp.Click += btnSignUp_Click;
             // 
             // lblTitle
             // 
@@ -113,6 +114,7 @@
             txtPassword.Location = new Point(143, 183);
             txtPassword.Name = "txtPassword";
             txtPassword.Size = new Size(253, 30);
+            txtPassword.PasswordChar = '*';
             txtPassword.TabIndex = 6;
             // 
             // Login
@@ -120,6 +122,7 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(428, 502);
+
             Controls.Add(lblKhongCoTaiKhoan);
             Controls.Add(txtPassword);
             Controls.Add(txtMa);

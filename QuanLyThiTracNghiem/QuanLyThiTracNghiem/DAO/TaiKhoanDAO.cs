@@ -110,5 +110,29 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
 
             return tk;
         }
+
+        public bool ThemTaiKhoan(string ma, string password)
+        {
+            try
+            {
+                string sql = "INSERT INTO taikhoan(ma,password,trangThai) " +
+                    "VALUES (@userId, @password, 1)";
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+
+                    cmd.Parameters.AddWithValue("@userId", ma);
+                    cmd.Parameters.AddWithValue("@password", password);
+
+                    int rs = cmd.ExecuteNonQuery();
+                    return rs > 0;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
     }
 }

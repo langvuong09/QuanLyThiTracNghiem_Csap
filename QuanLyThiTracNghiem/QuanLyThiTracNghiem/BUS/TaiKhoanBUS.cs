@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Text.RegularExpressions;
 
 using Microsoft.VisualBasic.ApplicationServices;
 
+using QuanLyThiTracNghiem.MyCustom;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 
@@ -24,5 +26,21 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
         {
             return tkDAO.GetTaiKhoan(username, password);
         }
-    }
+
+        public bool ThemTaiKhoan(string ma, string matKhau)
+        {
+            if (tkDAO.ThemTaiKhoan(ma, matKhau))
+            {
+                MyDialog dlg = new MyDialog("Đăng ký thành công!", MyDialog.SUCCESS_DIALOG);
+                dlg.ShowDialog();
+                return true;
+            }
+            else
+            {
+                MyDialog dlg = new MyDialog("Đăng ký thất bại!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return false;
+            }
+        }
+    }      
 }

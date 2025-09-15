@@ -1,0 +1,128 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+using QuanLyThiTracNghiem.MyCustom;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
+
+namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
+{
+    internal class SinhVienBUS
+    {
+        private SinhVienDAO svDAO = new SinhVienDAO();
+        private ArrayList listSinhVien;
+        public SinhVienBUS()
+        {
+            DocListSinhVien();
+        }
+
+        public void DocListSinhVien()
+        {
+            this.listSinhVien = svDAO.GetListSinhVien();
+        }
+
+        public ArrayList GetListSinhVien()
+        {
+            if(this.listSinhVien == null)
+            {
+                DocListSinhVien();
+            }
+            return listSinhVien;
+        }
+
+        public bool ThemSinhVien(string maSinhVien, string hoVaTen, string email, string matKhau, string nhapLai)
+        {
+            if (maSinhVien.Trim() == "")
+            {
+                MyDialog dlg = new MyDialog("Không được để trống mã sinh viên!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return false;
+            }else if (!CheckUsername(maSinhVien))
+            {
+                MyDialog dlg = new MyDialog("Mã sinh viên không hợp lệ!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+            }  
+            
+            if (hoVaTen.Trim() == "")
+            {
+                MyDialog dlg = new MyDialog("Không được để trống họ và tên!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return false;
+            }else if (!CheckTen(hoVaTen))
+            {
+                MyDialog dlg = new MyDialog("Họ và tên không hợp lệ!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+            }
+
+            if (email.Trim() == "")
+            {
+                MyDialog dlg = new MyDialog("Không được để trống email!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return false;
+            }else if(!CheckEmail(email))
+            {
+                MyDialog dlg = new MyDialog("Email không hợp lệ!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+            }
+
+            if (matKhau.Trim() == "")
+            {
+                MyDialog dlg = new MyDialog("Không được để trống mật khẩu!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return false;
+            }
+            else if (!CheckPassword(matKhau))
+            {
+                MyDialog dlg = new MyDialog("Mật khẩu phải có chữ và số!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+            }
+
+            if (nhapLai.Trim() == "")
+            {
+                MyDialog dlg = new MyDialog("Chưa điền mật khẩu nhập lại!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return false;
+            }
+            else if (matKhau != nhapLai)
+            {
+                MyDialog dlg = new MyDialog("Mật khẩu không trùng nhau!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+            }
+
+            if (svDAO.ThemSinhVien(maSinhVien,hoVaTen,email))
+            {   
+                return true;
+            }
+            else
+            {           
+                return false;
+            }
+        }
+
+        private bool CheckUsername(string username)
+        {
+            string pattern = @"^\d{6,}$";
+            return Regex.IsMatch(username, pattern);
+        }
+        private bool CheckPassword(string password)
+        {
+            string pattern = @"^\S{6,}$";
+            return Regex.IsMatch(password, pattern);
+        }     
+        private bool CheckTen(string ten)
+        {
+            string pattern = @"^[\p{L}]+(?:\s[\p{L}]+)*$";
+            return Regex.IsMatch(ten, pattern);
+        }
+        private bool CheckEmail(string email)
+        {
+            string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+            return Regex.IsMatch(email, pattern);
+        }
+    }
+}

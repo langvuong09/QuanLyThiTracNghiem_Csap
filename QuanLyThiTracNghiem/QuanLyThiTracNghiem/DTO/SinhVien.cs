@@ -8,7 +8,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
 {
     internal class SinhVien
     {
-        public int maSinhVien {  get; set; }
+        public string maSinhVien {  get; set; }
         public string hoVaTen { get; set; }
         public string email {  get; set; }
         public string gioiTinh { get; set; }
@@ -16,7 +16,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
         public string anhDaiDien { get; set; }
 
         public SinhVien() { }
-        public SinhVien(int maSinhVien, string hoVaTen, string email, string gioiTinh, DateTime ngaySinh, string anhDaiDien)
+        public SinhVien(string maSinhVien, string hoVaTen, string email, string gioiTinh, DateTime ngaySinh, string anhDaiDien)
         {
             this.maSinhVien = maSinhVien;
             this.hoVaTen = hoVaTen;

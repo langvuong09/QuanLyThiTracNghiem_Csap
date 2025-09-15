@@ -10,10 +10,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         private string database = "quanlythitracnghiem";
         private string username = "root";
         private string password = "";
+        private string uId = "qluser";
 
         public MySqlConnection GetConnection()
         {
-            string connString = $"Server={server};Database={database};User ID={username};Password={password};";
+            string connString = $"Server={server};Database={database};User ID={username};Password={password};Uid={uId};";
             return new MySqlConnection(connString);
         }
     }
