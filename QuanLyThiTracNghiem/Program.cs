@@ -18,7 +18,9 @@ namespace QuanLyThiTracNghiem
             Application.SetCompatibleTextRenderingDefault(false);
 
             // Hiển thị form đăng nhập
-            Login login = new Login();
+            //Login login = new Login();
+            //SignUp login = new SignUp();
+            TrangChuSinhVien login = new TrangChuSinhVien();
             Application.Run(login);
         }
     }
