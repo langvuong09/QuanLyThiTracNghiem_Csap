@@ -125,5 +125,38 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
         }
 
+        public SinhVien getSinhVienByID(string maSinhVien)
+        {
+            try
+            {
+                string sql = "SELECT * FROM sinhvien WHERE maSinhVien=@maSinhVien";
+                using(MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maSinhVien", maSinhVien);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        SinhVien sv = new SinhVien
+                        {
+                            maSinhVien = reader.GetString(0),
+                            hoVaTen = reader.GetString(1),
+                            email = reader.GetString(2),
+                            gioiTinh = reader.GetString(3),
+                            ngaySinh = reader.GetDateTime(4),
+                            anhDaiDien = reader.GetString(5),
+                            quyen = reader.GetString(6),
+                        };
+                        return sv;
+                    }
+                    else return null;
+                }
+            }catch (Exception ex)
+            {
+                return null;
+            }
+        }
     }
 }

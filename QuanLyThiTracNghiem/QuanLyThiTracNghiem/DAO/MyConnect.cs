@@ -8,13 +8,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
     {
         private string server = "localhost";
         private string database = "quanlythitracnghiem";
-        private string username = "root";
+        private string username = "qluser";
         private string password = "";
-        private string uId = "qluser";
 
         public MySqlConnection GetConnection()
         {
-            string connString = $"Server={server};Database={database};User ID={username};Password={password};Uid={uId};";
+            string connString = $"Server={server};Database={database};User ID={username};Password={password};";
             return new MySqlConnection(connString);
         }
     }

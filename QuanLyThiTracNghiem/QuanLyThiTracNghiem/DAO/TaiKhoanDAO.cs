@@ -63,7 +63,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                             userId = reader.GetString(0),
                             password = reader.GetString(1),
                             trangThai = reader.GetInt32(2),
-                            
+
                         };
                         dstk.Add(tk);
                     }
@@ -85,7 +85,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
-                    string sql = "SELECT * FROM taikhoan WHERE ma = @ma AND password = @password";
+                    string sql = "SELECT * FROM taikhoan WHERE ma = @ma AND password = @password AND trangThai= 1";
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@ma", username);
                     cmd.Parameters.AddWithValue("@password", password);
@@ -132,6 +132,66 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             catch (Exception e)
             {
                 return false;
+            }
+        }
+
+        public bool SuaMKTaiKhoan(string ma, string newPassword)
+        {
+            try
+            {
+                string sql = "Update taikhoan SET password = @password WHERE ma=@ma";
+                using (MySqlConnection con = db.GetConnection())
+                {
+                    con.Open();
+                    MySqlCommand cmd = new MySqlCommand(sql, con);
+                    cmd.Parameters.AddWithValue("@password", newPassword);
+                    cmd.Parameters.AddWithValue("@ma", ma);
+                    int rs = cmd.ExecuteNonQuery();
+                    return rs > 0;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public bool khoaTaiKhoan(string ma)
+        {
+            string sql = "Update taikhoan SET trangThai= 0 WHERE ma=@ma";
+            using (MySqlConnection con = db.GetConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@ma", ma);
+                int rs = cmd.ExecuteNonQuery();
+                return rs > 0;
+            }
+        }
+
+        public bool moTaiKhoan(string ma)
+        {
+            string sql = "Update taikhoan SET trangThai= 1 WHERE ma=@ma";
+            using (MySqlConnection con = db.GetConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@ma", ma);
+                int rs = cmd.ExecuteNonQuery();
+                return rs > 0;
+            }
+        }
+
+        public bool xoaTaiKhoan(string ma)
+        {
+            string sql = "DELETE FROM taikhoan WHERE ma=@ma";
+            using (MySqlConnection con = db.GetConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@ma", ma);
+                int rs = cmd.ExecuteNonQuery();
+                return rs > 0;
             }
         }
     }
