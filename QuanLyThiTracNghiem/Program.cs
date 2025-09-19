@@ -13,15 +13,35 @@ namespace QuanLyThiTracNghiem
             // Khởi tạo kết nối CSDL nếu cần
             MyConnect myConnect = new MyConnect();
 
-            // Bật giao diện hệ thống (tương đương với Java Look and Feel)
+            // Bật giao diện hệ thống
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // Hiển thị form đăng nhập
-            //Login login = new Login();
-            //SignUp login = new SignUp();
-            TrangChuSinhVien login = new TrangChuSinhVien();
-            Application.Run(login);
+            // Chạy ứng dụng với ApplicationContext tùy chỉnh
+            Application.Run(new MyAppContext());
+        }
+    }
+
+    /// <summary>
+    /// ApplicationContext giúp quản lý form chính động,
+    /// không bị thoát app khi đóng form đầu tiên.
+    /// </summary>
+    public class MyAppContext : ApplicationContext
+    {
+        public MyAppContext()
+        {
+            // Form đầu tiên bạn muốn mở 
+            Form startForm = new Login();
+
+            // Khi form này đóng, kiểm tra còn form nào mở không
+            startForm.FormClosed += (s, e) =>
+            {
+                if (Application.OpenForms.Count == 0)
+                    // Thoát app khi không còn form nào
+                    ExitThread(); 
+            };
+
+            startForm.Show();
         }
     }
 }

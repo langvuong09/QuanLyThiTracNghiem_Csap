@@ -72,12 +72,13 @@
             // 
             button_DangKi.Font = new Font("Calibri", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_DangKi.ForeColor = Color.Red;
-            button_DangKi.Location = new Point(306, 636);
+            button_DangKi.Location = new Point(317, 636);
             button_DangKi.Name = "button_DangKi";
             button_DangKi.Size = new Size(205, 49);
             button_DangKi.TabIndex = 9;
             button_DangKi.Text = "Đăng ký";
             button_DangKi.UseVisualStyleBackColor = true;
+            button_DangKi.Click += button_DangKi_Click;
             // 
             // label_titleDangKi
             // 
@@ -93,12 +94,14 @@
             // button_Login
             // 
             button_Login.Font = new Font("Segoe UI", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button_Login.ForeColor = SystemColors.ButtonFace;
             button_Login.Location = new Point(36, 547);
             button_Login.Name = "button_Login";
             button_Login.Size = new Size(768, 70);
             button_Login.TabIndex = 7;
             button_Login.Text = "ĐĂNG NHẬP";
             button_Login.UseVisualStyleBackColor = true;
+            button_Login.Click += button_Login_Click;
             // 
             // pictureBox_MatKhau
             // 
@@ -109,6 +112,7 @@
             pictureBox_MatKhau.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox_MatKhau.TabIndex = 6;
             pictureBox_MatKhau.TabStop = false;
+            pictureBox_MatKhau.Click += pictureBox_MatKhau_Click;
             // 
             // pictureBox_MaTaiKhoan
             // 

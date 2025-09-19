@@ -41,10 +41,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             button_DangKi.FlatStyle = FlatStyle.Flat;
             button_DangKi.BackColor = System.Drawing.ColorTranslator.FromHtml("#97B6FF");
 
-            textBox_MatKhau.UseSystemPasswordChar = true;
 
-            // Cho phép chỉnh chiều cao thủ công
-            textBox_MatKhau.AutoSize = false;           // tắt tự động co chiều cao
+
+
+            textBox_MatKhau.AutoSize = false;
             textBox_MatKhau.Height = 54;
 
         }
@@ -76,6 +76,33 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private void panel_Right_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void pictureBox_MatKhau_Click(object sender, EventArgs e)
+        {
+            // Đảo trạng thái ẩn/hiện mât khẩu
+            textBox_MatKhau.UseSystemPasswordChar = !textBox_MatKhau.UseSystemPasswordChar;
+        }
+
+        private void button_DangKi_Click(object sender, EventArgs e)
+        {
+
+            SignUp s = new SignUp();
+            s.Show();       
+            this.Close();   
+        }
+
+        private void button_Login_Click(object sender, EventArgs e)
+        {
+
+            // Sau khi tự kiểm tra tài khoản hợp lệ
+            TrangChuSinhVien s = new TrangChuSinhVien();
+
+            s.FormClosed += (s1, e1) => Application.Exit();
+
+            s.Show();
+            this.Hide();  
+            this.Close();  
         }
     }
 

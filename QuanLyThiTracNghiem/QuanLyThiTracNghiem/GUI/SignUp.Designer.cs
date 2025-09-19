@@ -149,19 +149,19 @@
             // 
             textBox_MatKhau.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBox_MatKhau.Location = new Point(188, 518);
-            textBox_MatKhau.Multiline = true;
             textBox_MatKhau.Name = "textBox_MatKhau";
-            textBox_MatKhau.Size = new Size(385, 47);
+            textBox_MatKhau.Size = new Size(385, 39);
             textBox_MatKhau.TabIndex = 9;
+            textBox_MatKhau.UseSystemPasswordChar = true;
             // 
             // textBox_NhapLaiMK
             // 
             textBox_NhapLaiMK.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBox_NhapLaiMK.Location = new Point(188, 587);
-            textBox_NhapLaiMK.Multiline = true;
             textBox_NhapLaiMK.Name = "textBox_NhapLaiMK";
-            textBox_NhapLaiMK.Size = new Size(385, 47);
+            textBox_NhapLaiMK.Size = new Size(385, 39);
             textBox_NhapLaiMK.TabIndex = 10;
+            textBox_NhapLaiMK.UseSystemPasswordChar = true;
             // 
             // pictureBox_MSSV
             // 
@@ -202,6 +202,7 @@
             pictureBox_MatKhau.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox_MatKhau.TabIndex = 14;
             pictureBox_MatKhau.TabStop = false;
+            pictureBox_MatKhau.Click += pictureBox_MatKhau_Click;
             // 
             // pictureBox_NhapLaiMK
             // 
@@ -212,23 +213,26 @@
             pictureBox_NhapLaiMK.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox_NhapLaiMK.TabIndex = 15;
             pictureBox_NhapLaiMK.TabStop = false;
+            pictureBox_NhapLaiMK.Click += pictureBox_NhapLaiMK_Click;
             // 
             // button_DangKy
             // 
             button_DangKy.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button_DangKy.Location = new Point(36, 653);
+            button_DangKy.ForeColor = SystemColors.ButtonFace;
+            button_DangKy.Location = new Point(36, 674);
             button_DangKy.Name = "button_DangKy";
             button_DangKy.Size = new Size(610, 70);
             button_DangKy.TabIndex = 16;
             button_DangKy.Text = "ĐĂNG KÝ";
             button_DangKy.UseVisualStyleBackColor = true;
+            button_DangKy.Click += button_DangKy_Click;
             // 
             // label_TitleDangNhap
             // 
             label_TitleDangNhap.AutoSize = true;
             label_TitleDangNhap.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label_TitleDangNhap.ForeColor = Color.IndianRed;
-            label_TitleDangNhap.Location = new Point(36, 747);
+            label_TitleDangNhap.Location = new Point(35, 768);
             label_TitleDangNhap.Name = "label_TitleDangNhap";
             label_TitleDangNhap.Size = new Size(251, 32);
             label_TitleDangNhap.TabIndex = 17;
@@ -238,12 +242,13 @@
             // 
             button_DangNhap.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_DangNhap.ForeColor = Color.Red;
-            button_DangNhap.Location = new Point(293, 739);
+            button_DangNhap.Location = new Point(292, 760);
             button_DangNhap.Name = "button_DangNhap";
             button_DangNhap.Size = new Size(196, 48);
             button_DangNhap.TabIndex = 18;
             button_DangNhap.Text = "Đăng nhập";
             button_DangNhap.UseVisualStyleBackColor = true;
+            button_DangNhap.Click += button_DangNhap_Click;
             // 
             // SignUp
             // 

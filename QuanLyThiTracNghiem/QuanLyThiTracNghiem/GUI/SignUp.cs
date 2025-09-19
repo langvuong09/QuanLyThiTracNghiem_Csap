@@ -32,6 +32,13 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             button_DangNhap.BackColor = System.Drawing.ColorTranslator.FromHtml("#9CC7FF");
             button_DangNhap.FlatStyle = FlatStyle.Flat;
             button_DangNhap.FlatAppearance.BorderSize = 0;
+
+            textBox_MatKhau.AutoSize = false;           
+            textBox_MatKhau.Height = 47;
+
+            // Cho phép chỉnh chiều cao thủ công
+            textBox_NhapLaiMK.AutoSize = false;           // tắt tự động co chiều cao
+            textBox_NhapLaiMK.Height = 47;
         }
 
         private void label_NhapLaiMK_Click(object sender, EventArgs e)
@@ -47,6 +54,33 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private void SignUp_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void pictureBox_MatKhau_Click(object sender, EventArgs e)
+        {
+            // Đảo trạng thái ẩn/hiện mât khẩu
+            textBox_MatKhau.UseSystemPasswordChar = !textBox_MatKhau.UseSystemPasswordChar;
+        }
+
+        private void pictureBox_NhapLaiMK_Click(object sender, EventArgs e)
+        {
+            // Đảo trạng thái ẩn/hiện mât khẩu
+            textBox_NhapLaiMK.UseSystemPasswordChar = !textBox_NhapLaiMK.UseSystemPasswordChar;
+        }
+
+        private void button_DangNhap_Click(object sender, EventArgs e)
+        {
+            Login s = new Login();
+            s.Show();       
+            this.Close();   
+        }
+
+        private void button_DangKy_Click(object sender, EventArgs e)
+        {
+            
+            Login s = new Login();
+            s.Show();
+            this.Close();
         }
     }
 }
