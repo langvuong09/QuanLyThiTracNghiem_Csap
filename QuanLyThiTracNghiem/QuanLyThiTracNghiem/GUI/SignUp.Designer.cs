@@ -28,196 +28,286 @@
         /// </summary>
         private void InitializeComponent()
         {
-            lblTitle = new Label();
-            lblMa = new Label();
-            lblTen = new Label();
-            lblEmail = new Label();
-            lblMatKhau = new Label();
-            lblNhapLai = new Label();
-            lblQuenMK = new Label();
-            lblCoTaiKhoan = new Label();
-            btnDangKy = new Button();
-            txtMa = new TextBox();
-            txtTen = new TextBox();
-            txtEmail = new TextBox();
-            txtMatKhau = new TextBox();
-            txtNhapLai = new TextBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SignUp));
+            pictureBox_Logo = new PictureBox();
+            label_MaTaiKhoan = new Label();
+            label_TenTaiKhoan = new Label();
+            label_Email = new Label();
+            label_MatKhau = new Label();
+            label_NhapLaiMK = new Label();
+            textBox_MaTaiKhoan = new TextBox();
+            textBox_HoTen = new TextBox();
+            textBox_Email = new TextBox();
+            textBox_MatKhau = new TextBox();
+            textBox_NhapLaiMK = new TextBox();
+            pictureBox_MSSV = new PictureBox();
+            pictureBox_HoTen = new PictureBox();
+            pictureBox_Email = new PictureBox();
+            pictureBox_MatKhau = new PictureBox();
+            pictureBox_NhapLaiMK = new PictureBox();
+            button_DangKy = new Button();
+            label_TitleDangNhap = new Label();
+            button_DangNhap = new Button();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_Logo).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_MSSV).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_HoTen).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_Email).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_MatKhau).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_NhapLaiMK).BeginInit();
             SuspendLayout();
             // 
-            // lblTitle
+            // pictureBox_Logo
             // 
-            lblTitle.AutoSize = true;
-            lblTitle.Font = new Font("Segoe UI", 20F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblTitle.Location = new Point(174, 21);
-            lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(172, 46);
-            lblTitle.TabIndex = 0;
-            lblTitle.Text = "ĐĂNG KÝ";
+            pictureBox_Logo.Image = (Image)resources.GetObject("pictureBox_Logo.Image");
+            pictureBox_Logo.Location = new Point(230, 31);
+            pictureBox_Logo.Name = "pictureBox_Logo";
+            pictureBox_Logo.Size = new Size(200, 200);
+            pictureBox_Logo.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox_Logo.TabIndex = 0;
+            pictureBox_Logo.TabStop = false;
             // 
-            // lblMa
+            // label_MaTaiKhoan
             // 
-            lblMa.AutoSize = true;
-            lblMa.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblMa.Location = new Point(12, 101);
-            lblMa.Name = "lblMa";
-            lblMa.Size = new Size(125, 28);
-            lblMa.TabIndex = 1;
-            lblMa.Text = "Mã sinh viên:";
+            label_MaTaiKhoan.AutoSize = true;
+            label_MaTaiKhoan.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_MaTaiKhoan.Location = new Point(36, 326);
+            label_MaTaiKhoan.Name = "label_MaTaiKhoan";
+            label_MaTaiKhoan.Size = new Size(83, 32);
+            label_MaTaiKhoan.TabIndex = 1;
+            label_MaTaiKhoan.Text = "MSSV:";
+            label_MaTaiKhoan.Click += label_MaTaiKhoan_Click;
             // 
-            // lblTen
+            // label_TenTaiKhoan
             // 
-            lblTen.AutoSize = true;
-            lblTen.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblTen.Location = new Point(12, 157);
-            lblTen.Name = "lblTen";
-            lblTen.Size = new Size(100, 28);
-            lblTen.TabIndex = 2;
-            lblTen.Text = "Họ và tên:";
+            label_TenTaiKhoan.AutoSize = true;
+            label_TenTaiKhoan.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_TenTaiKhoan.Location = new Point(36, 398);
+            label_TenTaiKhoan.Name = "label_TenTaiKhoan";
+            label_TenTaiKhoan.Size = new Size(97, 32);
+            label_TenTaiKhoan.TabIndex = 2;
+            label_TenTaiKhoan.Text = "Họ Tên:";
             // 
-            // lblEmail
+            // label_Email
             // 
-            lblEmail.AutoSize = true;
-            lblEmail.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblEmail.Location = new Point(12, 216);
-            lblEmail.Name = "lblEmail";
-            lblEmail.Size = new Size(63, 28);
-            lblEmail.TabIndex = 3;
-            lblEmail.Text = "Email:";
+            label_Email.AutoSize = true;
+            label_Email.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_Email.Location = new Point(36, 464);
+            label_Email.Name = "label_Email";
+            label_Email.Size = new Size(78, 32);
+            label_Email.TabIndex = 3;
+            label_Email.Text = "Email:";
             // 
-            // lblMatKhau
+            // label_MatKhau
             // 
-            lblMatKhau.AutoSize = true;
-            lblMatKhau.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblMatKhau.Location = new Point(12, 271);
-            lblMatKhau.Name = "lblMatKhau";
-            lblMatKhau.Size = new Size(98, 28);
-            lblMatKhau.TabIndex = 4;
-            lblMatKhau.Text = "Mật khẩu:";
+            label_MatKhau.AutoSize = true;
+            label_MatKhau.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_MatKhau.Location = new Point(36, 533);
+            label_MatKhau.Name = "label_MatKhau";
+            label_MatKhau.Size = new Size(127, 32);
+            label_MatKhau.TabIndex = 4;
+            label_MatKhau.Text = "Mật Khẩu:";
             // 
-            // lblNhapLai
+            // label_NhapLaiMK
             // 
-            lblNhapLai.AutoSize = true;
-            lblNhapLai.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblNhapLai.Location = new Point(12, 329);
-            lblNhapLai.Name = "lblNhapLai";
-            lblNhapLai.Size = new Size(175, 28);
-            lblNhapLai.TabIndex = 5;
-            lblNhapLai.Text = "Nhập lại mật khẩu:";
+            label_NhapLaiMK.AutoSize = true;
+            label_NhapLaiMK.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_NhapLaiMK.Location = new Point(36, 602);
+            label_NhapLaiMK.Name = "label_NhapLaiMK";
+            label_NhapLaiMK.Size = new Size(117, 32);
+            label_NhapLaiMK.TabIndex = 5;
+            label_NhapLaiMK.Text = "Nhập Lại:";
+            label_NhapLaiMK.Click += label_NhapLaiMK_Click;
             // 
-            // lblQuenMK
+            // textBox_MaTaiKhoan
             // 
-            lblQuenMK.AutoSize = true;
-            lblQuenMK.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblQuenMK.Location = new Point(42, 530);
-            lblQuenMK.Name = "lblQuenMK";
-            lblQuenMK.Size = new Size(154, 28);
-            lblQuenMK.TabIndex = 6;
-            lblQuenMK.Text = "Quên mật khẩu?";
-            lblQuenMK.MouseEnter += lblQuenMK_MouseEnter;
-            lblQuenMK.MouseLeave += lblQuenMK_MouseLeave;
+            textBox_MaTaiKhoan.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox_MaTaiKhoan.Location = new Point(188, 311);
+            textBox_MaTaiKhoan.Multiline = true;
+            textBox_MaTaiKhoan.Name = "textBox_MaTaiKhoan";
+            textBox_MaTaiKhoan.Size = new Size(385, 47);
+            textBox_MaTaiKhoan.TabIndex = 6;
             // 
-            // lblCoTaiKhoan
+            // textBox_HoTen
             // 
-            lblCoTaiKhoan.AutoSize = true;
-            lblCoTaiKhoan.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblCoTaiKhoan.Location = new Point(324, 530);
-            lblCoTaiKhoan.Name = "lblCoTaiKhoan";
-            lblCoTaiKhoan.Size = new Size(157, 28);
-            lblCoTaiKhoan.TabIndex = 7;
-            lblCoTaiKhoan.Text = "Đã có tài khoản?";
-            lblCoTaiKhoan.MouseEnter += lblCoTaiKhoan_MouseEnter;
-            lblCoTaiKhoan.MouseLeave += lblCoTaiKhoan_MouseLeave;
+            textBox_HoTen.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox_HoTen.Location = new Point(188, 383);
+            textBox_HoTen.Multiline = true;
+            textBox_HoTen.Name = "textBox_HoTen";
+            textBox_HoTen.Size = new Size(385, 47);
+            textBox_HoTen.TabIndex = 7;
             // 
-            // btnDangKy
+            // textBox_Email
             // 
-            btnDangKy.Font = new Font("Segoe UI", 16.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnDangKy.Location = new Point(174, 430);
-            btnDangKy.Name = "btnDangKy";
-            btnDangKy.Size = new Size(174, 57);
-            btnDangKy.TabIndex = 8;
-            btnDangKy.Text = "Đăng ký";
-            btnDangKy.UseVisualStyleBackColor = true;
+            textBox_Email.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox_Email.Location = new Point(188, 449);
+            textBox_Email.Multiline = true;
+            textBox_Email.Name = "textBox_Email";
+            textBox_Email.Size = new Size(385, 47);
+            textBox_Email.TabIndex = 8;
             // 
-            // txtMa
+            // textBox_MatKhau
             // 
-            txtMa.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtMa.Location = new Point(190, 99);
-            txtMa.Name = "txtMa";
-            txtMa.Size = new Size(313, 30);
-            txtMa.TabIndex = 9;
+            textBox_MatKhau.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox_MatKhau.Location = new Point(188, 518);
+            textBox_MatKhau.Name = "textBox_MatKhau";
+            textBox_MatKhau.Size = new Size(385, 39);
+            textBox_MatKhau.TabIndex = 9;
+            textBox_MatKhau.UseSystemPasswordChar = true;
             // 
-            // txtTen
+            // textBox_NhapLaiMK
             // 
-            txtTen.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtTen.Location = new Point(190, 155);
-            txtTen.Name = "txtTen";
-            txtTen.Size = new Size(313, 30);
-            txtTen.TabIndex = 10;
+            textBox_NhapLaiMK.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox_NhapLaiMK.Location = new Point(188, 587);
+            textBox_NhapLaiMK.Name = "textBox_NhapLaiMK";
+            textBox_NhapLaiMK.Size = new Size(385, 39);
+            textBox_NhapLaiMK.TabIndex = 10;
+            textBox_NhapLaiMK.UseSystemPasswordChar = true;
             // 
-            // txtEmail
+            // pictureBox_MSSV
             // 
-            txtEmail.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtEmail.Location = new Point(190, 214);
-            txtEmail.Name = "txtEmail";
-            txtEmail.Size = new Size(313, 30);
-            txtEmail.TabIndex = 11;
+            pictureBox_MSSV.Image = (Image)resources.GetObject("pictureBox_MSSV.Image");
+            pictureBox_MSSV.Location = new Point(593, 311);
+            pictureBox_MSSV.Name = "pictureBox_MSSV";
+            pictureBox_MSSV.Size = new Size(53, 47);
+            pictureBox_MSSV.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox_MSSV.TabIndex = 11;
+            pictureBox_MSSV.TabStop = false;
             // 
-            // txtMatKhau
+            // pictureBox_HoTen
             // 
-            txtMatKhau.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtMatKhau.Location = new Point(190, 269);
-            txtMatKhau.Name = "txtMatKhau";
-            txtMatKhau.Size = new Size(313, 30);
-            txtMatKhau.TabIndex = 12;
+            pictureBox_HoTen.Image = (Image)resources.GetObject("pictureBox_HoTen.Image");
+            pictureBox_HoTen.Location = new Point(593, 383);
+            pictureBox_HoTen.Name = "pictureBox_HoTen";
+            pictureBox_HoTen.Size = new Size(53, 47);
+            pictureBox_HoTen.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox_HoTen.TabIndex = 12;
+            pictureBox_HoTen.TabStop = false;
             // 
-            // txtNhapLai
+            // pictureBox_Email
             // 
-            txtNhapLai.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtNhapLai.Location = new Point(190, 327);
-            txtNhapLai.Name = "txtNhapLai";
-            txtNhapLai.Size = new Size(313, 30);
-            txtNhapLai.TabIndex = 13;
+            pictureBox_Email.Image = (Image)resources.GetObject("pictureBox_Email.Image");
+            pictureBox_Email.Location = new Point(579, 436);
+            pictureBox_Email.Name = "pictureBox_Email";
+            pictureBox_Email.Size = new Size(78, 76);
+            pictureBox_Email.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox_Email.TabIndex = 13;
+            pictureBox_Email.TabStop = false;
+            // 
+            // pictureBox_MatKhau
+            // 
+            pictureBox_MatKhau.Image = (Image)resources.GetObject("pictureBox_MatKhau.Image");
+            pictureBox_MatKhau.Location = new Point(593, 518);
+            pictureBox_MatKhau.Name = "pictureBox_MatKhau";
+            pictureBox_MatKhau.Size = new Size(53, 47);
+            pictureBox_MatKhau.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox_MatKhau.TabIndex = 14;
+            pictureBox_MatKhau.TabStop = false;
+            pictureBox_MatKhau.Click += pictureBox_MatKhau_Click;
+            // 
+            // pictureBox_NhapLaiMK
+            // 
+            pictureBox_NhapLaiMK.Image = (Image)resources.GetObject("pictureBox_NhapLaiMK.Image");
+            pictureBox_NhapLaiMK.Location = new Point(593, 587);
+            pictureBox_NhapLaiMK.Name = "pictureBox_NhapLaiMK";
+            pictureBox_NhapLaiMK.Size = new Size(53, 47);
+            pictureBox_NhapLaiMK.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox_NhapLaiMK.TabIndex = 15;
+            pictureBox_NhapLaiMK.TabStop = false;
+            pictureBox_NhapLaiMK.Click += pictureBox_NhapLaiMK_Click;
+            // 
+            // button_DangKy
+            // 
+            button_DangKy.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button_DangKy.ForeColor = SystemColors.ButtonFace;
+            button_DangKy.Location = new Point(36, 674);
+            button_DangKy.Name = "button_DangKy";
+            button_DangKy.Size = new Size(610, 70);
+            button_DangKy.TabIndex = 16;
+            button_DangKy.Text = "ĐĂNG KÝ";
+            button_DangKy.UseVisualStyleBackColor = true;
+            button_DangKy.Click += button_DangKy_Click;
+            // 
+            // label_TitleDangNhap
+            // 
+            label_TitleDangNhap.AutoSize = true;
+            label_TitleDangNhap.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_TitleDangNhap.ForeColor = Color.IndianRed;
+            label_TitleDangNhap.Location = new Point(35, 768);
+            label_TitleDangNhap.Name = "label_TitleDangNhap";
+            label_TitleDangNhap.Size = new Size(251, 32);
+            label_TitleDangNhap.TabIndex = 17;
+            label_TitleDangNhap.Text = "Bạn đã có tài khoản ?";
+            // 
+            // button_DangNhap
+            // 
+            button_DangNhap.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button_DangNhap.ForeColor = Color.Red;
+            button_DangNhap.Location = new Point(292, 760);
+            button_DangNhap.Name = "button_DangNhap";
+            button_DangNhap.Size = new Size(196, 48);
+            button_DangNhap.TabIndex = 18;
+            button_DangNhap.Text = "Đăng nhập";
+            button_DangNhap.UseVisualStyleBackColor = true;
+            button_DangNhap.Click += button_DangNhap_Click;
             // 
             // SignUp
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(530, 610);
-            Controls.Add(txtNhapLai);
-            Controls.Add(txtMatKhau);
-            Controls.Add(txtEmail);
-            Controls.Add(txtTen);
-            Controls.Add(txtMa);
-            Controls.Add(btnDangKy);
-            Controls.Add(lblCoTaiKhoan);
-            Controls.Add(lblQuenMK);
-            Controls.Add(lblNhapLai);
-            Controls.Add(lblMatKhau);
-            Controls.Add(lblEmail);
-            Controls.Add(lblTen);
-            Controls.Add(lblMa);
-            Controls.Add(lblTitle);
+            BackColor = SystemColors.ControlLight;
+            ClientSize = new Size(684, 861);
+            Controls.Add(button_DangNhap);
+            Controls.Add(label_TitleDangNhap);
+            Controls.Add(button_DangKy);
+            Controls.Add(pictureBox_NhapLaiMK);
+            Controls.Add(pictureBox_MatKhau);
+            Controls.Add(pictureBox_Email);
+            Controls.Add(pictureBox_HoTen);
+            Controls.Add(pictureBox_MSSV);
+            Controls.Add(textBox_NhapLaiMK);
+            Controls.Add(textBox_MatKhau);
+            Controls.Add(textBox_Email);
+            Controls.Add(textBox_HoTen);
+            Controls.Add(textBox_MaTaiKhoan);
+            Controls.Add(label_NhapLaiMK);
+            Controls.Add(label_MatKhau);
+            Controls.Add(label_Email);
+            Controls.Add(label_TenTaiKhoan);
+            Controls.Add(label_MaTaiKhoan);
+            Controls.Add(pictureBox_Logo);
             Name = "SignUp";
-            Text = "SignUp";
+            Text = "DangKy";
+            Load += SignUp_Load;
+            ((System.ComponentModel.ISupportInitialize)pictureBox_Logo).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_MSSV).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_HoTen).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_Email).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_MatKhau).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_NhapLaiMK).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Label lblTitle;
-        private Label lblMa;
-        private Label lblTen;
-        private Label lblEmail;
-        private Label lblMatKhau;
-        private Label lblNhapLai;
-        private Label lblQuenMK;
-        private Label lblCoTaiKhoan;
-        private Button btnDangKy;
-        private TextBox txtMa;
-        private TextBox txtTen;
-        private TextBox txtEmail;
-        private TextBox txtMatKhau;
-        private TextBox txtNhapLai;
+        private PictureBox pictureBox_Logo;
+        private Label label_MaTaiKhoan;
+        private Label label_TenTaiKhoan;
+        private Label label_Email;
+        private Label label_MatKhau;
+        private Label label_NhapLaiMK;
+        private TextBox textBox_MaTaiKhoan;
+        private TextBox textBox_HoTen;
+        private TextBox textBox_Email;
+        private TextBox textBox_MatKhau;
+        private TextBox textBox_NhapLaiMK;
+        private PictureBox pictureBox_MSSV;
+        private PictureBox pictureBox_HoTen;
+        private PictureBox pictureBox_Email;
+        private PictureBox pictureBox_MatKhau;
+        private PictureBox pictureBox_NhapLaiMK;
+        private Button button_DangKy;
+        private Label label_TitleDangNhap;
+        private Button button_DangNhap;
     }
 }

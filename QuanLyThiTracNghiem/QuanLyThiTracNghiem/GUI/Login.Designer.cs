@@ -28,124 +28,193 @@
         /// </summary>
         private void InitializeComponent()
         {
-            btnLogin = new Button();
-            btnSignUp = new Button();
-            lblTitle = new Label();
-            lblMa = new Label();
-            lblPassword = new Label();
-            lblKhongCoTaiKhoan = new Label();
-            txtMa = new TextBox();
-            txtPassword = new TextBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login));
+            panel_Right = new Panel();
+            button_DangKi = new Button();
+            label_titleDangKi = new Label();
+            button_Login = new Button();
+            pictureBox_MatKhau = new PictureBox();
+            pictureBox_MaTaiKhoan = new PictureBox();
+            textBox_MatKhau = new TextBox();
+            textBox_MaTaiKhoan = new TextBox();
+            label_MatKhau = new Label();
+            label_MaTaiKhoan = new Label();
+            pictureBox_Logo = new PictureBox();
+            pictureBox_backgroundLogin = new PictureBox();
+            panel_Right.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_MatKhau).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_MaTaiKhoan).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_Logo).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_backgroundLogin).BeginInit();
             SuspendLayout();
             // 
-            // btnLogin
+            // panel_Right
             // 
-            btnLogin.Font = new Font("Segoe UI", 16.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnLogin.Location = new Point(101, 297);
-            btnLogin.Name = "btnLogin";
-            btnLogin.Size = new Size(227, 61);
-            btnLogin.TabIndex = 0;
-            btnLogin.Text = "Đăng nhập";
-            btnLogin.UseVisualStyleBackColor = true;
-            btnLogin.Click += btnLogin_Click;
+            panel_Right.BackColor = SystemColors.ActiveCaption;
+            panel_Right.Controls.Add(button_DangKi);
+            panel_Right.Controls.Add(label_titleDangKi);
+            panel_Right.Controls.Add(button_Login);
+            panel_Right.Controls.Add(pictureBox_MatKhau);
+            panel_Right.Controls.Add(pictureBox_MaTaiKhoan);
+            panel_Right.Controls.Add(textBox_MatKhau);
+            panel_Right.Controls.Add(textBox_MaTaiKhoan);
+            panel_Right.Controls.Add(label_MatKhau);
+            panel_Right.Controls.Add(label_MaTaiKhoan);
+            panel_Right.Controls.Add(pictureBox_Logo);
+            panel_Right.Location = new Point(832, -1);
+            panel_Right.Margin = new Padding(3, 2, 3, 2);
+            panel_Right.Name = "panel_Right";
+            panel_Right.Size = new Size(833, 776);
+            panel_Right.TabIndex = 0;
+            panel_Right.Paint += panel_Right_Paint;
             // 
-            // btnSignUp
+            // button_DangKi
             // 
-            btnSignUp.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnSignUp.Location = new Point(240, 388);
-            btnSignUp.Name = "btnSignUp";
-            btnSignUp.Size = new Size(135, 50);
-            btnSignUp.TabIndex = 1;
-            btnSignUp.Text = "Đăng ký";
-            btnSignUp.UseVisualStyleBackColor = true;
-            btnSignUp.Click += btnSignUp_Click;
+            button_DangKi.Font = new Font("Calibri", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button_DangKi.ForeColor = Color.Red;
+            button_DangKi.Location = new Point(317, 636);
+            button_DangKi.Name = "button_DangKi";
+            button_DangKi.Size = new Size(205, 49);
+            button_DangKi.TabIndex = 9;
+            button_DangKi.Text = "Đăng ký";
+            button_DangKi.UseVisualStyleBackColor = true;
+            button_DangKi.Click += button_DangKi_Click;
             // 
-            // lblTitle
+            // label_titleDangKi
             // 
-            lblTitle.AutoSize = true;
-            lblTitle.Font = new Font("Segoe UI", 20F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblTitle.Location = new Point(101, 22);
-            lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(227, 46);
-            lblTitle.TabIndex = 2;
-            lblTitle.Text = "ĐĂNG NHẬP";
+            label_titleDangKi.AutoSize = true;
+            label_titleDangKi.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_titleDangKi.ForeColor = Color.Firebrick;
+            label_titleDangKi.Location = new Point(36, 644);
+            label_titleDangKi.Name = "label_titleDangKi";
+            label_titleDangKi.Size = new Size(276, 32);
+            label_titleDangKi.TabIndex = 8;
+            label_titleDangKi.Text = "Bạn chưa có tài khoản ?";
             // 
-            // lblMa
+            // button_Login
             // 
-            lblMa.AutoSize = true;
-            lblMa.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblMa.Location = new Point(12, 98);
-            lblMa.Name = "lblMa";
-            lblMa.Size = new Size(125, 28);
-            lblMa.TabIndex = 3;
-            lblMa.Text = "Mã sinh viên:";
+            button_Login.Font = new Font("Segoe UI", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button_Login.ForeColor = SystemColors.ButtonFace;
+            button_Login.Location = new Point(36, 547);
+            button_Login.Name = "button_Login";
+            button_Login.Size = new Size(768, 70);
+            button_Login.TabIndex = 7;
+            button_Login.Text = "ĐĂNG NHẬP";
+            button_Login.UseVisualStyleBackColor = true;
+            button_Login.Click += button_Login_Click;
             // 
-            // lblPassword
+            // pictureBox_MatKhau
             // 
-            lblPassword.AutoSize = true;
-            lblPassword.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblPassword.Location = new Point(12, 185);
-            lblPassword.Name = "lblPassword";
-            lblPassword.Size = new Size(98, 28);
-            lblPassword.TabIndex = 4;
-            lblPassword.Text = "Mật khẩu:";
+            pictureBox_MatKhau.Image = (Image)resources.GetObject("pictureBox_MatKhau.Image");
+            pictureBox_MatKhau.Location = new Point(750, 414);
+            pictureBox_MatKhau.Name = "pictureBox_MatKhau";
+            pictureBox_MatKhau.Size = new Size(54, 54);
+            pictureBox_MatKhau.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox_MatKhau.TabIndex = 6;
+            pictureBox_MatKhau.TabStop = false;
+            pictureBox_MatKhau.Click += pictureBox_MatKhau_Click;
             // 
-            // lblKhongCoTaiKhoan
+            // pictureBox_MaTaiKhoan
             // 
-            lblKhongCoTaiKhoan.AutoSize = true;
-            lblKhongCoTaiKhoan.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblKhongCoTaiKhoan.Location = new Point(43, 402);
-            lblKhongCoTaiKhoan.Name = "lblKhongCoTaiKhoan";
-            lblKhongCoTaiKhoan.Size = new Size(167, 23);
-            lblKhongCoTaiKhoan.TabIndex = 7;
-            lblKhongCoTaiKhoan.Text = "Không có tài khoản?";
+            pictureBox_MaTaiKhoan.Image = (Image)resources.GetObject("pictureBox_MaTaiKhoan.Image");
+            pictureBox_MaTaiKhoan.Location = new Point(750, 330);
+            pictureBox_MaTaiKhoan.Name = "pictureBox_MaTaiKhoan";
+            pictureBox_MaTaiKhoan.Size = new Size(54, 54);
+            pictureBox_MaTaiKhoan.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox_MaTaiKhoan.TabIndex = 5;
+            pictureBox_MaTaiKhoan.TabStop = false;
             // 
-            // txtMa
+            // textBox_MatKhau
             // 
-            txtMa.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtMa.Location = new Point(143, 96);
-            txtMa.Name = "txtMa";
-            txtMa.Size = new Size(253, 30);
-            txtMa.TabIndex = 5;
+            textBox_MatKhau.Font = new Font("Calibri", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox_MatKhau.Location = new Point(229, 414);
+            textBox_MatKhau.Name = "textBox_MatKhau";
+            textBox_MatKhau.Size = new Size(515, 40);
+            textBox_MatKhau.TabIndex = 4;
+            textBox_MatKhau.UseSystemPasswordChar = true;
             // 
-            // txtPassword
+            // textBox_MaTaiKhoan
             // 
-            txtPassword.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtPassword.Location = new Point(143, 183);
-            txtPassword.Name = "txtPassword";
-            txtPassword.Size = new Size(253, 30);
-            txtPassword.PasswordChar = '*';
-            txtPassword.TabIndex = 6;
+            textBox_MaTaiKhoan.Font = new Font("Calibri", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox_MaTaiKhoan.Location = new Point(229, 330);
+            textBox_MaTaiKhoan.Multiline = true;
+            textBox_MaTaiKhoan.Name = "textBox_MaTaiKhoan";
+            textBox_MaTaiKhoan.Size = new Size(515, 54);
+            textBox_MaTaiKhoan.TabIndex = 3;
+            // 
+            // label_MatKhau
+            // 
+            label_MatKhau.AutoSize = true;
+            label_MatKhau.Font = new Font("Calibri", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_MatKhau.Location = new Point(36, 432);
+            label_MatKhau.Name = "label_MatKhau";
+            label_MatKhau.Size = new Size(141, 36);
+            label_MatKhau.TabIndex = 2;
+            label_MatKhau.Text = "Mật Khẩu:";
+            // 
+            // label_MaTaiKhoan
+            // 
+            label_MaTaiKhoan.AutoSize = true;
+            label_MaTaiKhoan.Font = new Font("Calibri", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_MaTaiKhoan.Location = new Point(36, 346);
+            label_MaTaiKhoan.Name = "label_MaTaiKhoan";
+            label_MaTaiKhoan.Size = new Size(187, 36);
+            label_MaTaiKhoan.TabIndex = 1;
+            label_MaTaiKhoan.Text = "Mã Tài Khoản:";
+            // 
+            // pictureBox_Logo
+            // 
+            pictureBox_Logo.BackgroundImage = (Image)resources.GetObject("pictureBox_Logo.BackgroundImage");
+            pictureBox_Logo.Location = new Point(317, 13);
+            pictureBox_Logo.Name = "pictureBox_Logo";
+            pictureBox_Logo.Size = new Size(250, 250);
+            pictureBox_Logo.TabIndex = 0;
+            pictureBox_Logo.TabStop = false;
+            // 
+            // pictureBox_backgroundLogin
+            // 
+            pictureBox_backgroundLogin.BackgroundImage = (Image)resources.GetObject("pictureBox_backgroundLogin.BackgroundImage");
+            pictureBox_backgroundLogin.Location = new Point(41, 61);
+            pictureBox_backgroundLogin.Margin = new Padding(3, 2, 3, 2);
+            pictureBox_backgroundLogin.Name = "pictureBox_backgroundLogin";
+            pictureBox_backgroundLogin.Size = new Size(683, 703);
+            pictureBox_backgroundLogin.TabIndex = 1;
+            pictureBox_backgroundLogin.TabStop = false;
             // 
             // Login
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(428, 502);
-
-            Controls.Add(lblKhongCoTaiKhoan);
-            Controls.Add(txtPassword);
-            Controls.Add(txtMa);
-            Controls.Add(lblPassword);
-            Controls.Add(lblMa);
-            Controls.Add(lblTitle);
-            Controls.Add(btnSignUp);
-            Controls.Add(btnLogin);
+            BackColor = SystemColors.Window;
+            ClientSize = new Size(1664, 775);
+            Controls.Add(pictureBox_backgroundLogin);
+            Controls.Add(panel_Right);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "Login";
             Text = "Login";
+            Load += Login_Load;
+            panel_Right.ResumeLayout(false);
+            panel_Right.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_MatKhau).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_MaTaiKhoan).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_Logo).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_backgroundLogin).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
-        private Button btnLogin;
-        private Button btnSignUp;
-        private Label lblTitle;
-        private Label lblMa;
-        private Label lblPassword;
-        private TextBox txtMa;
-        private TextBox txtPassword;
-        private Label lblKhongCoTaiKhoan;
+        private Panel panel_Right;
+        private PictureBox pictureBox_backgroundLogin;
+        private PictureBox pictureBox_Logo;
+        private TextBox textBox_MaTaiKhoan;
+        private Label label_MatKhau;
+        private Label label_MaTaiKhoan;
+        private PictureBox pictureBox_MaTaiKhoan;
+        private Button button_Login;
+        private PictureBox pictureBox_MatKhau;
+        private Label label_titleDangKi;
+        private Button button_DangKi;
+        private TextBox textBox_MatKhau;
     }
 }

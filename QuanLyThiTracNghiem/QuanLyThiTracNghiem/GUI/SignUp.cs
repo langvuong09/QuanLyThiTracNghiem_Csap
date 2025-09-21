@@ -1,67 +1,86 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
-using QuanLyThiTracNghiem.MyCustom;
-using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
-using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
-using QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI;
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
     public partial class SignUp : Form
     {
-        private TaiKhoanBUS tkBUS = new TaiKhoanBUS();
-        private SinhVienBUS svBUS = new SinhVienBUS();
         public SignUp()
         {
             InitializeComponent();
-            AddEvents();
+            customFormSignUp_Load();
+        }
+
+        private void customFormSignUp_Load()
+        {
+            // 1) Đặt form nằm giữa màn hình
             this.StartPosition = FormStartPosition.CenterScreen;
+
+            // 2) Không cho resize
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false; // tắt nút maximize
+            this.MinimizeBox = false; // tắt nút minimize
+            this.BackColor = System.Drawing.ColorTranslator.FromHtml("#9CC7FF");
+            button_DangKy.BackColor = System.Drawing.ColorTranslator.FromHtml("#4A7EFA");
+            button_DangNhap.BackColor = System.Drawing.ColorTranslator.FromHtml("#9CC7FF");
+            button_DangNhap.FlatStyle = FlatStyle.Flat;
+            button_DangNhap.FlatAppearance.BorderSize = 0;
+
+            textBox_MatKhau.AutoSize = false;           
+            textBox_MatKhau.Height = 47;
+
+            // Cho phép chỉnh chiều cao thủ công
+            textBox_NhapLaiMK.AutoSize = false;           // tắt tự động co chiều cao
+            textBox_NhapLaiMK.Height = 47;
         }
 
-        private void AddEvents()
+        private void label_NhapLaiMK_Click(object sender, EventArgs e)
         {
-            btnDangKy.Click += (s, e) =>
-            {
-                XuLyDangKy();
-            };
-            lblCoTaiKhoan.Click += (s, e) =>
-            {
-                Login login = new Login();
-                login.Show();
-                this.Hide();
-            };
+
         }
 
-        private bool XuLyDangKy()
+        private void label_MaTaiKhoan_Click(object sender, EventArgs e)
         {
-            if (svBUS.ThemSinhVien(txtMa.Text, txtTen.Text, txtEmail.Text, txtMatKhau.Text, txtNhapLai.Text))
-            {
-                bool flag = tkBUS.ThemTaiKhoan(txtMa.Text, txtMatKhau.Text);
-                return flag;
-            }
-            else
-            {
-                return false;
-            }          
+
         }
 
-        private void lblCoTaiKhoan_MouseEnter(object sender, EventArgs e)
+        private void SignUp_Load(object sender, EventArgs e)
         {
-            lblCoTaiKhoan.ForeColor = Color.Blue;
+
         }
 
-        private void lblCoTaiKhoan_MouseLeave(object sender, EventArgs e)
+        private void pictureBox_MatKhau_Click(object sender, EventArgs e)
         {
-            lblCoTaiKhoan.ForeColor = Color.Black;
+            // Đảo trạng thái ẩn/hiện mât khẩu
+            textBox_MatKhau.UseSystemPasswordChar = !textBox_MatKhau.UseSystemPasswordChar;
         }
 
-        private void lblQuenMK_MouseEnter(object sender, EventArgs e)
+        private void pictureBox_NhapLaiMK_Click(object sender, EventArgs e)
         {
-            lblQuenMK.ForeColor = Color.Blue;
+            // Đảo trạng thái ẩn/hiện mât khẩu
+            textBox_NhapLaiMK.UseSystemPasswordChar = !textBox_NhapLaiMK.UseSystemPasswordChar;
         }
 
-        private void lblQuenMK_MouseLeave(object sender, EventArgs e)
+        private void button_DangNhap_Click(object sender, EventArgs e)
         {
-            lblQuenMK.ForeColor= Color.Black;
+            Login s = new Login();
+            s.Show();       
+            this.Close();   
+        }
+
+        private void button_DangKy_Click(object sender, EventArgs e)
+        {
+            
+            Login s = new Login();
+            s.Show();
+            this.Close();
         }
     }
 }
