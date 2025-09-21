@@ -8,7 +8,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
 {
     internal class GiaoVien
     {
-        public int maGiaoVien {  get; set; }
+        public string maGiaoVien {  get; set; }
         public string tenGiaoVien { get; set; }
         public string email { get; set; }
         public string SDT { get; set; }
@@ -16,7 +16,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
         public string quyen { get; set; }
 
         public GiaoVien() { }
-        public GiaoVien(int maGiaoVien, string tenGiaoVien, string email, string sDT, string moTa, string quyen)
+        public GiaoVien(string maGiaoVien, string tenGiaoVien, string email, string sDT, string moTa, string quyen)
         {
             this.maGiaoVien = maGiaoVien;
             this.tenGiaoVien = tenGiaoVien;

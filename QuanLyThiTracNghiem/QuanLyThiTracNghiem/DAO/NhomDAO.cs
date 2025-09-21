@@ -1,0 +1,182 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using MySql.Data.MySqlClient;
+
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
+
+namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
+{
+    internal class NhomDAO
+    {
+        private MyConnect db = new MyConnect();
+        public ArrayList GetListNhom(string maMonHoc)
+        {
+            ArrayList dsn = new ArrayList();
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT * FROM nhom WHERE maMonHoc = @maMonHoc";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maMonHoc", maMonHoc);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Nhom nhom = new Nhom
+                        {
+                            maNhom = reader.GetInt32(0),
+                            tenNhom = reader.GetString(1),
+                            ghiChu = reader.GetString(2),
+                            maMonHoc = reader.GetString(3),
+                            maGiaoVien = reader.GetString(4),
+                            namHoc = reader.GetInt32(5),
+                            hocKy = reader.GetInt32(6),
+                            soLuong = reader.GetInt32(7),
+                        };
+                        dsn.Add(nhom);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            return dsn;
+        }
+
+        public bool ThemNhom(int maNhom, string tenNhom, string ghiChu, string maMonHoc,string maGiaoVien, int namHoc, int hocKy, int soLuong)
+        {
+            try
+            {
+                string sql = "INSERT INTO nhom(maNhom, tenNhom, ghiChu, maMonHoc, maGiaoVien, namHoc, hocKy, soLuong)" +
+                    "VaLUES (@maNhom, @tenNhom, @ghiChu, @maMonHoc, @maGiaoVien, @namHoc, @hocKy, @soLuong)";
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maNhom", maNhom);
+                    cmd.Parameters.AddWithValue("@tenNhom", tenNhom);
+                    cmd.Parameters.AddWithValue("@ghiChu", ghiChu);
+                    cmd.Parameters.AddWithValue("@maMonHoc", maMonHoc);
+                    cmd.Parameters.AddWithValue("@maGiaoVien", maGiaoVien);
+                    cmd.Parameters.AddWithValue("@namHoc", namHoc);
+                    cmd.Parameters.AddWithValue("@hocKy", hocKy);
+                    cmd.Parameters.AddWithValue("@soLuong", soLuong);
+
+                    int rs = cmd.ExecuteNonQuery();
+                    return rs > 0;
+                }
+            }
+            catch (Exception ex) { return false; }
+        }
+
+        public bool XoaNhom(int maNhom)
+        {
+            try
+            {
+                string sql = "DELETE FROM nhom WHERE maNhom = @maNhom";
+
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maNhom", maNhom);
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool SuaNhom(int maNhom, string tenNhom, string ghiChu, string maMonHoc, string maGiaoVien, int namHoc, int hocKy, int soLuong)
+        {
+            try
+            {
+                string sql = "UPDATE nhom SET maNhom = @maNhom, tenNhom = @tenNhom, ghiChu = @ghiChu, maMonHoc = @maMonHoc, maGiaoVien = @maGiaoVien, namHoc = @namHoc, hocKy = @hocKy, soLuong = @soLuong" +
+                    " WHERE maCauHoi = @maCauHoi";
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maNhom", maNhom);
+                    cmd.Parameters.AddWithValue("@tenNhom", tenNhom);
+                    cmd.Parameters.AddWithValue("@ghiChu", ghiChu);
+                    cmd.Parameters.AddWithValue("@maMonHoc", maMonHoc);
+                    cmd.Parameters.AddWithValue("@maGiaoVien", maGiaoVien);
+                    cmd.Parameters.AddWithValue("@namHoc", namHoc);
+                    cmd.Parameters.AddWithValue("@hocKy", hocKy);
+                    cmd.Parameters.AddWithValue("@soLuong", soLuong);
+
+                    int rs = cmd.ExecuteNonQuery();
+                    return rs > 0;
+                }
+            }
+            catch (Exception ex) { return false; }
+        }
+
+        public ArrayList GetListNhomByMaMonHoc(string maMonHoc)
+        {
+            ArrayList dsn = new ArrayList();
+            try
+            {               
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT * FROM nhom WHERE maMonHoc = @maMonHoc";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maMonHoc", maMonHoc);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Nhom nhom = new Nhom
+                        {
+                            maNhom = reader.GetInt32(0),
+                            tenNhom = reader.GetString(1),
+                            ghiChu = reader.GetString(2),
+                            maMonHoc = reader.GetString(3),
+                            maGiaoVien = reader.GetString(4),
+                            namHoc = reader.GetInt32(5),
+                            hocKy = reader.GetInt32(6),
+                            soLuong = reader.GetInt32(7),
+                        };
+                        dsn.Add(nhom);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            return dsn;
+        }
+
+        public int maxMaNhom()
+        {
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT MAX(*) FROM nhom";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    return Convert.ToInt32(cmd.ExecuteScalar()) + 1;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+    }
+}

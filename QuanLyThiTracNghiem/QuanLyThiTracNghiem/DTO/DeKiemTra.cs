@@ -17,9 +17,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
         public int soCauDe { get; set; }
         public int soCauTrungBinh { get; set; }
         public int soCauKho {  get; set; }
+        public int trangThai {  get; set; }
 
         public DeKiemTra() { }
-        public DeKiemTra (int maDe, string tenDe, DateTime thoiGianBatDau, DateTime thoiGianKetThuc, DateTime thoiGianCanhBao, string maMonHoc, int soCauDe, int soCauTrungBinh, int soCauKho)
+        public DeKiemTra (int maDe, string tenDe, DateTime thoiGianBatDau, DateTime thoiGianKetThuc, DateTime thoiGianCanhBao, string maMonHoc, int soCauDe, int soCauTrungBinh, int soCauKho, int trangThai)
         {
             this.maDe = maDe;
             this.tenDe = tenDe;
@@ -30,6 +31,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
             this.soCauDe = soCauDe;
             this.soCauTrungBinh = soCauTrungBinh;
             this.soCauKho = soCauKho;
+            this.trangThai = trangThai;
         }
     }
 }
