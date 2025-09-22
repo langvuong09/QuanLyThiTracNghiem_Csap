@@ -27,23 +27,84 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                     MySqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        Quyen q = new Quyen
+                        NhomQuyen q = new NhomQuyen
                         {
                             quyen = reader.GetString(0),
-                            thamGiaHoatDong = reader.GetInt32(1),
-                            qlDeThi = reader.GetInt32(2),
-                            qlSinhVien = reader.GetInt32(3),
-                            qlGiaoVien = reader.GetInt32(4),
-                            qlNhom = reader.GetInt32(5),
-                            qlPhanCong = reader.GetInt32(6),
-                            qlMon = reader.GetInt32(7),
-                            qlCauHoi = reader.GetInt32(8),
-                            qlThongBao = reader.GetInt32(9),
                         };
                         dsnq.Add(q);
                     }
                 }
             }catch (Exception ex)
+            {
+                return null;
+            }
+            return dsnq;
+        }
+
+        public bool ThemQuyen(string quyen)
+        {
+            try
+            {
+                string sql = "INSERT INTO nhomquyen(quyen)" +
+                    "VaLUES (@quyen)";
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@quyen", quyen);
+
+                    int rs = cmd.ExecuteNonQuery();
+                    return rs > 0;
+                }
+            }
+            catch (Exception ex) { return false; }
+        }
+
+        public bool XoaQuyen(string quyen)
+        {
+            try
+            {
+                string sql = "DELETE FROM nhomquyen WHERE quyen = @quyen";
+
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@quyen", quyen);
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public ArrayList GetNhomQuyen(string quyen)
+        {
+            ArrayList dsnq = new ArrayList();
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT * FROM nhomquyen WHERE quyen = @quyen";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@quyen", quyen);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        NhomQuyen q = new NhomQuyen
+                        {
+                            quyen = reader.GetString(0),
+                        };
+                        dsnq.Add(q);
+                    }
+                }
+            }
+            catch (Exception ex)
             {
                 return null;
             }
