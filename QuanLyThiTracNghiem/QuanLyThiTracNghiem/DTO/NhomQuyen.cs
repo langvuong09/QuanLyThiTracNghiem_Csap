@@ -8,12 +8,14 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
 {
     internal class NhomQuyen
     {
-        public string quyen {  get; set; }
+        public int maQuyen {  get; set; }
+        public string tenQuyen {  get; set; }
 
         public NhomQuyen() { }
-        public NhomQuyen(string quyen)
+        public NhomQuyen(int maQuyen,string quyen)
         {
-            this.quyen = quyen;
+            this.maQuyen = maQuyen;
+            this.tenQuyen = quyen;
         }
     }
 }

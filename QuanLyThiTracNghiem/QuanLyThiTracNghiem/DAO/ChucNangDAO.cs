@@ -11,15 +11,15 @@ using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
 {
-    internal class NhomQuyenDAO
+    internal class ChucNangDAO
     {
         private MyConnect db = new MyConnect();
-        public ArrayList GetListNhomQuyen()
+        public ArrayList GetListChucNang()
         {
-            ArrayList dsnq = new ArrayList();
+            ArrayList dscn = new ArrayList();
             try
             {
-                using(MySqlConnection conn = db.GetConnection())
+                using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
                     string sql = "SELECT * FROM nhomquyen";
@@ -27,33 +27,35 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                     MySqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        NhomQuyen q = new NhomQuyen
+                        ChucNang cn = new ChucNang
                         {
-                            maQuyen = reader.GetInt32(0),
-                            tenQuyen = reader.GetString(1),
+                            maChucNang = reader.GetInt32(0),
+                            tenChucNang = reader.GetString(1),
+                            
                         };
-                        dsnq.Add(q);
+                        dscn.Add(cn);
                     }
                 }
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return null;
             }
-            return dsnq;
+            return dscn;
         }
 
-        public bool ThemQuyen(int maQuyen, string tenQuyen)
+        public bool ThemChucNang(int maChucNang, string tenChucNang)
         {
             try
             {
-                string sql = "INSERT INTO nhomquyen(maQuyen, tenQuyen)" +
-                    "VaLUES (@maQuyen,@tenQuyen)";
+                string sql = "INSERT INTO chucnang(maChucNang, tenChucNang)" +
+                    "VaLUES (@maChucNang,@tenChucNang)";
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@maQuyen", maQuyen);
-                    cmd.Parameters.AddWithValue("@tenQuyen", tenQuyen);
+                    cmd.Parameters.AddWithValue("@maChucNang", maChucNang);
+                    cmd.Parameters.AddWithValue("@tenChucNang", tenChucNang);
 
                     int rs = cmd.ExecuteNonQuery();
                     return rs > 0;
@@ -62,18 +64,18 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             catch (Exception ex) { return false; }
         }
 
-        public bool XoaQuyen(int maQuyen)
+        public bool XoaChucNang(int maChucNang)
         {
             try
             {
-                string sql = "DELETE FROM nhomquyen WHERE maQuyen = @maQuyen";
+                string sql = "DELETE FROM chucnang WHERE maChucNang = @maChucNang";
 
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@maQuyen", maQuyen);
+                    cmd.Parameters.AddWithValue("@maChucNang", maChucNang);
                     int rowsAffected = cmd.ExecuteNonQuery();
                     return rowsAffected > 0;
                 }
@@ -84,26 +86,27 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
         }
 
-        public NhomQuyen GetNhomQuyen(int maQuyen)
+        public ChucNang GetChucNang(int maChucNang)
         {
-            ArrayList dsnq = new ArrayList();
+            ArrayList dscn = new ArrayList();
             try
             {
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
-                    string sql = "SELECT * FROM nhomquyen WHERE maQuyen = @maQuyen";
+                    string sql = "SELECT * FROM chucnang WHERE maChucNang = @maChucNang";
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@maQuyen", maQuyen);
+                    cmd.Parameters.AddWithValue("@maChucNang", maChucNang);
                     MySqlDataReader reader = cmd.ExecuteReader();
                     if (reader.Read())
                     {
-                        NhomQuyen q = new NhomQuyen
+                        ChucNang cn = new ChucNang
                         {
-                            maQuyen = reader.GetInt32(0),
-                            tenQuyen = reader.GetString(1),
+                            maChucNang = reader.GetInt32(0),
+                            tenChucNang = reader.GetString(1),
+
                         };
-                        return q;
+                        return cn;
                     }
                 }
             }

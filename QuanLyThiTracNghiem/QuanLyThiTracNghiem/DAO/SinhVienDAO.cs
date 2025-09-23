@@ -53,8 +53,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         {
             try
             {
-                string sql = "INSERT INTO sinhvien(maSinhVien, hoVaTen, email, gioiTinh, ngaySinh, anhDaiDien, quyen)" +
-                    "VALUES (@maSinhVien,@hoVaTen,@email,Nam,2000-01-01,default.jpg, sinhvien)";
+                string sql = "INSERT INTO sinhvien(maSinhVien, hoVaTen, email, gioiTinh, ngaySinh, anhDaiDien, maChucNang)" +
+                    "VALUES (@maSinhVien,@hoVaTen,@email,Nam,2000-01-01,default.jpg, 1)";
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();

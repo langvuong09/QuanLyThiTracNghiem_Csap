@@ -29,8 +29,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                     {
                         CTNhomQuyen ctnq = new CTNhomQuyen
                         {
-                            quyen = reader.GetString(0),
-                            tenQuyen = reader.GetString(1),
+                            maQuyen = reader.GetInt32(0),
+                            maChucNang = reader.GetInt32(1),
                             xem = reader.GetInt32(2),
                             them = reader.GetInt32(3),
                             capNhat = reader.GetInt32(4),
@@ -47,7 +47,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             return dsctnq;
         }
 
-        public ArrayList GetListCTNhomQuyen(string quyen)
+        public ArrayList GetListCTNhomQuyen(int maQuyen)
         {
             ArrayList dsctnq = new ArrayList();
             try
@@ -55,16 +55,16 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
-                    string sql = "SELECT * FROM ctnhomquyen WHERE quyen = @quyen";
+                    string sql = "SELECT * FROM ctnhomquyen WHERE maQuyen = @maQuyen";
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@quyen", quyen);
+                    cmd.Parameters.AddWithValue("@maQuyen", maQuyen);
                     MySqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
                         CTNhomQuyen ctnq = new CTNhomQuyen
                         {
-                            quyen = reader.GetString(0),
-                            tenQuyen = reader.GetString(1),
+                            maQuyen = reader.GetInt32(0),
+                            maChucNang = reader.GetInt32(1),
                             xem = reader.GetInt32(2),
                             them = reader.GetInt32(3),
                             capNhat = reader.GetInt32(4),
@@ -81,18 +81,18 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             return dsctnq;
         }
 
-        public bool ThemCTNhomQuyen(string quyen, string tenQuyen, int xem, int them, int capNhat, int xoa)
+        public bool ThemCTNhomQuyen(int maQuyen, int maChucNang, int xem, int them, int capNhat, int xoa)
         {
             try
             {
-                string sql = "INSERT INTO ctnhomquyen(quyen, tenQuyen, xem, them, capNhat, xoa)" +
-                    "VaLUES (@quyen, @tenQuyen, @xem, @them, @capNhat, @xoa)";
+                string sql = "INSERT INTO ctnhomquyen(maQuyen, maChucNang, xem, them, capNhat, xoa)" +
+                    "VaLUES (@maQuyen, @maChucNang, @xem, @them, @capNhat, @xoa)";
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@quyen", quyen);
-                    cmd.Parameters.AddWithValue("@tenQuyen", tenQuyen);
+                    cmd.Parameters.AddWithValue("@maQuyen", maQuyen);
+                    cmd.Parameters.AddWithValue("@maChucNang", maChucNang);
                     cmd.Parameters.AddWithValue("@xem", xem);
                     cmd.Parameters.AddWithValue("@them", them);
                     cmd.Parameters.AddWithValue("@capNhat", capNhat);
@@ -105,18 +105,18 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             catch (Exception ex) { return false; }
         }
 
-        public bool XoaCTNhomQuyen(string quyen)
+        public bool XoaCTNhomQuyen(int maQuyen)
         {
             try
             {
-                string sql = "DELETE FROM ctnhomquyen WHERE quyen = @quyen";
+                string sql = "DELETE FROM ctnhomquyen WHERE maQuyen = @maQuyen";
 
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@quyen", quyen);
+                    cmd.Parameters.AddWithValue("@maQuyen", maQuyen);
                     int rowsAffected = cmd.ExecuteNonQuery();
                     return rowsAffected > 0;
                 }
@@ -127,11 +127,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
         }
 
-        public bool SuaCTNhomQuyen(string quyen, string tenQuyen, int xem, int them, int capNhat, int xoa)
+        public bool SuaCTNhomQuyen(int maQuyen, int maChucNang, int xem, int them, int capNhat, int xoa)
         {
             try
             {
-                string sql = "UPDATE ctnhomquyen SET xem = @xem, them = @them, capNhat = @capNhat, xoa = @xoa WHERE quyen = @quyen AND tenQuyen = @tenQuyen";
+                string sql = "UPDATE ctnhomquyen SET xem = @xem, them = @them, capNhat = @capNhat, xoa = @xoa WHERE maQuyen = @maQuyen AND maChucNang = @maChucNang";
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
@@ -140,8 +140,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                     cmd.Parameters.AddWithValue("@them", them);
                     cmd.Parameters.AddWithValue("@capNhat", capNhat);
                     cmd.Parameters.AddWithValue("@xoa", xoa);
-                    cmd.Parameters.AddWithValue("@quyen", quyen);
-                    cmd.Parameters.AddWithValue("@tenQuyen", tenQuyen);
+                    cmd.Parameters.AddWithValue("@maQuyen", maQuyen);
+                    cmd.Parameters.AddWithValue("@maChucNang", maChucNang);
 
                     int rs = cmd.ExecuteNonQuery();
                     return rs > 0;

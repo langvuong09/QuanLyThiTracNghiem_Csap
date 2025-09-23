@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 22, 2025 lúc 08:53 AM
+-- Thời gian đã tạo: Th9 23, 2025 lúc 09:24 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -74,6 +74,17 @@ CREATE TABLE `chitietbailam` (
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `chucnang`
+--
+
+CREATE TABLE `chucnang` (
+  `maChucNang` int(11) NOT NULL,
+  `tenChucNang` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `chuong`
 --
 
@@ -81,6 +92,21 @@ CREATE TABLE `chuong` (
   `maChuong` int(11) NOT NULL,
   `maMonHoc` varchar(11) NOT NULL,
   `tenChuong` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `ctnhomquyen`
+--
+
+CREATE TABLE `ctnhomquyen` (
+  `maQuyen` int(11) NOT NULL,
+  `maChucNang` int(11) NOT NULL,
+  `xem` int(11) NOT NULL,
+  `them` int(11) NOT NULL,
+  `capNhat` int(11) NOT NULL,
+  `xoa` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -136,9 +162,10 @@ CREATE TABLE `giaovien` (
   `maGiaoVien` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tenGiaoVien` varchar(50) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `SDT` varchar(11) NOT NULL,
-  `moTa` varchar(255) DEFAULT NULL,
-  `quyen` varchar(50) NOT NULL
+  `gioiTinh` varchar(11) DEFAULT NULL,
+  `ngaySinh` date DEFAULT NULL,
+  `anhDaiDien` varchar(255) DEFAULT NULL,
+  `maQuyen` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -180,24 +207,16 @@ CREATE TABLE `nhom` (
 --
 
 CREATE TABLE `nhomquyen` (
-  `quyen` varchar(50) NOT NULL,
-  `thamGiaHoatDong` int(1) NOT NULL,
-  `qlDeThi` int(1) NOT NULL,
-  `qlSinhVien` int(1) NOT NULL,
-  `qlGiaoVien` int(1) NOT NULL,
-  `qlNhom` int(1) NOT NULL,
-  `qlPhanCong` int(1) NOT NULL,
-  `qlMon` int(1) NOT NULL,
-  `qlCauHoi` int(1) NOT NULL,
-  `qlThongBao` int(1) NOT NULL
+  `maQuyen` int(11) NOT NULL,
+  `tenQuyen` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `nhomquyen`
 --
 
-INSERT INTO `nhomquyen` (`quyen`, `thamGiaHoatDong`, `qlDeThi`, `qlSinhVien`, `qlGiaoVien`, `qlNhom`, `qlPhanCong`, `qlMon`, `qlCauHoi`, `qlThongBao`) VALUES
-('sinhvien', 1, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `nhomquyen` (`maQuyen`, `tenQuyen`) VALUES
+(1, 'Admin');
 
 -- --------------------------------------------------------
 
@@ -235,15 +254,15 @@ CREATE TABLE `sinhvien` (
   `gioiTinh` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ngaySinh` date DEFAULT NULL,
   `anhDaiDien` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `quyen` varchar(50) NOT NULL
+  `maQuyen` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `sinhvien`
 --
 
-INSERT INTO `sinhvien` (`maSinhVien`, `hoVaTen`, `email`, `gioiTinh`, `ngaySinh`, `anhDaiDien`, `quyen`) VALUES
-('111111', 'Cường', 'cuong@gmail.comm', 'Nam', '2004-01-20', 'hello', 'sinhvien');
+INSERT INTO `sinhvien` (`maSinhVien`, `hoVaTen`, `email`, `gioiTinh`, `ngaySinh`, `anhDaiDien`, `maQuyen`) VALUES
+('111111', 'Cường', 'cuong@gmail.comm', 'Nam', '2004-01-20', 'hello', 1);
 
 -- --------------------------------------------------------
 
@@ -322,10 +341,23 @@ ALTER TABLE `chitietbailam`
   ADD KEY `fk_chitietbailam_cauhoi` (`maCauHoi`);
 
 --
+-- Chỉ mục cho bảng `chucnang`
+--
+ALTER TABLE `chucnang`
+  ADD PRIMARY KEY (`maChucNang`);
+
+--
 -- Chỉ mục cho bảng `chuong`
 --
 ALTER TABLE `chuong`
   ADD KEY `fk_chuong_monhoc` (`maMonHoc`);
+
+--
+-- Chỉ mục cho bảng `ctnhomquyen`
+--
+ALTER TABLE `ctnhomquyen`
+  ADD KEY `fk_ctnhomquyen_nhomquyen` (`maQuyen`),
+  ADD KEY `fk_ctnhomquyen_chucnang` (`maChucNang`);
 
 --
 -- Chỉ mục cho bảng `dapan`
@@ -351,7 +383,7 @@ ALTER TABLE `dekiemtra-nhom`
 --
 ALTER TABLE `giaovien`
   ADD PRIMARY KEY (`maGiaoVien`),
-  ADD KEY `fk_giaovien_quyen` (`quyen`);
+  ADD KEY `fk_giaovien_nhomquyen` (`maQuyen`);
 
 --
 -- Chỉ mục cho bảng `monhoc`
@@ -369,7 +401,7 @@ ALTER TABLE `nhom`
 -- Chỉ mục cho bảng `nhomquyen`
 --
 ALTER TABLE `nhomquyen`
-  ADD PRIMARY KEY (`quyen`);
+  ADD PRIMARY KEY (`maQuyen`);
 
 --
 -- Chỉ mục cho bảng `nhomthamgia`
@@ -391,7 +423,7 @@ ALTER TABLE `phancong`
 --
 ALTER TABLE `sinhvien`
   ADD PRIMARY KEY (`maSinhVien`),
-  ADD KEY `fk_sinhvien_nhomquyen` (`quyen`);
+  ADD KEY `fk_sinhvien_nhomquyen` (`maQuyen`);
 
 --
 -- Chỉ mục cho bảng `taikhoan`
@@ -450,6 +482,13 @@ ALTER TABLE `chuong`
   ADD CONSTRAINT `fk_chuong_monhoc` FOREIGN KEY (`maMonHoc`) REFERENCES `monhoc` (`maMonHoc`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Các ràng buộc cho bảng `ctnhomquyen`
+--
+ALTER TABLE `ctnhomquyen`
+  ADD CONSTRAINT `fk_ctnhomquyen_chucnang` FOREIGN KEY (`maChucNang`) REFERENCES `chucnang` (`maChucNang`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_ctnhomquyen_nhomquyen` FOREIGN KEY (`maQuyen`) REFERENCES `nhomquyen` (`maQuyen`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Các ràng buộc cho bảng `dapan`
 --
 ALTER TABLE `dapan`
@@ -466,7 +505,7 @@ ALTER TABLE `dekiemtra-nhom`
 -- Các ràng buộc cho bảng `giaovien`
 --
 ALTER TABLE `giaovien`
-  ADD CONSTRAINT `fk_giaovien_quyen` FOREIGN KEY (`quyen`) REFERENCES `nhomquyen` (`quyen`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_giaovien_nhomquyen` FOREIGN KEY (`maQuyen`) REFERENCES `nhomquyen` (`maQuyen`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_giaovien_taikhoan` FOREIGN KEY (`maGiaoVien`) REFERENCES `taikhoan` (`ma`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
@@ -487,7 +526,7 @@ ALTER TABLE `phancong`
 -- Các ràng buộc cho bảng `sinhvien`
 --
 ALTER TABLE `sinhvien`
-  ADD CONSTRAINT `fk_sinhvien_nhomquyen` FOREIGN KEY (`quyen`) REFERENCES `nhomquyen` (`quyen`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_sinhvien_nhomquyen` FOREIGN KEY (`maQuyen`) REFERENCES `nhomquyen` (`maQuyen`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `taikhoan`

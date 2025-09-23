@@ -50,7 +50,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         {
             try
             {
-                string sql = "INSERT INTO giaovien(maGiaoVien, tenGiaoVien, email, SDT, moTa, quyen)" +
+                string sql = "INSERT INTO giaovien(maGiaoVien, tenGiaoVien, email, SDT, moTa, maChucNang)" +
                     "VaLUES (@maGiaoVien, @tenGiaoVien, @email, @SDT, @moTa, giaovien)";
                 using (MySqlConnection conn = db.GetConnection())
                 {
