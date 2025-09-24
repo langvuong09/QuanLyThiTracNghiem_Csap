@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 23, 2025 lúc 09:24 AM
+-- Thời gian đã tạo: Th9 24, 2025 lúc 05:24 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -82,6 +82,21 @@ CREATE TABLE `chucnang` (
   `tenChucNang` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `chucnang`
+--
+
+INSERT INTO `chucnang` (`maChucNang`, `tenChucNang`) VALUES
+(1, 'Người dùng'),
+(2, 'Học phần'),
+(3, 'Câu hỏi'),
+(4, 'Môn học'),
+(5, 'Chương'),
+(6, 'Phân công'),
+(7, 'Đề thi'),
+(8, 'Nhóm quyền'),
+(9, 'Thông báo');
+
 -- --------------------------------------------------------
 
 --
@@ -108,6 +123,21 @@ CREATE TABLE `ctnhomquyen` (
   `capNhat` int(11) NOT NULL,
   `xoa` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `ctnhomquyen`
+--
+
+INSERT INTO `ctnhomquyen` (`maQuyen`, `maChucNang`, `xem`, `them`, `capNhat`, `xoa`) VALUES
+(1, 1, 1, 1, 1, 1),
+(1, 2, 1, 1, 1, 1),
+(1, 3, 1, 1, 1, 1),
+(1, 4, 1, 1, 1, 1),
+(1, 5, 1, 1, 1, 1),
+(1, 6, 1, 1, 1, 1),
+(1, 7, 1, 1, 1, 1),
+(1, 8, 1, 1, 1, 1),
+(1, 9, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -216,7 +246,9 @@ CREATE TABLE `nhomquyen` (
 --
 
 INSERT INTO `nhomquyen` (`maQuyen`, `tenQuyen`) VALUES
-(1, 'Admin');
+(1, 'admin'),
+(2, 'giáo viên'),
+(3, 'sinh viên');
 
 -- --------------------------------------------------------
 
