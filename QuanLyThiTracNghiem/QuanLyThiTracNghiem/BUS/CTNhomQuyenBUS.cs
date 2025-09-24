@@ -26,9 +26,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             this.listCTNhomQuyen = ctnqDAO.GetListCTNhomQuyen();
         }
 
-        public void DocListCTNhomQuyen(string quyen)
+        public void DocListCTNhomQuyen(int maQuyen)
         {
-            this.listCTNhomQuyen = ctnqDAO.GetListCTNhomQuyen(quyen);
+            this.listCTNhomQuyen = ctnqDAO.GetListCTNhomQuyen(maQuyen);
         }
 
         public ArrayList GetListCTNhomQuyen()
@@ -37,36 +37,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             return listCTNhomQuyen;
         }
 
-        public ArrayList GetListCTNhomQuyen(string quyen)
+        public ArrayList GetListCTNhomQuyen(int maQuyen)
         {
-            DocListCTNhomQuyen(quyen);
+            DocListCTNhomQuyen(maQuyen);
             return listCTNhomQuyen;
-        }
-
-        public bool ThemCTNhomQuyen(string quyen, int xem, int them, int capNhat, int xoa)
-        {
-            string[] arr = {"Người dùng","Học phần","Câu hỏi","Môn học","Chương","Phân công","Đề thi","Nhóm quyền","Thông báo"};
-            int flag = 0;
-            for (int i=0; i < arr.Length; i++)
-            {
-                if (!ctnqDAO.ThemCTNhomQuyen(quyen, arr[i], xem, them, capNhat, xoa))
-                {                    
-                    flag = 1;
-                    break;
-                }
-            }
-            if (flag == 1)
-            {
-                MyDialog dlg = new MyDialog("Thêm nhóm quyền thất bại!", MyDialog.ERROR_DIALOG);
-                dlg.ShowDialog();
-                return false;
-            }
-            else
-            {
-                MyDialog dlg = new MyDialog("Thêm nhóm quyền thành công!", MyDialog.SUCCESS_DIALOG);
-                dlg.ShowDialog();
-                return true;
-            }            
-        }
+        }        
     }
 }
