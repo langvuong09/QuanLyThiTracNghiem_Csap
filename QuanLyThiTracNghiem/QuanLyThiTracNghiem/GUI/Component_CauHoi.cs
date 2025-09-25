@@ -26,7 +26,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         // ===========================================Custom Header DataGridView_DSCauHoi===========================================
         private void Custom_HeaderDataGridView_DSCauHoi()
         {
-            //DATAGRIDVIEW_CAUHOI
+     
             // Xóa hết cột cũ nếu cần
             dataGridView_DSCauHoi.Columns.Clear();
             //Bắt buộc để header nhận màu tùy chỉnh
@@ -46,19 +46,24 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dataGridView_DSCauHoi.Columns.Add("MonHoc", "Môn Học");
             dataGridView_DSCauHoi.Columns.Add("DoKho", "Độ Khó");
 
-            //Tùy chỉnh độ rộng cột
-            dataGridView_DSCauHoi.Columns["MaCauHoi"].Width = 200;
-            dataGridView_DSCauHoi.Columns["NoiDung"].Width = 900;
-            dataGridView_DSCauHoi.Columns["MonHoc"].Width = 300;
-            dataGridView_DSCauHoi.Columns["DoKho"].Width = 150;
-
             //Custom dòng dữ liệu
             dataGridView_DSCauHoi.DefaultCellStyle.Font = new Font("Segoe UI", 13);
+            dataGridView_DSCauHoi.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridView_DSCauHoi.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridView_DSCauHoi.DefaultCellStyle.BackColor = Color.White;
             dataGridView_DSCauHoi.DefaultCellStyle.ForeColor = Color.Black;
             dataGridView_DSCauHoi.DefaultCellStyle.SelectionBackColor = System.Drawing.ColorTranslator.FromHtml("#9CC7FF");
-            dataGridView_DSCauHoi.RowTemplate.Height = 150; // Chiều cao dòng
+            dataGridView_DSCauHoi.RowTemplate.Height = 100; 
+            dataGridView_DSCauHoi.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView_DSCauHoi.MultiSelect = false;
+            dataGridView_DSCauHoi.ReadOnly = true;
 
+            //Tùy chỉnh độ rộng cột
+            dataGridView_DSCauHoi.Columns["MaCauHoi"].Width = 200;
+            dataGridView_DSCauHoi.Columns["NoiDung"].Width = 700;
+            dataGridView_DSCauHoi.Columns["NoiDung"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridView_DSCauHoi.Columns["MonHoc"].Width = 300;
+            dataGridView_DSCauHoi.Columns["DoKho"].Width = 150;
 
             // Chỉ cho phép 2 cột dài được wrap
             dataGridView_DSCauHoi.Columns["NoiDung"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
@@ -138,7 +143,21 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void button_ThemCauHoi_Click(object sender, EventArgs e)
         {
-            //Tạo câu hỏi mới
+            using (Form dlg = new Form())
+            {
+                dlg.Text = "THÊM CÂU HỎI";
+                dlg.FormBorderStyle = FormBorderStyle.FixedDialog;
+                dlg.StartPosition = FormStartPosition.CenterParent;
+                dlg.ClientSize = new Size(1480, 750);
+                dlg.AutoScroll = true;
+                dlg.ShowInTaskbar = false;
+
+                Dialog_ThemCauHoi dialog = new Dialog_ThemCauHoi();
+                dialog.Dock = DockStyle.Top;
+
+                dlg.Controls.Add(dialog);
+                dlg.ShowDialog(this);
+            }
         }
 
         private void button_Reload_Click(object sender, EventArgs e)
@@ -153,12 +172,40 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void button_Xem_Click(object sender, EventArgs e)
         {
-            //Xem chi tiết câu hỏi
+            using (Form dlg = new Form())
+            {
+                dlg.Text = "CHI TIẾT CÂU HỎI";
+                dlg.FormBorderStyle = FormBorderStyle.FixedDialog;
+                dlg.StartPosition = FormStartPosition.CenterParent;
+                dlg.ClientSize = new Size(1480, 700);  
+                dlg.AutoScroll = true;                   
+                dlg.ShowInTaskbar = false;
+
+                Dialog_SuaCauHoi dialog = new Dialog_SuaCauHoi();
+                dialog.Dock = DockStyle.Top;  
+
+                dlg.Controls.Add(dialog);
+                dlg.ShowDialog(this);
+            }
         }
 
         private void button_Sua_Click(object sender, EventArgs e)
         {
-            //Sửa câu hỏi
+            using (Form dlg = new Form())
+            {
+                dlg.Text = "SỬA CÂU HỎI";
+                dlg.FormBorderStyle = FormBorderStyle.FixedDialog;
+                dlg.StartPosition = FormStartPosition.CenterParent;
+                dlg.ClientSize = new Size(1480, 700);
+                dlg.AutoScroll = true;
+                dlg.ShowInTaskbar = false;
+
+                Dialog_SuaCauHoi dialog = new Dialog_SuaCauHoi();
+                dialog.Dock = DockStyle.Top;
+
+                dlg.Controls.Add(dialog);
+                dlg.ShowDialog(this);
+            }
         }
 
         private void button_Xoa_Click(object sender, EventArgs e)
