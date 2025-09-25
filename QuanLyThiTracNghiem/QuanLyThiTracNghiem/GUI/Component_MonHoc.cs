@@ -16,5 +16,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         {
             InitializeComponent();
         }
+
+        private void Component_MonHoc_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

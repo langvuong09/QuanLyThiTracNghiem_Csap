@@ -37,6 +37,7 @@
             BackColor = SystemColors.MenuHighlight;
             Name = "Component_DeThi";
             Size = new Size(1541, 934);
+            Load += Component_DeThi_Load;
             ResumeLayout(false);
         }
 

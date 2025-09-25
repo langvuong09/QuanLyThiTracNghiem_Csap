@@ -1,7 +1,7 @@
 ﻿
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
 {
-    internal class TaiKhoan
+    public class TaiKhoan
     {
         public string userId { get; set; }
         public string password { get; set; }

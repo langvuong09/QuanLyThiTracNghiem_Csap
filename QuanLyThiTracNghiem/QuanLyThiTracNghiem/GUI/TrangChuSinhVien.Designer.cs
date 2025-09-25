@@ -81,6 +81,7 @@
             button_ThongTin.Text = "Phạm Công Thành";
             button_ThongTin.TextAlign = ContentAlignment.MiddleLeft;
             button_ThongTin.UseVisualStyleBackColor = false;
+            button_ThongTin.Click += button_ThongTin_Click;
             // 
             // button_ThongBao
             // 
@@ -92,6 +93,7 @@
             button_ThongBao.Size = new Size(65, 65);
             button_ThongBao.TabIndex = 3;
             button_ThongBao.UseVisualStyleBackColor = false;
+            button_ThongBao.Click += button_ThongBao_Click;
             // 
             // button_DangXuat
             // 

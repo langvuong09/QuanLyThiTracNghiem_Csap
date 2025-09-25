@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
-    public partial class Component_DeThi : UserControl
+    public partial class Component_TTCaNhan : UserControl
     {
-        public Component_DeThi()
+        public Component_TTCaNhan()
         {
             InitializeComponent();
-        }
-
-        private void Component_DeThi_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

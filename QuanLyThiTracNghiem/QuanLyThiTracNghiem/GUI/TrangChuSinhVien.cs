@@ -33,6 +33,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private Component_PhanCong pc = new Component_PhanCong();
         private Component_PhanQuyen pq = new Component_PhanQuyen();
 
+        //Khai Báo Panel
+        private Component_ThongBao tb = new Component_ThongBao();
+        private Component_TTCaNhan ttcn = new Component_TTCaNhan();
 
 
         private void customFormTrangChuSinhVien_Load()
@@ -155,6 +158,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             mh.Dock = DockStyle.Fill;
             pc.Dock = DockStyle.Fill;
             pq.Dock = DockStyle.Fill;
+            tb.Dock = DockStyle.Fill;
+            ttcn.Dock = DockStyle.Fill;
 
 
 
@@ -168,6 +173,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             panel_Main.Controls.Add(mh);
             panel_Main.Controls.Add(pc);
             panel_Main.Controls.Add(pq);
+            panel_Main.Controls.Add(tb);
+            panel_Main.Controls.Add(ttcn);
 
 
 
@@ -223,6 +230,16 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private void button_DeThi_Click(object sender, EventArgs e)
         {
             dt.BringToFront();
+        }
+
+        private void button_ThongBao_Click(object sender, EventArgs e)
+        {
+            tb.BringToFront();
+        }
+
+        private void button_ThongTin_Click(object sender, EventArgs e)
+        {
+            ttcn.BringToFront();
         }
     }
 }

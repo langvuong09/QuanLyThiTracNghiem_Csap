@@ -1,6 +1,6 @@
 ﻿namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
-    partial class Component_MonHoc
+    partial class Component_TTCaNhan
     {
         /// <summary> 
         /// Required designer variable.
@@ -30,14 +30,13 @@
         {
             SuspendLayout();
             // 
-            // Component_MonHoc
+            // Component_TTCaNhan
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.Red;
-            Name = "Component_MonHoc";
+            BackColor = Color.FromArgb(128, 64, 64);
+            Name = "Component_TTCaNhan";
             Size = new Size(1541, 934);
-            Load += Component_MonHoc_Load;
             ResumeLayout(false);
         }
 
