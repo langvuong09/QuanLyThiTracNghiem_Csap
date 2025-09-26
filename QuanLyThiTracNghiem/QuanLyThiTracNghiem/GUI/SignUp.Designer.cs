@@ -75,7 +75,6 @@
             label_MaTaiKhoan.Size = new Size(83, 32);
             label_MaTaiKhoan.TabIndex = 1;
             label_MaTaiKhoan.Text = "MSSV:";
-            label_MaTaiKhoan.Click += label_MaTaiKhoan_Click;
             // 
             // label_TenTaiKhoan
             // 
@@ -116,7 +115,6 @@
             label_NhapLaiMK.Size = new Size(117, 32);
             label_NhapLaiMK.TabIndex = 5;
             label_NhapLaiMK.Text = "Nhập Lại:";
-            label_NhapLaiMK.Click += label_NhapLaiMK_Click;
             // 
             // textBox_MaTaiKhoan
             // 
@@ -277,7 +275,6 @@
             Controls.Add(pictureBox_Logo);
             Name = "SignUp";
             Text = "DangKy";
-            Load += SignUp_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox_Logo).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox_MSSV).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox_HoTen).EndInit();
