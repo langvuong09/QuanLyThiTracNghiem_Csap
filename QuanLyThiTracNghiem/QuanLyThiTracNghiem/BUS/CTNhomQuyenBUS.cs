@@ -41,6 +41,16 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
         {
             DocListCTNhomQuyen(maQuyen);
             return listCTNhomQuyen;
-        }        
+        }
+        
+        public bool ThemCTNhomQuyen(int maQuyen, int maChucNang, int xem, int them, int capNhat, int xoa)
+        {
+            bool result = ctnqDAO.ThemCTNhomQuyen(maQuyen, maChucNang, xem, them, capNhat, xoa);
+            if (result)
+            {
+                DocListCTNhomQuyen();
+            }
+            return result;
+        }
     }
 }

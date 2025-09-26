@@ -44,5 +44,62 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         {
             pnlPopup.Visible = false;
         }
+
+        private void btnLuuPopup_Click(object sender, EventArgs e)
+        {
+            if (txtTenNhomQuyen.Text.Trim() == "")
+            {
+                MessageBox.Show("Tên nhóm quyền không được để trống!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            string tenNhomQuyen = txtTenNhomQuyen.Text.Trim();
+            Dictionary<int, int[]> permissions = new Dictionary<int, int[]>();
+            foreach (DataGridViewRow row in dgvPopupChucNang.Rows)
+            {
+                int view = Convert.ToInt32(row.Cells["viewcheckbox"].Value);
+                int add = Convert.ToInt32(row.Cells["addcheckbox"].Value);
+                int edit = Convert.ToInt32(row.Cells["editcheckbox"].Value);
+                int delete = Convert.ToInt32(row.Cells["deletecheckbox"].Value);
+
+                if (view == 1 || add == 1 || edit == 1 || delete == 1)
+                {
+                    int maChucNang = Convert.ToInt32(row.Cells["dataGridViewTextBoxColumn1"].Value);
+
+                    permissions[maChucNang] = new int[] { view, add, edit, delete };
+
+                    MessageBox.Show(maChucNang.ToString(), "test", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            if (permissions.Count == 0)
+            {
+                MessageBox.Show("Phải chọn ít nhất một quyền cho nhóm quyền!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            NhomQuyen? role = rolebus.ThemQuyen(tenNhomQuyen);
+            if (role == null)
+            {
+                MessageBox.Show("Thêm nhóm quyền thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            CTNhomQuyenBUS cTNhomQuyen = new CTNhomQuyenBUS();
+            foreach (var perm in permissions)
+            {
+                bool success = cTNhomQuyen.ThemCTNhomQuyen(role.maQuyen,
+                                                           perm.Key,
+                                                           perm.Value[0],
+                                                           perm.Value[1],
+                                                           perm.Value[2],
+                                                           perm.Value[3]);
+                if (!success)
+                {
+                    MessageBox.Show("Thêm chi tiết nhóm quyền thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            MessageBox.Show("Thêm nhóm quyền thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            pnlPopup.Visible = false;
+        }
     }
 }

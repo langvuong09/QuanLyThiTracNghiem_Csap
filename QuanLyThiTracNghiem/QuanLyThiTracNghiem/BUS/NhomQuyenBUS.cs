@@ -34,5 +34,14 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
             return listNhomQuyen;
         }
+        public NhomQuyen? ThemQuyen(string tenQuyen)
+        {
+            NhomQuyen? kq = nqDAO.ThemQuyen(tenQuyen);
+            if (kq != null)
+            {
+                return kq;
+            }
+            else return null;
+        }
     }
 }

@@ -42,25 +42,40 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             return dsnq;
         }
 
-        public bool ThemQuyen(int maQuyen, string tenQuyen)
+        public NhomQuyen ThemQuyen(string tenQuyen)
         {
             try
             {
-                string sql = "INSERT INTO nhomquyen(maQuyen, tenQuyen)" +
-                    "VaLUES (@maQuyen,@tenQuyen)";
+                string sql = "INSERT INTO nhomquyen(tenQuyen) VALUES (@tenQuyen)";
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@maQuyen", maQuyen);
                     cmd.Parameters.AddWithValue("@tenQuyen", tenQuyen);
 
-                    int rs = cmd.ExecuteNonQuery();
-                    return rs > 0;
+                    int affected = cmd.ExecuteNonQuery();
+                    if (affected > 0)
+                    {
+                        long newId = cmd.LastInsertedId;
+
+                        return new NhomQuyen
+                        {
+                            maQuyen = (int)newId,
+                            tenQuyen = tenQuyen
+                        };
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
             }
-            catch (Exception ex) { return false; }
+            catch
+            {
+                return null;
+            }
         }
+
 
         public bool XoaQuyen(int maQuyen)
         {

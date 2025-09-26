@@ -238,22 +238,38 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             // dataGridViewCheckBoxColumn1
             // 
             dataGridViewCheckBoxColumn1.HeaderText = "Xem";
-            dataGridViewCheckBoxColumn1.Name = "dataGridViewCheckBoxColumn1";
+            dataGridViewCheckBoxColumn1.Name = "viewcheckbox";
+            dataGridViewCheckBoxColumn1.DataPropertyName = "xem";
+            dataGridViewCheckBoxColumn1.TrueValue = 1;
+            dataGridViewCheckBoxColumn1.FalseValue = 0;
+            dataGridViewCheckBoxColumn1.IndeterminateValue = DBNull.Value;
             // 
             // dataGridViewCheckBoxColumn2
             // 
             dataGridViewCheckBoxColumn2.HeaderText = "Thêm";
-            dataGridViewCheckBoxColumn2.Name = "dataGridViewCheckBoxColumn2";
+            dataGridViewCheckBoxColumn2.Name = "addcheckbox";
+            dataGridViewCheckBoxColumn2.DataPropertyName = "them";
+            dataGridViewCheckBoxColumn2.TrueValue = 1;
+            dataGridViewCheckBoxColumn2.FalseValue = 0;
+            dataGridViewCheckBoxColumn2.IndeterminateValue = DBNull.Value;
             // 
             // dataGridViewCheckBoxColumn3
             // 
             dataGridViewCheckBoxColumn3.HeaderText = "Sửa";
-            dataGridViewCheckBoxColumn3.Name = "dataGridViewCheckBoxColumn3";
+            dataGridViewCheckBoxColumn3.Name = "editcheckbox";
+            dataGridViewCheckBoxColumn3.DataPropertyName = "capNhat";
+            dataGridViewCheckBoxColumn3.TrueValue = 1;
+            dataGridViewCheckBoxColumn3.FalseValue = 0;
+            dataGridViewCheckBoxColumn3.IndeterminateValue = DBNull.Value;
             // 
             // dataGridViewCheckBoxColumn4
             // 
             dataGridViewCheckBoxColumn4.HeaderText = "Xóa";
-            dataGridViewCheckBoxColumn4.Name = "dataGridViewCheckBoxColumn4";
+            dataGridViewCheckBoxColumn4.Name = "deletecheckbox";
+            dataGridViewCheckBoxColumn4.DataPropertyName = "xoa";
+            dataGridViewCheckBoxColumn4.TrueValue = 1;
+            dataGridViewCheckBoxColumn4.FalseValue = 0;
+            dataGridViewCheckBoxColumn4.IndeterminateValue = DBNull.Value;
             // 
             // btnLuuPopup
             // 
@@ -266,6 +282,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             btnLuuPopup.TabIndex = 3;
             btnLuuPopup.Text = "Lưu";
             btnLuuPopup.UseVisualStyleBackColor = false;
+            btnLuuPopup.Click += btnLuuPopup_Click;
             // 
             // btnHuyPopup
             // 
