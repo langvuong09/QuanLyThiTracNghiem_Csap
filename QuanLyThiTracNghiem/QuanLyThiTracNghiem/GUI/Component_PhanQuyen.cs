@@ -15,11 +15,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
     public partial class Component_PhanQuyen : UserControl
     {
-        private Panel pnlPopup;
-        private TextBox txtTenNhomQuyen;
-        private Button btnSave;
-        private Button btnCancel;
-        private NhomQuyenBUS bus = new NhomQuyenBUS();
+
+        private NhomQuyenBUS rolebus = new NhomQuyenBUS();
+        private ChucNangBUS molbus = new ChucNangBUS();
         public Component_PhanQuyen()
         {
             InitializeComponent();
@@ -28,13 +26,23 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void loadData()
         {
-            ArrayList list = bus.GetListNhomQuyen();
+            ArrayList list = rolebus.GetListNhomQuyen();
             dgvNhomQuyen.DataSource = list;
         }
 
         private void btnTaoNhomQuyen_Click(object sender, EventArgs e)
         {
+            txtTenNhomQuyen.Text = "";
 
+            ArrayList list = molbus.GetListChucNang();
+            dgvPopupChucNang.DataSource = list;
+            pnlPopup.Visible = true;
+            pnlPopup.BringToFront();
+        }
+
+        private void btnHuyPopup_Click(object sender, EventArgs e)
+        {
+            pnlPopup.Visible = false;
         }
     }
 }

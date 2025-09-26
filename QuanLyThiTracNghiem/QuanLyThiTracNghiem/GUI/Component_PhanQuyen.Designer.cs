@@ -1,4 +1,6 @@
-﻿namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
+﻿using QuanLyThiTracNghiem.Properties;
+
+namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
     partial class Component_PhanQuyen
     {
@@ -13,6 +15,13 @@
         private System.Windows.Forms.DataGridViewImageColumn colEdit;
         private System.Windows.Forms.DataGridViewImageColumn colDelete;
 
+        private System.Windows.Forms.Panel pnlPopup;
+        private System.Windows.Forms.Label lblTenNhomQuyen;
+        private System.Windows.Forms.TextBox txtTenNhomQuyen; 
+        private System.Windows.Forms.DataGridView dgvPopupChucNang; 
+        private System.Windows.Forms.Button btnLuuPopup;
+        private System.Windows.Forms.Button btnHuyPopup;
+
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -26,6 +35,10 @@
 
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             txtSearch = new TextBox();
             btnTaoNhomQuyen = new Button();
             dgvNhomQuyen = new DataGridView();
@@ -34,7 +47,21 @@
             colView = new DataGridViewImageColumn();
             colEdit = new DataGridViewImageColumn();
             colDelete = new DataGridViewImageColumn();
+            pnlPopup = new Panel();
+            lblTenNhomQuyen = new Label();
+            txtTenNhomQuyen = new TextBox();
+            dgvPopupChucNang = new DataGridView();
+            dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            dataGridViewCheckBoxColumn1 = new DataGridViewCheckBoxColumn();
+            dataGridViewCheckBoxColumn2 = new DataGridViewCheckBoxColumn();
+            dataGridViewCheckBoxColumn3 = new DataGridViewCheckBoxColumn();
+            dataGridViewCheckBoxColumn4 = new DataGridViewCheckBoxColumn();
+            btnLuuPopup = new Button();
+            btnHuyPopup = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvNhomQuyen).BeginInit();
+            pnlPopup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvPopupChucNang).BeginInit();
             SuspendLayout();
             // 
             // txtSearch
@@ -66,10 +93,27 @@
             dgvNhomQuyen.AllowUserToDeleteRows = false;
             dgvNhomQuyen.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvNhomQuyen.BackgroundColor = Color.White;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvNhomQuyen.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvNhomQuyen.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvNhomQuyen.Columns.AddRange(new DataGridViewColumn[] { colMaQuyen, colTenQuyen, colView, colEdit, colDelete });
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvNhomQuyen.DefaultCellStyle = dataGridViewCellStyle2;
             dgvNhomQuyen.Location = new Point(20, 70);
             dgvNhomQuyen.Name = "dgvNhomQuyen";
+            dgvNhomQuyen.ReadOnly = true;
             dgvNhomQuyen.RowHeadersVisible = false;
             dgvNhomQuyen.Size = new Size(1500, 830);
             dgvNhomQuyen.TabIndex = 2;
@@ -79,6 +123,7 @@
             colMaQuyen.DataPropertyName = "maQuyen";
             colMaQuyen.HeaderText = "Mã quyền";
             colMaQuyen.Name = "colMaQuyen";
+            colMaQuyen.ReadOnly = true;
             colMaQuyen.Width = 200;
             // 
             // colTenQuyen
@@ -87,47 +132,176 @@
             colTenQuyen.DataPropertyName = "tenQuyen";
             colTenQuyen.HeaderText = "Tên nhóm quyền";
             colTenQuyen.Name = "colTenQuyen";
+            colTenQuyen.ReadOnly = true;
             // 
             // colView
             // 
             colView.HeaderText = "Xem";
-            colView.Image = Properties.Resources.view;
+            colView.Image = Resources.view;
             colView.ImageLayout = DataGridViewImageCellLayout.Zoom;
             colView.Name = "colView";
+            colView.ReadOnly = true;
             colView.Width = 60;
             // 
             // colEdit
             // 
             colEdit.HeaderText = "Sửa";
-            colEdit.Image = Properties.Resources.edit;
+            colEdit.Image = Resources.edit;
             colEdit.ImageLayout = DataGridViewImageCellLayout.Zoom;
             colEdit.Name = "colEdit";
+            colEdit.ReadOnly = true;
             colEdit.Width = 60;
             // 
             // colDelete
             // 
             colDelete.HeaderText = "Xóa";
-            colDelete.Image = Properties.Resources.delete;
+            colDelete.Image = Resources.delete;
             colDelete.ImageLayout = DataGridViewImageCellLayout.Zoom;
             colDelete.Name = "colDelete";
+            colDelete.ReadOnly = true;
             colDelete.Width = 60;
+            // 
+            // pnlPopup
+            // 
+            pnlPopup.Anchor = AnchorStyles.None;
+            pnlPopup.BackColor = Color.WhiteSmoke;
+            pnlPopup.BorderStyle = BorderStyle.FixedSingle;
+            pnlPopup.Controls.Add(lblTenNhomQuyen);
+            pnlPopup.Controls.Add(txtTenNhomQuyen);
+            pnlPopup.Controls.Add(dgvPopupChucNang);
+            pnlPopup.Controls.Add(btnLuuPopup);
+            pnlPopup.Controls.Add(btnHuyPopup);
+            pnlPopup.Location = new Point(319, 219);
+            pnlPopup.Name = "pnlPopup";
+            pnlPopup.Size = new Size(700, 565);
+            pnlPopup.TabIndex = 0;
+            pnlPopup.Visible = false;
+            // 
+            // lblTenNhomQuyen
+            // 
+            lblTenNhomQuyen.AutoSize = true;
+            lblTenNhomQuyen.Location = new Point(20, 20);
+            lblTenNhomQuyen.Name = "lblTenNhomQuyen";
+            lblTenNhomQuyen.Size = new Size(97, 15);
+            lblTenNhomQuyen.TabIndex = 0;
+            lblTenNhomQuyen.Text = "Tên nhóm quyền";
+            // 
+            // txtTenNhomQuyen
+            // 
+            txtTenNhomQuyen.Location = new Point(150, 18);
+            txtTenNhomQuyen.Name = "txtTenNhomQuyen";
+            txtTenNhomQuyen.PlaceholderText = "VD: Giảng viên";
+            txtTenNhomQuyen.Size = new Size(300, 23);
+            txtTenNhomQuyen.TabIndex = 1;
+            // 
+            // dgvPopupChucNang
+            // 
+            dgvPopupChucNang.AllowUserToAddRows = false;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dgvPopupChucNang.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dgvPopupChucNang.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn1, dataGridViewTextBoxColumn2, dataGridViewCheckBoxColumn1, dataGridViewCheckBoxColumn2, dataGridViewCheckBoxColumn3, dataGridViewCheckBoxColumn4 });
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = SystemColors.Window;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle4.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
+            dgvPopupChucNang.DefaultCellStyle = dataGridViewCellStyle4;
+            dgvPopupChucNang.Location = new Point(20, 64);
+            dgvPopupChucNang.Name = "dgvPopupChucNang";
+            dgvPopupChucNang.RowHeadersVisible = false;
+            dgvPopupChucNang.Size = new Size(656, 450);
+            dgvPopupChucNang.TabIndex = 2;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            dataGridViewTextBoxColumn1.DataPropertyName = "maChucNang";
+            dataGridViewTextBoxColumn1.HeaderText = "Mã chức năng";
+            dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            dataGridViewTextBoxColumn2.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewTextBoxColumn2.DataPropertyName = "tenChucNang";
+            dataGridViewTextBoxColumn2.HeaderText = "Chức năng";
+            dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            dataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // dataGridViewCheckBoxColumn1
+            // 
+            dataGridViewCheckBoxColumn1.HeaderText = "Xem";
+            dataGridViewCheckBoxColumn1.Name = "dataGridViewCheckBoxColumn1";
+            // 
+            // dataGridViewCheckBoxColumn2
+            // 
+            dataGridViewCheckBoxColumn2.HeaderText = "Thêm";
+            dataGridViewCheckBoxColumn2.Name = "dataGridViewCheckBoxColumn2";
+            // 
+            // dataGridViewCheckBoxColumn3
+            // 
+            dataGridViewCheckBoxColumn3.HeaderText = "Sửa";
+            dataGridViewCheckBoxColumn3.Name = "dataGridViewCheckBoxColumn3";
+            // 
+            // dataGridViewCheckBoxColumn4
+            // 
+            dataGridViewCheckBoxColumn4.HeaderText = "Xóa";
+            dataGridViewCheckBoxColumn4.Name = "dataGridViewCheckBoxColumn4";
+            // 
+            // btnLuuPopup
+            // 
+            btnLuuPopup.BackColor = Color.LightSkyBlue;
+            btnLuuPopup.FlatStyle = FlatStyle.Flat;
+            btnLuuPopup.ForeColor = Color.White;
+            btnLuuPopup.Location = new Point(319, 520);
+            btnLuuPopup.Name = "btnLuuPopup";
+            btnLuuPopup.Size = new Size(80, 30);
+            btnLuuPopup.TabIndex = 3;
+            btnLuuPopup.Text = "Lưu";
+            btnLuuPopup.UseVisualStyleBackColor = false;
+            // 
+            // btnHuyPopup
+            // 
+            btnHuyPopup.Location = new Point(609, 20);
+            btnHuyPopup.Name = "btnHuyPopup";
+            btnHuyPopup.Size = new Size(67, 23);
+            btnHuyPopup.TabIndex = 4;
+            btnHuyPopup.Text = "Hủy";
+            btnHuyPopup.Click += btnHuyPopup_Click;
             // 
             // Component_PhanQuyen
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
+            Controls.Add(pnlPopup);
             Controls.Add(dgvNhomQuyen);
             Controls.Add(btnTaoNhomQuyen);
             Controls.Add(txtSearch);
             Name = "Component_PhanQuyen";
             Size = new Size(1541, 934);
             ((System.ComponentModel.ISupportInitialize)dgvNhomQuyen).EndInit();
+            pnlPopup.ResumeLayout(false);
+            pnlPopup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvPopupChucNang).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
-        
         #endregion
+
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn1;
+        private DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn2;
+        private DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn3;
+        private DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn4;
     }
 }
