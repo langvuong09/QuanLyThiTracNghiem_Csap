@@ -19,7 +19,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void Component_DeThi_Load(object sender, EventArgs e)
         {
-
+            //FLOWLAYOUTPANEL_MAIN
+            flowLayoutPanel_Main.Dock = DockStyle.Fill;
+            flowLayoutPanel_Main.AutoScroll = true;
+            flowLayoutPanel_Main.WrapContents = false;
+            flowLayoutPanel_Main.FlowDirection = FlowDirection.TopDown;
         }
     }
 }
