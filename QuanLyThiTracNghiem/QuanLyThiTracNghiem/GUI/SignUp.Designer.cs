@@ -217,7 +217,7 @@
             // 
             button_DangKy.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_DangKy.ForeColor = SystemColors.ButtonFace;
-            button_DangKy.Location = new Point(36, 674);
+            button_DangKy.Location = new Point(35, 659);
             button_DangKy.Name = "button_DangKy";
             button_DangKy.Size = new Size(610, 70);
             button_DangKy.TabIndex = 16;

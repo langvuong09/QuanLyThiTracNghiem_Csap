@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
 {
-    internal class ThongBao
+    public class ThongBao
     {
         public int maThongBao {  get; set; }
         public string tenThongBao { get; set; }

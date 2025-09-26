@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
-    public partial class Component_MonHoc : UserControl
+    public partial class Panel_ThemCauHoiThuCong : UserControl
     {
-        public Component_MonHoc()
+        public Panel_ThemCauHoiThuCong()
         {
             InitializeComponent();
-        }
-
-        private void Component_MonHoc_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
