@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
+using QuanLyThiTracNghiem.MyCustom;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
@@ -74,6 +75,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                     trangChu.Show();
                     this.Hide();
                 }
+            }
+            else
+            {
+                MyDialog dlg = new MyDialog("Lỗi đăng ký!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
             }       
         }
     }

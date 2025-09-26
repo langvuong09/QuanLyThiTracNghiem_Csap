@@ -46,6 +46,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             {
                 MyDialog dlg = new MyDialog("Mã sinh viên không hợp lệ!", MyDialog.ERROR_DIALOG);
                 dlg.ShowDialog();
+                return false;
             }  
             
             if (hoVaTen.Trim() == "")
@@ -57,6 +58,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             {
                 MyDialog dlg = new MyDialog("Họ và tên không hợp lệ!", MyDialog.ERROR_DIALOG);
                 dlg.ShowDialog();
+                return false;
             }
 
             if (email.Trim() == "")
@@ -68,6 +70,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             {
                 MyDialog dlg = new MyDialog("Email không hợp lệ!", MyDialog.ERROR_DIALOG);
                 dlg.ShowDialog();
+                return false;
             }
 
             if (matKhau.Trim() == "")
@@ -80,6 +83,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             {
                 MyDialog dlg = new MyDialog("Mật khẩu phải có chữ và số!", MyDialog.ERROR_DIALOG);
                 dlg.ShowDialog();
+                return false;
             }
 
             if (nhapLai.Trim() == "")
@@ -92,6 +96,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             {
                 MyDialog dlg = new MyDialog("Mật khẩu không trùng nhau!", MyDialog.ERROR_DIALOG);
                 dlg.ShowDialog();
+                return false;
             }
 
             if (svDAO.ThemSinhVien(maSinhVien,hoVaTen,email))

@@ -1,4 +1,8 @@
-﻿using System;
+﻿using QuanLyThiTracNghiem.MyCustom;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,6 +17,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
     public partial class Login : Form
     {
+        private TaiKhoanBUS tkBUS = new TaiKhoanBUS();
         public Login()
         {
             InitializeComponent();
@@ -66,18 +71,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             btn.Region = new Region(path);
         }
 
-
-
-        private void Login_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void panel_Right_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
         private void pictureBox_MatKhau_Click(object sender, EventArgs e)
         {
             // Đảo trạng thái ẩn/hiện mât khẩu
@@ -94,15 +87,20 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void button_Login_Click(object sender, EventArgs e)
         {
-
-            // Sau khi tự kiểm tra tài khoản hợp lệ
-            TrangChuSinhVien s = new TrangChuSinhVien();
-
-            s.FormClosed += (s1, e1) => Application.Exit();
-
-            s.Show();
-            this.Hide();  
-            this.Close();  
+            TaiKhoan tk = tkBUS.GetTaiKhoan(textBox_MaTaiKhoan.Text, textBox_MatKhau.Text);
+            if (tk == null)
+            {
+                new MyDialog("Đăng nhập không thành công!", MyDialog.ERROR_DIALOG).ShowDialog();
+                return;
+            }
+            else 
+            {
+                UserSession.userId = tk.userId;
+                new MyDialog("Đăng nhập thành công!", MyDialog.SUCCESS_DIALOG).ShowDialog();
+                TrangChuSinhVien s = new TrangChuSinhVien();
+                s.Show();
+                this.Hide();
+            }
         }
     }
 

@@ -53,8 +53,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         {
             try
             {
-                string sql = "INSERT INTO sinhvien(maSinhVien, hoVaTen, email, gioiTinh, ngaySinh, anhDaiDien, maChucNang)" +
-                    "VALUES (@maSinhVien,@hoVaTen,@email,Nam,2000-01-01,default.jpg, 3)";
+                string sql = "INSERT INTO sinhvien(maSinhVien, hoVaTen, email, gioiTinh, ngaySinh, anhDaiDien, maQuyen) " +
+             "VALUES (@maSinhVien, @hoVaTen, @email, @gioiTinh, @ngaySinh, @anhDaiDien, @maQuyen)";
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
@@ -63,6 +63,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                     cmd.Parameters.AddWithValue("@maSinhVien", maSinhVien);
                     cmd.Parameters.AddWithValue("@hoVaTen", hoVaTen);
                     cmd.Parameters.AddWithValue("@email", email);
+                    cmd.Parameters.AddWithValue("@gioiTinh", "Nam");
+                    cmd.Parameters.AddWithValue("@ngaySinh", new DateTime(2000, 1, 1));
+                    cmd.Parameters.AddWithValue("@anhDaiDien", "default.jpg");
+                    cmd.Parameters.AddWithValue("@maQuyen", 3);
 
                     int rs = cmd.ExecuteNonQuery();
                     return rs > 0;
@@ -70,6 +74,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
             catch (Exception ex)
             {
+                Console.WriteLine("Lỗi: " + ex.Message);
                 return false;
             }
         }

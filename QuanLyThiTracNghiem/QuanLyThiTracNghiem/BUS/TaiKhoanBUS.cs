@@ -24,6 +24,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
         }
         public TaiKhoan GetTaiKhoan(string username, string password)
         {
+            if(username == null || password == null)
+            {
+                MyDialog dlg = new MyDialog("Không được để trống thông tin!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return null;
+            }
             return tkDAO.GetTaiKhoan(username, password);
         }
 
