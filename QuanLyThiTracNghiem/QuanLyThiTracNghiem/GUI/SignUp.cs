@@ -63,20 +63,18 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             this.Close();   
         }
 
-        private bool button_DangKy_Click(object sender, EventArgs e)
+        private void button_DangKy_Click(object sender, EventArgs e)
         {
 
             if (svBUS.ThemSinhVien(textBox_MaTaiKhoan.Text, textBox_HoTen.Text, textBox_Email.Text, textBox_MatKhau.Text, textBox_NhapLaiMK.Text))
             {
                 if (tkBUS.ThemTaiKhoan(textBox_MaTaiKhoan.Text, textBox_MatKhau.Text))
                 {
-                    return true;
+                    TrangChuSinhVien trangChu = new TrangChuSinhVien();
+                    trangChu.Show();
+                    this.Hide();
                 }
-                else return false;
-            }
-            else return false;
-            
-            this.Close();
+            }       
         }
     }
 }
