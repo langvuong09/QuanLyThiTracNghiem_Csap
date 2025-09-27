@@ -128,5 +128,40 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
             return null;
         }
+        public bool IsRoleInUse(int maQuyen)
+        {
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+
+                    // Check in giaovien
+                    string sql1 = "SELECT COUNT(*) FROM giaovien WHERE maQuyen = @maQuyen";
+                    using (MySqlCommand cmd1 = new MySqlCommand(sql1, conn))
+                    {
+                        cmd1.Parameters.AddWithValue("@maQuyen", maQuyen);
+                        long count1 = (long)cmd1.ExecuteScalar();
+                        if (count1 > 0) return true;
+                    }
+
+                    // Check in sinhvien
+                    string sql2 = "SELECT COUNT(*) FROM sinhvien WHERE maQuyen = @maQuyen";
+                    using (MySqlCommand cmd2 = new MySqlCommand(sql2, conn))
+                    {
+                        cmd2.Parameters.AddWithValue("@maQuyen", maQuyen);
+                        long count2 = (long)cmd2.ExecuteScalar();
+                        if (count2 > 0) return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return true; 
+            }
+
+            return false; 
+        }
+
     }
 }

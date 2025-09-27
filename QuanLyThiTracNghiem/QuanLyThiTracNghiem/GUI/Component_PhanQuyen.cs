@@ -104,14 +104,35 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
+            int maQuyen = Convert.ToInt32(dgvNhomQuyen.Rows[e.RowIndex].Cells["colMaQuyen"].Value);
+
             if (dgvNhomQuyen.Columns[e.ColumnIndex].Name == "View")
             {   
-                int maQuyen = Convert.ToInt32(dgvNhomQuyen.Rows[e.RowIndex].Cells["colMaQuyen"].Value);
                 string tenQuyen = dgvNhomQuyen.Rows[e.RowIndex].Cells["colTenQuyen"].Value.ToString() ?? "";
                 txtTenNhomQuyen.Text = tenQuyen;
                 List<CTNhomQuyen> listCTNhomQuyen = cTNhomQuyen.FindByMaQuyen(maQuyen);
                 dgvPopupChucNang.DataSource = listCTNhomQuyen;
                 viewMode();
+            }
+            else if (dgvNhomQuyen.Columns[e.ColumnIndex].Name == "Delete")
+            {
+                if(rolebus.XoaNhomQuyen(maQuyen))
+                {
+                    MessageBox.Show("Xóa nhóm quyền thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    loadData();
+                }
+            }
+            else if (dgvNhomQuyen.Columns[e.ColumnIndex].Name == "Edit")
+            {
+                string tenQuyen = dgvNhomQuyen.Rows[e.RowIndex].Cells["colTenQuyen"].Value.ToString() ?? "";
+                txtTenNhomQuyen.Text = tenQuyen;
+                List<CTNhomQuyen> listCTNhomQuyen = cTNhomQuyen.FindByMaQuyen(maQuyen);
+                dgvPopupChucNang.DataSource = listCTNhomQuyen;
+                editMode();
+            }
+            else
+            {
+                return;
             }
         }
         private void viewMode()
@@ -122,8 +143,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             btnHuyPopup.Text = "Đóng";
             pnlPopup.Visible = true;
             pnlPopup.BringToFront();
-            //dgvPopupChucNang.Columns.Remove("maQuyen");
-
         }
         private void editMode()
         {
@@ -135,10 +154,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             btnHuyPopup.Text = "Hủy";
             pnlPopup.Visible = true;
             pnlPopup.BringToFront();
-            //if (dgvPopupChucNang.Columns["maQuyen"] != null)
-            //{
-            //    dgvPopupChucNang.Columns.Remove("maQuyen");
-            //}
+
         }
     }
 }

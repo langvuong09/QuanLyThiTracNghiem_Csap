@@ -64,5 +64,14 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
             return result;
         }
+        public bool XoaCTNhomQuyen(int maQuyen)
+        {
+            bool result = ctnqDAO.XoaCTNhomQuyen(maQuyen);
+            if (result)
+            {
+                DocListCTNhomQuyen();
+            }
+            return result;
+        }
     }
 }
