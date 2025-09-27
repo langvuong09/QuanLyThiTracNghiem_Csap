@@ -15,7 +15,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
     {
         private CTNhomQuyenDAO ctnqDAO = new CTNhomQuyenDAO();
         private ArrayList listCTNhomQuyen;
-
+        private ChucNangDAO ChucNangDAO = new ChucNangDAO();
         public CTNhomQuyenBUS()
         {
             DocListCTNhomQuyen();
@@ -43,6 +43,18 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             return listCTNhomQuyen;
         }
         
+        public List<CTNhomQuyen> FindByMaQuyen(int maQuyen)
+        {
+            var list = ctnqDAO.FindByMaQuyen(maQuyen);
+            var result = new List<CTNhomQuyen>();
+
+            foreach (var item in list)
+            {
+                ChucNang chucnang = ChucNangDAO.GetChucNang(item.maChucNang);
+                result.Add(new CTNhomQuyen(item.maQuyen, item.maChucNang, chucnang.tenChucNang, item.xem, item.them, item.capNhat, item.xoa));
+            }
+            return result;
+        }
         public bool ThemCTNhomQuyen(int maQuyen, int maChucNang, int xem, int them, int capNhat, int xoa)
         {
             bool result = ctnqDAO.ThemCTNhomQuyen(maQuyen, maChucNang, xem, them, capNhat, xoa);

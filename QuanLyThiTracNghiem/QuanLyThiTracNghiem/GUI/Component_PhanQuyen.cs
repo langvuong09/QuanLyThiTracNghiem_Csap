@@ -18,6 +18,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private NhomQuyenBUS rolebus = new NhomQuyenBUS();
         private ChucNangBUS molbus = new ChucNangBUS();
+        CTNhomQuyenBUS cTNhomQuyen = new CTNhomQuyenBUS();
+
         public Component_PhanQuyen()
         {
             InitializeComponent();
@@ -33,11 +35,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private void btnTaoNhomQuyen_Click(object sender, EventArgs e)
         {
             txtTenNhomQuyen.Text = "";
-
             ArrayList list = molbus.GetListChucNang();
             dgvPopupChucNang.DataSource = list;
-            pnlPopup.Visible = true;
-            pnlPopup.BringToFront();
+            editMode();
         }
 
         private void btnHuyPopup_Click(object sender, EventArgs e)
@@ -67,7 +67,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
                     permissions[maChucNang] = new int[] { view, add, edit, delete };
 
-                    MessageBox.Show(maChucNang.ToString(), "test", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //MessageBox.Show(maChucNang.ToString(), "test", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             if (permissions.Count == 0)
@@ -83,7 +83,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 return;
             }
 
-            CTNhomQuyenBUS cTNhomQuyen = new CTNhomQuyenBUS();
             foreach (var perm in permissions)
             {
                 bool success = cTNhomQuyen.ThemCTNhomQuyen(role.maQuyen,
@@ -100,6 +99,46 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
             MessageBox.Show("Thêm nhóm quyền thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
             pnlPopup.Visible = false;
+        }
+        private void dgvNhomQuyen_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            if (dgvNhomQuyen.Columns[e.ColumnIndex].Name == "View")
+            {   
+                int maQuyen = Convert.ToInt32(dgvNhomQuyen.Rows[e.RowIndex].Cells["colMaQuyen"].Value);
+                string tenQuyen = dgvNhomQuyen.Rows[e.RowIndex].Cells["colTenQuyen"].Value.ToString() ?? "";
+                txtTenNhomQuyen.Text = tenQuyen;
+                List<CTNhomQuyen> listCTNhomQuyen = cTNhomQuyen.FindByMaQuyen(maQuyen);
+                dgvPopupChucNang.DataSource = listCTNhomQuyen;
+                viewMode();
+            }
+        }
+        private void viewMode()
+        {
+            txtTenNhomQuyen.ReadOnly = true;
+            dgvPopupChucNang.ReadOnly = true;
+            btnLuuPopup.Visible = false;
+            btnHuyPopup.Text = "Đóng";
+            pnlPopup.Visible = true;
+            pnlPopup.BringToFront();
+            //dgvPopupChucNang.Columns.Remove("maQuyen");
+
+        }
+        private void editMode()
+        {
+            txtTenNhomQuyen.ReadOnly = false;
+            dgvPopupChucNang.ReadOnly = false;
+            dataGridViewTextBoxColumn1.ReadOnly = true;
+            dataGridViewTextBoxColumn2.ReadOnly = true;
+            btnLuuPopup.Visible = true;
+            btnHuyPopup.Text = "Hủy";
+            pnlPopup.Visible = true;
+            pnlPopup.BringToFront();
+            //if (dgvPopupChucNang.Columns["maQuyen"] != null)
+            //{
+            //    dgvPopupChucNang.Columns.Remove("maQuyen");
+            //}
         }
     }
 }

@@ -39,6 +39,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Component_PhanQuyen));
             txtSearch = new TextBox();
             btnTaoNhomQuyen = new Button();
             dgvNhomQuyen = new DataGridView();
@@ -113,6 +114,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dgvNhomQuyen.DefaultCellStyle = dataGridViewCellStyle2;
             dgvNhomQuyen.Location = new Point(20, 70);
             dgvNhomQuyen.Name = "dgvNhomQuyen";
+            dgvPopupChucNang.AutoGenerateColumns = false;
+
+            // after dgvNhomQuyen initialization
+            dgvNhomQuyen.CellContentClick += dgvNhomQuyen_CellContentClick;
+
             dgvNhomQuyen.ReadOnly = true;
             dgvNhomQuyen.RowHeadersVisible = false;
             dgvNhomQuyen.Size = new Size(1500, 830);
@@ -139,7 +145,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             colView.HeaderText = "Xem";
             colView.Image = Resources.view;
             colView.ImageLayout = DataGridViewImageCellLayout.Zoom;
-            colView.Name = "colView";
+            colView.Name = "View";
             colView.ReadOnly = true;
             colView.Width = 60;
             // 
@@ -148,7 +154,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             colEdit.HeaderText = "Sửa";
             colEdit.Image = Resources.edit;
             colEdit.ImageLayout = DataGridViewImageCellLayout.Zoom;
-            colEdit.Name = "colEdit";
+            colEdit.Name = "Edit";
             colEdit.ReadOnly = true;
             colEdit.Width = 60;
             // 
@@ -157,9 +163,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             colDelete.HeaderText = "Xóa";
             colDelete.Image = Resources.delete;
             colDelete.ImageLayout = DataGridViewImageCellLayout.Zoom;
-            colDelete.Name = "colDelete";
+            colDelete.Name = "Delete";
             colDelete.ReadOnly = true;
             colDelete.Width = 60;
+            /**************************************************************/
             // 
             // pnlPopup
             // 
@@ -171,7 +178,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             pnlPopup.Controls.Add(dgvPopupChucNang);
             pnlPopup.Controls.Add(btnLuuPopup);
             pnlPopup.Controls.Add(btnHuyPopup);
-            pnlPopup.Location = new Point(319, 219);
+            pnlPopup.Location = new Point(354, 226);
             pnlPopup.Name = "pnlPopup";
             pnlPopup.Size = new Size(700, 565);
             pnlPopup.TabIndex = 0;
@@ -225,7 +232,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dataGridViewTextBoxColumn1.DataPropertyName = "maChucNang";
             dataGridViewTextBoxColumn1.HeaderText = "Mã chức năng";
             dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            dataGridViewTextBoxColumn1.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn2
             // 
@@ -233,43 +239,42 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dataGridViewTextBoxColumn2.DataPropertyName = "tenChucNang";
             dataGridViewTextBoxColumn2.HeaderText = "Chức năng";
             dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            dataGridViewTextBoxColumn2.ReadOnly = true;
             // 
             // dataGridViewCheckBoxColumn1
             // 
-            dataGridViewCheckBoxColumn1.HeaderText = "Xem";
-            dataGridViewCheckBoxColumn1.Name = "viewcheckbox";
             dataGridViewCheckBoxColumn1.DataPropertyName = "xem";
-            dataGridViewCheckBoxColumn1.TrueValue = 1;
             dataGridViewCheckBoxColumn1.FalseValue = 0;
-            dataGridViewCheckBoxColumn1.IndeterminateValue = DBNull.Value;
+            dataGridViewCheckBoxColumn1.HeaderText = "Xem";
+            dataGridViewCheckBoxColumn1.IndeterminateValue = resources.GetObject("dataGridViewCheckBoxColumn1.IndeterminateValue");
+            dataGridViewCheckBoxColumn1.Name = "dataGridViewCheckBoxColumn1";
+            dataGridViewCheckBoxColumn1.TrueValue = 1;
             // 
             // dataGridViewCheckBoxColumn2
             // 
-            dataGridViewCheckBoxColumn2.HeaderText = "Thêm";
-            dataGridViewCheckBoxColumn2.Name = "addcheckbox";
             dataGridViewCheckBoxColumn2.DataPropertyName = "them";
-            dataGridViewCheckBoxColumn2.TrueValue = 1;
             dataGridViewCheckBoxColumn2.FalseValue = 0;
-            dataGridViewCheckBoxColumn2.IndeterminateValue = DBNull.Value;
+            dataGridViewCheckBoxColumn2.HeaderText = "Thêm";
+            dataGridViewCheckBoxColumn2.IndeterminateValue = resources.GetObject("dataGridViewCheckBoxColumn2.IndeterminateValue");
+            dataGridViewCheckBoxColumn2.Name = "dataGridViewCheckBoxColumn2";
+            dataGridViewCheckBoxColumn2.TrueValue = 1;
             // 
             // dataGridViewCheckBoxColumn3
             // 
-            dataGridViewCheckBoxColumn3.HeaderText = "Sửa";
-            dataGridViewCheckBoxColumn3.Name = "editcheckbox";
             dataGridViewCheckBoxColumn3.DataPropertyName = "capNhat";
-            dataGridViewCheckBoxColumn3.TrueValue = 1;
             dataGridViewCheckBoxColumn3.FalseValue = 0;
-            dataGridViewCheckBoxColumn3.IndeterminateValue = DBNull.Value;
+            dataGridViewCheckBoxColumn3.HeaderText = "Sửa";
+            dataGridViewCheckBoxColumn3.IndeterminateValue = resources.GetObject("dataGridViewCheckBoxColumn3.IndeterminateValue");
+            dataGridViewCheckBoxColumn3.Name = "dataGridViewCheckBoxColumn3";
+            dataGridViewCheckBoxColumn3.TrueValue = 1;
             // 
             // dataGridViewCheckBoxColumn4
             // 
-            dataGridViewCheckBoxColumn4.HeaderText = "Xóa";
-            dataGridViewCheckBoxColumn4.Name = "deletecheckbox";
             dataGridViewCheckBoxColumn4.DataPropertyName = "xoa";
-            dataGridViewCheckBoxColumn4.TrueValue = 1;
             dataGridViewCheckBoxColumn4.FalseValue = 0;
-            dataGridViewCheckBoxColumn4.IndeterminateValue = DBNull.Value;
+            dataGridViewCheckBoxColumn4.HeaderText = "Xóa";
+            dataGridViewCheckBoxColumn4.IndeterminateValue = resources.GetObject("dataGridViewCheckBoxColumn4.IndeterminateValue");
+            dataGridViewCheckBoxColumn4.Name = "dataGridViewCheckBoxColumn4";
+            dataGridViewCheckBoxColumn4.TrueValue = 1;
             // 
             // btnLuuPopup
             // 
