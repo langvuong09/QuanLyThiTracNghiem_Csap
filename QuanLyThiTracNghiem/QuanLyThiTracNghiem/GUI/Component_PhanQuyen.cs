@@ -239,6 +239,30 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 editMode();
             }
         }
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            string keyword = txtSearch.Text.Trim().ToLower();
+
+            if (string.IsNullOrEmpty(keyword))
+            {
+                dgvNhomQuyen.DataSource = rolebus.GetListNhomQuyen(); // reload all
+            }
+            else
+            {
+                var allRoles = rolebus.GetListNhomQuyen()
+                                      .Cast<NhomQuyen>() // ArrayList → List<NhomQuyen>
+                                      .ToList();
+
+                var filtered = allRoles.Where(r =>
+                                    r.tenQuyen.ToLower().Contains(keyword) ||
+                                    r.maQuyen.ToString().Contains(keyword)
+                                )
+                                .ToList();
+
+                dgvNhomQuyen.DataSource = filtered;
+            }
+        }
+
 
         private void viewMode()
         {

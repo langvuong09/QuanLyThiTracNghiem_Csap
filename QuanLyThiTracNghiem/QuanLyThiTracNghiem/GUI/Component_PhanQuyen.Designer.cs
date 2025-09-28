@@ -69,9 +69,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             // 
             txtSearch.Location = new Point(20, 20);
             txtSearch.Name = "txtSearch";
-            txtSearch.PlaceholderText = "Tìm kiếm nhóm quyền...";
+            txtSearch.PlaceholderText = "Tìm kiếm nhóm quyền theo mã/ tên ...";
             txtSearch.Size = new Size(400, 23);
             txtSearch.TabIndex = 0;
+            txtSearch.TextChanged += txtSearch_TextChanged;
+
             // 
             // btnTaoNhomQuyen
             // 
