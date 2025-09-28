@@ -37,8 +37,17 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             ArrayList list = molbus.GetListChucNang();
             dgvPopupChucNang.DataSource = list;
             btnLuuPopup.Text = "Thêm";
-            editMode();
 
+            foreach (DataGridViewRow row in dgvPopupChucNang.Rows)
+            {
+                row.Cells["viewcheckbox"].Value = 0;
+                row.Cells["addcheckbox"].Value = 0;
+                row.Cells["editcheckbox"].Value = 0;
+                row.Cells["deletecheckbox"].Value = 0;
+            }
+
+            btnLuuPopup.Text = "Thêm";
+            editMode();
         }
 
         private void btnHuyPopup_Click(object sender, EventArgs e)
@@ -56,19 +65,17 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 return;
             }
 
-            if (rolebus.FindByName(tenNhomQuyen) != null)
-            {
-                MessageBox.Show("Tên nhóm quyền đã tồn tại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
             switch (btnLuuPopup.Text)
             {
                 case "Cập nhật":
-                    //int maQuyen = Convert.ToInt32(label1.Text.Trim());
                     updateRole(tenNhomQuyen);
                     break;
                 case "Thêm":
+                    if (rolebus.FindByName(tenNhomQuyen) != null)
+                    {
+                        MessageBox.Show("Tên nhóm quyền đã tồn tại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
                     addNewRole(tenNhomQuyen);
                     break;
             }
@@ -127,6 +134,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                     return;
                 }
             }
+            MessageBox.Show("Cập nhật quyền thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            pnlPopup.Visible = false;
         }
         private void addNewRole(String tenNhomQuyen)
         {
@@ -202,6 +211,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 {
                     MessageBox.Show("Xóa nhóm quyền thành công!", "Thành công",
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    pnlPopup.Visible = false;
                     loadData();
                 }
             }
