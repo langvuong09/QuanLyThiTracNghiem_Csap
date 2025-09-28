@@ -1,22 +1,29 @@
-﻿using System;
-
-using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
+﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI;
+using System;
+using System.Runtime.InteropServices;
+
 
 namespace QuanLyThiTracNghiem
 {
     internal static class Program
     {
+        [DllImport("kernel32.dll")]
+        private static extern bool AllocConsole();
+
         [STAThread]
         static void Main()
         {
-            // Khởi tạo kết nối CSDL nếu cần
-            MyConnect myConnect = new MyConnect();
+            AllocConsole(); // show a console window
 
-            // Bật giao diện hệ thống
+            var db = new QuanLyThiTracNghiem.DAO.MyConnect();
+            db.TestConnection();
+
+            Console.WriteLine("Press any key...");
+            Console.ReadKey();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
             // Chạy ứng dụng với ApplicationContext tùy chỉnh
             Application.Run(new MyAppContext());
         }

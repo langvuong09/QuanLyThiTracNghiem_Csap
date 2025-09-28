@@ -42,25 +42,40 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             return dsnq;
         }
 
-        public bool ThemQuyen(int maQuyen, string tenQuyen)
+        public NhomQuyen ThemQuyen(string tenQuyen)
         {
             try
             {
-                string sql = "INSERT INTO nhomquyen(maQuyen, tenQuyen)" +
-                    "VaLUES (@maQuyen,@tenQuyen)";
+                string sql = "INSERT INTO nhomquyen(tenQuyen) VALUES (@tenQuyen)";
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@maQuyen", maQuyen);
                     cmd.Parameters.AddWithValue("@tenQuyen", tenQuyen);
 
-                    int rs = cmd.ExecuteNonQuery();
-                    return rs > 0;
+                    int affected = cmd.ExecuteNonQuery();
+                    if (affected > 0)
+                    {
+                        long newId = cmd.LastInsertedId;
+
+                        return new NhomQuyen
+                        {
+                            maQuyen = (int)newId,
+                            tenQuyen = tenQuyen
+                        };
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
             }
-            catch (Exception ex) { return false; }
+            catch
+            {
+                return null;
+            }
         }
+
 
         public bool XoaQuyen(int maQuyen)
         {
@@ -73,6 +88,27 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                     conn.Open();
 
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maQuyen", maQuyen);
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool CapNhatQuyen(int maQuyen, string tenQuyen)
+        {
+            try
+            {
+                string sql = "UPDATE nhomquyen SET tenQuyen = @tenQuyen WHERE maQuyen = @maQuyen";
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@tenQuyen", tenQuyen);
                     cmd.Parameters.AddWithValue("@maQuyen", maQuyen);
                     int rowsAffected = cmd.ExecuteNonQuery();
                     return rowsAffected > 0;
@@ -113,5 +149,40 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
             return null;
         }
+        public bool IsRoleInUse(int maQuyen)
+        {
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+
+                    // Check in giaovien
+                    string sql1 = "SELECT COUNT(*) FROM giaovien WHERE maQuyen = @maQuyen";
+                    using (MySqlCommand cmd1 = new MySqlCommand(sql1, conn))
+                    {
+                        cmd1.Parameters.AddWithValue("@maQuyen", maQuyen);
+                        long count1 = (long)cmd1.ExecuteScalar();
+                        if (count1 > 0) return true;
+                    }
+
+                    // Check in sinhvien
+                    string sql2 = "SELECT COUNT(*) FROM sinhvien WHERE maQuyen = @maQuyen";
+                    using (MySqlCommand cmd2 = new MySqlCommand(sql2, conn))
+                    {
+                        cmd2.Parameters.AddWithValue("@maQuyen", maQuyen);
+                        long count2 = (long)cmd2.ExecuteScalar();
+                        if (count2 > 0) return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return true; 
+            }
+
+            return false; 
+        }
+
     }
 }
