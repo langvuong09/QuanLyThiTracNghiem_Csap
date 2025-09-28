@@ -85,7 +85,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
-                    string sql = "SELECT * FROM taikhoan WHERE ma = @ma AND password = @password AND trangThai= 1";
+                    string sql = "SELECT * FROM taikhoan WHERE ma = @ma AND password = @password AND trangThai = 1";
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@ma", username);
                     cmd.Parameters.AddWithValue("@password", password);
@@ -94,7 +94,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
 
                     if (reader.Read())
                     {
-                        tk = new TaiKhoan()
+                        tk = new TaiKhoan
                         {
                             userId = reader.GetString(0),
                             password = reader.GetString(1),

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
 {
-    internal class CauHoi_DeKiemTra
+    public class CauHoi_DeKiemTra
     {
         public int maDe {  get; set; }
         public int maCauHoi {  get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
 {
-    internal class MonHoc
+    public class MonHoc
     {
         public string maMonHoc {  get; set; }
         public string tenMonHoc { get; set; }
@@ -24,6 +24,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
             this.soTietLyThuyet = soTietLyThuyet;
             this.soTietThucHanh = soTietThucHanh;
             this.heSo = heSo;
+        }
+
+        public MonHoc(string v1, string v2)
+        {
         }
     }
 }

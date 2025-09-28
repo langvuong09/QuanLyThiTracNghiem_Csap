@@ -7,11 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
+using QuanLyThiTracNghiem.MyCustom;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
     public partial class SignUp : Form
     {
+        private TaiKhoanBUS tkBUS = new TaiKhoanBUS();
+        private SinhVienBUS svBUS = new SinhVienBUS();
         public SignUp()
         {
             InitializeComponent();
@@ -41,21 +45,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             textBox_NhapLaiMK.Height = 47;
         }
 
-        private void label_NhapLaiMK_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label_MaTaiKhoan_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void SignUp_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void pictureBox_MatKhau_Click(object sender, EventArgs e)
         {
             // Đảo trạng thái ẩn/hiện mât khẩu
@@ -77,10 +66,21 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void button_DangKy_Click(object sender, EventArgs e)
         {
-            
-            Login s = new Login();
-            s.Show();
-            this.Close();
+
+            if (svBUS.ThemSinhVien(textBox_MaTaiKhoan.Text, textBox_HoTen.Text, textBox_Email.Text, textBox_MatKhau.Text, textBox_NhapLaiMK.Text))
+            {
+                if (tkBUS.ThemTaiKhoan(textBox_MaTaiKhoan.Text, textBox_MatKhau.Text))
+                {
+                    TrangChuSinhVien trangChu = new TrangChuSinhVien();
+                    trangChu.Show();
+                    this.Hide();
+                }
+            }
+            else
+            {
+                MyDialog dlg = new MyDialog("Lỗi đăng ký!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+            }       
         }
     }
 }

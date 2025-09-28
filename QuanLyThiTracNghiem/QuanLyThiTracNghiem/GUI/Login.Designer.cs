@@ -66,7 +66,6 @@
             panel_Right.Name = "panel_Right";
             panel_Right.Size = new Size(833, 776);
             panel_Right.TabIndex = 0;
-            panel_Right.Paint += panel_Right_Paint;
             // 
             // button_DangKi
             // 
@@ -192,7 +191,6 @@
             Margin = new Padding(3, 2, 3, 2);
             Name = "Login";
             Text = "Login";
-            Load += Login_Load;
             panel_Right.ResumeLayout(false);
             panel_Right.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox_MatKhau).EndInit();

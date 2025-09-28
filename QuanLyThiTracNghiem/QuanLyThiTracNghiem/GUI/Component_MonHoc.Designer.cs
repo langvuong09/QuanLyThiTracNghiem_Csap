@@ -37,6 +37,7 @@
             BackColor = Color.Red;
             Name = "Component_MonHoc";
             Size = new Size(1541, 934);
+            Load += Component_MonHoc_Load;
             ResumeLayout(false);
         }
 
