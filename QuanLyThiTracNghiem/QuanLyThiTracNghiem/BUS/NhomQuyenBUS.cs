@@ -45,19 +45,19 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
         }
         public bool XoaNhomQuyen(int maNhomQuyen)
         {
-            // Xóa chi tiết nhóm quyền trước
-            bool ct = new CTNhomQuyenBUS().XoaCTNhomQuyen(maNhomQuyen);
-            if (!ct)
-            {
-                MessageBox.Show("Có lỗi khi xóa phân quyền!",
-                                "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
 
             // quyền có đang được sử dụng không
             if (nqDAO.IsRoleInUse(maNhomQuyen))
             {
                 MessageBox.Show("Không thể xóa quyền này vì đang được sử dụng!",
+                                "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            // Xóa chi tiết nhóm quyền trước
+            bool ct = new CTNhomQuyenBUS().XoaCTNhomQuyen(maNhomQuyen);
+            if (!ct)
+            {
+                MessageBox.Show("Có lỗi khi xóa phân quyền!",
                                 "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
@@ -67,5 +67,22 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
                 return nqDAO.XoaQuyen(maNhomQuyen);
             }
         }
+        public NhomQuyen GetNhomQuyen(int maNhomQuyen)
+        {
+            return nqDAO.GetNhomQuyen(maNhomQuyen);
+        }
+        public bool CapNhatQuyen(int maNhomQuyen, string tenNhomQuyen)
+        {
+            return nqDAO.CapNhatQuyen(maNhomQuyen, tenNhomQuyen);
+        }
+        public NhomQuyen? FindByName(string tenNhomQuyen)
+        {
+            if (listNhomQuyen == null) DocListNhomQuyen();
+
+            return listNhomQuyen
+                .Cast<NhomQuyen>()
+                .FirstOrDefault(nq => nq.tenQuyen == tenNhomQuyen);
+        }
+
     }
 }

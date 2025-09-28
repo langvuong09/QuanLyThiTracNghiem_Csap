@@ -99,6 +99,27 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
         }
 
+        public bool CapNhatQuyen(int maQuyen, string tenQuyen)
+        {
+            try
+            {
+                string sql = "UPDATE nhomquyen SET tenQuyen = @tenQuyen WHERE maQuyen = @maQuyen";
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@tenQuyen", tenQuyen);
+                    cmd.Parameters.AddWithValue("@maQuyen", maQuyen);
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         public NhomQuyen GetNhomQuyen(int maQuyen)
         {
             ArrayList dsnq = new ArrayList();
