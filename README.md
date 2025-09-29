@@ -72,14 +72,14 @@ Dự án xây dựng **hệ thống quản lý thi trắc nghiệm** hỗ trợ:
 
 <div align="center">
 
-| Họ và tên                 | Vai trò     |
-| ------------------------- | ----------- |
-| <b>Đỗ Mai Anh</b>         | Nhóm trưởng |
-| <b>Cao Tiến Cường</b>     | Thành viên  |
-| <b>Nguyễn Hoàng Quyên</b> | Thành viên  |
-| <b>Trần Yến Phượng</b>    | Thành viên  |
-| <b>Nguyễn Phương Anh</b>  | Thành viên  |
-| <b>Trần Tấn Đạt</b>       | Thành viên  |
+| Họ và tên                 	| Vai trò     |
+| ----------------------------- | ----------- |
+| <b>Đỗ Mai Anh</b>         	| Nhóm trưởng |
+| <b>Cao Tiến Cường</b>    		| Thành viên  |
+| <b>Nguyễn Hoàng Quyên</b> 	| Thành viên  |
+| <b>Trần Yến Phượng</b>    	| Thành viên  |
+| <b>Nguyễn Thị Phương Anh</b>  | Thành viên  |
+| <b>Trần Tấn Đạt</b>       	| Thành viên  |
 
 </div>
 

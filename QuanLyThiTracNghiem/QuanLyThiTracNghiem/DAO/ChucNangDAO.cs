@@ -22,7 +22,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
-                    string sql = "SELECT * FROM nhomquyen";
+                    string sql = "SELECT * FROM chucnang";
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
                     MySqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())

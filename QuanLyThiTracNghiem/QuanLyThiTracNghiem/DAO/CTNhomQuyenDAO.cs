@@ -46,6 +46,37 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
             return dsctnq;
         }
+        public List<CTNhomQuyen> FindByMaQuyen(int maQuyen)
+        {
+            var list = new List<CTNhomQuyen>();
+            using (MySqlConnection conn = db.GetConnection())
+            {
+                conn.Open();
+                string sql = @"SELECT ctnq.maQuyen, ctnq.maChucNang, cn.tenChucNang, 
+                              ctnq.xem, ctnq.them, ctnq.capNhat, ctnq.xoa
+                       FROM ctnhomquyen ctnq
+                       JOIN chucnang cn ON ctnq.maChucNang = cn.maChucNang
+                       WHERE ctnq.maQuyen = @maQuyen";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@maQuyen", maQuyen);
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(new CTNhomQuyen
+                    {
+                        maQuyen = reader.GetInt32("maQuyen"),
+                        maChucNang = reader.GetInt32("maChucNang"),
+                        tenChucNang = reader.GetString("tenChucNang"),
+                        xem = reader.GetInt32("xem"),
+                        them = reader.GetInt32("them"),
+                        capNhat = reader.GetInt32("capNhat"),
+                        xoa = reader.GetInt32("xoa")
+                    });
+                }
+            }
+            return list;
+        }
 
         public ArrayList GetListCTNhomQuyen(int maQuyen)
         {
@@ -118,7 +149,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@maQuyen", maQuyen);
                     int rowsAffected = cmd.ExecuteNonQuery();
-                    return rowsAffected > 0;
+                    return rowsAffected >= 0;
                 }
             }
             catch (Exception ex)
