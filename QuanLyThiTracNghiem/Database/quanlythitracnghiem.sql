@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 24, 2025 lúc 05:24 AM
+-- Thời gian đã tạo: Th9 29, 2025 lúc 08:32 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -294,7 +294,9 @@ CREATE TABLE `sinhvien` (
 --
 
 INSERT INTO `sinhvien` (`maSinhVien`, `hoVaTen`, `email`, `gioiTinh`, `ngaySinh`, `anhDaiDien`, `maQuyen`) VALUES
-('111111', 'Cường', 'cuong@gmail.comm', 'Nam', '2004-01-20', 'hello', 1);
+('111111', 'Cường', 'cuong@gmail.comm', 'Nam', '2004-01-20', 'hello', 1),
+('3122410043', 'Cao Tiến Cường', 'cuong@gmail.com', 'Nam', '2000-01-01', 'default.jpg', 3),
+('3122410351', 'Quyên', 'skjnas@gmail.com', 'Nam', '2000-01-01', 'default.jpg', 3);
 
 -- --------------------------------------------------------
 
@@ -313,7 +315,9 @@ CREATE TABLE `taikhoan` (
 --
 
 INSERT INTO `taikhoan` (`ma`, `password`, `trangThai`) VALUES
-('111111', '123456', 1);
+('111111', '123456', 1),
+('3122410043', 'cuonghero9a', 1),
+('3122410351', '1234@q', 1);
 
 -- --------------------------------------------------------
 
@@ -475,6 +479,58 @@ ALTER TABLE `thongbao`
 ALTER TABLE `thongbao-nhom`
   ADD KEY `fk_thongbao-nhom_nhom` (`maNhom`),
   ADD KEY `fk_thongbao-nhom_thongbao` (`maThongBao`);
+
+--
+-- AUTO_INCREMENT cho các bảng đã đổ
+--
+
+--
+-- AUTO_INCREMENT cho bảng `bailam`
+--
+ALTER TABLE `bailam`
+  MODIFY `maBaiLam` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `cauhoi`
+--
+ALTER TABLE `cauhoi`
+  MODIFY `maCauHoi` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `chucnang`
+--
+ALTER TABLE `chucnang`
+  MODIFY `maChucNang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT cho bảng `dekiemtra`
+--
+ALTER TABLE `dekiemtra`
+  MODIFY `maDe` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `nhom`
+--
+ALTER TABLE `nhom`
+  MODIFY `maNhom` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `nhomquyen`
+--
+ALTER TABLE `nhomquyen`
+  MODIFY `maQuyen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT cho bảng `phancong`
+--
+ALTER TABLE `phancong`
+  MODIFY `maPhanCong` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `thongbao`
+--
+ALTER TABLE `thongbao`
+  MODIFY `maThongBao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
