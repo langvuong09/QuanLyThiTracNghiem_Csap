@@ -47,7 +47,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         {
             try
             {
-                string sql = "INSERT INTO thongbao(maNhom, maThongBao)" +
+                string sql = "INSERT INTO thongbao-nhom(maNhom, maThongBao)" +
                     "VaLUES (@maThongBao, @maThongBao)";
                 using (MySqlConnection conn = db.GetConnection())
                 {
@@ -67,7 +67,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         {
             try
             {
-                string sql = "DELETE FROM chuong WHERE maThongBao = @maThongBao";
+                string sql = "DELETE FROM thongbao-nhom WHERE maThongBao = @maThongBao";
 
                 using (MySqlConnection conn = db.GetConnection())
                 {

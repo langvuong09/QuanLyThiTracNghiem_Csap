@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 29, 2025 lúc 09:35 AM
+-- Thời gian đã tạo: Th9 29, 2025 lúc 11:30 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -112,6 +112,18 @@ CREATE TABLE `chuong` (
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `ctdekiemtra`
+--
+
+CREATE TABLE `ctdekiemtra` (
+  `maDe` int(11) NOT NULL,
+  `maMonHoc` varchar(11) NOT NULL,
+  `maChuong` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `ctnhomquyen`
 --
 
@@ -164,7 +176,6 @@ CREATE TABLE `dekiemtra` (
   `thoiGianBatDau` datetime NOT NULL,
   `thoiGianKetThuc` datetime NOT NULL,
   `thoiGianCanhBao` datetime NOT NULL,
-  `maMonHoc` varchar(11) NOT NULL,
   `soCauDe` int(11) NOT NULL,
   `soCauTrungBinh` int(11) NOT NULL,
   `soCauKho` int(11) NOT NULL,
@@ -389,6 +400,13 @@ ALTER TABLE `chuong`
   ADD KEY `fk_chuong_monhoc` (`maMonHoc`);
 
 --
+-- Chỉ mục cho bảng `ctdekiemtra`
+--
+ALTER TABLE `ctdekiemtra`
+  ADD KEY `fk_ctdekiemtra_dekiemtra` (`maDe`),
+  ADD KEY `fk_ctdekiemtra_monhoc` (`maMonHoc`);
+
+--
 -- Chỉ mục cho bảng `ctnhomquyen`
 --
 ALTER TABLE `ctnhomquyen`
@@ -568,6 +586,13 @@ ALTER TABLE `chitietbailam`
 --
 ALTER TABLE `chuong`
   ADD CONSTRAINT `fk_chuong_monhoc` FOREIGN KEY (`maMonHoc`) REFERENCES `monhoc` (`maMonHoc`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `ctdekiemtra`
+--
+ALTER TABLE `ctdekiemtra`
+  ADD CONSTRAINT `fk_ctdekiemtra_dekiemtra` FOREIGN KEY (`maDe`) REFERENCES `dekiemtra` (`maDe`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_ctdekiemtra_monhoc` FOREIGN KEY (`maMonHoc`) REFERENCES `monhoc` (`maMonHoc`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `ctnhomquyen`
