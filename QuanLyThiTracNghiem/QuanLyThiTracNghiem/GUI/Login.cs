@@ -42,13 +42,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             button_Login.FlatStyle = FlatStyle.Flat;   // bỏ border mặc định
             button_Login.FlatAppearance.BorderSize = 0;
 
-            button_DangKi.FlatAppearance.BorderSize = 0;
-            button_DangKi.FlatStyle = FlatStyle.Flat;
-            button_DangKi.BackColor = System.Drawing.ColorTranslator.FromHtml("#97B6FF");
-
-
-
-
+      
             textBox_MatKhau.AutoSize = false;
             textBox_MatKhau.Height = 54;
 
@@ -77,13 +71,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             textBox_MatKhau.UseSystemPasswordChar = !textBox_MatKhau.UseSystemPasswordChar;
         }
 
-        private void button_DangKi_Click(object sender, EventArgs e)
-        {
-
-            SignUp s = new SignUp();
-            s.Show();       
-            this.Close();   
-        }
 
         private void button_Login_Click(object sender, EventArgs e)
         {

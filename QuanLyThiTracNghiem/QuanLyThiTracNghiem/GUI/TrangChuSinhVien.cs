@@ -32,6 +32,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private Component_MonHoc mh = new Component_MonHoc();
         private Component_PhanCong pc = new Component_PhanCong();
         private Component_PhanQuyen pq = new Component_PhanQuyen();
+        private Component_NguoiDung nd = new Component_NguoiDung();
 
         //Khai Báo Panel
         private Component_ThongBao tb = new Component_ThongBao();
@@ -134,6 +135,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             button_PhanQuyen.BackColor = System.Drawing.ColorTranslator.FromHtml("#83A7EE");
             button_PhanQuyen.FlatStyle = FlatStyle.Flat;
             button_PhanQuyen.FlatAppearance.BorderSize = 0;
+            //BUTTON NGƯỜI DÙNG
+            button_NguoiDung.BackColor = System.Drawing.ColorTranslator.FromHtml("#83A7EE");
+            button_NguoiDung.FlatStyle = FlatStyle.Flat;
+            button_NguoiDung.FlatAppearance.BorderSize = 0;
 
             //ADD CÁC BUTTON VÔ PANEL LEFT
             panel_Left.Controls.Add(button_TrangChu);
@@ -146,6 +151,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             panel_Left.Controls.Add(button_MonHoc);
             panel_Left.Controls.Add(button_PhanCong);
             panel_Left.Controls.Add(button_PhanQuyen);
+            panel_Left.Controls.Add(button_NguoiDung);
 
             //ADD COMPONENT TRANG CHỦ VÀO PANEL MAIN
             hp.Dock = DockStyle.Fill;
@@ -160,6 +166,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             pq.Dock = DockStyle.Fill;
             tb.Dock = DockStyle.Fill;
             ttcn.Dock = DockStyle.Fill;
+            nd.Dock = DockStyle.Fill;
 
 
 
@@ -175,6 +182,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             panel_Main.Controls.Add(pq);
             panel_Main.Controls.Add(tb);
             panel_Main.Controls.Add(ttcn);
+            panel_Main.Controls.Add(nd);
 
 
 
@@ -240,6 +248,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private void button_ThongTin_Click(object sender, EventArgs e)
         {
             ttcn.BringToFront();
+        }
+
+        private void button_NguoiDung_Click(object sender, EventArgs e)
+        {
+            nd.BringToFront();
         }
     }
 }

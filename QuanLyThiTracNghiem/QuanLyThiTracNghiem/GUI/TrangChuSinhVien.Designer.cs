@@ -47,6 +47,7 @@
             button_DeThi = new Button();
             button_HocPhan = new Button();
             panel_Main = new Panel();
+            button_NguoiDung = new Button();
             panel_Top.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Logo).BeginInit();
             panel_Left.SuspendLayout();
@@ -140,6 +141,7 @@
             panel_Left.Controls.Add(button_NhomHocPhan);
             panel_Left.Controls.Add(button_DeThi);
             panel_Left.Controls.Add(button_HocPhan);
+            panel_Left.Controls.Add(button_NguoiDung);
             panel_Left.Location = new Point(1, 107);
             panel_Left.Name = "panel_Left";
             panel_Left.Size = new Size(365, 934);
@@ -313,6 +315,22 @@
             panel_Main.Size = new Size(1541, 934);
             panel_Main.TabIndex = 2;
             // 
+            // button_NguoiDung
+            // 
+            button_NguoiDung.BackColor = Color.DarkGray;
+            button_NguoiDung.FlatStyle = FlatStyle.Flat;
+            button_NguoiDung.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button_NguoiDung.ForeColor = SystemColors.ButtonHighlight;
+            button_NguoiDung.Image = (Image)resources.GetObject("button_NguoiDung.Image");
+            button_NguoiDung.ImageAlign = ContentAlignment.MiddleLeft;
+            button_NguoiDung.Location = new Point(3, 713);
+            button_NguoiDung.Name = "button_NguoiDung";
+            button_NguoiDung.Size = new Size(353, 65);
+            button_NguoiDung.TabIndex = 10;
+            button_NguoiDung.Text = "Người Dùng";
+            button_NguoiDung.UseVisualStyleBackColor = false;
+            button_NguoiDung.Click += button_NguoiDung_Click;
+            // 
             // TrangChuSinhVien
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -351,5 +369,6 @@
         private Button button_PhanQuyen;
         private Button button_PhanCong;
         private Button button_MonHoc;
+        private Button button_NguoiDung;
     }
 }

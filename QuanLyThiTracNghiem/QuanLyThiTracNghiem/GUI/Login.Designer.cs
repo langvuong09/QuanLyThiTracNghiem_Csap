@@ -30,8 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login));
             panel_Right = new Panel();
-            button_DangKi = new Button();
-            label_titleDangKi = new Label();
             button_Login = new Button();
             pictureBox_MatKhau = new PictureBox();
             pictureBox_MaTaiKhoan = new PictureBox();
@@ -51,8 +49,6 @@
             // panel_Right
             // 
             panel_Right.BackColor = SystemColors.ActiveCaption;
-            panel_Right.Controls.Add(button_DangKi);
-            panel_Right.Controls.Add(label_titleDangKi);
             panel_Right.Controls.Add(button_Login);
             panel_Right.Controls.Add(pictureBox_MatKhau);
             panel_Right.Controls.Add(pictureBox_MaTaiKhoan);
@@ -66,29 +62,6 @@
             panel_Right.Name = "panel_Right";
             panel_Right.Size = new Size(833, 776);
             panel_Right.TabIndex = 0;
-            // 
-            // button_DangKi
-            // 
-            button_DangKi.Font = new Font("Calibri", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button_DangKi.ForeColor = Color.Red;
-            button_DangKi.Location = new Point(317, 636);
-            button_DangKi.Name = "button_DangKi";
-            button_DangKi.Size = new Size(205, 49);
-            button_DangKi.TabIndex = 9;
-            button_DangKi.Text = "Đăng ký";
-            button_DangKi.UseVisualStyleBackColor = true;
-            button_DangKi.Click += button_DangKi_Click;
-            // 
-            // label_titleDangKi
-            // 
-            label_titleDangKi.AutoSize = true;
-            label_titleDangKi.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label_titleDangKi.ForeColor = Color.Firebrick;
-            label_titleDangKi.Location = new Point(36, 644);
-            label_titleDangKi.Name = "label_titleDangKi";
-            label_titleDangKi.Size = new Size(276, 32);
-            label_titleDangKi.TabIndex = 8;
-            label_titleDangKi.Text = "Bạn chưa có tài khoản ?";
             // 
             // button_Login
             // 
@@ -211,8 +184,6 @@
         private PictureBox pictureBox_MaTaiKhoan;
         private Button button_Login;
         private PictureBox pictureBox_MatKhau;
-        private Label label_titleDangKi;
-        private Button button_DangKi;
         private TextBox textBox_MatKhau;
     }
 }
