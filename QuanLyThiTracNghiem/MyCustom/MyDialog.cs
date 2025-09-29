@@ -83,7 +83,7 @@ namespace QuanLyThiTracNghiem.MyCustom
             {
                 case ERROR_DIALOG:
                     headerColor = Color.FromArgb(220, 53, 69);
-                    iconPicture.Image = Image.FromFile("image/icons8_cancel_70px.png");
+                    iconPicture.Image = Image.FromFile("image/icons8_cancel_70px.png"); 
                     break;
                 case SUCCESS_DIALOG:
                     headerColor = Color.FromArgb(40, 167, 69);

@@ -9,8 +9,35 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="QuanLyThiTracNghiem\NewFolder\**" />
+    <EmbeddedResource Remove="QuanLyThiTracNghiem\NewFolder\**" />
+    <None Remove="QuanLyThiTracNghiem\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="image\icons8_cancel_70px.png" />
+    <None Remove="image\icons8_checkmark_70px.png" />
+    <None Remove="image\icons8_info_70px.png" />
+    <None Remove="image\icons8_warning_shield_70px.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="image\icons8_cancel_70px.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="image\icons8_checkmark_70px.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="image\icons8_info_70px.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="image\icons8_warning_shield_70px.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Libs\" />
-    <Folder Include="QuanLyThiTracNghiem\NewFolder\" />
   </ItemGroup>
 
   <ItemGroup>
