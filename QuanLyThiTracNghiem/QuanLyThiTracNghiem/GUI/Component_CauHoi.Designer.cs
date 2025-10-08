@@ -40,7 +40,6 @@
             dataGridView_DSCauHoi = new DataGridView();
             button_Xem = new Button();
             button_Sua = new Button();
-            button_Xoa = new Button();
             comboBox_ChiSo = new ComboBox();
             button_Next = new Button();
             button_Prev = new Button();
@@ -187,22 +186,6 @@
             button_Sua.UseVisualStyleBackColor = false;
             button_Sua.Click += button_Sua_Click;
             // 
-            // button_Xoa
-            // 
-            button_Xoa.BackColor = Color.Pink;
-            button_Xoa.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button_Xoa.ForeColor = SystemColors.ButtonHighlight;
-            button_Xoa.Image = (Image)resources.GetObject("button_Xoa.Image");
-            button_Xoa.ImageAlign = ContentAlignment.TopLeft;
-            button_Xoa.Location = new Point(1401, 399);
-            button_Xoa.Name = "button_Xoa";
-            button_Xoa.Size = new Size(120, 52);
-            button_Xoa.TabIndex = 7;
-            button_Xoa.Text = "XÓA";
-            button_Xoa.TextAlign = ContentAlignment.MiddleRight;
-            button_Xoa.UseVisualStyleBackColor = false;
-            button_Xoa.Click += button_Xoa_Click;
-            // 
             // comboBox_ChiSo
             // 
             comboBox_ChiSo.Font = new Font("Arial", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -211,6 +194,7 @@
             comboBox_ChiSo.Name = "comboBox_ChiSo";
             comboBox_ChiSo.Size = new Size(86, 35);
             comboBox_ChiSo.TabIndex = 8;
+            comboBox_ChiSo.SelectedIndexChanged += comboBox_ChiSo_SelectedIndexChanged;
             // 
             // button_Next
             // 
@@ -248,7 +232,6 @@
             Controls.Add(button_Prev);
             Controls.Add(button_Next);
             Controls.Add(comboBox_ChiSo);
-            Controls.Add(button_Xoa);
             Controls.Add(button_Sua);
             Controls.Add(button_Xem);
             Controls.Add(dataGridView_DSCauHoi);
@@ -276,7 +259,6 @@
         private DataGridView dataGridView_DSCauHoi;
         private Button button_Xem;
         private Button button_Sua;
-        private Button button_Xoa;
         private ComboBox comboBox_ChiSo;
         private Button button_Next;
         private Button button_Prev;

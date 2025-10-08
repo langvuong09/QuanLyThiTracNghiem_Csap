@@ -162,5 +162,143 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                 return -1;
             }
         }
+        /*
+         Phương thức tìm kiếm theo nội dung câu hỏi
+            Input: noiDungCauHoi
+            Output: CauHoi
+            Created by: Đỗ Mai Anh
+         */
+        public CauHoi TimKiemCauHoiTheoNoiDung(string noiDungCauHoi)
+        {
+            CauHoi cauHoi = null;
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT * FROM cauhoi WHERE LOWER(noiDungCauHoi) LIKE LOWER(@noiDungCauHoi)";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@noiDungCauHoi", "%" + noiDungCauHoi + "%");
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        cauHoi = new CauHoi
+                        {
+                            maCauHoi = reader.GetInt32(0),
+                            maMonHoc = reader.GetString(1),
+                            maChuong = reader.GetInt32(2),
+                            doKho = reader.GetString(3),
+                            noiDungCauHoi = reader.GetString(4),
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi tìm kiếm câu hỏi: {ex}");
+            }
+            return cauHoi;
+        }
+
+
+        /*
+         Phương thưc Lấy Danh sách Câu hỏi để hiển thị lên DataGridView <Phân trang>
+            Input: curentPage, pageSize, maMonHoc, maChuong, doKho 
+                   <2 cái đầu là bắt buộc phải có , 
+                   3 biến sau có thể đề mặc định>
+            Output: ListCauHoi, totalPages
+            Created by: Đỗ Mai Anh
+         */
+
+        // --------------------- LẤY DANH SÁCH CÂU HỎI (CÓ PHÂN TRANG + LỌC) ---------------------
+        public (List<CauHoi> Data, int TotalPages) GetListCauHoiPhanTrang(
+            int currentPage,
+            int pageSize,
+            string maMonHoc = "",
+            int maChuong = 0,
+            string doKho = "0")
+        {
+            List<CauHoi> result = new List<CauHoi>();
+            int totalRows = 0;
+
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+
+                    string sqlFilter = "WHERE 1=1";
+                    if (!string.IsNullOrEmpty(maMonHoc) && maMonHoc != "0")
+                        sqlFilter += " AND maMonHoc = @maMonHoc";
+                    if (maChuong > 0)
+                        sqlFilter += " AND maChuong = @maChuong";
+                    if (doKho != "0")
+                        sqlFilter += " AND doKho = @doKho";
+
+                    // Đếm tổng số dòng
+                    string sqlCount = $"SELECT COUNT(*) FROM cauhoi {sqlFilter}";
+                    using (MySqlCommand countCmd = new MySqlCommand(sqlCount, conn))
+                    {
+                        if (!string.IsNullOrEmpty(maMonHoc) && maMonHoc != "0")
+                            countCmd.Parameters.AddWithValue("@maMonHoc", maMonHoc);
+                        if (maChuong > 0)
+                            countCmd.Parameters.AddWithValue("@maChuong", maChuong);
+                        if (doKho != "0")
+                            countCmd.Parameters.AddWithValue("@doKho", doKho);
+
+                        totalRows = Convert.ToInt32(countCmd.ExecuteScalar());
+                    }
+
+                    int offset = Math.Max((currentPage - 1), 0) * pageSize;
+
+                    // Lấy dữ liệu phân trang
+                    string sqlData = $@"
+                                    SELECT * FROM cauhoi {sqlFilter}
+                                    ORDER BY maCauHoi
+                                    LIMIT @PageSize OFFSET @Offset";
+
+                    using (MySqlCommand dataCmd = new MySqlCommand(sqlData, conn))
+                    {
+                        if (!string.IsNullOrEmpty(maMonHoc) && maMonHoc != "0")
+                            dataCmd.Parameters.AddWithValue("@maMonHoc", maMonHoc);
+                        if (maChuong > 0)
+                            dataCmd.Parameters.AddWithValue("@maChuong", maChuong);
+                        if (doKho != "0")
+                            dataCmd.Parameters.AddWithValue("@doKho", doKho);
+
+                        dataCmd.Parameters.AddWithValue("@PageSize", pageSize);
+                        dataCmd.Parameters.AddWithValue("@Offset", offset);
+
+                        using (MySqlDataReader reader = dataCmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                result.Add(new CauHoi
+                                {
+                                    maCauHoi = reader.GetInt32("maCauHoi"),
+                                    maMonHoc = reader.GetString("maMonHoc"),
+                                    maChuong = reader.GetInt32("maChuong"),
+                                    doKho = reader.GetString("doKho"),
+                                    noiDungCauHoi = reader.GetString("noiDungCauHoi")
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi lấy danh sách câu hỏi phân trang: {ex}");
+                // Có thể throw; nếu muốn gọi nơi khác bắt lỗi
+            }
+
+            int totalPages = (int)Math.Ceiling((double)totalRows / pageSize);
+            return (result, totalPages);
+        }
+
+
+
+
     }
+
 }

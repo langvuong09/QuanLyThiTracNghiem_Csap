@@ -65,9 +65,9 @@
             // 
             button_Reload.BackColor = Color.Salmon;
             button_Reload.Image = (Image)resources.GetObject("button_Reload.Image");
-            button_Reload.Location = new Point(1437, 12);
+            button_Reload.Location = new Point(1435, 3);
             button_Reload.Name = "button_Reload";
-            button_Reload.Size = new Size(88, 55);
+            button_Reload.Size = new Size(88, 62);
             button_Reload.TabIndex = 2;
             button_Reload.UseVisualStyleBackColor = false;
             // 

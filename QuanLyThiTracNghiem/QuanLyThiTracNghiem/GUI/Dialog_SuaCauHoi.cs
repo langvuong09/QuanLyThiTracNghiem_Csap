@@ -1,23 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
+
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
     public partial class Dialog_SuaCauHoi : UserControl
     {
-        public Dialog_SuaCauHoi()
+        private int is_EditButton;
+        private String maCauHoi;
+        private CauHoi cauhoi;
+        private MonHocBUS monHocBUS = new MonHocBUS();
+        private ChuongBUS chuongBUS = new ChuongBUS();
+
+        private string is_MonHoc = "0";
+        private int is_Chuong = 0;
+        private int is_DoKho = 0;
+        public Dialog_SuaCauHoi(int is_EditButton, string maCauHoi)
         {
             InitializeComponent();
+            this.is_EditButton = is_EditButton;
             CustomDialog_SuaCauHoi();
             CustomHeader_DataGridViewDSCauTraLoi();
+            LoadMonHoc(comboBox_MonHoc);
+            LoadDoKho(comboBox_DoKho);
+            LoadChuong(comboBox_Chuong);
+            this.maCauHoi = maCauHoi;
         }
 
         //=========================================Custom Dialog Sửa Câu Hỏi=========================================
@@ -30,12 +37,42 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             button_SuaCauTraLoi.BackColor = System.Drawing.ColorTranslator.FromHtml("#83A7EE");
 
             //TEXTBOX NỘI DUNG CÂU HỎI
-            textBox_NDCauHoi.ScrollBars = ScrollBars.Vertical; 
+            textBox_NDCauHoi.ScrollBars = ScrollBars.Vertical;
             textBox_NDCauHoi.WordWrap = true;
 
             //TEXTBOX NỘI DUNG CÂU TRẢ LỜI
-            textBox_NDCauTraLoi.ScrollBars = ScrollBars.Vertical; 
+            textBox_NDCauTraLoi.ScrollBars = ScrollBars.Vertical;
             textBox_NDCauTraLoi.WordWrap = true;
+
+            if (this.is_EditButton == 0)
+            {
+                // Ẩn nút sửa
+                button_SuaCauHoi.Visible = false;
+                button_SuaCauTraLoi.Visible = false;
+
+                // Vô hiệu hóa tất cả các trường nhập liệu
+                textBox_MaCauHoi.ReadOnly = true;
+                textBox_NDCauHoi.ReadOnly = true;
+                textBox_MaCauTraLoi.ReadOnly = true;
+                textBox_NDCauTraLoi.ReadOnly = true;
+
+                // Vô hiệu hóa các combobox
+                comboBox_DoKho.Enabled = false;
+                comboBox_Chuong.Enabled = false;
+                comboBox_MonHoc.Enabled = false;
+
+                // Vô hiệu hóa radio button
+                radioButton_Dung.Enabled = false;
+                radioButton_Sai.Enabled = false;
+
+                // Cho phép xem DataGridView nhưng không chỉnh sửa
+                dataGridView_DSCauTraLoi.ReadOnly = true;
+                dataGridView_DSCauTraLoi.AllowUserToAddRows = false;
+                dataGridView_DSCauTraLoi.AllowUserToDeleteRows = false;
+                dataGridView_DSCauTraLoi.AllowUserToResizeColumns = false;
+                dataGridView_DSCauTraLoi.AllowUserToResizeRows = false;
+            }
+
         }
 
         //========================================Custom Header DatagridView ==========================================
@@ -76,7 +113,74 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dataGridView_DSCauTraLoi.Columns["NoiDung"].Width = 400;
             dataGridView_DSCauTraLoi.Columns["NoiDung"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridView_DSCauTraLoi.Columns["DungSai"].Width = 150;
- 
+
+        }
+
+
+        //===================Load Môn Học==========================
+        private void LoadMonHoc(System.Windows.Forms.ComboBox combo)
+        {
+            //Load môn học từ BUS
+            monHocBUS.LayListMonHoc(combo);
+        }
+        //=======================Load Độ Khó======================
+        private void LoadDoKho(System.Windows.Forms.ComboBox combo)
+        {
+            combo.DataSource = null;
+            combo.Items.Clear();
+
+            var dsDoKho = new List<KeyValuePair<int, string>>
+                {
+                    new KeyValuePair<int,string>(0, "Chọn Độ Khó"),
+                    new KeyValuePair<int,string>(1, "Dễ"),
+                    new KeyValuePair<int,string>(2, "Trung Bình"),
+                    new KeyValuePair<int,string>(3, "Khó")
+                };
+
+            combo.DataSource = dsDoKho;
+            combo.DisplayMember = "Value";
+            combo.ValueMember = "Key";
+
+            combo.SelectedIndex = 0;
+        }
+
+        //====================Load Chương=======================
+        private void LoadChuong(System.Windows.Forms.ComboBox combo, string maMonHoc="0")
+        {
+            combo.DataSource = null;
+            combo.Items.Clear();
+
+            chuongBUS.LayListChuong(combo, maMonHoc);
+        }
+
+        private void comboBox_MonHoc_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            // Nếu nhấn mục "Chọn Môn Học" thì load lại chương về 0
+            if (comboBox_MonHoc.SelectedIndex <= 0)
+            {
+                LoadChuong(comboBox_Chuong, "0");
+                return;
+            }
+
+            // Lấy object đang chọn
+            var monHoc = comboBox_MonHoc.SelectedItem as MonHoc;
+            if (monHoc == null) return;
+
+            // Cập nhật ComboBox_Chuong
+            LoadChuong(comboBox_Chuong, monHoc.maMonHoc);
+
+            // Thực hiện điều kiện cho các mục khác
+            MessageBox.Show($"Bạn đã chọn: {monHoc.tenMonHoc} (Mã: {monHoc.maMonHoc})");
+        }
+
+        private void comboBox_Chuong_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox_DoKho_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+
         }
     }
 }

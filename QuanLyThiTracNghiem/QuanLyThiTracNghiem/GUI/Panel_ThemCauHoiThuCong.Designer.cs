@@ -43,7 +43,7 @@
             label_DoKho = new Label();
             label_Chuong = new Label();
             dataGridView_DSCauTraLoi = new DataGridView();
-            button_ThemCSDL = new Button();
+            button_Them = new Button();
             textBox_NDCauTraLoi = new TextBox();
             label_NDCauTraLoi = new Label();
             label_MonHoc = new Label();
@@ -108,6 +108,7 @@
             button_ThemCauTraLoi.TabIndex = 11;
             button_ThemCauTraLoi.Text = "Thêm Câu Trả Lời";
             button_ThemCauTraLoi.UseVisualStyleBackColor = false;
+            button_ThemCauTraLoi.Click += button_ThemCauTraLoi_Click;
             // 
             // textBox_NDCauHoi
             // 
@@ -154,6 +155,7 @@
             comboBox_DoKho.Name = "comboBox_DoKho";
             comboBox_DoKho.Size = new Size(575, 38);
             comboBox_DoKho.TabIndex = 6;
+            comboBox_DoKho.SelectionChangeCommitted += comboBox_DoKho_SelectionChangeCommitted;
             // 
             // comboBox_Chuong
             // 
@@ -163,6 +165,7 @@
             comboBox_Chuong.Name = "comboBox_Chuong";
             comboBox_Chuong.Size = new Size(575, 38);
             comboBox_Chuong.TabIndex = 5;
+            comboBox_Chuong.SelectionChangeCommitted += comboBox_Chuong_SelectionChangeCommitted;
             // 
             // comboBox_MonHoc
             // 
@@ -172,6 +175,7 @@
             comboBox_MonHoc.Name = "comboBox_MonHoc";
             comboBox_MonHoc.Size = new Size(575, 38);
             comboBox_MonHoc.TabIndex = 4;
+            comboBox_MonHoc.SelectionChangeCommitted += comboBox_MonHoc_SelectionChangeCommitted;
             // 
             // label_DoKho
             // 
@@ -203,17 +207,18 @@
             dataGridView_DSCauTraLoi.Size = new Size(693, 288);
             dataGridView_DSCauTraLoi.TabIndex = 26;
             // 
-            // button_ThemCSDL
+            // button_Them
             // 
-            button_ThemCSDL.BackColor = SystemColors.ActiveCaption;
-            button_ThemCSDL.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button_ThemCSDL.ForeColor = SystemColors.ButtonHighlight;
-            button_ThemCSDL.Location = new Point(759, 633);
-            button_ThemCSDL.Name = "button_ThemCSDL";
-            button_ThemCSDL.Size = new Size(693, 55);
-            button_ThemCSDL.TabIndex = 25;
-            button_ThemCSDL.Text = "Lưu Câu Hỏi";
-            button_ThemCSDL.UseVisualStyleBackColor = false;
+            button_Them.BackColor = SystemColors.ActiveCaption;
+            button_Them.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button_Them.ForeColor = SystemColors.ButtonHighlight;
+            button_Them.Location = new Point(759, 633);
+            button_Them.Name = "button_Them";
+            button_Them.Size = new Size(693, 55);
+            button_Them.TabIndex = 25;
+            button_Them.Text = "Lưu Câu Hỏi";
+            button_Them.UseVisualStyleBackColor = false;
+            button_Them.Click += button_Them_Click;
             // 
             // textBox_NDCauTraLoi
             // 
@@ -319,7 +324,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(groupBox_DungSai);
             Controls.Add(dataGridView_DSCauTraLoi);
-            Controls.Add(button_ThemCSDL);
+            Controls.Add(button_Them);
             Controls.Add(textBox_NDCauTraLoi);
             Controls.Add(label_NDCauTraLoi);
             Controls.Add(label_CauTraLoi);
@@ -355,7 +360,7 @@
         private Label label_DoKho;
         private Label label_Chuong;
         private DataGridView dataGridView_DSCauTraLoi;
-        private Button button_ThemCSDL;
+        private Button button_Them;
         private TextBox textBox_NDCauTraLoi;
         private Label label_NDCauTraLoi;
         private Label label_MonHoc;

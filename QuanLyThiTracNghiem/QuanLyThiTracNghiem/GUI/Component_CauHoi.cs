@@ -1,4 +1,7 @@
-﻿using System;
+﻿using QuanLyThiTracNghiem.MyCustom;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,14 +10,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
     public partial class Component_CauHoi : UserControl
     {
-       
+
+        private MonHocBUS monHocBUS = new MonHocBUS();
+        private CauHoiBUS cauHoiBUS = new CauHoiBUS();
+        private ChuongBUS chuongBUS = new ChuongBUS();
+
+
+        //Các biến phục vụ phân trang
+        private int currentPage = 1;// Trang hiện tại
+        private int pageSize = 10; // Số mục trên mỗi trang
+        private int totalPages = 0; // Tổng số trang
+
+        //Xử lý các biến lọc
+        private String is_MonHocSelected = "0"; // Môn học được chọn trong ComboBox
+        private String is_DoKho = "0"; // Độ khó được chọn trong ComboBox
+        private int is_Chuong = 0; // Chương được chọn trong ComboBox
+
+
         public Component_CauHoi()
         {
             InitializeComponent();
@@ -22,11 +40,13 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             Custom_HeaderDataGridView_DSCauHoi();
             LoadMonHoc(comboBox_MonHoc);
             LoadDoKho(comboBox_DoKho);
+            //Hiển thị dữ liệu lên DataGridView
+            LoadData_DSCauHoi();
         }
         // ===========================================Custom Header DataGridView_DSCauHoi===========================================
         private void Custom_HeaderDataGridView_DSCauHoi()
         {
-     
+
             // Xóa hết cột cũ nếu cần
             dataGridView_DSCauHoi.Columns.Clear();
             //Bắt buộc để header nhận màu tùy chỉnh
@@ -43,7 +63,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             //Thêm các cột vào DataGridView
             dataGridView_DSCauHoi.Columns.Add("MaCauHoi", "Mã Câu Hỏi");
             dataGridView_DSCauHoi.Columns.Add("NoiDung", "Nội Dung");
-            dataGridView_DSCauHoi.Columns.Add("MonHoc", "Môn Học");
+            dataGridView_DSCauHoi.Columns.Add("MonHoc", "Mã Môn Học");
+            dataGridView_DSCauHoi.Columns.Add("Chuong", "Mã Chương");
             dataGridView_DSCauHoi.Columns.Add("DoKho", "Độ Khó");
 
             //Custom dòng dữ liệu
@@ -53,38 +74,75 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dataGridView_DSCauHoi.DefaultCellStyle.BackColor = Color.White;
             dataGridView_DSCauHoi.DefaultCellStyle.ForeColor = Color.Black;
             dataGridView_DSCauHoi.DefaultCellStyle.SelectionBackColor = System.Drawing.ColorTranslator.FromHtml("#9CC7FF");
-            dataGridView_DSCauHoi.RowTemplate.Height = 100; 
             dataGridView_DSCauHoi.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView_DSCauHoi.MultiSelect = false;
             dataGridView_DSCauHoi.ReadOnly = true;
 
             //Tùy chỉnh độ rộng cột
             dataGridView_DSCauHoi.Columns["MaCauHoi"].Width = 200;
-            dataGridView_DSCauHoi.Columns["NoiDung"].Width = 700;
+            dataGridView_DSCauHoi.Columns["NoiDung"].Width = 600;
             dataGridView_DSCauHoi.Columns["NoiDung"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridView_DSCauHoi.Columns["MonHoc"].Width = 300;
+            dataGridView_DSCauHoi.Columns["MonHoc"].Width = 200;
+            dataGridView_DSCauHoi.Columns["Chuong"].Width = 200;
             dataGridView_DSCauHoi.Columns["DoKho"].Width = 150;
 
             // Chỉ cho phép 2 cột dài được wrap
             dataGridView_DSCauHoi.Columns["NoiDung"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            dataGridView_DSCauHoi.Columns["MonHoc"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
+        }
 
 
-            //Dữ liệu tạm để dỡ trống
-            var ds = new List<string[]>
+        // ===========================================Load Data_DSCauHoi===========================================
+        private void LoadData_DSCauHoi()
+        {
+            try
             {
-                new [] { "C01", "ạn có thể tạo sẵn một List<CauHoi> hoặc danh sách các object (hay đơn giản chỉ là mảng string) để truyền vào DataGridView ngay khi form load, như vậy DataGridView sẽ không bị trống.fcgggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggghhhhhhhhhhhhhhhh", "Toán", "Dễ" },
-                new [] { "C02", "ạn có thể tạo sẵn một List<CauHoi> hoặc danh sách các object (hay đơn giản chỉ là mảng string) để truyền vào DataGridView ngay khi form load, như vậy DataGridView sẽ không bị trống.", "Vật Lý", "Khó" },
-                new [] { "C03", "ạn có thể tạo sẵn một List<CauHoi> hoặc danh sách các object (hay đơn giản chỉ là mảng string) để truyền vào DataGridView ngay khi form load, như vậy DataGridView sẽ không bị trống.", "Sinh", "Trung Bình" }
-            };
+                // Lấy dữ liệu và cập nhật DataGridView
+                this.totalPages = cauHoiBUS.LayDSCauHoi_PhanTrang(
+                    dataGridView_DSCauHoi,
+                    this.currentPage,
+                    this.pageSize,
+                    this.is_MonHocSelected,
+                    this.is_Chuong,
+                    this.is_DoKho
+                );
 
-            foreach (var item in ds)
-            {
-                dataGridView_DSCauHoi.Rows.Add(item);
+                Console.WriteLine("\n - Trang hiện tại:" + this.currentPage);
+                Console.WriteLine("\n - Tổng số chương:" + this.totalPages);
+                Console.WriteLine("\n - Môn Học :" + this.is_MonHocSelected);
+                Console.WriteLine("\n - Chương:" + this.is_Chuong);
+                Console.WriteLine("\n - Độ Khó:" + this.is_DoKho);
+                Console.WriteLine("\n");
+                // Cập nhật combobox phân trang
+                comboBox_ChiSo.Items.Clear();
+                for (int i = 1; i <= this.totalPages; i++)
+                {
+                    comboBox_ChiSo.Items.Add(i.ToString());
+                }
+                if (this.totalPages > 0)
+                {
+                    comboBox_ChiSo.SelectedIndex = this.currentPage - 1;
+                }
+
+              
+                // Ẩn/hiện nút Prev/Next 
+                button_Prev.Visible = currentPage > 1;
+                button_Next.Visible = currentPage < totalPages;
+
+                // Nếu chỉ có 1 trang hoặc không có dữ liệu -> ẩn luôn cả 2 nút
+                if (totalPages <= 1)
+                {
+                    button_Prev.Visible = false;
+                    button_Next.Visible = false;
+                }
+
+                // Tự động resize row sau khi đổ dữ liệu
+                dataGridView_DSCauHoi.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells);
             }
-
-            // Sau khi đổ dữ liệu
-            dataGridView_DSCauHoi.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells);
+            catch (Exception ex)
+            {
+                Console.WriteLine("Lỗi khi tải danh sách câu hỏi: " + ex.Message);
+            }
         }
 
         // ===========================================Custom Component_CauHoi===========================================
@@ -103,9 +161,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
             //BUTTON SỬA
             button_Sua.BackColor = System.Drawing.ColorTranslator.FromHtml("#AAFECD");
-
-            //BUTTON XÓA
-            button_Xoa.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFBABA");
 
             //BUTTON NEXT
             button_Next.BackColor = System.Drawing.ColorTranslator.FromHtml("#9CC7FF");
@@ -132,7 +187,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             comboBox_DoKho.Height = 50;
 
             //COMBOBOX CHƯƠNG
-            // Chỉ hiện đúng 1 mục "Chọn Chương"
+            //Mới bắt đầu chưa chọn môn học nên không có chương nào
             comboBox_Chuong.DataSource = null;
             comboBox_Chuong.Items.Clear();
             comboBox_Chuong.Items.Add("Chọn Chương");
@@ -141,6 +196,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         }
 
+        //===========================================Sự kiện các nút bấm và Combobox===========================================
         private void button_ThemCauHoi_Click(object sender, EventArgs e)
         {
             using (Form dlg = new Form())
@@ -162,27 +218,59 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void button_Reload_Click(object sender, EventArgs e)
         {
-            //Reload lại danh sách câu hỏi
+            this.currentPage = 1;
+            this.is_MonHocSelected = "0";
+            this.is_Chuong = 0;
+            this.is_DoKho = "0";
+            button_Prev.Enabled = true;
+            button_Next.Enabled = true;
+            comboBox_ChiSo.Enabled = true;
+            LoadData_DSCauHoi();
+            comboBox_MonHoc.SelectedIndex = 0;
+            comboBox_DoKho.SelectedIndex = 0;
+            comboBox_Chuong.DataSource = null;
+            comboBox_Chuong.Items.Clear();
+            comboBox_Chuong.Items.Add("Chọn Chương");
+            textBox_TimKiem.Text = "";
         }
 
         private void button_TimKiem_Click(object sender, EventArgs e)
         {
-            //Tim kiếm câu hỏi
+            //Ẩn comboBox phân trang
+            button_Prev.Enabled = false;
+            button_Next.Enabled = false;
+            comboBox_ChiSo.Enabled = false;
+            string tuKhoa = textBox_TimKiem.Text.Trim();
+            cauHoiBUS.TimKiemCauHoi(dataGridView_DSCauHoi, tuKhoa);
+
+
         }
 
         private void button_Xem_Click(object sender, EventArgs e)
         {
+            //Lấy mã câu hỏi đang chọn
+            if (dataGridView_DSCauHoi.SelectedRows.Count == 0)
+            {
+                MyDialog dialog = new MyDialog("Vui lòng chọn câu hỏi để xem chi tiết.", MyDialog.WARNING_DIALOG);
+                dialog.ShowDialog();
+                return;
+            }
+            
+            //Lấy mã câu hỏi từ dòng được chọn
+            string maCauHoi = dataGridView_DSCauHoi.SelectedRows[0].Cells["MaCauHoi"].Value.ToString();
             using (Form dlg = new Form())
             {
                 dlg.Text = "CHI TIẾT CÂU HỎI";
                 dlg.FormBorderStyle = FormBorderStyle.FixedDialog;
                 dlg.StartPosition = FormStartPosition.CenterParent;
-                dlg.ClientSize = new Size(1480, 700);  
-                dlg.AutoScroll = true;                   
+                dlg.ClientSize = new Size(1480, 700);
+                dlg.AutoScroll = true;
                 dlg.ShowInTaskbar = false;
-
-                Dialog_SuaCauHoi dialog = new Dialog_SuaCauHoi();
-                dialog.Dock = DockStyle.Top;  
+                Console.WriteLine("\n - Nhấn nút Xem");
+                Console.WriteLine("\n - Mã câu hỏi được chọn: " + maCauHoi);
+                Console.WriteLine("\n");
+                Dialog_SuaCauHoi dialog = new Dialog_SuaCauHoi(0,maCauHoi);
+                dialog.Dock = DockStyle.Top;
 
                 dlg.Controls.Add(dialog);
                 dlg.ShowDialog(this);
@@ -191,6 +279,15 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void button_Sua_Click(object sender, EventArgs e)
         {
+            //Lấy mã câu hỏi đang chọn
+            if (dataGridView_DSCauHoi.SelectedRows.Count == 0)
+            {
+                MyDialog dialog = new MyDialog("Vui lòng chọn câu hỏi để sửa thông tin.", MyDialog.WARNING_DIALOG);
+                dialog.ShowDialog();
+                return;
+            }
+            //Lấy mã câu hỏi từ dòng được chọn
+            string maCauHoi = dataGridView_DSCauHoi.SelectedRows[0].Cells["MaCauHoi"].Value.ToString();
             using (Form dlg = new Form())
             {
                 dlg.Text = "SỬA CÂU HỎI";
@@ -200,7 +297,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 dlg.AutoScroll = true;
                 dlg.ShowInTaskbar = false;
 
-                Dialog_SuaCauHoi dialog = new Dialog_SuaCauHoi();
+                //Truyền đối số 1 nghĩa là xác nhận đây là nút sửa
+                Console.WriteLine("\n - Nhấn nút Sửa -");
+                Console.WriteLine("\n - Mã câu hỏi được chọn: " + maCauHoi);
+                Console.WriteLine("\n");
+
+                Dialog_SuaCauHoi dialog = new Dialog_SuaCauHoi(1,maCauHoi);
                 dialog.Dock = DockStyle.Top;
 
                 dlg.Controls.Add(dialog);
@@ -215,12 +317,18 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void button_Prev_Click(object sender, EventArgs e)
         {
+            this.currentPage=this.currentPage-1;
+            Console.WriteLine("\n - Nhấn nút Prev -");
+            LoadData_DSCauHoi();
             //Trang trước
         }
 
         private void button_Next_Click(object sender, EventArgs e)
         {
             //Trang sau
+            this.currentPage=this.currentPage+1;
+            Console.WriteLine("\n - Nhấn nút Next -");
+            LoadData_DSCauHoi();
         }
 
         private void dataGridView_DSCauHoi_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -229,42 +337,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         }
 
         //------------------------------------Load Môn Học Vào ComboBox-----------------------------------
-        private void LoadMonHoc(System.Windows.Forms.ComboBox combo, List<MonHoc> danhSachMoi = null)
+        private void LoadMonHoc(System.Windows.Forms.ComboBox combo)
         {
-            //Dọn sạch dữ liệu cũ trước (rất quan trọng khi reload)
-            combo.DataSource = null;
-            combo.Items.Clear();
-
-            //Nếu không truyền vào danh sách mới thì tự tạo mẫu
-            List<MonHoc> dsMonHoc;
-            if (danhSachMoi != null)
-            {
-                dsMonHoc = danhSachMoi;
-            }
-            else
-            {
-                // Data mẫu để đỡ trống
-                dsMonHoc = new List<MonHoc>
-                {
-                    new MonHoc("MH001", "Lập trình C#",       3, 30, 15, 2),
-                    new MonHoc("MH002", "Cơ sở dữ liệu",      3, 30, 15, 2),
-                    new MonHoc("MH003", "Mạng máy tính",      4, 45, 20, 3),
-                    new MonHoc("MH004", "Trí tuệ nhân tạo",   3, 30, 15, 3),
-                    new MonHoc("MH005", "Phát triển Web",     3, 25, 20, 2)
-                };
-
-            }
-
-            //Thêm mục giả
-            dsMonHoc.Insert(0, new MonHoc("0", "Chọn Môn Học", 3, 30, 15, 2));
-
-            //Gán lại DataSource
-            combo.DataSource = dsMonHoc;
-            combo.DisplayMember = "tenMonHoc";
-            combo.ValueMember = "maMonHoc";
-
-            //Chọn mục giả mặc định
-            combo.SelectedIndex = 0;
+            //Load môn học từ BUS
+            monHocBUS.LayListMonHoc(combo);
         }
 
         //------------------------------------Load độ khó Vào ComboBox-----------------------------------
@@ -282,32 +358,49 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 };
 
             combo.DataSource = dsDoKho;
-            combo.DisplayMember = "Value"; 
-            combo.ValueMember = "Key";   
+            combo.DisplayMember = "Value";
+            combo.ValueMember = "Key";
 
             combo.SelectedIndex = 0;
         }
 
         private void comboBox_MonHoc_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            // Kiểm tra index
+            // Nếu nhấn mục "Chọn Môn Học" thì load lại chương về 0
             if (comboBox_MonHoc.SelectedIndex <= 0)
             {
+                LoadChuong(comboBox_Chuong, "0");
+                this.is_MonHocSelected = "0";
+                this.is_Chuong = 0;
+                this.currentPage = 1;
+                Console.WriteLine("\n - Nhấn comboBox Môn Học -");
+                LoadData_DSCauHoi();
                 return;
             }
 
             // Lấy object đang chọn
             var monHoc = comboBox_MonHoc.SelectedItem as MonHoc;
             if (monHoc == null) return;
-
             LoadChuong(comboBox_Chuong, monHoc.maMonHoc);
-            // Thực hiện điều kiện cho các mục khác
-            MessageBox.Show($"Bạn đã chọn: {monHoc.tenMonHoc} (Mã: {monHoc.maMonHoc})");
+
+            this.currentPage = 1;
+            this.is_MonHocSelected = monHoc.maMonHoc;
+            this.is_Chuong = 0;
+
+            Console.WriteLine("\n - Nhấn comboBox Môn Học -");
+            LoadData_DSCauHoi();
         }
 
         private void comboBox_DoKho_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            if (comboBox_DoKho.SelectedIndex <= 0) return;
+            if (comboBox_DoKho.SelectedIndex <= 0) {
+                this.is_DoKho = "0";
+                this.currentPage = 1;
+
+                Console.WriteLine("\n - Nhấn comboBox Độ Khó -");
+                LoadData_DSCauHoi();
+                return; 
+            }
 
             var selectedPair = (KeyValuePair<int, string>)comboBox_DoKho.SelectedItem;
             int doKhoKey = selectedPair.Key;
@@ -316,10 +409,14 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             // Xử lý theo giá trị
             switch (doKhoKey)
             {
-                case 1: MessageBox.Show("Bạn chọn Độ Khó: Dễ"); break;
-                case 2: MessageBox.Show("Bạn chọn Độ Khó: Trung Bình"); break;
-                case 3: MessageBox.Show("Bạn chọn Độ Khó: Khó"); break;
+                case 1: this.is_DoKho="Dễ"; break;
+                case 2: this.is_DoKho = "Trung bình"; break;
+                case 3: this.is_DoKho = "Khó"; break;
             }
+            this.currentPage = 1;
+            Console.WriteLine("\n - Nhấn comboBox Độ Khó -");
+            //Cập nhật lại DataGridView
+            LoadData_DSCauHoi();
         }
 
         //--------------------------Load chuong vào ComboBox (nếu cần)--------------------------
@@ -328,34 +425,39 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             combo.DataSource = null;
             combo.Items.Clear();
 
-            // Data mẫu
-            var dsChuongAll = new List<Chuong>
-            {
-                    new Chuong(1,"MH001","Giới thiệu C#"),
-                    new Chuong(2,"MH001","Lập trình hướng đối tượng"),
-                    new Chuong(3,"MH002","Cơ sở dữ liệu SQL"),
-                    new Chuong(4,"MH002","Tối ưu truy vấn"),
-                    new Chuong(5,"MH003","Mạng căn bản")
-            };
-
-            // Lọc theo mã môn
-            var dsChuongTheoMon = dsChuongAll
-                                    .Where(c => c.maMonHoc == maMonHoc)
-                                    .ToList();
-
-            // Thêm mục giả
-            dsChuongTheoMon.Insert(0, new Chuong(0,maMonHoc, "Chọn Chương"));
-
-            combo.DataSource = dsChuongTheoMon;
-            combo.DisplayMember = "tenChuong";
-            combo.ValueMember = "maChuong";
-            combo.SelectedIndex = 0;
+            chuongBUS.LayListChuong(combo, maMonHoc);
         }
 
         private void comboBox_Chuong_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            
-          
+            // Kiểm tra index
+            if (comboBox_Chuong.SelectedIndex <= 0)
+            {
+                this.is_Chuong = 0;
+                this.currentPage = 1;
+                Console.WriteLine("\n - Nhấn comboBox Chương -");
+                LoadData_DSCauHoi();
+                return;
+            }
+
+            // Lấy object đang chọn
+            var chuong = comboBox_Chuong.SelectedItem as Chuong;
+            if (chuong == null) return;
+            this.is_Chuong = chuong.maChuong;
+            this.currentPage = 1;
+            Console.WriteLine("\n - Nhấn comboBox Chương -");
+            LoadData_DSCauHoi();
+
+        }
+
+        private void comboBox_ChiSo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(comboBox_ChiSo.SelectedIndex<0) 
+                return;
+            this.currentPage = comboBox_ChiSo.SelectedIndex;
+            Console.WriteLine("\n - Nhấn comboBox Chỉ Số -");
+            Console.WriteLine("\n - Đang chọn trang: "+this.currentPage);
+            LoadData_DSCauHoi();
         }
     }
 }

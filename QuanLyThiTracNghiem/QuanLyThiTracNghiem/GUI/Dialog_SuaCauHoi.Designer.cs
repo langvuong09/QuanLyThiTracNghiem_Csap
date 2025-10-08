@@ -134,6 +134,7 @@
             comboBox_DoKho.Name = "comboBox_DoKho";
             comboBox_DoKho.Size = new Size(575, 38);
             comboBox_DoKho.TabIndex = 6;
+            comboBox_DoKho.SelectionChangeCommitted += comboBox_DoKho_SelectionChangeCommitted;
             // 
             // comboBox_Chuong
             // 
@@ -143,6 +144,7 @@
             comboBox_Chuong.Name = "comboBox_Chuong";
             comboBox_Chuong.Size = new Size(575, 38);
             comboBox_Chuong.TabIndex = 5;
+            comboBox_Chuong.SelectionChangeCommitted += comboBox_Chuong_SelectionChangeCommitted;
             // 
             // comboBox_MonHoc
             // 
@@ -152,6 +154,7 @@
             comboBox_MonHoc.Name = "comboBox_MonHoc";
             comboBox_MonHoc.Size = new Size(575, 38);
             comboBox_MonHoc.TabIndex = 4;
+            comboBox_MonHoc.SelectionChangeCommitted += comboBox_MonHoc_SelectionChangeCommitted;
             // 
             // label_DoKho
             // 
