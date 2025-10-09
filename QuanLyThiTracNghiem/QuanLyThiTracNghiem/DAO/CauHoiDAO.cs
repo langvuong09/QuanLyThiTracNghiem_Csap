@@ -154,12 +154,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                     conn.Open();
                     string sql = "SELECT MAX(*) FROM cauhoi";
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    return Convert.ToInt32(cmd.ExecuteScalar())+1;
+                    return Convert.ToInt32(cmd.ExecuteScalar());
 
                 }
             }catch (Exception ex)
             {
-                return -1;
+                return 0;
             }
         }
         /*

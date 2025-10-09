@@ -78,5 +78,89 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                 return false;
             }
         }
+
+        /*
+          Phương thức lấy danh sách đáp án theo Mã Câu Hỏi
+             Input: Mã Câu Hỏi
+             Output: List <DapAn>
+             Created by: Đỗ Mai Anh
+
+        */
+
+        public List<DapAn> LayDSDapAnTheoMaCauHoi(int maCauHoi)
+        {
+            List<DapAn> danhSachDapAn = new List<DapAn>();
+
+            try
+            {
+                string sql = "SELECT * FROM dapan WHERE maCauHoi = @maCauHoi";
+
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maCauHoi", maCauHoi);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            DapAn dapAn = new DapAn
+                            {
+                                maDapAn = reader.GetInt32("maDapAn"),
+                                maCauHoi = reader.GetInt32("maCauHoi"),
+                                tenDapAn = reader.GetString("tenDapAn"),
+                                dungSai = reader.GetInt32("dungSai")
+                            };
+
+                            danhSachDapAn.Add(dapAn);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Lỗi khi lấy danh sách đáp án theo mã câu hỏi: " + ex.Message);
+            }
+
+            return danhSachDapAn;
+        }
+
+        /*
+          Phương thức sửa đáp án theo Mã Đáp Án
+             Input: Mã Đáp Án, Tên Đáp Án
+             Output: true/false
+             Created by: Đỗ Mai Anh
+
+        */
+        public bool SuaDapAn(int maDapAn, string tenDapAn, int maCauHoi)
+        {
+            try
+            {
+                string sql = "UPDATE dapan SET tenDapAn = @tenDapAn WHERE maDapAn = @maDapAn AND maCauHoi = @maCauHoi ";
+
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@maDapAn", maDapAn);
+                        cmd.Parameters.AddWithValue("@tenDapAn", tenDapAn);
+                        cmd.Parameters.AddWithValue("@maCauHoi", maCauHoi);
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        return rowsAffected > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Ghi log lỗi để dễ debug (tuỳ bạn có thể dùng Console, MessageBox hoặc log file)
+                Console.WriteLine("Lỗi khi sửa đáp án: " + ex.Message);
+                return false;
+            }
+        }
+
     }
-}
+
+    }

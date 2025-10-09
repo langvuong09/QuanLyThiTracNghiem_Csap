@@ -19,6 +19,7 @@
     <None Remove="image\icons8_checkmark_70px.png" />
     <None Remove="image\icons8_info_70px.png" />
     <None Remove="image\icons8_warning_shield_70px.png" />
+    <None Remove="image\Sua.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +33,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="image\icons8_warning_shield_70px.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="image\Sua.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

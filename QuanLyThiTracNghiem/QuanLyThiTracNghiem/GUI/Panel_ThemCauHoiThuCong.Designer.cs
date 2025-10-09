@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Panel_ThemCauHoiThuCong));
             groupBox_DungSai = new GroupBox();
             radioButton_Dung = new RadioButton();
             radioButton_Sai = new RadioButton();
@@ -53,6 +52,7 @@
             panel_CauHoi = new Panel();
             panel_Top = new Panel();
             label_titleCauHoi = new Label();
+            button_LuuChinhSua = new Button();
             groupBox_DungSai.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView_DSCauTraLoi).BeginInit();
             panel_CauHoi.SuspendLayout();
@@ -100,11 +100,10 @@
             button_ThemCauTraLoi.BackColor = SystemColors.ActiveCaption;
             button_ThemCauTraLoi.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_ThemCauTraLoi.ForeColor = SystemColors.ButtonHighlight;
-            button_ThemCauTraLoi.Image = (Image)resources.GetObject("button_ThemCauTraLoi.Image");
             button_ThemCauTraLoi.ImageAlign = ContentAlignment.MiddleLeft;
-            button_ThemCauTraLoi.Location = new Point(20, 632);
+            button_ThemCauTraLoi.Location = new Point(759, 270);
             button_ThemCauTraLoi.Name = "button_ThemCauTraLoi";
-            button_ThemCauTraLoi.Size = new Size(693, 55);
+            button_ThemCauTraLoi.Size = new Size(206, 55);
             button_ThemCauTraLoi.TabIndex = 11;
             button_ThemCauTraLoi.Text = "Thêm Câu Trả Lời";
             button_ThemCauTraLoi.UseVisualStyleBackColor = false;
@@ -113,17 +112,17 @@
             // textBox_NDCauHoi
             // 
             textBox_NDCauHoi.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox_NDCauHoi.Location = new Point(20, 423);
+            textBox_NDCauHoi.Location = new Point(20, 459);
             textBox_NDCauHoi.Multiline = true;
             textBox_NDCauHoi.Name = "textBox_NDCauHoi";
-            textBox_NDCauHoi.Size = new Size(693, 191);
+            textBox_NDCauHoi.Size = new Size(693, 208);
             textBox_NDCauHoi.TabIndex = 10;
             // 
             // label_NoiDung
             // 
             label_NoiDung.AutoSize = true;
             label_NoiDung.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label_NoiDung.Location = new Point(20, 380);
+            label_NoiDung.Location = new Point(20, 407);
             label_NoiDung.Name = "label_NoiDung";
             label_NoiDung.Size = new Size(191, 30);
             label_NoiDung.TabIndex = 9;
@@ -132,8 +131,9 @@
             // textBox_MaCauHoi
             // 
             textBox_MaCauHoi.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox_MaCauHoi.Location = new Point(20, 332);
+            textBox_MaCauHoi.Location = new Point(20, 351);
             textBox_MaCauHoi.Name = "textBox_MaCauHoi";
+            textBox_MaCauHoi.ReadOnly = true;
             textBox_MaCauHoi.Size = new Size(693, 35);
             textBox_MaCauHoi.TabIndex = 8;
             // 
@@ -141,7 +141,7 @@
             // 
             label_MaCauHoi.AutoSize = true;
             label_MaCauHoi.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label_MaCauHoi.Location = new Point(16, 294);
+            label_MaCauHoi.Location = new Point(20, 306);
             label_MaCauHoi.Name = "label_MaCauHoi";
             label_MaCauHoi.Size = new Size(129, 30);
             label_MaCauHoi.TabIndex = 7;
@@ -155,7 +155,6 @@
             comboBox_DoKho.Name = "comboBox_DoKho";
             comboBox_DoKho.Size = new Size(575, 38);
             comboBox_DoKho.TabIndex = 6;
-            comboBox_DoKho.SelectionChangeCommitted += comboBox_DoKho_SelectionChangeCommitted;
             // 
             // comboBox_Chuong
             // 
@@ -165,7 +164,6 @@
             comboBox_Chuong.Name = "comboBox_Chuong";
             comboBox_Chuong.Size = new Size(575, 38);
             comboBox_Chuong.TabIndex = 5;
-            comboBox_Chuong.SelectionChangeCommitted += comboBox_Chuong_SelectionChangeCommitted;
             // 
             // comboBox_MonHoc
             // 
@@ -202,10 +200,11 @@
             dataGridView_DSCauTraLoi.BackgroundColor = SystemColors.ButtonHighlight;
             dataGridView_DSCauTraLoi.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView_DSCauTraLoi.GridColor = SystemColors.InactiveCaptionText;
-            dataGridView_DSCauTraLoi.Location = new Point(759, 315);
+            dataGridView_DSCauTraLoi.Location = new Point(759, 333);
             dataGridView_DSCauTraLoi.Name = "dataGridView_DSCauTraLoi";
-            dataGridView_DSCauTraLoi.Size = new Size(693, 288);
+            dataGridView_DSCauTraLoi.Size = new Size(693, 270);
             dataGridView_DSCauTraLoi.TabIndex = 26;
+            dataGridView_DSCauTraLoi.CellContentClick += dataGridView_DSCauTraLoi_CellContentClick;
             // 
             // button_Them
             // 
@@ -226,7 +225,7 @@
             textBox_NDCauTraLoi.Location = new Point(759, 165);
             textBox_NDCauTraLoi.Multiline = true;
             textBox_NDCauTraLoi.Name = "textBox_NDCauTraLoi";
-            textBox_NDCauTraLoi.Size = new Size(693, 132);
+            textBox_NDCauTraLoi.Size = new Size(693, 95);
             textBox_NDCauTraLoi.TabIndex = 24;
             // 
             // label_NDCauTraLoi
@@ -274,6 +273,7 @@
             textBox_MaCauTraLoi.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBox_MaCauTraLoi.Location = new Point(759, 94);
             textBox_MaCauTraLoi.Name = "textBox_MaCauTraLoi";
+            textBox_MaCauTraLoi.ReadOnly = true;
             textBox_MaCauTraLoi.Size = new Size(460, 35);
             textBox_MaCauTraLoi.TabIndex = 22;
             // 
@@ -282,7 +282,6 @@
             panel_CauHoi.BackColor = SystemColors.ButtonFace;
             panel_CauHoi.BorderStyle = BorderStyle.FixedSingle;
             panel_CauHoi.Controls.Add(panel_Top);
-            panel_CauHoi.Controls.Add(button_ThemCauTraLoi);
             panel_CauHoi.Controls.Add(textBox_NDCauHoi);
             panel_CauHoi.Controls.Add(label_NoiDung);
             panel_CauHoi.Controls.Add(textBox_MaCauHoi);
@@ -318,11 +317,28 @@
             label_titleCauHoi.TabIndex = 0;
             label_titleCauHoi.Text = "CÂU HỎI";
             // 
+            // button_LuuChinhSua
+            // 
+            button_LuuChinhSua.BackColor = SystemColors.ActiveCaption;
+            button_LuuChinhSua.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button_LuuChinhSua.ForeColor = SystemColors.ButtonHighlight;
+            button_LuuChinhSua.ImageAlign = ContentAlignment.MiddleLeft;
+            button_LuuChinhSua.Location = new Point(1246, 266);
+            button_LuuChinhSua.Name = "button_LuuChinhSua";
+            button_LuuChinhSua.Size = new Size(206, 55);
+            button_LuuChinhSua.TabIndex = 28;
+            button_LuuChinhSua.Text = "Lưu Chỉnh Sửa";
+            button_LuuChinhSua.UseVisualStyleBackColor = false;
+            button_LuuChinhSua.Visible = false;
+            button_LuuChinhSua.Click += button_LuuChinhSua_Click;
+            // 
             // Panel_ThemCauHoiThuCong
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(button_LuuChinhSua);
             Controls.Add(groupBox_DungSai);
+            Controls.Add(button_ThemCauTraLoi);
             Controls.Add(dataGridView_DSCauTraLoi);
             Controls.Add(button_Them);
             Controls.Add(textBox_NDCauTraLoi);
@@ -370,5 +386,6 @@
         private Panel panel_CauHoi;
         private Panel panel_Top;
         private Label label_titleCauHoi;
+        private Button button_LuuChinhSua;
     }
 }

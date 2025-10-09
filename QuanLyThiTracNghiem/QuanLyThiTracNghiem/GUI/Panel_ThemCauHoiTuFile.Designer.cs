@@ -135,6 +135,7 @@
             comboBox_MonHoc.Name = "comboBox_MonHoc";
             comboBox_MonHoc.Size = new Size(559, 38);
             comboBox_MonHoc.TabIndex = 3;
+            comboBox_MonHoc.SelectionChangeCommitted += comboBox_MonHoc_SelectionChangeCommitted;
             // 
             // button_ChonFile
             // 

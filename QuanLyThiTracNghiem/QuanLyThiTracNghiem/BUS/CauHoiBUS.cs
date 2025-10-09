@@ -108,7 +108,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
                     dialog.ShowDialog();
                 }
             }
-            else //Ngược lại tìm theo nội dung câu hỏi
+            else 
             {
                 var cauHoi = CauHoiDAO.TimKiemCauHoiTheoNoiDung(noiDungTimKiem);
                 if (cauHoi != null)
@@ -131,6 +131,110 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 
             }
         }
+
+        /*
+         Phương thức lấy câu hỏi theo mã câu hỏi và điền nó vào các component tương ứng
+            Input:textBox_MaCauHoi,textBox_NDCauHoi
+            Output: CauHoi
+            Created by: Đỗ Mai Anh
+            Dùng trong : Dialog_SuaCauHoi
+
+         */
+        public CauHoi LayCauHoiTheoMa(int maCauHoi, TextBox textBox_MaCauHoi, TextBox textBox_NDCauHoi)
+        {
+            CauHoi cauHoi = null;
+            try
+            {
+                cauHoi = CauHoiDAO.GetListCauHoiById(maCauHoi);
+                textBox_MaCauHoi.Text=cauHoi.maCauHoi.ToString();
+                textBox_NDCauHoi.Text = cauHoi.noiDungCauHoi;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("BUS = >Lối khi tải câu hỏi cho Dialog_SuaCauHoi",ex.Message);
+            }
+            return cauHoi;
+        }
+
+        /*
+         Phương thức sửa câu hỏi theo mã câu hỏi 
+            Input:textBox_MaCauHoi,textBox_NDCauHoi, comboBox_MonHoc, comboBox_Chuong, comboBox_DoKho
+            Output: none
+            Created by: Đỗ Mai Anh
+            Dùng trong : Dialog_SuaCauHoi
+         */
+        public void SuaCauHoi(
+            TextBox textBox_MaCauHoi,
+            TextBox textBox_NDCauHoi,
+            ComboBox comboBox_MonHoc,
+            ComboBox comboBox_Chuong,
+            ComboBox comboBox_DoKho)
+        {
+            // Lấy dữ liệu từ các trường nhập liệu
+            int maCauHoi = int.Parse(textBox_MaCauHoi.Text);
+            string noiDungCauHoi = textBox_NDCauHoi.Text;
+            string maMonHoc = ((MonHoc)comboBox_MonHoc.SelectedItem).maMonHoc;
+            int maChuong = ((Chuong)comboBox_Chuong.SelectedItem).maChuong;
+            var selectedPair = (KeyValuePair<int, string>)comboBox_DoKho.SelectedItem;
+            string doKho = selectedPair.Value;
+
+
+
+            // Kiểm tra dữ liệu hợp lệ
+            if (string.IsNullOrWhiteSpace(noiDungCauHoi))
+            {
+                MyDialog dialog = new MyDialog("Nội dung câu hỏi không được để trống.", MyDialog.WARNING_DIALOG);
+                dialog.ShowDialog();
+                return;
+            }
+            //Không được chọn "Chọn Môn Học"
+            if (comboBox_MonHoc.SelectedIndex <= 0)
+            {
+                MyDialog dialog = new MyDialog("Vui lòng chọn Môn Học.", MyDialog.WARNING_DIALOG);
+                dialog.ShowDialog();
+                return;
+            }
+            //Không được chọn "Chọn Chương"
+            if (comboBox_Chuong.SelectedIndex <= 0)
+            {
+                MyDialog dialog = new MyDialog("Vui lòng chọn Chương.", MyDialog.WARNING_DIALOG);
+                dialog.ShowDialog();
+                return;
+            }
+            //Không được chọn "Chọn Độ Khó"
+            if (comboBox_DoKho.SelectedIndex <= 0)
+            {
+                MyDialog dialog = new MyDialog("Vui lòng chọn Độ Khó.", MyDialog.WARNING_DIALOG);
+                dialog.ShowDialog();
+                return;
+            }
+            // Gọi phương thức trong DAO để cập nhật câu hỏi
+            bool result = CauHoiDAO.SuaCauHoi(maCauHoi,maMonHoc,maChuong,doKho,noiDungCauHoi);
+            if (result)
+            {
+                MyDialog dialog = new MyDialog("Sửa câu hỏi thành công.", MyDialog.SUCCESS_DIALOG);
+                dialog.ShowDialog();
+            }
+            else
+            {
+                MyDialog dialog = new MyDialog("Sửa câu hỏi thất bại.", MyDialog.ERROR_DIALOG);
+                dialog.ShowDialog();
+            }
+        }
+
+        /*
+         Phương thức tạo ra mac câu hỏi mới và gán nó vào textBox_MaCauHoi
+            Input:textBox_MaCauHoi
+            Output: none
+            Created by: Đỗ Mai Anh
+            Dùng trong : Dialog_SuaCauHoi
+         */
+        public void TaoMaCauHoiMoi(TextBox textBox_MaCauHoi)
+        {
+            int maCauHoiMoi = CauHoiDAO.maxMaCauHoi() + 1;
+            textBox_MaCauHoi.Text = maCauHoiMoi.ToString();
+        }
+
 
 
     }

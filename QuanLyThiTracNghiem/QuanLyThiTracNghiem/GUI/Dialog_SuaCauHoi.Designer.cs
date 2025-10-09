@@ -88,6 +88,7 @@
             button_SuaCauHoi.TabIndex = 11;
             button_SuaCauHoi.Text = "Sửa Câu Hỏi";
             button_SuaCauHoi.UseVisualStyleBackColor = false;
+            button_SuaCauHoi.Click += button_SuaCauHoi_Click;
             // 
             // textBox_NDCauHoi
             // 
@@ -113,6 +114,7 @@
             textBox_MaCauHoi.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBox_MaCauHoi.Location = new Point(18, 332);
             textBox_MaCauHoi.Name = "textBox_MaCauHoi";
+            textBox_MaCauHoi.ReadOnly = true;
             textBox_MaCauHoi.Size = new Size(693, 35);
             textBox_MaCauHoi.TabIndex = 8;
             // 
@@ -221,6 +223,7 @@
             textBox_MaCauTraLoi.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBox_MaCauTraLoi.Location = new Point(765, 96);
             textBox_MaCauTraLoi.Name = "textBox_MaCauTraLoi";
+            textBox_MaCauTraLoi.ReadOnly = true;
             textBox_MaCauTraLoi.Size = new Size(460, 35);
             textBox_MaCauTraLoi.TabIndex = 9;
             // 
@@ -254,6 +257,7 @@
             button_SuaCauTraLoi.TabIndex = 14;
             button_SuaCauTraLoi.Text = "Sửa Câu Trả Lời";
             button_SuaCauTraLoi.UseVisualStyleBackColor = false;
+            button_SuaCauTraLoi.Click += button_SuaCauTraLoi_Click;
             // 
             // dataGridView_DSCauTraLoi
             // 
@@ -264,10 +268,12 @@
             dataGridView_DSCauTraLoi.Name = "dataGridView_DSCauTraLoi";
             dataGridView_DSCauTraLoi.Size = new Size(701, 288);
             dataGridView_DSCauTraLoi.TabIndex = 15;
+            dataGridView_DSCauTraLoi.CellContentClick += dataGridView_DSCauTraLoi_CellContentClick;
             // 
             // radioButton_Dung
             // 
             radioButton_Dung.AutoSize = true;
+            radioButton_Dung.Enabled = false;
             radioButton_Dung.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             radioButton_Dung.Location = new Point(23, 31);
             radioButton_Dung.Name = "radioButton_Dung";
@@ -280,6 +286,7 @@
             // radioButton_Sai
             // 
             radioButton_Sai.AutoSize = true;
+            radioButton_Sai.Enabled = false;
             radioButton_Sai.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             radioButton_Sai.Location = new Point(127, 31);
             radioButton_Sai.Name = "radioButton_Sai";
@@ -328,17 +335,21 @@
         #endregion
 
         private Panel panel_CauHoi;
+
         private Label label_titleCauHoi;
         private ComboBox comboBox_DoKho;
         private ComboBox comboBox_Chuong;
         private ComboBox comboBox_MonHoc;
+
         private Label label_DoKho;
         private Label label_Chuong;
         private Label label_MonHoc;
         private Label label_TitleCauTraLoi;
         private TextBox textBox_NDCauHoi;
+
         private Label label_NoiDung;
         private TextBox textBox_MaCauHoi;
+
         private Label label_MaCauHoi;
         private Button button_SuaCauHoi;
         private Label label_CauTraLoi;

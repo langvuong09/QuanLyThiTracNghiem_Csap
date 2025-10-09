@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 29, 2025 lúc 11:30 AM
--- Phiên bản máy phục vụ: 10.4.32-MariaDB
--- Phiên bản PHP: 8.2.12
+-- Host: 127.0.0.1
+-- Generation Time: Oct 08, 2025 at 07:20 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `quanlythitracnghiem`
+-- Database: `quanlythitracnghiem`
 --
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `bailam`
+-- Table structure for table `bailam`
 --
 
 CREATE TABLE `bailam` (
@@ -37,7 +37,7 @@ CREATE TABLE `bailam` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `cauhoi`
+-- Table structure for table `cauhoi`
 --
 
 CREATE TABLE `cauhoi` (
@@ -51,7 +51,7 @@ CREATE TABLE `cauhoi` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `cauhoi-dekiemtra`
+-- Table structure for table `cauhoi-dekiemtra`
 --
 
 CREATE TABLE `cauhoi-dekiemtra` (
@@ -62,7 +62,7 @@ CREATE TABLE `cauhoi-dekiemtra` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `chitietbailam`
+-- Table structure for table `chitietbailam`
 --
 
 CREATE TABLE `chitietbailam` (
@@ -74,7 +74,7 @@ CREATE TABLE `chitietbailam` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `chucnang`
+-- Table structure for table `chucnang`
 --
 
 CREATE TABLE `chucnang` (
@@ -83,7 +83,7 @@ CREATE TABLE `chucnang` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `chucnang`
+-- Dumping data for table `chucnang`
 --
 
 INSERT INTO `chucnang` (`maChucNang`, `tenChucNang`) VALUES
@@ -100,7 +100,7 @@ INSERT INTO `chucnang` (`maChucNang`, `tenChucNang`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `chuong`
+-- Table structure for table `chuong`
 --
 
 CREATE TABLE `chuong` (
@@ -109,22 +109,66 @@ CREATE TABLE `chuong` (
   `tenChuong` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `chuong`
+--
+
+INSERT INTO `chuong` (`maChuong`, `maMonHoc`, `tenChuong`) VALUES
+(1, 'CT101', 'Giới thiệu ngôn ngữ C'),
+(2, 'CT101', 'Cấu trúc điều khiển'),
+(3, 'CT101', 'Hàm và mảng'),
+(4, 'CT101', 'Con trỏ và chuỗi'),
+(5, 'CT101', 'Tập tin và cấu trúc'),
+(6, 'CT102', 'Ôn tập lập trình'),
+(7, 'CT102', 'Ngăn xếp và hàng đợi'),
+(8, 'CT102', 'Danh sách liên kết'),
+(9, 'CT102', 'Cây nhị phân'),
+(10, 'CT102', 'Thuật toán sắp xếp và tìm kiếm'),
+(11, 'CT103', 'Khái niệm cơ sở dữ liệu'),
+(12, 'CT103', 'Mô hình quan hệ'),
+(13, 'CT103', 'SQL cơ bản'),
+(14, 'CT103', 'Thiết kế cơ sở dữ liệu'),
+(15, 'CT103', 'Quản lý cơ sở dữ liệu'),
+(16, 'CT104', 'Khái niệm hướng đối tượng'),
+(17, 'CT104', 'Lớp và đối tượng'),
+(18, 'CT104', 'Kế thừa và đa hình'),
+(19, 'CT104', 'Nạp chồng và trừu tượng'),
+(20, 'CT104', 'Xử lý ngoại lệ'),
+(21, 'CT105', 'Tổng quan về mạng'),
+(22, 'CT105', 'Mô hình OSI'),
+(23, 'CT105', 'Giao thức TCP/IP'),
+(24, 'CT105', 'Địa chỉ IP và subnet'),
+(25, 'CT105', 'Mạng LAN và WAN'),
+(26, 'CT106', 'Khái niệm hệ điều hành'),
+(27, 'CT106', 'Quản lý tiến trình'),
+(28, 'CT106', 'Quản lý bộ nhớ'),
+(29, 'CT106', 'Hệ thống tệp'),
+(30, 'CT106', 'Đồng bộ và deadlock'),
+(31, 'CT107', 'Khái niệm phân tích hệ thống'),
+(32, 'CT107', 'Thu thập yêu cầu'),
+(33, 'CT107', 'Mô hình hóa hệ thống'),
+(34, 'CT107', 'Thiết kế hệ thống'),
+(35, 'CT107', 'Triển khai và bảo trì'),
+(36, 'CT108', 'Giới thiệu AI'),
+(37, 'CT108', 'Tìm kiếm trạng thái'),
+(38, 'CT108', 'Logic và suy luận'),
+(39, 'CT108', 'Học máy cơ bản'),
+(40, 'CT108', 'Ứng dụng AI'),
+(41, 'CT109', 'HTML & CSS'),
+(42, 'CT109', 'JavaScript cơ bản'),
+(43, 'CT109', 'PHP và MySQL'),
+(44, 'CT109', 'Xây dựng website động'),
+(45, 'CT109', 'Bảo mật ứng dụng web'),
+(46, 'CT110', 'Giới thiệu khai phá dữ liệu'),
+(47, 'CT110', 'Tiền xử lý dữ liệu'),
+(48, 'CT110', 'Phân cụm dữ liệu'),
+(49, 'CT110', 'Phân loại dữ liệu'),
+(50, 'CT110', 'Đánh giá mô hình');
+
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `ctdekiemtra`
---
-
-CREATE TABLE `ctdekiemtra` (
-  `maDe` int(11) NOT NULL,
-  `maMonHoc` varchar(11) NOT NULL,
-  `maChuong` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `ctnhomquyen`
+-- Table structure for table `ctnhomquyen`
 --
 
 CREATE TABLE `ctnhomquyen` (
@@ -137,7 +181,7 @@ CREATE TABLE `ctnhomquyen` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `ctnhomquyen`
+-- Dumping data for table `ctnhomquyen`
 --
 
 INSERT INTO `ctnhomquyen` (`maQuyen`, `maChucNang`, `xem`, `them`, `capNhat`, `xoa`) VALUES
@@ -154,7 +198,7 @@ INSERT INTO `ctnhomquyen` (`maQuyen`, `maChucNang`, `xem`, `them`, `capNhat`, `x
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `dapan`
+-- Table structure for table `dapan`
 --
 
 CREATE TABLE `dapan` (
@@ -167,7 +211,7 @@ CREATE TABLE `dapan` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `dekiemtra`
+-- Table structure for table `dekiemtra`
 --
 
 CREATE TABLE `dekiemtra` (
@@ -176,6 +220,7 @@ CREATE TABLE `dekiemtra` (
   `thoiGianBatDau` datetime NOT NULL,
   `thoiGianKetThuc` datetime NOT NULL,
   `thoiGianCanhBao` datetime NOT NULL,
+  `maMonHoc` varchar(11) NOT NULL,
   `soCauDe` int(11) NOT NULL,
   `soCauTrungBinh` int(11) NOT NULL,
   `soCauKho` int(11) NOT NULL,
@@ -185,7 +230,7 @@ CREATE TABLE `dekiemtra` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `dekiemtra-nhom`
+-- Table structure for table `dekiemtra-nhom`
 --
 
 CREATE TABLE `dekiemtra-nhom` (
@@ -196,7 +241,7 @@ CREATE TABLE `dekiemtra-nhom` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `giaovien`
+-- Table structure for table `giaovien`
 --
 
 CREATE TABLE `giaovien` (
@@ -212,7 +257,7 @@ CREATE TABLE `giaovien` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `monhoc`
+-- Table structure for table `monhoc`
 --
 
 CREATE TABLE `monhoc` (
@@ -224,10 +269,26 @@ CREATE TABLE `monhoc` (
   `heSo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `monhoc`
+--
+
+INSERT INTO `monhoc` (`maMonHoc`, `tenMonHoc`, `tinChi`, `soTietLyThuyet`, `soTietThucHanh`, `heSo`) VALUES
+('CT101', 'Lập trình C cơ bản', 3, 30, 15, 1),
+('CT102', 'Cấu trúc dữ liệu và giải thuật', 4, 45, 15, 2),
+('CT103', 'Cơ sở dữ liệu', 3, 30, 15, 2),
+('CT104', 'Lập trình hướng đối tượng', 3, 30, 15, 2),
+('CT105', 'Mạng máy tính', 3, 30, 15, 2),
+('CT106', 'Hệ điều hành', 3, 30, 15, 2),
+('CT107', 'Phân tích và thiết kế hệ thống', 3, 30, 15, 2),
+('CT108', 'Trí tuệ nhân tạo', 3, 30, 15, 3),
+('CT109', 'Lập trình web', 3, 30, 15, 2),
+('CT110', 'Khai phá dữ liệu', 3, 30, 15, 3);
+
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `nhom`
+-- Table structure for table `nhom`
 --
 
 CREATE TABLE `nhom` (
@@ -244,7 +305,7 @@ CREATE TABLE `nhom` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `nhomquyen`
+-- Table structure for table `nhomquyen`
 --
 
 CREATE TABLE `nhomquyen` (
@@ -253,7 +314,7 @@ CREATE TABLE `nhomquyen` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `nhomquyen`
+-- Dumping data for table `nhomquyen`
 --
 
 INSERT INTO `nhomquyen` (`maQuyen`, `tenQuyen`) VALUES
@@ -264,7 +325,7 @@ INSERT INTO `nhomquyen` (`maQuyen`, `tenQuyen`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `nhomthamgia`
+-- Table structure for table `nhomthamgia`
 --
 
 CREATE TABLE `nhomthamgia` (
@@ -275,7 +336,7 @@ CREATE TABLE `nhomthamgia` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `phancong`
+-- Table structure for table `phancong`
 --
 
 CREATE TABLE `phancong` (
@@ -287,7 +348,7 @@ CREATE TABLE `phancong` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `sinhvien`
+-- Table structure for table `sinhvien`
 --
 
 CREATE TABLE `sinhvien` (
@@ -301,18 +362,17 @@ CREATE TABLE `sinhvien` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `sinhvien`
+-- Dumping data for table `sinhvien`
 --
 
 INSERT INTO `sinhvien` (`maSinhVien`, `hoVaTen`, `email`, `gioiTinh`, `ngaySinh`, `anhDaiDien`, `maQuyen`) VALUES
 ('111111', 'Cường', 'cuong@gmail.comm', 'Nam', '2004-01-20', 'hello', 1),
-('3122410043', 'Cao Tiến Cường', 'cuong@gmail.com', 'Nam', '2000-01-01', 'default.jpg', 3),
-('3122410351', 'Quyên', 'skjnas@gmail.com', 'Nam', '2000-01-01', 'default.jpg', 3);
+('3122410006', 'Mai Anh', 'domaianhh20@gmail.com', 'Nam', '2000-01-01', 'default.jpg', 3);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `taikhoan`
+-- Table structure for table `taikhoan`
 --
 
 CREATE TABLE `taikhoan` (
@@ -322,18 +382,17 @@ CREATE TABLE `taikhoan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `taikhoan`
+-- Dumping data for table `taikhoan`
 --
 
 INSERT INTO `taikhoan` (`ma`, `password`, `trangThai`) VALUES
 ('111111', '123456', 1),
-('3122410043', 'cuonghero9a', 1),
-('3122410351', '1234@q', 1);
+('3122410006', 'maianh23', 1);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `thongbao`
+-- Table structure for table `thongbao`
 --
 
 CREATE TABLE `thongbao` (
@@ -345,7 +404,7 @@ CREATE TABLE `thongbao` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `thongbao-nhom`
+-- Table structure for table `thongbao-nhom`
 --
 
 CREATE TABLE `thongbao-nhom` (
@@ -354,11 +413,11 @@ CREATE TABLE `thongbao-nhom` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Chỉ mục cho các bảng đã đổ
+-- Indexes for dumped tables
 --
 
 --
--- Chỉ mục cho bảng `bailam`
+-- Indexes for table `bailam`
 --
 ALTER TABLE `bailam`
   ADD PRIMARY KEY (`maBaiLam`),
@@ -366,7 +425,7 @@ ALTER TABLE `bailam`
   ADD KEY `fk_bailam_made` (`maDe`);
 
 --
--- Chỉ mục cho bảng `cauhoi`
+-- Indexes for table `cauhoi`
 --
 ALTER TABLE `cauhoi`
   ADD PRIMARY KEY (`maCauHoi`),
@@ -374,98 +433,93 @@ ALTER TABLE `cauhoi`
   ADD KEY `fk_cauhoi_monhoc` (`maMonHoc`);
 
 --
--- Chỉ mục cho bảng `cauhoi-dekiemtra`
+-- Indexes for table `cauhoi-dekiemtra`
 --
 ALTER TABLE `cauhoi-dekiemtra`
   ADD KEY `fk_cauhoi-dekiemtra_cauhoi` (`maCauHoi`),
   ADD KEY `fk_cauhoi-dekiemtra_dekiemtra` (`maDe`);
 
 --
--- Chỉ mục cho bảng `chitietbailam`
+-- Indexes for table `chitietbailam`
 --
 ALTER TABLE `chitietbailam`
   ADD KEY `fk_chitietbailam_bailam` (`maBaiLam`),
   ADD KEY `fk_chitietbailam_cauhoi` (`maCauHoi`);
 
 --
--- Chỉ mục cho bảng `chucnang`
+-- Indexes for table `chucnang`
 --
 ALTER TABLE `chucnang`
   ADD PRIMARY KEY (`maChucNang`);
 
 --
--- Chỉ mục cho bảng `chuong`
+-- Indexes for table `chuong`
 --
 ALTER TABLE `chuong`
+  ADD PRIMARY KEY (`maChuong`),
   ADD KEY `fk_chuong_monhoc` (`maMonHoc`);
 
 --
--- Chỉ mục cho bảng `ctdekiemtra`
---
-ALTER TABLE `ctdekiemtra`
-  ADD KEY `fk_ctdekiemtra_dekiemtra` (`maDe`),
-  ADD KEY `fk_ctdekiemtra_monhoc` (`maMonHoc`);
-
---
--- Chỉ mục cho bảng `ctnhomquyen`
+-- Indexes for table `ctnhomquyen`
 --
 ALTER TABLE `ctnhomquyen`
   ADD KEY `fk_ctnhomquyen_nhomquyen` (`maQuyen`),
   ADD KEY `fk_ctnhomquyen_chucnang` (`maChucNang`);
 
 --
--- Chỉ mục cho bảng `dapan`
+-- Indexes for table `dapan`
 --
 ALTER TABLE `dapan`
+  ADD PRIMARY KEY (`maDapAn`),
   ADD KEY `fk_dapan_cauhoi` (`maCauHoi`);
 
 --
--- Chỉ mục cho bảng `dekiemtra`
+-- Indexes for table `dekiemtra`
 --
 ALTER TABLE `dekiemtra`
   ADD PRIMARY KEY (`maDe`);
 
 --
--- Chỉ mục cho bảng `dekiemtra-nhom`
+-- Indexes for table `dekiemtra-nhom`
 --
 ALTER TABLE `dekiemtra-nhom`
   ADD KEY `fk_dekiemtra-nhom_dekiemtra` (`maDe`),
   ADD KEY `fk_dekiemtra-hom_nhom` (`maNhom`);
 
 --
--- Chỉ mục cho bảng `giaovien`
+-- Indexes for table `giaovien`
 --
 ALTER TABLE `giaovien`
   ADD PRIMARY KEY (`maGiaoVien`),
   ADD KEY `fk_giaovien_nhomquyen` (`maQuyen`);
 
 --
--- Chỉ mục cho bảng `monhoc`
+-- Indexes for table `monhoc`
 --
 ALTER TABLE `monhoc`
   ADD PRIMARY KEY (`maMonHoc`);
 
 --
--- Chỉ mục cho bảng `nhom`
+-- Indexes for table `nhom`
 --
 ALTER TABLE `nhom`
   ADD PRIMARY KEY (`maNhom`);
 
 --
--- Chỉ mục cho bảng `nhomquyen`
+-- Indexes for table `nhomquyen`
 --
 ALTER TABLE `nhomquyen`
   ADD PRIMARY KEY (`maQuyen`);
 
 --
--- Chỉ mục cho bảng `nhomthamgia`
+-- Indexes for table `nhomthamgia`
 --
 ALTER TABLE `nhomthamgia`
   ADD KEY `fk_nhomthamgia_sinhvien` (`maSinhVien`),
   ADD KEY `fk_nhomthamgia_nhom` (`maNhom`);
 
 --
--- Chỉ mục cho bảng `phancong`
+-- Indexes for table `phancong`
 --
 ALTER TABLE `phancong`
   ADD PRIMARY KEY (`maPhanCong`),
@@ -473,182 +527,123 @@ ALTER TABLE `phancong`
   ADD KEY `fk_phancong_giaovien` (`maGiaoVien`);
 
 --
--- Chỉ mục cho bảng `sinhvien`
+-- Indexes for table `sinhvien`
 --
 ALTER TABLE `sinhvien`
   ADD PRIMARY KEY (`maSinhVien`),
   ADD KEY `fk_sinhvien_nhomquyen` (`maQuyen`);
 
 --
--- Chỉ mục cho bảng `taikhoan`
+-- Indexes for table `taikhoan`
 --
 ALTER TABLE `taikhoan`
   ADD PRIMARY KEY (`ma`);
 
 --
--- Chỉ mục cho bảng `thongbao`
+-- Indexes for table `thongbao`
 --
 ALTER TABLE `thongbao`
   ADD PRIMARY KEY (`maThongBao`);
 
 --
--- Chỉ mục cho bảng `thongbao-nhom`
+-- Indexes for table `thongbao-nhom`
 --
 ALTER TABLE `thongbao-nhom`
   ADD KEY `fk_thongbao-nhom_nhom` (`maNhom`),
   ADD KEY `fk_thongbao-nhom_thongbao` (`maThongBao`);
 
 --
--- AUTO_INCREMENT cho các bảng đã đổ
+-- Constraints for dumped tables
 --
 
 --
--- AUTO_INCREMENT cho bảng `bailam`
---
-ALTER TABLE `bailam`
-  MODIFY `maBaiLam` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT cho bảng `cauhoi`
---
-ALTER TABLE `cauhoi`
-  MODIFY `maCauHoi` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT cho bảng `chucnang`
---
-ALTER TABLE `chucnang`
-  MODIFY `maChucNang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
--- AUTO_INCREMENT cho bảng `dekiemtra`
---
-ALTER TABLE `dekiemtra`
-  MODIFY `maDe` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT cho bảng `nhom`
---
-ALTER TABLE `nhom`
-  MODIFY `maNhom` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT cho bảng `nhomquyen`
---
-ALTER TABLE `nhomquyen`
-  MODIFY `maQuyen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT cho bảng `phancong`
---
-ALTER TABLE `phancong`
-  MODIFY `maPhanCong` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT cho bảng `thongbao`
---
-ALTER TABLE `thongbao`
-  MODIFY `maThongBao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- Các ràng buộc cho các bảng đã đổ
---
-
---
--- Các ràng buộc cho bảng `bailam`
+-- Constraints for table `bailam`
 --
 ALTER TABLE `bailam`
   ADD CONSTRAINT `fk_bailam_made` FOREIGN KEY (`maDe`) REFERENCES `dekiemtra` (`maDe`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_bailam_sinhvien` FOREIGN KEY (`maSinhVien`) REFERENCES `sinhvien` (`maSinhVien`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Các ràng buộc cho bảng `cauhoi`
+-- Constraints for table `cauhoi`
 --
 ALTER TABLE `cauhoi`
   ADD CONSTRAINT `fk_cauhoi_monhoc` FOREIGN KEY (`maMonHoc`) REFERENCES `monhoc` (`maMonHoc`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Các ràng buộc cho bảng `cauhoi-dekiemtra`
+-- Constraints for table `cauhoi-dekiemtra`
 --
 ALTER TABLE `cauhoi-dekiemtra`
   ADD CONSTRAINT `fk_cauhoi-dekiemtra_cauhoi` FOREIGN KEY (`maCauHoi`) REFERENCES `cauhoi` (`maCauHoi`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_cauhoi-dekiemtra_dekiemtra` FOREIGN KEY (`maDe`) REFERENCES `dekiemtra` (`maDe`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Các ràng buộc cho bảng `chitietbailam`
+-- Constraints for table `chitietbailam`
 --
 ALTER TABLE `chitietbailam`
   ADD CONSTRAINT `fk_chitietbailam_bailam` FOREIGN KEY (`maBaiLam`) REFERENCES `bailam` (`maBaiLam`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_chitietbailam_cauhoi` FOREIGN KEY (`maCauHoi`) REFERENCES `cauhoi` (`maCauHoi`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Các ràng buộc cho bảng `chuong`
+-- Constraints for table `chuong`
 --
 ALTER TABLE `chuong`
   ADD CONSTRAINT `fk_chuong_monhoc` FOREIGN KEY (`maMonHoc`) REFERENCES `monhoc` (`maMonHoc`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Các ràng buộc cho bảng `ctdekiemtra`
---
-ALTER TABLE `ctdekiemtra`
-  ADD CONSTRAINT `fk_ctdekiemtra_dekiemtra` FOREIGN KEY (`maDe`) REFERENCES `dekiemtra` (`maDe`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_ctdekiemtra_monhoc` FOREIGN KEY (`maMonHoc`) REFERENCES `monhoc` (`maMonHoc`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Các ràng buộc cho bảng `ctnhomquyen`
+-- Constraints for table `ctnhomquyen`
 --
 ALTER TABLE `ctnhomquyen`
   ADD CONSTRAINT `fk_ctnhomquyen_chucnang` FOREIGN KEY (`maChucNang`) REFERENCES `chucnang` (`maChucNang`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_ctnhomquyen_nhomquyen` FOREIGN KEY (`maQuyen`) REFERENCES `nhomquyen` (`maQuyen`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Các ràng buộc cho bảng `dapan`
+-- Constraints for table `dapan`
 --
 ALTER TABLE `dapan`
   ADD CONSTRAINT `fk_dapan_cauhoi` FOREIGN KEY (`maCauHoi`) REFERENCES `cauhoi` (`maCauHoi`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Các ràng buộc cho bảng `dekiemtra-nhom`
+-- Constraints for table `dekiemtra-nhom`
 --
 ALTER TABLE `dekiemtra-nhom`
   ADD CONSTRAINT `fk_dekiemtra-hom_nhom` FOREIGN KEY (`maNhom`) REFERENCES `nhom` (`maNhom`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_dekiemtra-nhom_dekiemtra` FOREIGN KEY (`maDe`) REFERENCES `dekiemtra` (`maDe`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Các ràng buộc cho bảng `giaovien`
+-- Constraints for table `giaovien`
 --
 ALTER TABLE `giaovien`
   ADD CONSTRAINT `fk_giaovien_nhomquyen` FOREIGN KEY (`maQuyen`) REFERENCES `nhomquyen` (`maQuyen`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_giaovien_taikhoan` FOREIGN KEY (`maGiaoVien`) REFERENCES `taikhoan` (`ma`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Các ràng buộc cho bảng `nhomthamgia`
+-- Constraints for table `nhomthamgia`
 --
 ALTER TABLE `nhomthamgia`
   ADD CONSTRAINT `fk_nhomthamgia_nhom` FOREIGN KEY (`maNhom`) REFERENCES `nhom` (`maNhom`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_nhomthamgia_sinhvien` FOREIGN KEY (`maSinhVien`) REFERENCES `sinhvien` (`maSinhVien`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Các ràng buộc cho bảng `phancong`
+-- Constraints for table `phancong`
 --
 ALTER TABLE `phancong`
   ADD CONSTRAINT `fk_phancong_giaovien` FOREIGN KEY (`maGiaoVien`) REFERENCES `giaovien` (`maGiaoVien`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_phancong_monhoc` FOREIGN KEY (`maMonHoc`) REFERENCES `monhoc` (`maMonHoc`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Các ràng buộc cho bảng `sinhvien`
+-- Constraints for table `sinhvien`
 --
 ALTER TABLE `sinhvien`
   ADD CONSTRAINT `fk_sinhvien_nhomquyen` FOREIGN KEY (`maQuyen`) REFERENCES `nhomquyen` (`maQuyen`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Các ràng buộc cho bảng `taikhoan`
+-- Constraints for table `taikhoan`
 --
 ALTER TABLE `taikhoan`
   ADD CONSTRAINT `fk_sinhvien_taikhoan` FOREIGN KEY (`ma`) REFERENCES `sinhvien` (`maSinhVien`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Các ràng buộc cho bảng `thongbao-nhom`
+-- Constraints for table `thongbao-nhom`
 --
 ALTER TABLE `thongbao-nhom`
   ADD CONSTRAINT `fk_thongbao-nhom_nhom` FOREIGN KEY (`maNhom`) REFERENCES `nhom` (`maNhom`) ON DELETE CASCADE ON UPDATE CASCADE,

@@ -91,7 +91,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         }
 
-
         // ===========================================Load Data_DSCauHoi===========================================
         private void LoadData_DSCauHoi()
         {
@@ -266,10 +265,13 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 dlg.ClientSize = new Size(1480, 700);
                 dlg.AutoScroll = true;
                 dlg.ShowInTaskbar = false;
-                Console.WriteLine("\n - Nhấn nút Xem");
-                Console.WriteLine("\n - Mã câu hỏi được chọn: " + maCauHoi);
+
+                //Truyền đối số 0 nghĩa là xác nhận đây là nút xem
+                int id = Convert.ToInt32(dataGridView_DSCauHoi.SelectedRows[0].Cells["MaCauHoi"].Value);
+                Console.WriteLine("\n - Nhấn nút Xem -");
+                Console.WriteLine("\n - Mã câu hỏi được chọn: " + id);
                 Console.WriteLine("\n");
-                Dialog_SuaCauHoi dialog = new Dialog_SuaCauHoi(0,maCauHoi);
+                Dialog_SuaCauHoi dialog = new Dialog_SuaCauHoi(0, id);
                 dialog.Dock = DockStyle.Top;
 
                 dlg.Controls.Add(dialog);
@@ -286,8 +288,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 dialog.ShowDialog();
                 return;
             }
-            //Lấy mã câu hỏi từ dòng được chọn
-            string maCauHoi = dataGridView_DSCauHoi.SelectedRows[0].Cells["MaCauHoi"].Value.ToString();
+
             using (Form dlg = new Form())
             {
                 dlg.Text = "SỬA CÂU HỎI";
@@ -298,21 +299,16 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 dlg.ShowInTaskbar = false;
 
                 //Truyền đối số 1 nghĩa là xác nhận đây là nút sửa
+                int id = Convert.ToInt32(dataGridView_DSCauHoi.SelectedRows[0].Cells["MaCauHoi"].Value);
                 Console.WriteLine("\n - Nhấn nút Sửa -");
-                Console.WriteLine("\n - Mã câu hỏi được chọn: " + maCauHoi);
+                Console.WriteLine("\n - Mã câu hỏi được chọn: " + id);
                 Console.WriteLine("\n");
-
-                Dialog_SuaCauHoi dialog = new Dialog_SuaCauHoi(1,maCauHoi);
+                Dialog_SuaCauHoi dialog = new Dialog_SuaCauHoi(1,id);
                 dialog.Dock = DockStyle.Top;
 
                 dlg.Controls.Add(dialog);
                 dlg.ShowDialog(this);
             }
-        }
-
-        private void button_Xoa_Click(object sender, EventArgs e)
-        {
-            //Xóa câu hỏi
         }
 
         private void button_Prev_Click(object sender, EventArgs e)
