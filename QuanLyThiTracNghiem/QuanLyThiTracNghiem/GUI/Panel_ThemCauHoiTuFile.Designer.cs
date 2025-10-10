@@ -31,14 +31,11 @@
             label_MonHoc = new Label();
             label_DoKho = new Label();
             label_Chuong = new Label();
-            label_ChonTep = new Label();
             label_message = new Label();
             panel_Left = new Panel();
             comboBox_DoKho = new ComboBox();
             comboBox_Chuong = new ComboBox();
             comboBox_MonHoc = new ComboBox();
-            button_ChonFile = new Button();
-            textBox_TenFile = new TextBox();
             button_MauFileGoc = new Button();
             button_Luu = new Button();
             panel_Left.SuspendLayout();
@@ -74,21 +71,11 @@
             label_Chuong.TabIndex = 2;
             label_Chuong.Text = "Chương:";
             // 
-            // label_ChonTep
-            // 
-            label_ChonTep.AutoSize = true;
-            label_ChonTep.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label_ChonTep.Location = new Point(744, 52);
-            label_ChonTep.Name = "label_ChonTep";
-            label_ChonTep.Size = new Size(113, 30);
-            label_ChonTep.TabIndex = 3;
-            label_ChonTep.Text = "Chọn Tệp:";
-            // 
             // label_message
             // 
             label_message.AutoSize = true;
             label_message.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label_message.Location = new Point(747, 167);
+            label_message.Location = new Point(743, 48);
             label_message.Name = "label_message";
             label_message.Size = new Size(404, 30);
             label_message.TabIndex = 4;
@@ -137,50 +124,31 @@
             comboBox_MonHoc.TabIndex = 3;
             comboBox_MonHoc.SelectionChangeCommitted += comboBox_MonHoc_SelectionChangeCommitted;
             // 
-            // button_ChonFile
-            // 
-            button_ChonFile.BackColor = SystemColors.ActiveCaption;
-            button_ChonFile.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button_ChonFile.ForeColor = SystemColors.ButtonFace;
-            button_ChonFile.Location = new Point(1208, 110);
-            button_ChonFile.Name = "button_ChonFile";
-            button_ChonFile.Size = new Size(213, 44);
-            button_ChonFile.TabIndex = 6;
-            button_ChonFile.Text = "Chọn File";
-            button_ChonFile.UseVisualStyleBackColor = false;
-            // 
-            // textBox_TenFile
-            // 
-            textBox_TenFile.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox_TenFile.Location = new Point(903, 52);
-            textBox_TenFile.Multiline = true;
-            textBox_TenFile.Name = "textBox_TenFile";
-            textBox_TenFile.Size = new Size(557, 52);
-            textBox_TenFile.TabIndex = 7;
-            // 
             // button_MauFileGoc
             // 
             button_MauFileGoc.BackColor = Color.DarkSeaGreen;
             button_MauFileGoc.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_MauFileGoc.ForeColor = SystemColors.ButtonFace;
-            button_MauFileGoc.Location = new Point(1157, 160);
+            button_MauFileGoc.Location = new Point(1153, 41);
             button_MauFileGoc.Name = "button_MauFileGoc";
             button_MauFileGoc.Size = new Size(123, 44);
             button_MauFileGoc.TabIndex = 8;
             button_MauFileGoc.Text = "File Mẫu";
             button_MauFileGoc.UseVisualStyleBackColor = false;
+            button_MauFileGoc.Click += button_MauFileGoc_Click;
             // 
             // button_Luu
             // 
             button_Luu.BackColor = SystemColors.ActiveCaption;
             button_Luu.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_Luu.ForeColor = SystemColors.ButtonFace;
-            button_Luu.Location = new Point(747, 242);
+            button_Luu.Location = new Point(744, 96);
             button_Luu.Name = "button_Luu";
             button_Luu.Size = new Size(713, 61);
             button_Luu.TabIndex = 9;
-            button_Luu.Text = "LƯU CÂU HỎI";
+            button_Luu.Text = "CHỌN FILE ";
             button_Luu.UseVisualStyleBackColor = false;
+            button_Luu.Click += button_Luu_Click;
             // 
             // Panel_ThemCauHoiTuFile
             // 
@@ -189,11 +157,8 @@
             BackColor = SystemColors.ButtonFace;
             Controls.Add(button_Luu);
             Controls.Add(button_MauFileGoc);
-            Controls.Add(textBox_TenFile);
-            Controls.Add(button_ChonFile);
             Controls.Add(panel_Left);
             Controls.Add(label_message);
-            Controls.Add(label_ChonTep);
             Name = "Panel_ThemCauHoiTuFile";
             Size = new Size(1480, 700);
             panel_Left.ResumeLayout(false);
@@ -207,14 +172,11 @@
         private Label label_MonHoc;
         private Label label_DoKho;
         private Label label_Chuong;
-        private Label label_ChonTep;
         private Label label_message;
         private Panel panel_Left;
         private ComboBox comboBox_DoKho;
         private ComboBox comboBox_Chuong;
         private ComboBox comboBox_MonHoc;
-        private Button button_ChonFile;
-        private TextBox textBox_TenFile;
         private Button button_MauFileGoc;
         private Button button_Luu;
     }

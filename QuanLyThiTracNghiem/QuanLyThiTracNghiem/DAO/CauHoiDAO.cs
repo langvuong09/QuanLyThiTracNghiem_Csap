@@ -66,9 +66,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                 }
             }
             catch (Exception ex) { return false; }
+            return false;
         }
 
-        public bool XoaCauHoi(string maCauHoi)
+        public bool XoaCauHoi(int maCauHoi)
         {
             try
             {
@@ -152,7 +153,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
-                    string sql = "SELECT MAX(*) FROM cauhoi";
+                    string sql = "SELECT MAX(maCauHoi) FROM cauhoi";
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
                     return Convert.ToInt32(cmd.ExecuteScalar());
 

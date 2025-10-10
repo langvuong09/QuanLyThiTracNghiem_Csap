@@ -235,6 +235,94 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             textBox_MaCauHoi.Text = maCauHoiMoi.ToString();
         }
 
+        /*
+             Phương thức thêm câu hỏi mới vào database
+                Input:  comboBox_DoKho, comboBox_Chuong, comboBox_MonHoc, textBox_NDCauHoi, textBox_MaCauHoi
+                Output: bool
+                Created by: Đỗ Mai Anh
+                Dùng trong : Panel_ThemCauHoiThuCong
+         */
+        public bool ThemCauHoiMoi(
+            ComboBox comboBox_DoKho,
+            ComboBox comboBox_Chuong,
+            ComboBox comboBox_MonHoc,
+            TextBox textBox_NDCauHoi,
+            TextBox textBox_MaCauHoi)
+        {
+            // Lấy dữ liệu từ các trường nhập liệu
+            string noiDungCauHoi = textBox_NDCauHoi.Text;
+            string maMonHoc = ((MonHoc)comboBox_MonHoc.SelectedItem).maMonHoc;
+            int maChuong = ((Chuong)comboBox_Chuong.SelectedItem).maChuong;
+            var selectedPair = (KeyValuePair<int, string>)comboBox_DoKho.SelectedItem;
+            string doKho = selectedPair.Value;
+            int maCauHoi = int.Parse(textBox_MaCauHoi.Text);
+
+            Console.WriteLine($"DEBUG: ThemCauHoiMoi - maCauHoi={maCauHoi}, maMonHoc={maMonHoc}, maChuong={maChuong}, doKho={doKho}, noiDungCauHoi={noiDungCauHoi} \n");
+            // Kiểm tra dữ liệu hợp lệ
+            if (string.IsNullOrWhiteSpace(noiDungCauHoi))
+            {
+                MyDialog dialog = new MyDialog("Nội dung câu hỏi không được để trống.", MyDialog.WARNING_DIALOG);
+                dialog.ShowDialog();
+                return false;
+            }
+            //Không được chọn "Chọn Môn Học"
+            if (comboBox_MonHoc.SelectedIndex <= 0)
+            {
+                MyDialog dialog = new MyDialog("Vui lòng chọn Môn Học.", MyDialog.WARNING_DIALOG);
+                dialog.ShowDialog();
+                return false;
+            }
+            //Không được chọn "Chọn Chương"
+            if (comboBox_Chuong.SelectedIndex <= 0)
+            {
+                MyDialog dialog = new MyDialog("Vui lòng chọn Chương.", MyDialog.WARNING_DIALOG);
+                dialog.ShowDialog();
+                return false;
+            }
+            //Không được chọn "Chọn Độ Khó"
+            if (comboBox_DoKho.SelectedIndex <= 0)
+            {
+                MyDialog dialog = new MyDialog("Vui lòng chọn Độ Khó.", MyDialog.WARNING_DIALOG);
+                dialog.ShowDialog();
+                return false;
+            }
+            // Gọi phương thức trong DAO để thêm câu hỏi
+            bool result = CauHoiDAO.ThemCauHoi(maCauHoi, maMonHoc, maChuong, doKho, noiDungCauHoi);
+            if (result)
+            {
+                MyDialog dialog = new MyDialog("Thêm câu hỏi thành công.", MyDialog.SUCCESS_DIALOG);
+                dialog.ShowDialog();
+                return true;
+            }
+            else
+            {
+                MyDialog dialog = new MyDialog("Thêm câu hỏi thất bại.", MyDialog.ERROR_DIALOG);
+                dialog.ShowDialog();
+                return false;
+            }
+            return false;
+        }
+
+        /*
+             Phương thức xóa câu hỏi theo mã câu hỏi
+                Input: maCauHoi
+                Output: void
+                Created by: Đỗ Mai Anh
+                Dùng trong : Panel_ThemCauHoiThuCong
+         */
+        public void XoaCauHoi(int maCauHoi)
+        {
+            bool soLuongCauHoiBiXoa = CauHoiDAO.XoaCauHoi(maCauHoi);
+            if (soLuongCauHoiBiXoa ==true)
+            {
+                Console.WriteLine("Xóa câu hỏi thành công");
+            }
+            else
+            {
+                Console.WriteLine("Xóa câu hỏi thất bại");
+            }
+        }
+
 
 
     }

@@ -158,9 +158,83 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void button_Them_Click(object sender, EventArgs e)
         {
-            
+            if (this.solgCauTraLoi <= 4)
+            {
+                MyDialog dialog = new MyDialog("Vui lòng nhập đủ 4 đáp án cho câu hỏi.", MyDialog.WARNING_DIALOG);
+                dialog.ShowDialog();
+                return;
+            }
+            if (this.soCauTraLoiDung == 0)
+            {
+                MyDialog dialog = new MyDialog("Vui lòng chọn đáp án đúng cho câu hỏi.", MyDialog.WARNING_DIALOG);
+                dialog.ShowDialog();
+                return;
+            }
 
+            // Lấy dữ liệu từ các component
+            var monHoc = comboBox_MonHoc.SelectedItem as MonHoc;
+            var chuong = comboBox_Chuong.SelectedItem as Chuong;
+            int doKho = (int)(comboBox_DoKho.SelectedValue ?? 0);
+            string noiDungCauHoi = textBox_NDCauHoi.Text.Trim();
+            if (monHoc == null || chuong == null || doKho == 0)
+            {
+                MyDialog dialog = new MyDialog("Vui lòng chọn đầy đủ Môn Học, Chương và Độ Khó.", MyDialog.WARNING_DIALOG);
+                dialog.ShowDialog();
+                return;
+            }
+            // Kiểm tra dữ liệu hợp lệ
+            if (string.IsNullOrEmpty(noiDungCauHoi))
+            {
+                MyDialog dialog = new MyDialog("Vui lòng nhập nội dung câu hỏi.", MyDialog.WARNING_DIALOG);
+                dialog.ShowDialog();
+                return;
+            }
+    
+            bool success = cauHoiBUS.ThemCauHoiMoi(
+                comboBox_DoKho,
+                comboBox_Chuong, 
+                comboBox_MonHoc,
+                textBox_NDCauHoi,
+                textBox_MaCauHoi);
+
+            if (success==true)
+            {
+                bool successDapAn = dapAnBUS.ThemDSDapAnTuDataGridView(
+                    dataGridView_DSCauTraLoi,
+                    int.Parse(textBox_MaCauHoi.Text)
+                    );
+                if (successDapAn == true)
+                {
+                    // Reset form để thêm câu hỏi mới
+                    textBox_NDCauHoi.Clear();
+                    comboBox_MonHoc.SelectedIndex = 0;
+                    comboBox_Chuong.DataSource = null;
+                    comboBox_Chuong.Items.Clear();
+                    comboBox_DoKho.SelectedIndex = 0;
+                    dataGridView_DSCauTraLoi.Rows.Clear();
+                    this.solgCauTraLoi = 1;
+                    this.soCauTraLoiDung = 0;
+                    Load_PanelCauHoiMoi();
+                }
+                else
+                {
+                    dapAnBUS.XoaDapAnTheoMaCauHoi(int.Parse(textBox_MaCauHoi.Text));
+                    // Nếu thêm đáp án thất bại thì xóa câu hỏi vừa thêm
+                    cauHoiBUS.XoaCauHoi(int.Parse(textBox_MaCauHoi.Text));
+                    MyDialog dialog = new MyDialog("Có lỗi hệ thống xin hãy thông báo với Admin ", MyDialog.ERROR_DIALOG);
+                    dialog.ShowDialog();
+
+                }
+
+            }
+            else
+            {
+                MyDialog dialog = new MyDialog("Thêm câu hỏi thất bại. Vui lòng thử lại.", MyDialog.ERROR_DIALOG);
+                dialog.ShowDialog();
+            }
         }
+
+
 
         private void button_ThemCauTraLoi_Click(object sender, EventArgs e)
         {

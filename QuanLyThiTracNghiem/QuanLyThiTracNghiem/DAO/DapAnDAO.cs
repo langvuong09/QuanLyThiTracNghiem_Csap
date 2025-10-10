@@ -161,6 +161,80 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
         }
 
-    }
+        /*
+          Phương thức thêm danh sách đáp án vào cơ sở dữ liệu
+             Input: List <DapAn>
+             Output: boolean
+             Created by: Đỗ Mai Anh
+
+        */
+
+        public bool ThemDSDapAn(List<DapAn> danhSachDapAn)
+        {
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    using (MySqlTransaction transaction = conn.BeginTransaction())
+                    {
+                        string sql = "INSERT INTO dapan (maDapAn, maCauHoi, tenDapAn, dungSai) " +
+                                     "VALUES (@maDapAn, @maCauHoi, @tenDapAn, @dungSai)";
+                        foreach (var dapAn in danhSachDapAn)
+                        {
+                            using (MySqlCommand cmd = new MySqlCommand(sql, conn, transaction))
+                            {
+                                cmd.Parameters.AddWithValue("@maDapAn", dapAn.maDapAn);
+                                cmd.Parameters.AddWithValue("@maCauHoi", dapAn.maCauHoi);
+                                cmd.Parameters.AddWithValue("@tenDapAn", dapAn.tenDapAn);
+                                cmd.Parameters.AddWithValue("@dungSai", dapAn.dungSai);
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+                        transaction.Commit();
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi thêm danh sách đáp án:\n" + ex.Message,
+               "Lỗi CSDL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                 return false;
+            }
+            return false;
+        }
+
+        /*
+          Phương thức xóa danh sách đáp án theo Mã Câu Hỏi
+             Input: maCauHoi
+             Output: boolean
+             Created by: Đỗ Mai Anh
+
+        */
+        public bool XoaDSDapAnTheoMaCauHoi(int maCauHoi)
+        {
+            try
+            {
+                string sql = "DELETE FROM dapan WHERE maCauHoi = @maCauHoi";
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maCauHoi", maCauHoi);
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+
+
 
     }
+
+}

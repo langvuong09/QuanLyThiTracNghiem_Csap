@@ -41,11 +41,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="DTO\" />
     <Folder Include="Libs\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MySql.Data" Version="9.4.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 
   <ItemGroup>

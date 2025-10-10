@@ -14,11 +14,13 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
     public partial class Panel_ThemCauHoiTuFile : UserControl
     {
+        private TxtQuestionParser txtQuestionParser = new TxtQuestionParser();
         public Panel_ThemCauHoiTuFile()
         {
             InitializeComponent();
             LoadMonHoc(comboBox_MonHoc);
             LoadDoKho(comboBox_DoKho);
+            LoadChuong(comboBox_Chuong, "0");
         }
         private MonHocBUS monHocBUS = new MonHocBUS();
         private ChuongBUS chuongBUS = new ChuongBUS();
@@ -68,6 +70,17 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             if (monHoc == null) return;
 
             LoadChuong(comboBox_Chuong, monHoc.maMonHoc);
+        }
+
+        private void button_Luu_Click(object sender, EventArgs e)
+        {
+            txtQuestionParser.LuuDanhSachCauHoiTuFileVaoCSDL(comboBox_MonHoc,comboBox_Chuong,comboBox_DoKho);
+        }
+
+
+        private void button_MauFileGoc_Click(object sender, EventArgs e)
+        {
+            txtQuestionParser.TaoVaMoFileMau();
         }
     }
 }

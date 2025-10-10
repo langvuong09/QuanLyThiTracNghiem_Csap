@@ -1,4 +1,5 @@
-﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
+﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI;
 using System;
 using System.Runtime.InteropServices;
@@ -29,11 +30,12 @@ namespace QuanLyThiTracNghiem
         }
     }
 
-    /// <summary>
-    /// ApplicationContext giúp quản lý form chính động,
-    /// không bị thoát app khi đóng form đầu tiên.
-    /// </summary>
-    public class MyAppContext : ApplicationContext
+        /// <summary>
+        /// ApplicationContext giúp quản lý form chính động,
+        /// không bị thoát app khi đóng form đầu tiên.
+        /// </summary>
+        
+        public class MyAppContext : ApplicationContext
     {
         public MyAppContext()
         {
@@ -45,10 +47,11 @@ namespace QuanLyThiTracNghiem
             {
                 if (Application.OpenForms.Count == 0)
                     // Thoát app khi không còn form nào
-                    ExitThread(); 
+                    ExitThread();
             };
 
             startForm.Show();
         }
     }
+
 }

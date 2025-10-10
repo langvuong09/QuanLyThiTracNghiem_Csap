@@ -1,4 +1,6 @@
-﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
+﻿using QuanLyThiTracNghiem.MyCustom;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,31 +74,139 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 
                 if (string.IsNullOrWhiteSpace(textBox_TenDapAn.Text))
                 {
-                    MessageBox.Show("Vui lòng nhập tên đáp án.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MyDialog dialog = new MyDialog("Vui lòng nhập tên đáp án.", MyDialog.WARNING_DIALOG);
+                    dialog.ShowDialog();
+                 
                     return;
                 }
                 if (!int.TryParse(textBox_maDapAn.Text, out int maDapAn))
                 {
-                    MessageBox.Show("Mã đáp án không hợp lệ.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    MyDialog dialog = new MyDialog("Mã đáp án không hợp lệ.", MyDialog.WARNING_DIALOG);
+                    dialog.ShowDialog();
                     return;
                 }
-                bool success = dapAnDAO.SuaDapAn(maDapAn, textBox_TenDapAn.Text,maCauHoi);
+                bool success = dapAnDAO.SuaDapAn(maDapAn, textBox_TenDapAn.Text, maCauHoi);
                 if (success)
                 {
                     // Tải lại danh sách đáp án vào DataGridView
                     LayDSDapAnTheoMaCauHoi(dataGridView, maCauHoi);
-                    MessageBox.Show("Sửa đáp án thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    MyDialog dialog = new MyDialog("Sửa đáp án thành công.", MyDialog.SUCCESS_DIALOG);
+                    dialog.ShowDialog();
                 }
                 else
                 {
-                    MessageBox.Show("Sửa đáp án thất bại. Vui lòng thử lại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    MyDialog dialog = new MyDialog("Sửa đáp án thất bại. Vui lòng thử lại.", MyDialog.ERROR_DIALOG);
+                    dialog.ShowDialog();
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("DapAnBUS => Lỗi khi sửa đáp án: " + ex.Message);
-                MessageBox.Show("Đã xảy ra lỗi khi sửa đáp án. Vui lòng thử lại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                MyDialog dialog = new MyDialog("Đã xảy ra lỗi khi sửa đáp án. Vui lòng thử lại.", MyDialog.ERROR_DIALOG);
+                dialog.ShowDialog();
             }
+        }
+
+        /*
+          Phương thức thêm danh sách đáp án vào cơ sở dữ liệu
+             Input: DataGridView_DSDapAn, maCauHoi
+             Output: boolean
+             Created by: Đỗ Mai Anh
+
+        */
+        public bool ThemDSDapAnTuDataGridView(DataGridView DataGridView_DSDapAn, int maCauHoi)
+        {
+            try
+            {
+                List<DapAn> danhSachDapAn = new List<DapAn>();
+                foreach (DataGridViewRow row in DataGridView_DSDapAn.Rows)
+                {
+                    if (row.IsNewRow) continue; // Bỏ qua dòng mới
+                    string maDapAnStr = row.Cells["MaDapAn"].Value?.ToString();
+                    string tenDapAn = row.Cells["NoiDung"].Value?.ToString();
+                    string dungSaiStr = row.Cells["DungSai"].Value?.ToString();
+
+
+                    if (string.IsNullOrWhiteSpace(tenDapAn) || string.IsNullOrWhiteSpace(dungSaiStr))
+                    {
+
+                        MyDialog dialog = new MyDialog("Tên đáp án và Đúng/Sai không được để trống.", MyDialog.WARNING_DIALOG);
+                        dialog.ShowDialog();
+                        return false;
+                    }
+                    int maDapAn = int.TryParse(maDapAnStr, out int tempMaDapAn) ? tempMaDapAn : 1;
+                    int dungSai = dungSaiStr.Equals("Đúng", StringComparison.OrdinalIgnoreCase) ? 1 : 0;
+                    
+                    DapAn dapAn = new DapAn(maDapAn, maCauHoi, tenDapAn, dungSai);
+
+                    danhSachDapAn.Add(dapAn);
+                }
+                if (danhSachDapAn.Count == 0)
+                {
+
+                    MyDialog dialog = new MyDialog("Vui lòng thêm đủ 4 đáp án", MyDialog.WARNING_DIALOG);
+                    dialog.ShowDialog();
+                    return false;
+                }
+                bool success = dapAnDAO.ThemDSDapAn(danhSachDapAn);
+                if (success)
+                {
+
+                    MyDialog dialog = new MyDialog("Thêm danh sách đáp án thành công.", MyDialog.SUCCESS_DIALOG);
+                    dialog.ShowDialog();
+                }
+                else
+                {
+
+                    MyDialog dialog = new MyDialog("Thêm danh sách đáp án thất bại. Vui lòng thử lại.", MyDialog.WARNING_DIALOG);
+                    dialog.ShowDialog();
+                }
+                return success;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("DapAnBUS => Lỗi khi thêm danh sách đáp án: " + ex.Message);
+
+                MyDialog dialog = new MyDialog("Đã xảy ra lỗi khi thêm danh sách đáp án. Vui lòng thử lại.", MyDialog.WARNING_DIALOG);
+                dialog.ShowDialog();
+
+            }
+            return false;
+        }
+
+        /*
+          Phương thức xóa đáp án theo mã câu hỏi
+             Input: maCauHoi
+             Output: none
+             Created by: Đỗ Mai Anh
+
+        */
+        public void XoaDapAnTheoMaCauHoi(int maCauHoi)
+        {
+            try
+            {
+                bool success = dapAnDAO.XoaDSDapAnTheoMaCauHoi(maCauHoi);
+                if (success)
+                {
+                    Console.WriteLine("Xóa đáp án theo mã câu hỏi thành công.");
+                }
+                else
+                {
+                    Console.WriteLine("Xóa đáp án theo mã câu hỏi thất bại. Vui lòng thử lại.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("DapAnBUS => Lỗi khi xóa đáp án theo mã câu hỏi: " + ex.Message);
+            }
+
+
+
         }
     }
 }
