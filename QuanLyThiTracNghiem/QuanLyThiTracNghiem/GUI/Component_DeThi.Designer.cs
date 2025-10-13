@@ -29,10 +29,11 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Component_DeThi));
-            comboBox_LocDeThi = new ComboBox();
-            textBox1 = new TextBox();
+            textBox_TimKiem = new TextBox();
             button_Reload = new Button();
             panel_Top = new Panel();
+            button_TimKiem = new Button();
+            comboBox_LocTheoNhom = new ComboBox();
             panel_Bottom = new Panel();
             comboBox1 = new ComboBox();
             button_Prev = new Button();
@@ -42,45 +43,61 @@
             panel_Bottom.SuspendLayout();
             SuspendLayout();
             // 
-            // comboBox_LocDeThi
+            // textBox_TimKiem
             // 
-            comboBox_LocDeThi.BackColor = SystemColors.InactiveCaption;
-            comboBox_LocDeThi.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            comboBox_LocDeThi.FormattingEnabled = true;
-            comboBox_LocDeThi.Location = new Point(19, 25);
-            comboBox_LocDeThi.Name = "comboBox_LocDeThi";
-            comboBox_LocDeThi.Size = new Size(254, 40);
-            comboBox_LocDeThi.TabIndex = 0;
-            // 
-            // textBox1
-            // 
-            textBox1.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox1.Location = new Point(297, 15);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(1052, 50);
-            textBox1.TabIndex = 1;
+            textBox_TimKiem.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox_TimKiem.Location = new Point(19, 95);
+            textBox_TimKiem.Multiline = true;
+            textBox_TimKiem.Name = "textBox_TimKiem";
+            textBox_TimKiem.Size = new Size(1230, 50);
+            textBox_TimKiem.TabIndex = 1;
             // 
             // button_Reload
             // 
+            button_Reload.AutoSize = true;
             button_Reload.BackColor = Color.Salmon;
             button_Reload.Image = (Image)resources.GetObject("button_Reload.Image");
-            button_Reload.Location = new Point(1435, 3);
+            button_Reload.Location = new Point(1272, 16);
             button_Reload.Name = "button_Reload";
-            button_Reload.Size = new Size(88, 62);
+            button_Reload.Size = new Size(83, 73);
             button_Reload.TabIndex = 2;
             button_Reload.UseVisualStyleBackColor = false;
             // 
             // panel_Top
             // 
-            panel_Top.Controls.Add(comboBox_LocDeThi);
+            panel_Top.Controls.Add(button_TimKiem);
+            panel_Top.Controls.Add(comboBox_LocTheoNhom);
             panel_Top.Controls.Add(button_Reload);
-            panel_Top.Controls.Add(textBox1);
+            panel_Top.Controls.Add(textBox_TimKiem);
             panel_Top.Dock = DockStyle.Top;
             panel_Top.Location = new Point(0, 0);
             panel_Top.Name = "panel_Top";
-            panel_Top.Size = new Size(1541, 71);
+            panel_Top.Size = new Size(1541, 162);
             panel_Top.TabIndex = 3;
+            // 
+            // button_TimKiem
+            // 
+            button_TimKiem.BackColor = SystemColors.ActiveCaption;
+            button_TimKiem.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button_TimKiem.ForeColor = SystemColors.ButtonFace;
+            button_TimKiem.Image = (Image)resources.GetObject("button_TimKiem.Image");
+            button_TimKiem.ImageAlign = ContentAlignment.MiddleLeft;
+            button_TimKiem.Location = new Point(1272, 95);
+            button_TimKiem.Name = "button_TimKiem";
+            button_TimKiem.Size = new Size(251, 52);
+            button_TimKiem.TabIndex = 4;
+            button_TimKiem.Text = "Tìm Kiếm";
+            button_TimKiem.UseVisualStyleBackColor = false;
+            // 
+            // comboBox_LocTheoNhom
+            // 
+            comboBox_LocTheoNhom.BackColor = SystemColors.InactiveCaption;
+            comboBox_LocTheoNhom.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            comboBox_LocTheoNhom.FormattingEnabled = true;
+            comboBox_LocTheoNhom.Location = new Point(19, 36);
+            comboBox_LocTheoNhom.Name = "comboBox_LocTheoNhom";
+            comboBox_LocTheoNhom.Size = new Size(1230, 40);
+            comboBox_LocTheoNhom.TabIndex = 3;
             // 
             // panel_Bottom
             // 
@@ -128,11 +145,13 @@
             // 
             // flowLayoutPanel_Main
             // 
+            flowLayoutPanel_Main.AutoScroll = true;
             flowLayoutPanel_Main.Dock = DockStyle.Fill;
-            flowLayoutPanel_Main.Location = new Point(0, 71);
+            flowLayoutPanel_Main.Location = new Point(0, 162);
             flowLayoutPanel_Main.Name = "flowLayoutPanel_Main";
-            flowLayoutPanel_Main.Size = new Size(1541, 795);
+            flowLayoutPanel_Main.Size = new Size(1541, 704);
             flowLayoutPanel_Main.TabIndex = 5;
+            flowLayoutPanel_Main.WrapContents = false;
             // 
             // Component_DeThi
             // 
@@ -152,9 +171,7 @@
         }
 
         #endregion
-
-        private ComboBox comboBox_LocDeThi;
-        private TextBox textBox1;
+        private TextBox textBox_TimKiem;
         private Button button_Reload;
         private Panel panel_Top;
         private Panel panel_Bottom;
@@ -162,5 +179,7 @@
         private Button button_Prev;
         private Button button_Next;
         private FlowLayoutPanel flowLayoutPanel_Main;
+        private Button button_TimKiem;
+        private ComboBox comboBox_LocTheoNhom;
     }
 }

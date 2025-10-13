@@ -8,5 +8,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 {
     internal class DeKiemTra_NhomBUS
     {
+        public DeKiemTra_NhomBUS() { }
+
+
+    
+
+
+
     }
 }

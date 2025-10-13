@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 using MySql.Data.MySqlClient;
 
-using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
+
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
 {
@@ -124,41 +125,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             catch (Exception ex) { return false; }
         }
 
-        public ArrayList GetListNhomByMaMonHoc(string maMonHoc)
-        {
-            ArrayList dsn = new ArrayList();
-            try
-            {               
-                using (MySqlConnection conn = db.GetConnection())
-                {
-                    conn.Open();
-                    string sql = "SELECT * FROM nhom WHERE maMonHoc = @maMonHoc";
-                    MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@maMonHoc", maMonHoc);
-                    MySqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        Nhom nhom = new Nhom
-                        {
-                            maNhom = reader.GetInt32(0),
-                            tenNhom = reader.GetString(1),
-                            ghiChu = reader.GetString(2),
-                            maMonHoc = reader.GetString(3),
-                            maGiaoVien = reader.GetString(4),
-                            namHoc = reader.GetInt32(5),
-                            hocKy = reader.GetInt32(6),
-                            soLuong = reader.GetInt32(7),
-                        };
-                        dsn.Add(nhom);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-            return dsn;
-        }
+
 
         public int maxMaNhom()
         {
@@ -177,6 +144,44 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             {
                 return -1;
             }
+        }
+
+        /*
+         Phương thức lấy danh sách nhóm mà sinh viên theo học 
+         Là phương thức sử dụng 2 bảng:
+            bảng nhomthamgia có (maNhom, maSinhVien)
+            bảng nhom (maNhom, tenNhom, )
+         */
+        public ArrayList getListNhomTheoMaSinhVien (String maSinhVien)
+        {
+            ArrayList dsn = new ArrayList();
+                        try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT * FROM nhom n JOIN nhomthamgia ntg ON ntg.maNhom = n.maNhom WHERE ntg.maSinhVien = @maSinhVien";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maSinhVien", maSinhVien);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Nhom nhom = new Nhom
+                        {
+                            maNhom = reader.GetInt32(0),
+                            tenNhom = reader.GetString(1)
+                        };
+                        dsn.Add(nhom);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("DAO=> Lối khi lấy danh sách nhóm theo mã sinh viên",ex.Message);
+                return null;
+            }
+
+            return dsn;
         }
     }
 }

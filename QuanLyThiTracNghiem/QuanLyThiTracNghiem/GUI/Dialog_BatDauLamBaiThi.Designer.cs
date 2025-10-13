@@ -186,7 +186,7 @@
             button_LamBaiThi.BackColor = SystemColors.ActiveCaption;
             button_LamBaiThi.Font = new Font("Segoe UI Black", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_LamBaiThi.ForeColor = SystemColors.ButtonFace;
-            button_LamBaiThi.Location = new Point(21, 498);
+            button_LamBaiThi.Location = new Point(22, 654);
             button_LamBaiThi.Name = "button_LamBaiThi";
             button_LamBaiThi.Size = new Size(782, 65);
             button_LamBaiThi.TabIndex = 12;
@@ -212,7 +212,7 @@
             Controls.Add(panel_GiaiThich);
             Controls.Add(label_TenBaiThi);
             Name = "Dialog_BatDauLamBaiThi";
-            Size = new Size(824, 589);
+            Size = new Size(825, 758);
             Load += Dialog_BatDauLamBaiThi_Load;
             panel_GiaiThich.ResumeLayout(false);
             panel_GiaiThich.PerformLayout();
