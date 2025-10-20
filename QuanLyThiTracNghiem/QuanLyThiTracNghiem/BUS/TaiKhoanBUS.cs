@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Text.RegularExpressions;
-
-using Microsoft.VisualBasic.ApplicationServices;
-
+﻿using Microsoft.VisualBasic.ApplicationServices;
 using QuanLyThiTracNghiem.MyCustom;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
+using System;
+using System.Collections;
+using System.Text.RegularExpressions;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 {
@@ -47,6 +45,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
                 dlg.ShowDialog();
                 return false;
             }
+        }
+
+        public bool SuaMKTaiKhoan(string ma, string newPassword)
+        {
+            return tkDAO.SuaMKTaiKhoan(ma, newPassword);
         }
     }      
 }

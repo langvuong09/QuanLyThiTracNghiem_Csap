@@ -135,33 +135,41 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             try
             {
                 string sql = "SELECT * FROM sinhvien WHERE maSinhVien=@maSinhVien";
-                using(MySqlConnection conn = db.GetConnection())
+                using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
-                    MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@maSinhVien", maSinhVien);
-                    MySqlDataReader reader = cmd.ExecuteReader();
-
-                    if (reader.Read())
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                     {
-                        SinhVien sv = new SinhVien
+                        cmd.Parameters.AddWithValue("@maSinhVien", maSinhVien);
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
-                            maSinhVien = reader.GetString(0),
-                            hoVaTen = reader.GetString(1),
-                            email = reader.GetString(2),
-                            gioiTinh = reader.GetString(3),
-                            ngaySinh = reader.GetDateTime(4),
-                            anhDaiDien = reader.GetString(5),
-                            quyen = reader.GetString(6),
-                        };
-                        return sv;
+                            if (reader.Read())
+                            {
+                                SinhVien sv = new SinhVien
+                                {
+                                    maSinhVien = reader["maSinhVien"].ToString(),
+                                    hoVaTen = reader["hoVaTen"].ToString(),
+                                    email = reader["email"].ToString(),
+                                    gioiTinh = reader["gioiTinh"].ToString(),
+                                    ngaySinh = reader.GetDateTime("ngaySinh"),
+                                    anhDaiDien = reader["anhDaiDien"].ToString(),
+                                    quyen = reader["maQuyen"].ToString()
+                                };
+                                return sv;
+                            }
+                        }
                     }
-                    else return null;
                 }
-            }catch (Exception ex)
-            {
-                return null;
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Lỗi khi lấy sinh viên: " + ex.Message);
+            }
+            return null;
         }
+
+
+
     }
 }
