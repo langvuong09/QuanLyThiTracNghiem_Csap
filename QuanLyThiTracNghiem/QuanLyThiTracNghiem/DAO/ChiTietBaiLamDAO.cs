@@ -88,5 +88,42 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                 return false;
             }
         }
+
+        // LẤY CHI TIẾT BÀI LÀM THEO MÃ BÀI LÀM
+        public List<ChiTietBaiLam> GetChiTietBaiLamByMaBaiLam(int maBaiLam)
+        {
+            List<ChiTietBaiLam> result = new List<ChiTietBaiLam>();
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT maBaiLam, maCauHoi, maDapAnDuocChon FROM chitietbailam WHERE maBaiLam = @maBaiLam ORDER BY maCauHoi";
+                    
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@maBaiLam", maBaiLam);
+                        
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                result.Add(new ChiTietBaiLam
+                                {
+                                    maBaiLam = reader.GetInt32("maBaiLam"),
+                                    maCauHoi = reader.GetInt32("maCauHoi"),
+                                    maDapAnDuocChon = reader.GetInt32("maDapAnDuocChon")
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi lấy chi tiết bài làm: {ex.Message}");
+            }
+            return result;
+        }
     }
 }

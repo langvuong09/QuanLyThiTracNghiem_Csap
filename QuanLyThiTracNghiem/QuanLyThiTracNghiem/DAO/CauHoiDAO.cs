@@ -297,9 +297,49 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             return (result, totalPages);
         }
 
-
-
-
+        // LẤY DANH SÁCH CÂU HỎI THEO MÃ ĐỀ THI
+        public List<CauHoi> GetCauHoiByDeThi(int maDe)
+        {
+            List<CauHoi> result = new List<CauHoi>();
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = @"
+                        SELECT c.maCauHoi, c.maMonHoc, c.maChuong, c.doKho, c.noiDungCauHoi
+                        FROM cauhoi c
+                        INNER JOIN `cauhoi-dekiemtra` cd ON c.maCauHoi = cd.maCauHoi
+                        WHERE cd.maDe = @maDe
+                        ORDER BY c.maCauHoi";
+                    
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@maDe", maDe);
+                        
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                result.Add(new CauHoi
+                                {
+                                    maCauHoi = reader.GetInt32("maCauHoi"),
+                                    maMonHoc = reader.GetString("maMonHoc"),
+                                    maChuong = reader.GetInt32("maChuong"),
+                                    doKho = reader.GetString("doKho"),
+                                    noiDungCauHoi = reader.GetString("noiDungCauHoi")
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi lấy câu hỏi theo đề thi: {ex.Message}");
+            }
+            return result;
+        }
     }
 
 }

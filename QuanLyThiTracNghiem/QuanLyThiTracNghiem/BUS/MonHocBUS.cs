@@ -63,8 +63,27 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 
         }
 
-
-
-
+        // ==========================================
+        // LẤY TẤT CẢ MÔN HỌC ĐỂ HIỂN THỊ TRONG COMBOBOX
+        // ==========================================
+        public List<MonHoc> GetAllMonHoc()
+        {
+            try
+            {
+                ArrayList dsMonHoc = monHocDAO.GetListMonHoc();
+                List<MonHoc> result = new List<MonHoc>();
+                
+                foreach (MonHoc monHoc in dsMonHoc)
+                {
+                    result.Add(monHoc);
+                }
+                
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new List<MonHoc>();
+            }
+        }
     }
 }

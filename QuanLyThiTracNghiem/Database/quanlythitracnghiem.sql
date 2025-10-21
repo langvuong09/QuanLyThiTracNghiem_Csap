@@ -48,6 +48,46 @@ CREATE TABLE `cauhoi` (
   `noiDungCauHoi` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `cauhoi`
+--
+
+INSERT INTO `cauhoi` (`maCauHoi`, `maMonHoc`, `maChuong`, `doKho`, `noiDungCauHoi`) VALUES
+-- Câu hỏi CT101 - Lập trình C
+(1, 'CT101', 1, 'De', 'Ngôn ngữ C được phát triển vào năm nào?'),
+(2, 'CT101', 1, 'De', 'Ai là người phát triển ngôn ngữ C?'),
+(3, 'CT101', 2, 'TrungBinh', 'Cấu trúc điều khiển nào được sử dụng để lặp?'),
+(4, 'CT101', 2, 'TrungBinh', 'Câu lệnh if-else thuộc loại cấu trúc nào?'),
+(5, 'CT101', 3, 'Kho', 'Hàm trong C có thể trả về bao nhiêu giá trị?'),
+
+-- Câu hỏi CT102 - Cấu trúc dữ liệu
+(6, 'CT102', 6, 'De', 'Ngăn xếp hoạt động theo nguyên tắc nào?'),
+(7, 'CT102', 6, 'De', 'Hàng đợi hoạt động theo nguyên tắc nào?'),
+(8, 'CT102', 7, 'TrungBinh', 'Danh sách liên kết có ưu điểm gì?'),
+(9, 'CT102', 8, 'TrungBinh', 'Cây nhị phân có bao nhiêu con tối đa?'),
+(10, 'CT102', 9, 'Kho', 'Thuật toán sắp xếp nào có độ phức tạp O(n log n)?'),
+
+-- Câu hỏi CT103 - Cơ sở dữ liệu
+(11, 'CT103', 11, 'De', 'CSDL là viết tắt của gì?'),
+(12, 'CT103', 11, 'De', 'Mô hình quan hệ được đề xuất bởi ai?'),
+(13, 'CT103', 12, 'TrungBinh', 'Khóa chính trong bảng có đặc điểm gì?'),
+(14, 'CT103', 13, 'TrungBinh', 'SQL là viết tắt của gì?'),
+(15, 'CT103', 14, 'Kho', 'Chuẩn hóa dữ liệu nhằm mục đích gì?'),
+
+-- Câu hỏi CT104 - OOP
+(16, 'CT104', 16, 'De', 'OOP là viết tắt của gì?'),
+(17, 'CT104', 16, 'De', 'Tính đóng gói trong OOP có nghĩa là gì?'),
+(18, 'CT104', 17, 'TrungBinh', 'Lớp và đối tượng khác nhau như thế nào?'),
+(19, 'CT104', 18, 'TrungBinh', 'Kế thừa cho phép làm gì?'),
+(20, 'CT104', 19, 'Kho', 'Đa hình trong OOP được thể hiện như thế nào?'),
+
+-- Câu hỏi CT105 - Mạng máy tính
+(21, 'CT105', 21, 'De', 'Mạng LAN là gì?'),
+(22, 'CT105', 21, 'De', 'Mạng WAN là gì?'),
+(23, 'CT105', 22, 'TrungBinh', 'Mô hình OSI có bao nhiêu tầng?'),
+(24, 'CT105', 23, 'TrungBinh', 'TCP/IP có bao nhiêu tầng?'),
+(25, 'CT105', 24, 'Kho', 'Subnet mask có chức năng gì?');
+
 -- --------------------------------------------------------
 
 --
@@ -58,6 +98,17 @@ CREATE TABLE `cauhoi-dekiemtra` (
   `maDe` int(11) NOT NULL,
   `maCauHoi` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cauhoi-dekiemtra`
+--
+
+INSERT INTO `cauhoi-dekiemtra` (`maDe`, `maCauHoi`) VALUES
+(1, 1), (1, 2), (1, 3), (1, 4), (1, 5),
+(2, 6), (2, 7), (2, 8), (2, 9), (2, 10),
+(3, 11), (3, 12), (3, 13), (3, 14), (3, 15),
+(4, 16), (4, 17), (4, 18), (4, 19), (4, 20),
+(5, 21), (5, 22), (5, 23), (5, 24), (5, 25);
 
 -- --------------------------------------------------------
 
@@ -208,6 +259,71 @@ CREATE TABLE `dapan` (
   `dungSai` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `dapan`
+--
+
+INSERT INTO `dapan` (`maDapAn`, `maCauHoi`, `tenDapAn`, `dungSai`) VALUES
+-- Đáp án cho câu hỏi 1
+(1, 1, '1972', 1),
+(2, 1, '1970', 0),
+(3, 1, '1975', 0),
+(4, 1, '1980', 0),
+
+-- Đáp án cho câu hỏi 2
+(5, 2, 'Dennis Ritchie', 1),
+(6, 2, 'Bjarne Stroustrup', 0),
+(7, 2, 'James Gosling', 0),
+(8, 2, 'Guido van Rossum', 0),
+
+-- Đáp án cho câu hỏi 3
+(9, 3, 'for, while, do-while', 1),
+(10, 3, 'if, else', 0),
+(11, 3, 'switch, case', 0),
+(12, 3, 'break, continue', 0),
+
+-- Đáp án cho câu hỏi 4
+(13, 4, 'Cấu trúc điều kiện', 1),
+(14, 4, 'Cấu trúc lặp', 0),
+(15, 4, 'Cấu trúc nhảy', 0),
+(16, 4, 'Cấu trúc hàm', 0),
+
+-- Đáp án cho câu hỏi 5
+(17, 5, 'Chỉ một giá trị', 1),
+(18, 5, 'Nhiều giá trị', 0),
+(19, 5, 'Không giới hạn', 0),
+(20, 5, 'Tùy thuộc vào kiểu dữ liệu', 0),
+
+-- Đáp án cho câu hỏi 6
+(21, 6, 'LIFO (Last In First Out)', 1),
+(22, 6, 'FIFO (First In First Out)', 0),
+(23, 6, 'Random', 0),
+(24, 6, 'Priority', 0),
+
+-- Đáp án cho câu hỏi 7
+(25, 7, 'FIFO (First In First Out)', 1),
+(26, 7, 'LIFO (Last In First Out)', 0),
+(27, 7, 'Random', 0),
+(28, 7, 'Priority', 0),
+
+-- Đáp án cho câu hỏi 8
+(29, 8, 'Dễ dàng thêm/xóa phần tử', 1),
+(30, 8, 'Truy cập nhanh', 0),
+(31, 8, 'Tiết kiệm bộ nhớ', 0),
+(32, 8, 'Sắp xếp tự động', 0),
+
+-- Đáp án cho câu hỏi 9
+(33, 9, '2 con', 1),
+(34, 9, '1 con', 0),
+(35, 9, '3 con', 0),
+(36, 9, 'Không giới hạn', 0),
+
+-- Đáp án cho câu hỏi 10
+(37, 10, 'Merge Sort', 1),
+(38, 10, 'Bubble Sort', 0),
+(39, 10, 'Selection Sort', 0),
+(40, 10, 'Insertion Sort', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -227,6 +343,27 @@ CREATE TABLE `dekiemtra` (
   `trangThai` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `dekiemtra`
+--
+
+INSERT INTO `dekiemtra` (`maDe`, `tenDe`, `thoiGianBatDau`, `thoiGianKetThuc`, `thoiGianCanhBao`, `maMonHoc`, `soCauDe`, `soCauTrungBinh`, `soCauKho`, `trangThai`) VALUES
+-- Đề thi từ ngày 21/10/2025 trở đi
+(1, 'Đề thi giữa kỳ - Lập trình C', '2025-10-21 08:00:00', '2025-10-21 10:00:00', '2025-10-21 09:45:00', 'CT101', 5, 10, 5, 1),
+(2, 'Đề thi cuối kỳ - Cấu trúc dữ liệu', '2025-10-25 14:00:00', '2025-10-25 16:30:00', '2025-10-25 16:15:00', 'CT102', 8, 12, 10, 1),
+(3, 'Đề luyện tập - Cơ sở dữ liệu', '2025-10-22 19:00:00', '2025-10-22 21:00:00', '2025-10-22 20:45:00', 'CT103', 3, 7, 5, 1),
+(4, 'Đề thi giữa kỳ - OOP', '2025-10-23 09:00:00', '2025-10-23 11:00:00', '2025-10-23 10:45:00', 'CT104', 6, 8, 6, 1),
+(5, 'Đề thi cuối kỳ - Mạng máy tính', '2025-10-28 13:00:00', '2025-10-28 15:30:00', '2025-10-28 15:15:00', 'CT105', 7, 10, 8, 1),
+(6, 'Đề luyện tập - Hệ điều hành', '2025-10-24 20:00:00', '2025-10-24 22:00:00', '2025-10-24 21:45:00', 'CT106', 4, 6, 5, 1),
+(7, 'Đề thi giữa kỳ - Phân tích hệ thống', '2025-10-26 10:00:00', '2025-10-26 12:00:00', '2025-10-26 11:45:00', 'CT107', 5, 8, 7, 1),
+(8, 'Đề thi cuối kỳ - Trí tuệ nhân tạo', '2025-10-30 15:00:00', '2025-10-30 17:30:00', '2025-10-30 17:15:00', 'CT108', 8, 12, 10, 1),
+(9, 'Đề luyện tập - Lập trình web', '2025-10-27 18:00:00', '2025-10-27 20:00:00', '2025-10-27 19:45:00', 'CT109', 3, 5, 4, 1),
+(10, 'Đề thi giữa kỳ - Khai phá dữ liệu', '2025-10-29 11:00:00', '2025-10-29 13:00:00', '2025-10-29 12:45:00', 'CT110', 6, 9, 7, 1),
+-- Đề thi với thời gian động để test các trạng thái
+(11, 'Đề thi đang mở - Lập trình C', NOW(), DATE_ADD(NOW(), INTERVAL 2 HOUR), DATE_ADD(NOW(), INTERVAL 1 HOUR 45 MINUTE), 'CT101', 3, 5, 2, 1),
+(12, 'Đề thi sắp diễn ra - OOP', DATE_ADD(NOW(), INTERVAL 1 HOUR), DATE_ADD(NOW(), INTERVAL 3 HOUR), DATE_ADD(NOW(), INTERVAL 2 HOUR 45 MINUTE), 'CT104', 4, 6, 3, 1),
+(13, 'Đề thi đã kết thúc - Cơ sở dữ liệu', DATE_SUB(NOW(), INTERVAL 3 HOUR), DATE_SUB(NOW(), INTERVAL 1 HOUR), DATE_SUB(NOW(), INTERVAL 1 HOUR 15 MINUTE), 'CT103', 5, 7, 4, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -237,6 +374,17 @@ CREATE TABLE `dekiemtra-nhom` (
   `maDe` int(11) NOT NULL,
   `maNhom` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `dekiemtra-nhom`
+--
+
+INSERT INTO `dekiemtra-nhom` (`maDe`, `maNhom`) VALUES
+(1, 1), (1, 2),
+(2, 3), (2, 4),
+(3, 5), (3, 6),
+(4, 7), (4, 8),
+(5, 9), (5, 10);
 
 -- --------------------------------------------------------
 
@@ -253,6 +401,13 @@ CREATE TABLE `giaovien` (
   `anhDaiDien` varchar(255) DEFAULT NULL,
   `maQuyen` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `giaovien`
+--
+
+INSERT INTO `giaovien` (`maGiaoVien`, `tenGiaoVien`, `email`, `gioiTinh`, `ngaySinh`, `anhDaiDien`, `maQuyen`) VALUES
+('111111', 'Nguyễn Văn Admin', 'admin@university.edu.vn', 'Nam', '1980-01-01', 'admin.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -302,6 +457,22 @@ CREATE TABLE `nhom` (
   `soLuong` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `nhom`
+--
+
+INSERT INTO `nhom` (`maNhom`, `tenNhom`, `ghiChu`, `maMonHoc`, `maGiaoVien`, `namHoc`, `hocKy`, `soLuong`) VALUES
+(1, 'Nhóm CT101-01', 'Nhóm học lập trình C cơ bản', 'CT101', '111111', 2024, 1, 30),
+(2, 'Nhóm CT101-02', 'Nhóm học lập trình C cơ bản', 'CT101', '111111', 2024, 1, 25),
+(3, 'Nhóm CT102-01', 'Nhóm học cấu trúc dữ liệu', 'CT102', '111111', 2024, 1, 28),
+(4, 'Nhóm CT102-02', 'Nhóm học cấu trúc dữ liệu', 'CT102', '111111', 2024, 1, 32),
+(5, 'Nhóm CT103-01', 'Nhóm học cơ sở dữ liệu', 'CT103', '111111', 2024, 1, 26),
+(6, 'Nhóm CT103-02', 'Nhóm học cơ sở dữ liệu', 'CT103', '111111', 2024, 1, 29),
+(7, 'Nhóm CT104-01', 'Nhóm học OOP', 'CT104', '111111', 2024, 1, 27),
+(8, 'Nhóm CT104-02', 'Nhóm học OOP', 'CT104', '111111', 2024, 1, 31),
+(9, 'Nhóm CT105-01', 'Nhóm học mạng máy tính', 'CT105', '111111', 2024, 1, 24),
+(10, 'Nhóm CT105-02', 'Nhóm học mạng máy tính', 'CT105', '111111', 2024, 1, 33);
+
 -- --------------------------------------------------------
 
 --
@@ -344,6 +515,22 @@ CREATE TABLE `phancong` (
   `maMonHoc` varchar(11) NOT NULL,
   `maGiaoVien` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `phancong`
+--
+
+INSERT INTO `phancong` (`maPhanCong`, `maMonHoc`, `maGiaoVien`) VALUES
+(1, 'CT101', '111111'),
+(2, 'CT102', '111111'),
+(3, 'CT103', '111111'),
+(4, 'CT104', '111111'),
+(5, 'CT105', '111111'),
+(6, 'CT106', '111111'),
+(7, 'CT107', '111111'),
+(8, 'CT108', '111111'),
+(9, 'CT109', '111111'),
+(10, 'CT110', '111111');
 
 -- --------------------------------------------------------
 
@@ -648,6 +835,59 @@ ALTER TABLE `taikhoan`
 ALTER TABLE `thongbao-nhom`
   ADD CONSTRAINT `fk_thongbao-nhom_nhom` FOREIGN KEY (`maNhom`) REFERENCES `nhom` (`maNhom`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_thongbao-nhom_thongbao` FOREIGN KEY (`maThongBao`) REFERENCES `thongbao` (`maThongBao`) ON DELETE CASCADE ON UPDATE CASCADE;
+-- --------------------------------------------------------
+--
+-- Dumping data for table `bailam`
+--
+
+INSERT INTO `bailam` (`maBaiLam`, `maSinhVien`, `maDe`, `tongDiem`) VALUES
+(1, '3122410006', 1, 8.5),
+(2, '111111', 1, 7.2),
+(3, '3122410006', 2, 9.0),
+(4, '111111', 2, 6.8),
+(5, '3122410006', 3, 8.0);
+
+-- --------------------------------------------------------
+--
+-- Dumping data for table `chitietbailam`
+--
+
+INSERT INTO `chitietbailam` (`maBaiLam`, `maCauHoi`, `maDapAnDuocChon`) VALUES
+-- Bài làm 1 của sinh viên 3122410006 cho đề thi 1
+(1, 1, 1),  -- Câu 1: Chọn đáp án đúng (1972)
+(1, 2, 5),  -- Câu 2: Chọn đáp án đúng (Dennis Ritchie)
+(1, 3, 9),  -- Câu 3: Chọn đáp án đúng (for, while, do-while)
+(1, 4, 13), -- Câu 4: Chọn đáp án đúng (Cấu trúc điều kiện)
+(1, 5, 17), -- Câu 5: Chọn đáp án đúng (Chỉ một giá trị)
+
+-- Bài làm 2 của sinh viên 111111 cho đề thi 1
+(2, 1, 2),  -- Câu 1: Chọn đáp án sai (1970)
+(2, 2, 5),  -- Câu 2: Chọn đáp án đúng (Dennis Ritchie)
+(2, 3, 10), -- Câu 3: Chọn đáp án sai (if, else)
+(2, 4, 13), -- Câu 4: Chọn đáp án đúng (Cấu trúc điều kiện)
+(2, 5, 18), -- Câu 5: Chọn đáp án sai (Nhiều giá trị)
+
+-- Bài làm 3 của sinh viên 3122410006 cho đề thi 2
+(3, 6, 21), -- Câu 6: Chọn đáp án đúng (LIFO)
+(3, 7, 25), -- Câu 7: Chọn đáp án đúng (FIFO)
+(3, 8, 29), -- Câu 8: Chọn đáp án đúng (Dễ dàng thêm/xóa phần tử)
+(3, 9, 33), -- Câu 9: Chọn đáp án đúng (2 con)
+(3, 10, 37),-- Câu 10: Chọn đáp án đúng (Merge Sort)
+
+-- Bài làm 4 của sinh viên 111111 cho đề thi 2
+(4, 6, 22), -- Câu 6: Chọn đáp án sai (FIFO)
+(4, 7, 25), -- Câu 7: Chọn đáp án đúng (FIFO)
+(4, 8, 30), -- Câu 8: Chọn đáp án sai (Truy cập nhanh)
+(4, 9, 33), -- Câu 9: Chọn đáp án đúng (2 con)
+(4, 10, 38),-- Câu 10: Chọn đáp án sai (Bubble Sort)
+
+-- Bài làm 5 của sinh viên 3122410006 cho đề thi 3
+(5, 11, 41),-- Câu 11: Chọn đáp án đúng (CSDL)
+(5, 12, 45),-- Câu 12: Chọn đáp án đúng (E.F. Codd)
+(5, 13, 49),-- Câu 13: Chọn đáp án đúng (Không trùng lặp)
+(5, 14, 53),-- Câu 14: Chọn đáp án đúng (Structured Query Language)
+(5, 15, 57);-- Câu 15: Chọn đáp án đúng (Giảm dư thừa dữ liệu)
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

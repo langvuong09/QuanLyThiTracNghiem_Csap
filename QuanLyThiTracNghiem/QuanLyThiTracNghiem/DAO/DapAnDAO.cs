@@ -232,9 +232,43 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
         }
 
-
-
-
+        // LẤY DANH SÁCH ĐÁP ÁN THEO MÃ CÂU HỎI
+        public List<DapAn> GetDapAnByCauHoi(int maCauHoi)
+        {
+            List<DapAn> result = new List<DapAn>();
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT maDapAn, maCauHoi, tenDapAn, dungSai FROM dapan WHERE maCauHoi = @maCauHoi ORDER BY maDapAn";
+                    
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@maCauHoi", maCauHoi);
+                        
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                result.Add(new DapAn
+                                {
+                                    maDapAn = reader.GetInt32("maDapAn"),
+                                    maCauHoi = reader.GetInt32("maCauHoi"),
+                                    tenDapAn = reader.GetString("tenDapAn"),
+                                    dungSai = reader.GetInt32("dungSai")
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi lấy đáp án theo câu hỏi: {ex.Message}");
+            }
+            return result;
+        }
     }
 
 }

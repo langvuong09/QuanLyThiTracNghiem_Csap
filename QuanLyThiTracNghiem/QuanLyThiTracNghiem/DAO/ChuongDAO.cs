@@ -130,5 +130,38 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
             catch (Exception ex) { return false; }
         }
+
+        // ==========================================
+        // LẤY TẤT CẢ CHƯƠNG TỪ DATABASE
+        // ==========================================
+        public ArrayList GetAllChuong()
+        {
+            ArrayList dsc = new ArrayList();
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT * FROM chuong ORDER BY maMonHoc, maChuong";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Chuong c = new Chuong
+                        {
+                            maChuong = reader.GetInt32(0),
+                            maMonHoc = reader.GetString(1),
+                            tenChuong = reader.GetString(2),
+                        };
+                        dsc.Add(c);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            return dsc;
+        }
     }
 }
