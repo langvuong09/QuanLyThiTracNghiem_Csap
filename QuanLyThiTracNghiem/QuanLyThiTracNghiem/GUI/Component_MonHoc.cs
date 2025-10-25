@@ -17,9 +17,22 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             InitializeComponent();
         }
 
-        private void Component_MonHoc_Load(object sender, EventArgs e)
+        public void XuLyThemChuong(object sender, EventArgs e)
         {
+            Form popup = new Form();
+            popup.Text = "Thêm Chương";
+            popup.StartPosition = FormStartPosition.CenterScreen;
+            popup.FormBorderStyle = FormBorderStyle.FixedDialog;
+            popup.MaximizeBox = false;
+            popup.MinimizeBox = false;
+            popup.Size = new Size(500, 350);
 
+            Dialog_ThemChuong themChuong = new Dialog_ThemChuong();
+            themChuong.Dock = DockStyle.Fill;
+
+            popup.Controls.Add(themChuong);
+            popup.ShowDialog(); // ✅ Hiển thị như cửa sổ modal
         }
+
     }
 }
