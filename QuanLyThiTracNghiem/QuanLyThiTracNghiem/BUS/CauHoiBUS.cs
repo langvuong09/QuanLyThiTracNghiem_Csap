@@ -323,7 +323,18 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
         }
 
-
-
+        // LẤY DANH SÁCH CÂU HỎI THEO MÃ ĐỀ THI
+        public List<CauHoi> GetCauHoiByDeThi(int maDe)
+        {
+            try
+            {
+                return CauHoiDAO.GetCauHoiByDeThi(maDe);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("CauHoiBUS => Lỗi khi lấy câu hỏi theo đề thi: " + ex.Message);
+                return new List<CauHoi>();
+            }
+        }
     }
 }

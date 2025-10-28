@@ -208,5 +208,19 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 
 
         }
+
+        // LẤY DANH SÁCH ĐÁP ÁN THEO MÃ CÂU HỎI
+        public List<DapAn> GetDapAnByCauHoi(int maCauHoi)
+        {
+            try
+            {
+                return dapAnDAO.GetDapAnByCauHoi(maCauHoi);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("DapAnBUS => Lỗi khi lấy đáp án theo câu hỏi: " + ex.Message);
+                return new List<DapAn>();
+            }
+        }
     }
 }

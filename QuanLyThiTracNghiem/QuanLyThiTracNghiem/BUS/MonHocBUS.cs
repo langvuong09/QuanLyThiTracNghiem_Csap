@@ -13,8 +13,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
     {
         //Môn Học Dao
         private MonHocDAO monHocDAO = new MonHocDAO();
-
-        public MonHocBUS() { }
+        private ArrayList listMonHoc;
 
         /*
          Phương thúc lấy danh sách môn học để hiển thị lên Combobox
@@ -25,7 +24,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             Created by: Đỗ Mai Anh
             Dùng trong trang : Component_CauHoi, Dialog_ThemCauHoi, Dialog_SuaCauHoi
          */
-        public void LayListMonHoc(ComboBox combo, string MaMonHoc="0")
+        public void LayListMonHoc(ComboBox combo, string MaMonHoc = "0")
         {
             //Dọn sạch dữ liệu cũ 
             combo.DataSource = null;
@@ -42,7 +41,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             combo.DisplayMember = "tenMonHoc";
             combo.ValueMember = "maMonHoc";
 
-            
+
             //Nếu là trang Sửa câu hỏi thì chọn Môn Học tương ứng với câu hỏi
             if (MaMonHoc != "0")
             {
@@ -63,8 +62,45 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 
         }
 
+        // ==========================================
+        // LẤY TẤT CẢ MÔN HỌC ĐỂ HIỂN THỊ TRONG COMBOBOX
+        // ==========================================
+        public List<MonHoc> GetAllMonHoc()
+        {
+            try
+            {
+                ArrayList dsMonHoc = monHocDAO.GetListMonHoc();
+                List<MonHoc> result = new List<MonHoc>();
 
+                foreach (MonHoc monHoc in dsMonHoc)
+                {
+                    result.Add(monHoc);
+                }
 
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new List<MonHoc>();
+            }
+        }
 
+        public MonHocBUS()
+        {
+            DocListMonHoc();
+        }
+        public void DocListMonHoc()
+        {
+            this.listMonHoc = monHocDAO.GetListMonHoc();
+        }
+
+        public ArrayList GetListMonHoc()
+        {
+            if(listMonHoc == null)
+            {
+                DocListMonHoc();
+            }
+            return listMonHoc;
+        }
     }
 }

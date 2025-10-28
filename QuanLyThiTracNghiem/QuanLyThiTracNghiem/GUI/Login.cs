@@ -83,6 +83,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             else 
             {
                 UserSession.userId = tk.userId;
+                UserSession.password = tk.password;
                 new MyDialog("Đăng nhập thành công!", MyDialog.SUCCESS_DIALOG).ShowDialog();
                 TrangChuSinhVien s = new TrangChuSinhVien();
                 s.Show();

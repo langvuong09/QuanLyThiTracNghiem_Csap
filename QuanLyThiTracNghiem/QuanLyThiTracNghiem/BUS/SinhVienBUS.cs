@@ -129,5 +129,27 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
             return Regex.IsMatch(email, pattern);
         }
+
+  
+        public SinhVien GetSinhVienByID(string maSinhVien)
+        {
+            return svDAO.getSinhVienByID(maSinhVien);
+        }
+
+        public bool SuaSinhVien(string maSinhVien, string hoVaTen, string email, string gioiTinh, DateTime ngaySinh, string anhDaiDien)
+        {
+            if (svDAO.SuaSinhVien(maSinhVien, hoVaTen, email, gioiTinh, ngaySinh, anhDaiDien))
+            {
+                MyDialog dlg = new MyDialog("Cập nhật thông tin thành công!", MyDialog.SUCCESS_DIALOG);
+                dlg.ShowDialog();
+                return true;
+            }
+            else
+            {
+                MyDialog dlg = new MyDialog("Cập nhật thông tin thất bại!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return false;
+            }
+        }
     }
 }

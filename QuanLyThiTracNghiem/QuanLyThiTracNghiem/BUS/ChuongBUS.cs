@@ -54,5 +54,51 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
 
         }
+
+        // ==========================================
+        // LẤY TẤT CẢ CHƯƠNG ĐỂ HIỂN THỊ TRONG DATAGRIDVIEW
+        // ==========================================
+        public List<Chuong> GetAllChuong()
+        {
+            try
+            {
+                ArrayList dsChuong = chuongDAO.GetAllChuong();
+                List<Chuong> result = new List<Chuong>();
+                
+                foreach (Chuong chuong in dsChuong)
+                {
+                    result.Add(chuong);
+                }
+                
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new List<Chuong>();
+            }
+        }
+
+        // ==========================================
+        // LẤY CHƯƠNG THEO MÔN HỌC
+        // ==========================================
+        public List<Chuong> GetChuongByMonHoc(string maMonHoc)
+        {
+            try
+            {
+                ArrayList dsChuong = chuongDAO.GetListChuongOfMaMonHoc(maMonHoc);
+                List<Chuong> result = new List<Chuong>();
+                
+                foreach (Chuong chuong in dsChuong)
+                {
+                    result.Add(chuong);
+                }
+                
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new List<Chuong>();
+            }
+        }
     }
 }

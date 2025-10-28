@@ -21,7 +21,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
-                    string sql = "SELECT * FROM dekiemtra";
+                    string sql = "SELECT * FROM dekiemtra WHERE trangThai = 1 ORDER BY maDe DESC";
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
                     MySqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
@@ -33,10 +33,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                             thoiGianBatDau = reader.GetDateTime(2),
                             thoiGianKetThuc = reader.GetDateTime(3),
                             thoiGianCanhBao = reader.GetDateTime(4),
-                            soCauDe = reader.GetInt32(5),
-                            soCauTrungBinh = reader.GetInt32(6),
-                            soCauKho =reader.GetInt32(7),
-                            trangThai =reader.GetInt32(8),
+                            maMonHoc = reader.GetString(5),
+                            soCauDe = reader.GetInt32(6),
+                            soCauTrungBinh = reader.GetInt32(7),
+                            soCauKho = reader.GetInt32(8),
+                            trangThai = reader.GetInt32(9),
                         };
                         dsdkt.Add(dkt);
                     }
@@ -49,12 +50,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             return dsdkt;
         }
 
-        public bool ThemDeKiemTra(int maDe, string tenDe, DateTime thoiGianBatDau, DateTime thoiGianKetThuc, DateTime thoiGianCanhBao, int soCauDe, int soCauTrungBinh, int soCauKho)
+        public bool ThemDeKiemTra(int maDe, string tenDe, DateTime thoiGianBatDau, DateTime thoiGianKetThuc, DateTime thoiGianCanhBao, string maMonHoc, int soCauDe, int soCauTrungBinh, int soCauKho)
         {
             try
             {
-                string sql = "INSERT INTO dekiemtra(maDe, tenDe, thoiGianBatDau, thoiGianKetThuc, thoiGianCanhBao, soCauDe, soCauTrungBinh, soCauKho, trangThai)" +
-                    "VaLUES (@maDe, @tenDe, @thoiGianBatDau, @thoiGianKetThuc, @thoiGianCanhBao, @soCauDe, @soCauTrungBinh, @soCauKho, 1)";
+                string sql = "INSERT INTO dekiemtra(maDe, tenDe, thoiGianBatDau, thoiGianKetThuc, thoiGianCanhBao, maMonHoc, soCauDe, soCauTrungBinh, soCauKho, trangThai)" +
+                    "VALUES (@maDe, @tenDe, @thoiGianBatDau, @thoiGianKetThuc, @thoiGianCanhBao, @maMonHoc, @soCauDe, @soCauTrungBinh, @soCauKho, 1)";
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
@@ -64,6 +65,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                     cmd.Parameters.AddWithValue("@thoiGianBatDau", thoiGianBatDau);
                     cmd.Parameters.AddWithValue("@thoiGianKetThuc", thoiGianKetThuc);
                     cmd.Parameters.AddWithValue("@thoiGianCanhBao", thoiGianCanhBao);
+                    cmd.Parameters.AddWithValue("@maMonHoc", maMonHoc);
                     cmd.Parameters.AddWithValue("@soCauDe", soCauDe);
                     cmd.Parameters.AddWithValue("@soCauTrungBinh", soCauTrungBinh);
                     cmd.Parameters.AddWithValue("@soCauKho", soCauKho);
@@ -97,11 +99,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
         }
 
-        public bool SuaDeKiemTra(int maDe, string tenDe, DateTime thoiGianBatDau, DateTime thoiGianKetThuc, DateTime thoiGianCanhBao, int soCauDe, int soCauTrungBinh, int soCauKho)
+        public bool SuaDeKiemTra(int maDe, string tenDe, DateTime thoiGianBatDau, DateTime thoiGianKetThuc, DateTime thoiGianCanhBao, string maMonHoc, int soCauDe, int soCauTrungBinh, int soCauKho)
         {
             try
             {
-                string sql = "UPDATE dekiemtra SET tenDe = @tenDe, thoiGianBatDau = @thoiGianBatDau, thoiGianKetThuc = @thoiGianKetThuc, thoiGianCanhBao = @thoiGianCanhBao, soCauDe = @soCauDe, soCauTrungBinh = @soCauTrngBinh, @soCauKho" +
+                string sql = "UPDATE dekiemtra SET tenDe = @tenDe, thoiGianBatDau = @thoiGianBatDau, thoiGianKetThuc = @thoiGianKetThuc, thoiGianCanhBao = @thoiGianCanhBao, maMonHoc = @maMonHoc, soCauDe = @soCauDe, soCauTrungBinh = @soCauTrungBinh, soCauKho = @soCauKho" +
                     " WHERE maDe = @maDe";
                 using (MySqlConnection conn = db.GetConnection())
                 {
@@ -111,6 +113,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                     cmd.Parameters.AddWithValue("@thoiGianBatDau", thoiGianBatDau);
                     cmd.Parameters.AddWithValue("@thoiGianKetThuc", thoiGianKetThuc);
                     cmd.Parameters.AddWithValue("@thoiGianCanhBao", thoiGianCanhBao);
+                    cmd.Parameters.AddWithValue("@maMonHoc", maMonHoc);
                     cmd.Parameters.AddWithValue("@soCauDe", soCauDe);
                     cmd.Parameters.AddWithValue("@soCauTrungBinh", soCauTrungBinh);
                     cmd.Parameters.AddWithValue("@soCauKho", soCauKho);
@@ -144,10 +147,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                             thoiGianBatDau = reader.GetDateTime(2),
                             thoiGianKetThuc = reader.GetDateTime(3),
                             thoiGianCanhBao = reader.GetDateTime(4),
-                            soCauDe = reader.GetInt32(5),
-                            soCauTrungBinh = reader.GetInt32(6),
-                            soCauKho = reader.GetInt32(7),
-                            trangThai = reader.GetInt32(8),
+                            maMonHoc = reader.GetString(5),
+                            soCauDe = reader.GetInt32(6),
+                            soCauTrungBinh = reader.GetInt32(7),
+                            soCauKho = reader.GetInt32(8),
+                            trangThai = reader.GetInt32(9),
                         };
                         return dkt;
                     }

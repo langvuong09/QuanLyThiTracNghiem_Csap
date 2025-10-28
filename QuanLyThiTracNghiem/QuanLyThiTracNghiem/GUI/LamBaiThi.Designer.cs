@@ -151,13 +151,13 @@
             pictureBox_iconCauDung.TabIndex = 3;
             pictureBox_iconCauDung.TabStop = false;
             // 
-            // label1
+            // lblTitle
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.IndianRed;
             label1.Location = new Point(433, 23);
-            label1.Name = "label1";
+            label1.Name = "lblTitle";
             label1.Size = new Size(204, 37);
             label1.TabIndex = 2;
             label1.Text = "Tổng Điểm: 30";

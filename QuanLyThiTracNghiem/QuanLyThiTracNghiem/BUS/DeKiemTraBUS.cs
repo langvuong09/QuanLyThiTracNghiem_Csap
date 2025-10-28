@@ -4,6 +4,7 @@ using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing.Printing;
 using System.Linq;

@@ -9,5 +9,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
     internal class UserSession
     {
         public static string userId { get; set; }
+        public static string password { get; set; }
     }
 }
