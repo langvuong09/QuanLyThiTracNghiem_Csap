@@ -159,5 +159,33 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                 return false;
             }
         }
+
+        public int GetMaxMaBaiLam()
+        {
+            int maxMaBaiLam = 0;
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT MAX(maBaiLam) FROM bailam";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+
+                    object result = cmd.ExecuteScalar();
+
+                    if (result != DBNull.Value && result != null)
+                    {
+                        maxMaBaiLam = Convert.ToInt32(result);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                
+                maxMaBaiLam = 0;
+            }
+            return maxMaBaiLam;
+        }
+
     }
 }

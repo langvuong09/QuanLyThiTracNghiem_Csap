@@ -12,14 +12,14 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private NhomBUS nhomBUS = new NhomBUS();
         private DeKiemTraBUS deKiemTraBUS = new DeKiemTraBUS();
 
+     
+
         private Form panel_TrangChu;
         private String maSinhVien;
 
         private int currentPage = 1;
         private int pageSize = 5;
         private int totalPages = 0;
-
-
 
 
         public Component_DeThi()

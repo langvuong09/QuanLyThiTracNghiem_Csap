@@ -38,7 +38,7 @@
             panel_Bottom = new Panel();
             pictureBox_iconSoCauDung = new PictureBox();
             pictureBox_iconCauDung = new PictureBox();
-            label1 = new Label();
+            label_Diem = new Label();
             label_SoCauDung = new Label();
             button_NopBai = new Button();
             flowLayoutPanel_CauHoi = new FlowLayoutPanel();
@@ -122,7 +122,7 @@
             panel_Bottom.BackColor = SystemColors.ActiveCaption;
             panel_Bottom.Controls.Add(pictureBox_iconSoCauDung);
             panel_Bottom.Controls.Add(pictureBox_iconCauDung);
-            panel_Bottom.Controls.Add(label1);
+            panel_Bottom.Controls.Add(label_Diem);
             panel_Bottom.Controls.Add(label_SoCauDung);
             panel_Bottom.Controls.Add(button_NopBai);
             panel_Bottom.Dock = DockStyle.Bottom;
@@ -151,16 +151,16 @@
             pictureBox_iconCauDung.TabIndex = 3;
             pictureBox_iconCauDung.TabStop = false;
             // 
-            // lblTitle
+            // label_Diem
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.ForeColor = Color.IndianRed;
-            label1.Location = new Point(433, 23);
-            label1.Name = "lblTitle";
-            label1.Size = new Size(204, 37);
-            label1.TabIndex = 2;
-            label1.Text = "Tổng Điểm: 30";
+            label_Diem.AutoSize = true;
+            label_Diem.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_Diem.ForeColor = Color.IndianRed;
+            label_Diem.Location = new Point(433, 23);
+            label_Diem.Name = "label_Diem";
+            label_Diem.Size = new Size(204, 37);
+            label_Diem.TabIndex = 2;
+            label_Diem.Text = "Tổng Điểm: 30";
             // 
             // label_SoCauDung
             // 
@@ -225,7 +225,7 @@
         private Label label_DemThoiGian;
         private PictureBox pictureBox_DongHo;
         private Button button_NopBai;
-        private Label label1;
+        private Label label_Diem;
         private Label label_SoCauDung;
         private PictureBox pictureBox_iconCauDung;
         private PictureBox pictureBox_iconSoCauDung;

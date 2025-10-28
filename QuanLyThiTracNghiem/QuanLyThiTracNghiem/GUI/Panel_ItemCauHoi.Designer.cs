@@ -39,7 +39,6 @@
             textBox_C = new TextBox();
             textBox_D = new TextBox();
             panel_Bottom = new Panel();
-            label_CauTraLoiDung = new Label();
             groupBox_CauTraLoi = new GroupBox();
             radioButton_D = new RadioButton();
             radioButton_C = new RadioButton();
@@ -157,23 +156,12 @@
             // panel_Bottom
             // 
             panel_Bottom.BackColor = SystemColors.InactiveCaption;
-            panel_Bottom.Controls.Add(label_CauTraLoiDung);
             panel_Bottom.Controls.Add(groupBox_CauTraLoi);
             panel_Bottom.Dock = DockStyle.Bottom;
             panel_Bottom.Location = new Point(0, 419);
             panel_Bottom.Name = "panel_Bottom";
             panel_Bottom.Size = new Size(1904, 87);
             panel_Bottom.TabIndex = 10;
-            // 
-            // label_CauTraLoiDung
-            // 
-            label_CauTraLoiDung.AutoSize = true;
-            label_CauTraLoiDung.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label_CauTraLoiDung.Location = new Point(1666, 33);
-            label_CauTraLoiDung.Name = "label_CauTraLoiDung";
-            label_CauTraLoiDung.Size = new Size(220, 37);
-            label_CauTraLoiDung.TabIndex = 5;
-            label_CauTraLoiDung.Text = "Đáp Án Đúng: A";
             // 
             // groupBox_CauTraLoi
             // 
@@ -254,7 +242,6 @@
             Name = "Panel_ItemCauHoi";
             Size = new Size(1904, 506);
             panel_Bottom.ResumeLayout(false);
-            panel_Bottom.PerformLayout();
             groupBox_CauTraLoi.ResumeLayout(false);
             groupBox_CauTraLoi.PerformLayout();
             ResumeLayout(false);
@@ -278,6 +265,5 @@
         private RadioButton radioButton_C;
         private RadioButton radioButton_B;
         private RadioButton radioButton_D;
-        private Label label_CauTraLoiDung;
     }
 }

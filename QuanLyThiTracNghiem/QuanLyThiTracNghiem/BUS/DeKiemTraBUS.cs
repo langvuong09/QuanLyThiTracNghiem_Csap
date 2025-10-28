@@ -15,8 +15,117 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 {
     internal class DeKiemTraBUS
     {
+
         private DeKiemTraDAO deKiemTraDAO = new DeKiemTraDAO();
         public DeKiemTraBUS() { }
+        // ==========================================
+        // TẠO ĐỀ THI MỚI
+        // ==========================================
+        public bool CreateDeThi(DeKiemTra deThi)
+        {
+            try
+            {
+                // Tạo mã đề thi tự động 
+                int maDe = GetNextMaDe();
+
+                return deKiemTraDAO.ThemDeKiemTra(
+                    maDe,
+                    deThi.tenDe,
+                    deThi.thoiGianBatDau,
+                    deThi.thoiGianKetThuc,
+                    deThi.thoiGianCanhBao,
+                    deThi.maMonHoc,
+                    deThi.soCauDe,
+                    deThi.soCauTrungBinh,
+                    deThi.soCauKho
+                );
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi tạo đề thi: {ex.Message}");
+                return false;
+            }
+        }
+
+        // ==========================================
+        // CẬP NHẬT ĐỀ THI
+        // ==========================================
+        public bool UpdateDeThi(DeKiemTra deThi)
+        {
+            try
+            {
+                return deKiemTraDAO.SuaDeKiemTra(
+                    deThi.maDe,
+                    deThi.tenDe,
+                    deThi.thoiGianBatDau,
+                    deThi.thoiGianKetThuc,
+                    deThi.thoiGianCanhBao,
+                    deThi.maMonHoc,
+                    deThi.soCauDe,
+                    deThi.soCauTrungBinh,
+                    deThi.soCauKho
+                );
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi cập nhật đề thi: {ex.Message}");
+                return false;
+            }
+        }
+
+        // ==========================================
+        // XÓA ĐỀ THI
+        // ==========================================
+        public bool DeleteDeThi(int maDe)
+        {
+            try
+            {
+                return deKiemTraDAO.XoaDeKiemTra(maDe);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi xóa đề thi: {ex.Message}");
+                return false;
+            }
+        }
+
+        // ==========================================
+        // LẤY MÃ ĐỀ THI TIẾP THEO
+        // ==========================================
+        private int GetNextMaDe()
+        {
+            return DateTime.Now.Millisecond + new Random().Next(1000, 9999);
+        }
+
+
+        // ==========================================
+        // LẤY DANH SÁCH TẤT CẢ ĐỀ THI
+        // ==========================================
+        public List<DeKiemTra> GetListDeKiemTra()
+        {
+            try
+            {
+                ArrayList arrayList = deKiemTraDAO.GetListDeKiemTra();
+                List<DeKiemTra> result = new List<DeKiemTra>();
+
+                if (arrayList != null)
+                {
+                    foreach (DeKiemTra item in arrayList)
+                    {
+                        result.Add(item);
+                    }
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi lấy danh sách đề thi: {ex.Message}");
+                return new List<DeKiemTra>();
+            }
+        }
+
+        
 
         /*
          Kiểm tra thòi gian để có mở form làm bài hay không

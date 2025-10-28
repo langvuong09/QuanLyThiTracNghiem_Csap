@@ -1,4 +1,5 @@
 ﻿using QuanLyThiTracNghiem.MyCustom;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 using System;
 using System.Collections.Generic;
@@ -14,13 +15,18 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
     public partial class LamBaiThi : Form
     {
+        private CauHoi_DeKiemTraBUS cauHoi_DeKiemTraBUS = new CauHoi_DeKiemTraBUS();
+        private BaiLamBUS baiLamBUS = new BaiLamBUS();
+
         private int maDe;
         private DateTime thoiGianBatDauThucTe;
         private DateTime thoiGianCanhBaoThucTe;
         private TimeSpan tongThoiGian;
 
         private System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+        private List<Panel_ItemCauHoi> dsItem = new();
 
+        private BaiLam bailamSinhVien = new BaiLam();
 
 
         public LamBaiThi(int maDe, DateTime thoiGianBatDau, DateTime thoiGianKetThuc, DateTime thoiGianCanhBao)
@@ -37,6 +43,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
             //PANEL TOP
             panel_Top.BackColor = System.Drawing.ColorTranslator.FromHtml("#83A7EE");
+            panel_Top.Visible = false;
 
             //PANEL BOTTOM
             panel_Bottom.BackColor = System.Drawing.ColorTranslator.FromHtml("#83A7EE");
@@ -51,21 +58,19 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             label_MaSinhVien.Text = UserSession.userId;
 
             this.maDe = maDe;
-
-
             this.tongThoiGian = thoiGianKetThuc - thoiGianCanhBao;
             this.thoiGianCanhBaoThucTe = DateTime.Now + (thoiGianCanhBao - thoiGianBatDau);
 
+            bailamSinhVien.maDe = this.maDe;
+            bailamSinhVien.maSinhVien = UserSession.userId;
+            bailamSinhVien.maBaiLam = baiLamBUS.TaoMaBaiLamMoi();
 
-            
-
-            //for (int i = 0; i < 20; i++)
-            //{
-            //    flowLayoutPanel_CauHoi.Controls.Add(new Panel_ItemCauHoi());
-            //}
-
-
+            this.dsItem = cauHoi_DeKiemTraBUS.Display_ItemCauHoi_InPanel(flowLayoutPanel_CauHoi, this.maDe, bailamSinhVien.maBaiLam);
+            flowLayoutPanel_CauHoi.SuspendLayout();
+            flowLayoutPanel_CauHoi.ResumeLayout();
         }
+
+
 
 
         private void LamBaiThi_Load(object sender, EventArgs e)
@@ -95,6 +100,20 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void NopBai()
         {
+            int socau = 0;
+            foreach (var item in dsItem)
+            {
+                item.HienThiDapAnDung();
+                if (item.MaDapAnChon == item.MaDapAnDung)
+                    socau++;
+            }
+
+            float sodiemtren1cau = 10 / this.dsItem.Count;
+            float diem = socau*sodiemtren1cau;
+
+            panel_Top.Visible = true;
+            label_SoCauDung.Text = "Số Câu Đúng:\t" + socau.ToString();
+            label_Diem.Text= "Tổng Điểm:\t"+diem.ToString();
 
         }
 
@@ -104,8 +123,30 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         public event EventHandler TroVeClicked;
         private void button_Thoat_Click(object sender, EventArgs e)
         {
-            TroVeClicked?.Invoke(this, EventArgs.Empty);
+            DateTime now = DateTime.Now;
+            DateTime thoiGianKetThucThucTe = thoiGianBatDauThucTe + tongThoiGian;
+
+            // Nếu đã qua thời gian kết thúc thì cho phép thoát luôn
+            if (now >= thoiGianKetThucThucTe)
+            {
+                TroVeClicked?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
+            // Nếu chưa hết thời gian thì hỏi xác nhận
+            DialogResult result = MessageBox.Show(
+                "Bạn có chắc chắn muốn thoát không? Nếu thoát, bài làm sẽ không được lưu lại.",
+                "Xác nhận thoát",
+                MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.OK)
+            {
+                TroVeClicked?.Invoke(this, EventArgs.Empty);
+            }
         }
+
 
         private void button_NopBai_Click(object sender, EventArgs e)
         {

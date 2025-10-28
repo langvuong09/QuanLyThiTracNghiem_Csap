@@ -328,7 +328,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
         {
             try
             {
-                return CauHoiDAO.GetCauHoiByDeThi(maDe);
+                return CauHoiDAO.GetListCauHoiTheoMaDe(maDe);
             }
             catch (Exception ex)
             {

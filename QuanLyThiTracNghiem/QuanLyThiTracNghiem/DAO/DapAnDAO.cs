@@ -200,7 +200,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             {
                 MessageBox.Show("Lỗi khi thêm danh sách đáp án:\n" + ex.Message,
                "Lỗi CSDL", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                 return false;
+                return false;
             }
             return false;
         }
@@ -242,11 +242,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                 {
                     conn.Open();
                     string sql = "SELECT maDapAn, maCauHoi, tenDapAn, dungSai FROM dapan WHERE maCauHoi = @maCauHoi ORDER BY maDapAn";
-                    
+
                     using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@maCauHoi", maCauHoi);
-                        
+
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
@@ -269,6 +269,51 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
             return result;
         }
-    }
+    
 
+    public List<DapAn> LayDSDapAnCoDaoCauTheoMaCauHoi(int maCauHoi)
+        {
+            List<DapAn> danhSachDapAn = new List<DapAn>();
+
+            try
+            {
+                string sql = "SELECT * FROM dapan WHERE maCauHoi = @maCauHoi";
+
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@maCauHoi", maCauHoi);
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                danhSachDapAn.Add(new DapAn
+                                {
+                                    maDapAn = reader.GetInt32("maDapAn"),
+                                    maCauHoi = reader.GetInt32("maCauHoi"),
+                                    tenDapAn = reader.GetString("tenDapAn"),
+                                    dungSai = reader.GetInt32("dungSai")
+                                });
+                            }
+                        }
+                    }
+                }
+
+                // Trộn ngẫu nhiên danh sách đáp án
+                Random rng = new Random();
+                danhSachDapAn = danhSachDapAn.OrderBy(x => rng.Next()).ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Lỗi] Khi lấy danh sách đáp án theo mã câu hỏi ({maCauHoi}): {ex.Message}");
+            }
+
+            return danhSachDapAn;
+        }
+
+
+    }
 }
