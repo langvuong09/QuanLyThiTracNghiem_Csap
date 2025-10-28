@@ -242,6 +242,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             string maCauTraLoi = textBox_MaCauTraLoi.Text.Trim();
             string noiDung = textBox_NDCauTraLoi.Text.Trim();
             string dungSai = radioButton_Dung.Checked ? "Đúng" : (radioButton_Sai.Checked ? "Sai" : "");
+            if (this.solgCauTraLoi==3 && this.soCauTraLoiDung == 0)
+            {
+                MyDialog dialog = new MyDialog("Đã có đủ 3 câu sai . Vui lòng nhập nội dung câu đúng", MyDialog.WARNING_DIALOG);
+                dialog.ShowDialog();
+                return;
+            }
 
             // Kiểm tra dữ liệu hợp lệ
             if (string.IsNullOrEmpty(noiDung))

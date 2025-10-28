@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,7 +13,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
     public partial class Panel_ItemCauHoi : UserControl
     {
-        public Panel_ItemCauHoi()
+        public Panel_ItemCauHoi(CauHoi cauHoi, List<DapAn> dsDapAn)
         {
             InitializeComponent();
         }

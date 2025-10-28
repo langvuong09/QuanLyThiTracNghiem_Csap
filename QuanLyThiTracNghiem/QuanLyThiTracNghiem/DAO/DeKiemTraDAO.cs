@@ -182,7 +182,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
           */
 
         public (List<DeKTra_Mon_Nhom> Data, int TotalRows) GetDeKTra_Mon_Nhom(
-    string maSinhVien, int currentPage, int pageSize, int? maNhom = null)
+        string maSinhVien, int currentPage, int pageSize, int? maNhom = null)
         {
             List<DeKTra_Mon_Nhom> list = new List<DeKTra_Mon_Nhom>();
             int totalRows = 0;
@@ -284,6 +284,124 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
 
             return (list, totalRows);
         }
+
+        /*
+         Phương thức tìm kiếm theo mã đề kiểm tra hoặc tên bài kiểm tra
+            Input: maSinhVien (string), String noiDungTimKiem> => Chỉ có thể là mã <nếu là int> hoặc tên <nếu String> thôi không tìm kiếm cả hai 
+                 Output: List (DeKiemTra,MaNhom, TenNhom, TenMonHoc) (Danh sách đề kiểm tra)
+                 Created by: Đỗ Mai Anh
+                 Dùng trong trang : Component_DeThi
+                 => Phương thức liên quan đến các bảng sau:
+
+                            + nhomthamgia <lấy danh sách nhóm học phần mà sinh viên đã tham gia>
+                            + dekiemtra-nhom <lấy danh sách đề kiểm tra theo các nhóm đó>
+                            + dekiemtra <lấy thông tin đề kiểm tra>
+                            + monhoc <lấy tên môn học theo mã môn học trong bảng dekiemtra>
+                            + nhomh <lấy tên nhóm học phần theo mã nhóm học phần trong bảng dekiemtra-nhom>
+
+            bảng nhomthamgia có (maNhom, maSinhVien)
+            bảng dekiemtra-nhom có (maDe, maNhom)
+            bảng dekiemtra có (maDe, soCauDe, soCauKho, soCauTrungBinh, tenDe, thoiGianBatDau, thoiGianKetThuc)
+            bảng monhoc có (maMonHoc, tenMonHoc)
+            bảng nhom có (maNhom, tenNhom)
+         */
+
+        public List<DeKTra_Mon_Nhom> SearchDeKTra_Mon_Nhom(string maSinhVien, string noiDungTimKiem)
+        {
+            List<DeKTra_Mon_Nhom> list = new List<DeKTra_Mon_Nhom>();
+
+            try
+            {
+                string sql = @"
+            SELECT 
+                dk.maDe, dk.tenDe, 
+                mh.maMonHoc, mh.tenMonHoc,
+                n.maNhom, n.tenNhom,
+                dk.soCauDe, dk.soCauKho, dk.soCauTrungBinh,
+                dk.thoiGianBatDau, dk.thoiGianKetThuc, 
+                dk.thoiGianCanhBao, dk.trangThai
+            FROM nhomthamgia ntg
+            JOIN `dekiemtra-nhom` dkn ON ntg.maNhom = dkn.maNhom
+            JOIN dekiemtra dk ON dk.maDe = dkn.maDe
+            JOIN nhom n ON n.maNhom = dkn.maNhom
+            JOIN monhoc mh ON mh.maMonHoc = n.maMonHoc
+            WHERE ntg.maSinhVien = @maSinhVien
+        ";
+
+                if (!string.IsNullOrWhiteSpace(noiDungTimKiem))
+                {
+                    int maDeSearch;
+                    if (int.TryParse(noiDungTimKiem, out maDeSearch))
+                    {
+                        sql += " AND dk.maDe = @maDe ";
+                    }
+                    else
+                    {
+                        // LOWER() để so sánh không phân biệt hoa thường
+                        sql += " AND LOWER(dk.tenDe) LIKE LOWER(@tenDe) ";
+                    }
+                }
+
+                sql += " ORDER BY dk.thoiGianBatDau DESC;";
+
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@maSinhVien", maSinhVien.Trim());
+
+                        if (!string.IsNullOrWhiteSpace(noiDungTimKiem))
+                        {
+                            int maDeSearch;
+                            if (int.TryParse(noiDungTimKiem, out maDeSearch))
+                            {
+                                cmd.Parameters.AddWithValue("@maDe", maDeSearch);
+                            }
+                            else
+                            {
+                                // Dùng % để tìm kiếm chuỗi con
+                                cmd.Parameters.AddWithValue("@tenDe", "%" + noiDungTimKiem.Trim().ToLower() + "%");
+                            }
+                        }
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                DeKTra_Mon_Nhom item = new DeKTra_Mon_Nhom
+                                {
+                                    DeKiemTra = new DeKiemTra
+                                    {
+                                        maDe = reader.GetInt32("maDe"),
+                                        tenDe = reader.GetString("tenDe"),
+                                        soCauDe = reader.GetInt32("soCauDe"),
+                                        soCauKho = reader.GetInt32("soCauKho"),
+                                        soCauTrungBinh = reader.GetInt32("soCauTrungBinh"),
+                                        thoiGianBatDau = reader.GetDateTime("thoiGianBatDau"),
+                                        thoiGianKetThuc = reader.GetDateTime("thoiGianKetThuc"),
+                                        thoiGianCanhBao = reader.GetDateTime("thoiGianCanhBao"),
+                                        trangThai = reader.GetInt32("trangThai")
+                                    },
+                                    MaNhom = reader.GetInt32("maNhom"),
+                                    TenNhom = reader.GetString("tenNhom"),
+                                    MaMonHoc = reader.GetString("maMonHoc"),
+                                    TenMonHoc = reader.GetString("tenMonHoc")
+                                };
+                                list.Add(item);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[DAO ERROR] Lỗi khi tìm kiếm danh sách đề kiểm tra - nhóm: {ex.Message}");
+            }
+
+            return list;
+        }
+
 
 
 

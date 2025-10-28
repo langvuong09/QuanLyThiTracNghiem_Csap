@@ -35,7 +35,7 @@
             button_TimKiem = new Button();
             comboBox_LocTheoNhom = new ComboBox();
             panel_Bottom = new Panel();
-            comboBox1 = new ComboBox();
+            comboBox_PhanTrang = new ComboBox();
             button_Prev = new Button();
             button_Next = new Button();
             flowLayoutPanel_Main = new FlowLayoutPanel();
@@ -62,6 +62,7 @@
             button_Reload.Size = new Size(83, 73);
             button_Reload.TabIndex = 2;
             button_Reload.UseVisualStyleBackColor = false;
+            button_Reload.Click += button_Reload_Click;
             // 
             // panel_Top
             // 
@@ -88,6 +89,7 @@
             button_TimKiem.TabIndex = 4;
             button_TimKiem.Text = "Tìm Kiếm";
             button_TimKiem.UseVisualStyleBackColor = false;
+            button_TimKiem.Click += button_TimKiem_Click;
             // 
             // comboBox_LocTheoNhom
             // 
@@ -98,10 +100,11 @@
             comboBox_LocTheoNhom.Name = "comboBox_LocTheoNhom";
             comboBox_LocTheoNhom.Size = new Size(1230, 40);
             comboBox_LocTheoNhom.TabIndex = 3;
+            comboBox_LocTheoNhom.SelectionChangeCommitted += comboBox_LocTheoNhom_SelectionChangeCommitted;
             // 
             // panel_Bottom
             // 
-            panel_Bottom.Controls.Add(comboBox1);
+            panel_Bottom.Controls.Add(comboBox_PhanTrang);
             panel_Bottom.Controls.Add(button_Prev);
             panel_Bottom.Controls.Add(button_Next);
             panel_Bottom.Dock = DockStyle.Bottom;
@@ -110,14 +113,15 @@
             panel_Bottom.Size = new Size(1541, 68);
             panel_Bottom.TabIndex = 4;
             // 
-            // comboBox1
+            // comboBox_PhanTrang
             // 
-            comboBox1.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(1342, 11);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(60, 33);
-            comboBox1.TabIndex = 2;
+            comboBox_PhanTrang.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            comboBox_PhanTrang.FormattingEnabled = true;
+            comboBox_PhanTrang.Location = new Point(1342, 11);
+            comboBox_PhanTrang.Name = "comboBox_PhanTrang";
+            comboBox_PhanTrang.Size = new Size(60, 33);
+            comboBox_PhanTrang.TabIndex = 2;
+            comboBox_PhanTrang.SelectionChangeCommitted += comboBox_PhanTrang_SelectionChangeCommitted;
             // 
             // button_Prev
             // 
@@ -130,18 +134,20 @@
             button_Prev.TabIndex = 1;
             button_Prev.Text = "Prev";
             button_Prev.UseVisualStyleBackColor = false;
+            button_Prev.Click += button_Prev_Click;
             // 
             // button_Next
             // 
             button_Next.BackColor = SystemColors.ActiveCaption;
             button_Next.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_Next.ForeColor = SystemColors.ButtonFace;
-            button_Next.Location = new Point(1435, 6);
+            button_Next.Location = new Point(1433, 6);
             button_Next.Name = "button_Next";
             button_Next.Size = new Size(90, 40);
             button_Next.TabIndex = 0;
             button_Next.Text = "Next";
             button_Next.UseVisualStyleBackColor = false;
+            button_Next.Click += button_Next_Click;
             // 
             // flowLayoutPanel_Main
             // 
@@ -175,7 +181,7 @@
         private Button button_Reload;
         private Panel panel_Top;
         private Panel panel_Bottom;
-        private ComboBox comboBox1;
+        private ComboBox comboBox_PhanTrang;
         private Button button_Prev;
         private Button button_Next;
         private FlowLayoutPanel flowLayoutPanel_Main;

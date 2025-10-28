@@ -290,12 +290,74 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             catch (Exception ex)
             {
                 Console.WriteLine($"Lỗi khi lấy danh sách câu hỏi phân trang: {ex}");
-                // Có thể throw; nếu muốn gọi nơi khác bắt lỗi
+                
             }
 
             int totalPages = (int)Math.Ceiling((double)totalRows / pageSize);
             return (result, totalPages);
         }
+
+        /*
+         Phương thức lấy danh sách câu hỏi theo mã đề thi (có trộn ngẫu nhiên)
+            Input: int MaDe
+            Output: List<CauHoi> (đã được xáo trộn)
+            Created by: Đỗ Mai Anh
+
+            Các bảng có liên quan:
+                + cauhoi_dekiemtra(maDe, maCauHoi)
+                + cauhoi(maCauHoi, maMonHoc, maChuong, doKho, noiDungCauHoi)
+        */
+
+        public List<CauHoi> GetListCauHoiTheoMaDe(int maDe)
+        {
+            List<CauHoi> result = new List<CauHoi>();
+
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+
+                    string sql = @"
+                SELECT c.maCauHoi, c.maMonHoc, c.maChuong, c.doKho, c.noiDungCauHoi
+                FROM cauhoi_dekiemtra cd
+                INNER JOIN cauhoi c ON cd.maCauHoi = c.maCauHoi
+                WHERE cd.maDe = @MaDe";
+
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@MaDe", maDe);
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                result.Add(new CauHoi
+                                {
+                                    maCauHoi = reader.GetInt32("maCauHoi"),
+                                    maMonHoc = reader.GetString("maMonHoc"),
+                                    maChuong = reader.GetInt32("maChuong"),
+                                    doKho = reader.GetString("doKho"),
+                                    noiDungCauHoi = reader.GetString("noiDungCauHoi")
+                                });
+                            }
+                        }
+                    }
+                }
+
+                // Xáo trộn ngẫu nhiên thứ tự câu hỏi 
+                Random rnd = new Random();
+                result = result.OrderBy(x => rnd.Next()).ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi lấy danh sách câu hỏi theo mã đề {maDe}: {ex.Message}");
+            }
+
+            return result;
+        }
+
+
 
 
 

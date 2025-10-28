@@ -106,12 +106,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                     this.is_DoKho
                 );
 
-                Console.WriteLine("\n - Trang hiện tại:" + this.currentPage);
-                Console.WriteLine("\n - Tổng số chương:" + this.totalPages);
-                Console.WriteLine("\n - Môn Học :" + this.is_MonHocSelected);
-                Console.WriteLine("\n - Chương:" + this.is_Chuong);
-                Console.WriteLine("\n - Độ Khó:" + this.is_DoKho);
-                Console.WriteLine("\n");
+              
                 // Cập nhật combobox phân trang
                 comboBox_ChiSo.Items.Clear();
                 for (int i = 1; i <= this.totalPages; i++)
@@ -140,7 +135,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Lỗi khi tải danh sách câu hỏi: " + ex.Message);
+                Console.WriteLine("CauHoiComponent => Lỗi khi tải danh sách câu hỏi: " + ex.Message);
             }
         }
 
@@ -268,9 +263,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
                 //Truyền đối số 0 nghĩa là xác nhận đây là nút xem
                 int id = Convert.ToInt32(dataGridView_DSCauHoi.SelectedRows[0].Cells["MaCauHoi"].Value);
-                Console.WriteLine("\n - Nhấn nút Xem -");
-                Console.WriteLine("\n - Mã câu hỏi được chọn: " + id);
-                Console.WriteLine("\n");
                 Dialog_SuaCauHoi dialog = new Dialog_SuaCauHoi(0, id);
                 dialog.Dock = DockStyle.Top;
 
@@ -300,9 +292,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
                 //Truyền đối số 1 nghĩa là xác nhận đây là nút sửa
                 int id = Convert.ToInt32(dataGridView_DSCauHoi.SelectedRows[0].Cells["MaCauHoi"].Value);
-                Console.WriteLine("\n - Nhấn nút Sửa -");
-                Console.WriteLine("\n - Mã câu hỏi được chọn: " + id);
-                Console.WriteLine("\n");
                 Dialog_SuaCauHoi dialog = new Dialog_SuaCauHoi(1,id);
                 dialog.Dock = DockStyle.Top;
 
@@ -314,16 +303,14 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private void button_Prev_Click(object sender, EventArgs e)
         {
             this.currentPage=this.currentPage-1;
-            Console.WriteLine("\n - Nhấn nút Prev -");
             LoadData_DSCauHoi();
-            //Trang trước
+          
         }
 
         private void button_Next_Click(object sender, EventArgs e)
         {
             //Trang sau
             this.currentPage=this.currentPage+1;
-            Console.WriteLine("\n - Nhấn nút Next -");
             LoadData_DSCauHoi();
         }
 
@@ -369,7 +356,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 this.is_MonHocSelected = "0";
                 this.is_Chuong = 0;
                 this.currentPage = 1;
-                Console.WriteLine("\n - Nhấn comboBox Môn Học -");
                 LoadData_DSCauHoi();
                 return;
             }
@@ -382,8 +368,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             this.currentPage = 1;
             this.is_MonHocSelected = monHoc.maMonHoc;
             this.is_Chuong = 0;
-
-            Console.WriteLine("\n - Nhấn comboBox Môn Học -");
             LoadData_DSCauHoi();
         }
 
@@ -393,7 +377,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 this.is_DoKho = "0";
                 this.currentPage = 1;
 
-                Console.WriteLine("\n - Nhấn comboBox Độ Khó -");
                 LoadData_DSCauHoi();
                 return; 
             }
@@ -410,7 +393,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 case 3: this.is_DoKho = "Khó"; break;
             }
             this.currentPage = 1;
-            Console.WriteLine("\n - Nhấn comboBox Độ Khó -");
             //Cập nhật lại DataGridView
             LoadData_DSCauHoi();
         }
@@ -431,7 +413,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             {
                 this.is_Chuong = 0;
                 this.currentPage = 1;
-                Console.WriteLine("\n - Nhấn comboBox Chương -");
                 LoadData_DSCauHoi();
                 return;
             }
@@ -441,7 +422,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             if (chuong == null) return;
             this.is_Chuong = chuong.maChuong;
             this.currentPage = 1;
-            Console.WriteLine("\n - Nhấn comboBox Chương -");
             LoadData_DSCauHoi();
 
         }
@@ -451,8 +431,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             if(comboBox_ChiSo.SelectedIndex<0) 
                 return;
             this.currentPage = comboBox_ChiSo.SelectedIndex;
-            Console.WriteLine("\n - Nhấn comboBox Chỉ Số -");
-            Console.WriteLine("\n - Đang chọn trang: "+this.currentPage);
             LoadData_DSCauHoi();
         }
     }
