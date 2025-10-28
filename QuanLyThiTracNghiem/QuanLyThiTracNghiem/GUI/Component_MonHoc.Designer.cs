@@ -1,4 +1,6 @@
-﻿namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
+﻿using System.Windows.Forms;
+
+namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
     partial class Component_MonHoc
     {
@@ -28,6 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle = new DataGridViewCellStyle();
             lblTitle = new Label();
             lblMaMonHoc = new Label();
             lblTenMonHoc = new Label();
@@ -48,9 +51,17 @@
             lblChuong = new Label();
             btnXoaChuong = new Button();
             btnThemChuong = new Button();
-            dataGridView1 = new DataGridView();
+            dgvMonHoc = new DataGridView();
+            colMaMonHoc = new DataGridViewTextBoxColumn();
+            colTenMonHoc = new DataGridViewTextBoxColumn();
+            colTinChi = new DataGridViewTextBoxColumn();
+            colSoTietLT = new DataGridViewTextBoxColumn();
+            colSoTietTH = new DataGridViewTextBoxColumn();
+            colHeSo = new DataGridViewTextBoxColumn();
+            colMaChuong = new DataGridViewTextBoxColumn();
+            colTenChuong = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dgvChuong).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvMonHoc).BeginInit();
             SuspendLayout();
             // 
             // lblTitle
@@ -204,11 +215,37 @@
             // 
             // dgvChuong
             // 
-            dgvChuong.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvChuong.AllowUserToAddRows = false;
+            dgvChuong.AllowUserToDeleteRows = false;
+            dgvChuong.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvChuong.BackgroundColor = SystemColors.ButtonFace;
+            dataGridViewCellStyle.BackColor = Color.FromArgb(101, 224, 199);
+            dataGridViewCellStyle.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            dgvChuong.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle;
+            dgvChuong.ColumnHeadersHeight = 29;
+            dgvChuong.Columns.AddRange(new DataGridViewColumn[] {colMaChuong, colTenChuong });
+            dgvChuong.EnableHeadersVisualStyles = false;
             dgvChuong.Location = new Point(978, 184);
+            dgvChuong.MultiSelect = false;
             dgvChuong.Name = "dgvChuong";
+            dgvChuong.ReadOnly = true;
+            dgvChuong.RowHeadersWidth = 51;
             dgvChuong.Size = new Size(538, 255);
             dgvChuong.TabIndex = 17;
+            // 
+            // colMaChuong
+            // 
+            colMaChuong.HeaderText = "Mã";
+            colMaChuong.MinimumWidth = 6;
+            colMaChuong.Name = "colMaChuong";
+            colMaChuong.ReadOnly = true;
+            // 
+            // colTenChuong
+            // 
+            colTenChuong.HeaderText = "Tên Chương";
+            colTenChuong.MinimumWidth = 6;
+            colTenChuong.Name = "colTenChuong";
+            colTenChuong.ReadOnly = true;
             // 
             // lblChuong
             // 
@@ -230,7 +267,7 @@
             btnXoaChuong.TabIndex = 19;
             btnXoaChuong.Text = "Xóa";
             btnXoaChuong.UseVisualStyleBackColor = true;
-            btnThemChuong.Click += XuLyThemChuong;
+            btnThemChuong.Click += btnThemChuong_Click;
 
             // 
             // btnThemChuong
@@ -243,19 +280,73 @@
             btnThemChuong.Text = "Thêm";
             btnThemChuong.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
+            // dgvMonHoc
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(0, 580);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(1541, 354);
-            dataGridView1.TabIndex = 21;
+            dgvMonHoc.AllowUserToAddRows = false;
+            dgvMonHoc.AllowUserToDeleteRows = false;
+            dgvMonHoc.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvMonHoc.Location = new Point(0, 580);
+            dgvMonHoc.Name = "dgvMonHoc";
+            dgvMonHoc.BackgroundColor = SystemColors.ButtonFace;
+            dataGridViewCellStyle.BackColor = Color.FromArgb(101, 224, 199);
+            dataGridViewCellStyle.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            dgvMonHoc.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle;
+            dgvMonHoc.ColumnHeadersHeight = 29;
+            dgvMonHoc.Columns.AddRange(new DataGridViewColumn[] { colMaMonHoc, colTenMonHoc, colTinChi, colSoTietLT, colSoTietTH, colHeSo });
+            dgvMonHoc.EnableHeadersVisualStyles = false;
+            dgvMonHoc.MultiSelect = false;
+            dgvMonHoc.ReadOnly = true;
+            dgvMonHoc.RowHeadersWidth = 51;
+            dgvMonHoc.Size = new Size(1541, 354);
+            dgvMonHoc.TabIndex = 21;
+            // 
+            // colMaMonHoc
+            // 
+            colMaMonHoc.HeaderText = "Mã MH";
+            colMaMonHoc.MinimumWidth = 6;
+            colMaMonHoc.Name = "colMaMonHoc";
+            colMaMonHoc.ReadOnly = true;
+            // 
+            // colTenMonHoc
+            // 
+            colTenMonHoc.HeaderText = "Tên MH";
+            colTenMonHoc.MinimumWidth = 6;
+            colTenMonHoc.Name = "colTenMonHoc";
+            colTenMonHoc.ReadOnly = true;
+            // 
+            // colTinChi
+            // 
+            colTinChi.HeaderText = "Tín chỉ";
+            colTinChi.MinimumWidth = 6;
+            colTinChi.Name = "colTinChi";
+            colTinChi.ReadOnly = true;
+            // 
+            // colSoTietLT
+            // 
+            colSoTietLT.HeaderText = "Số tiết LT";
+            colSoTietLT.MinimumWidth = 6;
+            colSoTietLT.Name = "colSoTietLT";
+            colSoTietLT.ReadOnly = true;
+            // 
+            // colSoTietTH
+            // 
+            colSoTietTH.HeaderText = "Số tiết TH";
+            colSoTietTH.MinimumWidth = 6;
+            colSoTietTH.Name = "colSoTietTH";
+            colSoTietTH.ReadOnly = true;
+            // 
+            // colHeSo
+            // 
+            colHeSo.HeaderText = "Hệ số";
+            colHeSo.MinimumWidth = 6;
+            colHeSo.Name = "colHeSo";
+            colHeSo.ReadOnly = true;
             // 
             // Component_MonHoc
             // 
             AutoScaleMode = AutoScaleMode.None;
             BackColor = Color.White;
-            Controls.Add(dataGridView1);
+            Controls.Add(dgvMonHoc);
             Controls.Add(btnThemChuong);
             Controls.Add(btnXoaChuong);
             Controls.Add(lblChuong);
@@ -279,7 +370,7 @@
             Name = "Component_MonHoc";
             Size = new Size(1541, 934);
             ((System.ComponentModel.ISupportInitialize)dgvChuong).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvMonHoc).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -293,6 +384,14 @@
         private Label lblSoTietTH;
         private Label lblHeSo;
         private Label lblSoTietLT;
+        private DataGridViewTextBoxColumn colMaMonHoc;
+        private DataGridViewTextBoxColumn colTenMonHoc;
+        private DataGridViewTextBoxColumn colTinChi;
+        private DataGridViewTextBoxColumn colSoTietLT;
+        private DataGridViewTextBoxColumn colSoTietTH;
+        private DataGridViewTextBoxColumn colHeSo;
+        private DataGridViewTextBoxColumn colMaChuong;
+        private DataGridViewTextBoxColumn colTenChuong;
         private TextBox txtMaMonHoc;
         private TextBox txtTenMonHoc;
         private TextBox txtTinChi;
@@ -306,6 +405,6 @@
         private Label lblChuong;
         private Button btnXoaChuong;
         private Button btnThemChuong;
-        private DataGridView dataGridView1;
+        private DataGridView dgvMonHoc;
     }
 }

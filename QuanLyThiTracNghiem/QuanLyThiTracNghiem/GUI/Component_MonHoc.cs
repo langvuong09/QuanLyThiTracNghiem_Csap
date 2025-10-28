@@ -1,4 +1,8 @@
-﻿using System;
+﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
+
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,12 +16,36 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
     public partial class Component_MonHoc : UserControl
     {
+        private MonHocBUS monHocBUS = new MonHocBUS();
         public Component_MonHoc()
         {
             InitializeComponent();
+            AddEvents();
+        }
+        private void AddEvents()
+        {
+            LoadDataLenTableMonHoc();
         }
 
-        public void XuLyThemChuong(object sender, EventArgs e)
+        private void LoadDataLenTableMonHoc()
+        {
+            monHocBUS.DocListMonHoc();
+            dgvMonHoc.Rows.Clear();
+            ArrayList dsmh = monHocBUS.GetListMonHoc();
+            foreach (MonHoc mh in dsmh)
+            {
+                dgvMonHoc.Rows.Add(
+                    mh.maMonHoc,
+                    mh.tenMonHoc,
+                    mh.tinChi,
+                    mh.soTietLyThuyet,
+                    mh.soTietThucHanh,
+                    mh.heSo
+                    );
+            }
+        }
+
+        public void btnThemChuong_Click(object sender, EventArgs e)
         {
             Form popup = new Form();
             popup.Text = "Thêm Chương";

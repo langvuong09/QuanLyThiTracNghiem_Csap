@@ -92,7 +92,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             btnXuatExcel.UseVisualStyleBackColor = false;
             btnXuatExcel.Click += btnXuatExcel_Click;
             // 
-            // dataGridView1
+            // dgvMonHoc
             // 
             dataGridView1.ColumnHeadersHeight = 40;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
@@ -104,7 +104,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dataGridView1.GridColor = Color.LightGray;
             dataGridView1.Location = new Point(44, 118);
             dataGridView1.MultiSelect = false;
-            dataGridView1.Name = "dataGridView1";
+            dataGridView1.Name = "dgvMonHoc";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersVisible = false;
             dataGridView1.RowTemplate.Height = 50;

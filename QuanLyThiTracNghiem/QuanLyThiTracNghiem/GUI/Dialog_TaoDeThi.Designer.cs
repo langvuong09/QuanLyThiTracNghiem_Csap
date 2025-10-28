@@ -204,7 +204,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             labelChuong.TabIndex = 12;
             labelChuong.Text = "Chương";
             // 
-            // dataGridView1
+            // dgvMonHoc
             // 
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
@@ -227,7 +227,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dataGridView1.GridColor = Color.LightGray;
             dataGridView1.Location = new Point(30, 627);
             dataGridView1.MultiSelect = false;
-            dataGridView1.Name = "dataGridView1";
+            dataGridView1.Name = "dgvMonHoc";
             dataGridView1.RowHeadersVisible = false;
             dataGridView1.RowTemplate.Height = 50;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
