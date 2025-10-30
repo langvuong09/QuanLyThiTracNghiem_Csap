@@ -178,18 +178,18 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
                         // Nội dung file mẫu
                         string noiDung =
                             @"OOP là viết tắt của:
-                            A. Object Open Programming
-                            B. Open Object Programming
-                            C. Object Oriented Programming
-                            D. Object Oriented Proccessing
-                            ANSWER: C
+A. Object Open Programming
+B. Open Object Programming
+C. Object Oriented Programming
+D. Object Oriented Proccessing
+ANSWER: C
 
-                            HTML là viết tắt của:
-                            A. Hyper Trainer Marking Language
-                            B. Hyper Text Marketing Language
-                            C. Hyper Text Markup Language
-                            D. Hyper Tool Multi Language
-                            ANSWER: C";
+HTML là viết tắt của:
+A. Hyper Trainer Marking Language
+B. Hyper Text Marketing Language
+C. Hyper Text Markup Language
+D. Hyper Tool Multi Language
+ANSWER: C";
 
                         // Ghi nội dung vào file
                         File.WriteAllText(filePath, noiDung, Encoding.UTF8);

@@ -17,6 +17,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
     {
 
         private DeKiemTraDAO deKiemTraDAO = new DeKiemTraDAO();
+        private SinhVien_DeKiemTraDAO SinhVien_DeKiemTraDAO = new SinhVien_DeKiemTraDAO();
         public DeKiemTraBUS() { }
         // ==========================================
         // TẠO ĐỀ THI MỚI
@@ -132,7 +133,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
              Input: DeKTra_Mon_Nhom dekiemtra
              Output: bool
          */
-        public bool KiemTraThoiGianLamBai(DeKTra_Mon_Nhom dekiemtra)
+        public bool KiemTraBaiThi(DeKTra_Mon_Nhom dekiemtra)
         {
             // Kiểm tra bài làm đã kết thúc chưa
             if (dekiemtra.DeKiemTra.thoiGianKetThuc <= DateTime.Now)
@@ -172,7 +173,21 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
                     return true;
                 }
             }
+
+            //Kiểm tra xem bài kiểm tra có phải là bài kiểm tra chính thức không <Nếu chính thức thì chỉ cho làm một lần thôi>
+            if (dekiemtra.DeKiemTra.trangThai == 1) { //=>  nghĩa là đây là đề thi chính thức
+                bool flag = SinhVien_DeKiemTraDAO.KiemTraTonTaiBaiLam(dekiemtra.DeKiemTra.maDe, UserSession.userId);
+                if (flag==true){
+                    MyDialog dialog = new MyDialog("Bạn đã làm bài kiểm tra này rồi. Không thể làm lại lần 2.", MyDialog.WARNING_DIALOG);
+                    dialog.ShowDialog();
+                    return false;
+                }
+            
+            }
+
         }
+
+        
 
 
 
@@ -234,10 +249,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 
                         dialog.LamBaiClicked += (ss, ee) =>
                         {
-                            if (KiemTraThoiGianLamBai(dekiemtra))
+                            if (KiemTraBaiThi(dekiemtra))
                             {
                                 //int maDe, DateTime thoiGianBatDau, DateTime thoiGianKetThuc, DateTime thoiGianCanhBao
-                                using (LamBaiThi fLamBai = new LamBaiThi(dekiemtra.DeKiemTra.maDe, dekiemtra.DeKiemTra.thoiGianBatDau, dekiemtra.DeKiemTra.thoiGianKetThuc, dekiemtra.DeKiemTra.thoiGianCanhBao))
+                                using (LamBaiThi fLamBai = new LamBaiThi(dekiemtra.DeKiemTra.maDe, dekiemtra.DeKiemTra.thoiGianBatDau, dekiemtra.DeKiemTra.thoiGianKetThuc, dekiemtra.DeKiemTra.thoiGianCanhBao, dekiemtra.DeKiemTra.trangThai))
                                 {
                                     fLamBai.TroVeClicked += (sss, eee) =>
                                     {
@@ -299,9 +314,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
                         // Kiểm tra thòi gian nếu là true thì mở formLamBaiThi
                         dialog.LamBaiClicked += (ss, ee) =>
                         {
-                            if (KiemTraThoiGianLamBai(dekiemtra))
+                            if (KiemTraBaiThi(dekiemtra))
                             {
-                                using (LamBaiThi fLamBai = new LamBaiThi(dekiemtra.DeKiemTra.maDe, dekiemtra.DeKiemTra.thoiGianBatDau, dekiemtra.DeKiemTra.thoiGianKetThuc, dekiemtra.DeKiemTra.thoiGianCanhBao))
+                                using (LamBaiThi fLamBai = new LamBaiThi(dekiemtra.DeKiemTra.maDe, dekiemtra.DeKiemTra.thoiGianBatDau, dekiemtra.DeKiemTra.thoiGianKetThuc, dekiemtra.DeKiemTra.thoiGianCanhBao, dekiemtra.DeKiemTra.trangThai))
                                 {
                                     fLamBai.TroVeClicked += (sss, eee) =>
                                     {

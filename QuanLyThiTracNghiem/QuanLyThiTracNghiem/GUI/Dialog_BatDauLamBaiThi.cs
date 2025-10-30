@@ -32,6 +32,17 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
             textBox_Nhom.Text= dekiemtra.MaNhom.ToString()+" - "+dekiemtra.TenNhom;
             textBox_MonHoc.Text = dekiemtra.MaMonHoc.ToString() + " - " + dekiemtra.TenMonHoc;
+
+            if (dekiemtra.DeKiemTra.trangThai == 1)
+            {
+                label_LoaiBaiThi.Text = "Đề Chính Thức:";
+                label_GiaiThich.Text = "Bạn chỉ có thể làm đề này 1 lần thôi";
+            }
+            else
+            {
+                label_LoaiBaiThi.Text = "Đề Luyện Tập:";
+                label_GiaiThich.Text = "Bạn chỉ có thể làm đề này nhiều lần";
+            }
         }
 
         // Event khi nhấn nút Làm Bài

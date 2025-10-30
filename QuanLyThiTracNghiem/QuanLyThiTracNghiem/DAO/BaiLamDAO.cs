@@ -160,6 +160,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
         }
 
+        // Lấy max MaBaiLam
         public int GetMaxMaBaiLam()
         {
             int maxMaBaiLam = 0;
@@ -186,6 +187,38 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
             return maxMaBaiLam;
         }
+
+        // Tìm kiếm bài làm theo maDe, maSinhVien
+        public bool KiemTraTonTaiBaiLam(int maDe, string maSinhVien)
+        {
+            bool tonTai = false;
+
+            try
+            {
+                string sql = "SELECT COUNT(*) FROM bailam WHERE maDe = @maDe AND maSinhVien = @maSinhVien";
+
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@maDe", maDe);
+                        cmd.Parameters.AddWithValue("@maSinhVien", maSinhVien);
+
+                        int count = Convert.ToInt32(cmd.ExecuteScalar());
+                        tonTai = count > 0; 
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Lỗi] Khi kiểm tra bài làm của sinh viên ({maSinhVien}) trong đề ({maDe}): {ex.Message}");
+            }
+
+            return tonTai;
+        }
+
 
     }
 }
