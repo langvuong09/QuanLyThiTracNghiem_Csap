@@ -1,4 +1,5 @@
-﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
+﻿using QuanLyThiTracNghiem.MyCustom;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 using System;
 using System.Collections;
@@ -102,5 +103,170 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
             return listMonHoc;
         }
+
+        public bool ThemMonHoc(string tenMonHoc, string tinChi, string soTietLT, string soTietTH, string heSo)
+        {
+            try
+            {
+                if (tenMonHoc == "")
+                {
+                    MyDialog dlg = new MyDialog("Không được để trống tên môn học!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
+                    return false;
+                }
+                if (tinChi == "")
+                {
+                    MyDialog dlg = new MyDialog("Không được để trống tín chỉ!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
+                    return false;
+                }
+                if (soTietLT == "")
+                {
+                    MyDialog dlg = new MyDialog("Không được để trống số tiết lý thuyết!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
+                    return false;
+                }
+                if (soTietTH == "")
+                {
+                    MyDialog dlg = new MyDialog("Không được để trống số tiết thực hành!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
+                    return false;
+                }
+                if (heSo == "")
+                {
+                    MyDialog dlg = new MyDialog("Không được để trống hệ số!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
+                    return false;
+                }
+                int tc = Convert.ToInt32(tinChi);
+                int stlt = Convert.ToInt32(soTietLT);
+                int stth = Convert.ToInt32(soTietTH);
+                int hs = Convert.ToInt32(heSo);
+                int soThuTu = int.Parse(monHocDAO.GetMaxMaMonHoc().Substring(0));
+                int ma = soThuTu + 1;
+                string maMonHoc = "CT" + ma;
+                if (monHocDAO.ThemMonHoc(maMonHoc, tenMonHoc, tc, stlt, stth, hs))
+                {
+                    MyDialog dlg = new MyDialog("Thêm môn thành công!", MyDialog.SUCCESS_DIALOG);
+                    dlg.ShowDialog();
+                    return true;
+                }
+                else
+                {
+                    MyDialog dlg = new MyDialog("Thêm môn thất bại!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MyDialog dlg = new MyDialog("Sai định dạng!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return false;
+            }
+        }
+
+        public bool XoaMonHoc(string maMonHoc)
+        {
+            if(maMonHoc == "")
+            {
+                MyDialog dlg = new MyDialog("Chưa chọn môn học để xóa!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return false;
+            }
+            if (monHocDAO.XoaMonHoc(maMonHoc))
+            {
+                MyDialog dlg = new MyDialog("Xóa môn học thành công!", MyDialog.SUCCESS_DIALOG);
+                dlg.ShowDialog();
+                return true;
+            }
+            else
+            {
+                MyDialog dlg = new MyDialog("Xóa môn học thất bại!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return false;
+            }
+        }
+
+        public bool SuaMonHoc(string maMonHoc, string tenMonHoc, string tinChi, string soTietLT, string soTietTH, string heSo)
+        {
+            try
+            {
+                if (maMonHoc == "")
+                {
+                    MyDialog dlg = new MyDialog("Chưa chọn môn học để sửa!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
+                    return false;
+                }
+                if (tenMonHoc == "")
+                {
+                    MyDialog dlg = new MyDialog("Không được để trống tên môn học!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
+                    return false;
+                }
+                if (tinChi == "")
+                {
+                    MyDialog dlg = new MyDialog("Không được để trống tín chỉ!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
+                    return false;
+                }
+                if (soTietLT == "")
+                {
+                    MyDialog dlg = new MyDialog("Không được để trống số tiết lý thuyết!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
+                    return false;
+                }
+                if (soTietTH == "")
+                {
+                    MyDialog dlg = new MyDialog("Không được để trống số tiết thực hành!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
+                    return false;
+                }
+                if (heSo == "")
+                {
+                    MyDialog dlg = new MyDialog("Không được để trống hệ số!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
+                    return false;
+                }
+                int tc = Convert.ToInt32(tinChi);
+                int stlt = Convert.ToInt32(soTietLT);
+                int stth = Convert.ToInt32(soTietTH);
+                int hs = Convert.ToInt32(heSo);
+                if (monHocDAO.SuaMonHoc(maMonHoc, tenMonHoc, tc, stlt, stth, hs))
+                {
+                    MyDialog dlg = new MyDialog("Sửa môn thành công!", MyDialog.SUCCESS_DIALOG);
+                    dlg.ShowDialog();
+                    return true;
+                }
+                else
+                {
+                    MyDialog dlg = new MyDialog("Sửa môn thất bại!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MyDialog dlg = new MyDialog("Sai định dạng!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return false;
+            }
+        }
+
+        public ArrayList GetListDSMonHoc(string tenMonHoc)
+        {
+            ArrayList dsmh = monHocDAO.GetListMonHoc();
+            ArrayList dsTimKiem = new ArrayList();
+
+            foreach (MonHoc mh in dsmh)
+            {
+                if (mh.tenMonHoc.IndexOf(tenMonHoc, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    dsTimKiem.Add(mh);
+                }
+            }
+            return dsTimKiem;
+        }
+
     }
 }

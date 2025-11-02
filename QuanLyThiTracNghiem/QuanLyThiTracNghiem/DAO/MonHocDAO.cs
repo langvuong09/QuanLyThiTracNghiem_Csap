@@ -73,7 +73,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             catch (Exception ex) { return false; }
         }
 
-        public bool XoaMonHoc(int maMonHoc)
+        public bool XoaMonHoc(string maMonHoc)
         {
             try
             {
@@ -153,8 +153,34 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
         }
 
+        public string GetMaxMaMonHoc()
+        {
+            try
+            {
+                string sql = "SELECT maMonHoc FROM monhoc ORDER BY maMonHoc DESC LIMIT 1";
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    object result = cmd.ExecuteScalar();
 
+                    if (result != null)
+                    {
+                        string ma = result.ToString();
+                        if (ma.Length >= 5)
+                        {
+                            string so = ma.Substring(ma.Length - 3);
+                            return so;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
 
+            }
+            return "000";
+        }
 
     }
 }
