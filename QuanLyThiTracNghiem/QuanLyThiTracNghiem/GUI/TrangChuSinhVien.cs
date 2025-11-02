@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -183,6 +184,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             panel_Main.Controls.Add(tb);
             panel_Main.Controls.Add(ttcn);
             panel_Main.Controls.Add(nd);
+            button_ThongTin.Text = UserSession.userId;
 
 
 

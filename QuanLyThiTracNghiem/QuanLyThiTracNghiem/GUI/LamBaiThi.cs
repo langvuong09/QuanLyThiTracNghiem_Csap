@@ -22,19 +22,22 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private DateTime thoiGianBatDauThucTe;
         private DateTime thoiGianCanhBaoThucTe;
         private TimeSpan tongThoiGian;
+        private int isChinhThuc;
 
         private System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-        private List<Panel_ItemCauHoi> dsItem = new();
+        private List<Panel_ItemCauHoi> dsItem = new List<Panel_ItemCauHoi>();
+        private List<ChiTietBaiLam> listChiTietBaiLam = new List<ChiTietBaiLam>();
 
         private BaiLam bailamSinhVien = new BaiLam();
 
 
-        public LamBaiThi(int maDe, DateTime thoiGianBatDau, DateTime thoiGianKetThuc, DateTime thoiGianCanhBao)
+        public LamBaiThi(int maDe, DateTime thoiGianBatDau, DateTime thoiGianKetThuc, DateTime thoiGianCanhBao, int isChinhThuc)
         {
             InitializeComponent();
             this.ControlBox = false;
             this.MinimizeBox = false;
             this.MaximizeBox = false;
+            this.isChinhThuc = isChinhThuc;
 
             // 1) Đặt form nằm giữa màn hình
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -104,12 +107,21 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             foreach (var item in dsItem)
             {
                 item.HienThiDapAnDung();
+                listChiTietBaiLam.Add(new ChiTietBaiLam(this.bailamSinhVien.maBaiLam, item.MaCauHoi, item.MaDapAnChon));
                 if (item.MaDapAnChon == item.MaDapAnDung)
                     socau++;
+    
             }
 
             float sodiemtren1cau = 10 / this.dsItem.Count;
             float diem = socau*sodiemtren1cau;
+
+            // Kiểm tra nếu là đề chính thức sẽ lưu bài làm và chi tiết bài làm
+            if (this.isChinhThuc == 1)
+            {
+                baiLamBUS.LuuBaiLamMoi(this.bailamSinhVien, this.listChiTietBaiLam);
+            }
+
 
             panel_Top.Visible = true;
             label_SoCauDung.Text = "Số Câu Đúng:\t" + socau.ToString();

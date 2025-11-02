@@ -125,5 +125,84 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
             return result;
         }
+
+
+        //Thêm danh sách BaiLam vào database
+        public bool ThemDanhSachCTBaiLam(List<ChiTietBaiLam> danhSachCT)
+        {
+            if (danhSachCT == null || danhSachCT.Count == 0)
+                return false;
+
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    using (MySqlTransaction tran = conn.BeginTransaction())
+                    {
+                        try
+                        {
+                            // Tối ưu bằng cách batch nhiều giá trị cùng lúc nếu danh sách nhỏ
+                            if (danhSachCT.Count <= 100)
+                            {
+                                string sql = "INSERT INTO chitietbailam (maBaiLam, maCauHoi, maDapAnDuocChon) VALUES ";
+                                StringBuilder values = new StringBuilder();
+
+                                for (int i = 0; i < danhSachCT.Count; i++)
+                                {
+                                    var ct = danhSachCT[i];
+                                    values.AppendFormat("({0},{1},{2})", ct.maBaiLam, ct.maCauHoi, ct.maDapAnDuocChon);
+                                    if (i < danhSachCT.Count - 1)
+                                        values.Append(",");
+                                }
+
+                                sql += values.ToString();
+
+                                using (MySqlCommand cmd = new MySqlCommand(sql, conn, tran))
+                                {
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+                            else
+                            {
+                                // Nếu danh sách lớn, dùng prepared statement 
+                                string sql = "INSERT INTO chitietbailam (maBaiLam, maCauHoi, maDapAnDuocChon) " +
+                                             "VALUES (@maBaiLam, @maCauHoi, @maDapAnDuocChon)";
+                                using (MySqlCommand cmd = new MySqlCommand(sql, conn, tran))
+                                {
+                                    cmd.Parameters.Add("@maBaiLam", MySqlDbType.Int32);
+                                    cmd.Parameters.Add("@maCauHoi", MySqlDbType.Int32);
+                                    cmd.Parameters.Add("@maDapAnDuocChon", MySqlDbType.Int32);
+                                    cmd.Prepare();
+
+                                    foreach (var ct in danhSachCT)
+                                    {
+                                        cmd.Parameters["@maBaiLam"].Value = ct.maBaiLam;
+                                        cmd.Parameters["@maCauHoi"].Value = ct.maCauHoi;
+                                        cmd.Parameters["@maDapAnDuocChon"].Value = ct.maDapAnDuocChon;
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+                            }
+
+                            tran.Commit();
+                            return true;
+                        }
+                        catch (Exception ex)
+                        {
+                            tran.Rollback();
+                            Console.WriteLine($"Lỗi khi thêm danh sách ChiTietBaiLam: {ex.Message}");
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Lỗi kết nối DB: {ex.Message}");
+                return false;
+            }
+        }
+
     }
 }
