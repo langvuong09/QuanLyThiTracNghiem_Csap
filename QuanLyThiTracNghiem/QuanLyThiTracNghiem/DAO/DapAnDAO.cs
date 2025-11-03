@@ -314,6 +314,25 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             return danhSachDapAn;
         }
 
+        public int maxMaDapAn()
+        {
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT MAX(maDapAn) FROM dapan";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    return Convert.ToInt32(cmd.ExecuteScalar());
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
+
 
     }
 }

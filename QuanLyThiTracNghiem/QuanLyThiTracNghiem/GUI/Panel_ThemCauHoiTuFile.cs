@@ -14,7 +14,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
     public partial class Panel_ThemCauHoiTuFile : UserControl
     {
-        private TxtQuestionParser txtQuestionParser = new TxtQuestionParser();
+        private DocQuestionParser txtQuestionParser = new DocQuestionParser();
         public Panel_ThemCauHoiTuFile()
         {
             InitializeComponent();
