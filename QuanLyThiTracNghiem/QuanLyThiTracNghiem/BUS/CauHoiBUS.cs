@@ -42,7 +42,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
                 // Đảm bảo DataGridView có cột
                 if (dataGridView.Columns.Count == 0)
                 {
-                    Console.WriteLine("⚠ DataGridView chưa có cột — kiểm tra lại quá trình khởi tạo.");
+                    //Console.WriteLine("⚠ DataGridView chưa có cột — kiểm tra lại quá trình khởi tạo.");
                     return 0;
                 }
 
@@ -257,7 +257,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             string doKho = selectedPair.Value;
             int maCauHoi = int.Parse(textBox_MaCauHoi.Text);
 
-            Console.WriteLine($"DEBUG: ThemCauHoiMoi - maCauHoi={maCauHoi}, maMonHoc={maMonHoc}, maChuong={maChuong}, doKho={doKho}, noiDungCauHoi={noiDungCauHoi} \n");
+            //Console.WriteLine($"DEBUG: ThemCauHoiMoi - maCauHoi={maCauHoi}, maMonHoc={maMonHoc}, maChuong={maChuong}, doKho={doKho}, noiDungCauHoi={noiDungCauHoi} \n");
             // Kiểm tra dữ liệu hợp lệ
             if (string.IsNullOrWhiteSpace(noiDungCauHoi))
             {

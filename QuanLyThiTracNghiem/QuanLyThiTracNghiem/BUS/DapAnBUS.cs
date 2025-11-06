@@ -32,7 +32,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
                 // Đảm bảo DataGridView có cột
                 if (dataGridView.Columns.Count == 0)
                 {
-                    Console.WriteLine("DataGridView chưa có cột — kiểm tra lại quá trình khởi tạo.");
+                    //Console.WriteLine("DataGridView chưa có cột — kiểm tra lại quá trình khởi tạo.");
                     return;
                 }
 
