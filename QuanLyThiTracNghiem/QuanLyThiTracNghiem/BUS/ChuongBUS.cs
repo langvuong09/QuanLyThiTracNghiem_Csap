@@ -1,4 +1,5 @@
-﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
+﻿using QuanLyThiTracNghiem.MyCustom;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 using System;
 using System.Collections;
@@ -98,6 +99,97 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             catch (Exception ex)
             {
                 return new List<Chuong>();
+            }
+        }
+
+        public bool ThemChuong(string maChuong, string maMonHoc, string tenChuong)
+        {
+            try
+            {
+                if (maChuong == "")
+                {
+                    MyDialog dlg = new MyDialog("Không được để trống mã chương!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
+                    return false;
+                }
+                if (tenChuong == "")
+                {
+                    MyDialog dlg = new MyDialog("Không được để trống tên Chương!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
+                    return false;
+                }
+                int mc = Convert.ToInt32(maChuong);
+
+                ArrayList dsc = chuongDAO.GetAllChuong();
+                foreach (Chuong chuong in dsc)
+                {
+                    if(chuong.maMonHoc == maMonHoc && chuong.maChuong == mc)
+                    {
+                        MyDialog dlg = new MyDialog("Mã Chương đã tồn tại!", MyDialog.ERROR_DIALOG);
+                        dlg.ShowDialog();
+                        return false;
+                    }
+                }
+
+                if(chuongDAO.ThemChuong(mc, maMonHoc, tenChuong))
+                {
+                    return true;
+                }else 
+                {
+                    MyDialog dlg = new MyDialog("Thêm chương thất bại!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
+                    return false; 
+                }
+            }catch (Exception ex)
+            {
+                MyDialog dlg = new MyDialog("Lỗi định dạng!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return false;
+            }
+        }
+
+        public bool XoaChuong(string maChuong, string maMonHoc)
+        {
+            try
+            {
+                int mc = Convert.ToInt32(maChuong);
+                if (chuongDAO.XoaChuong(mc, maMonHoc))
+                {
+                    return true;
+                }
+                else
+                {
+                    MyDialog dlg = new MyDialog("Xóa chương thất bại!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
+                    return false;
+                }
+            }
+            catch
+            {
+                MyDialog dlg = new MyDialog("Lỗi định dạng!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return false;
+            }
+        }
+
+        public bool XoaChuongTheoMonHoc(string maMonHoc)
+        {
+            try
+            {
+                if (chuongDAO.XoaChuongOfMaMonHoc(maMonHoc))
+                {
+                    return true;
+                }
+                else
+                {
+                    MyDialog dlg = new MyDialog("Xóa chương thất bại!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
             }
         }
     }

@@ -102,7 +102,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@maMonHoc", maMonHoc);
                     int rowsAffected = cmd.ExecuteNonQuery();
-                    return rowsAffected > 0;
+                    return rowsAffected >= 0;
                 }
             }
             catch (Exception ex)

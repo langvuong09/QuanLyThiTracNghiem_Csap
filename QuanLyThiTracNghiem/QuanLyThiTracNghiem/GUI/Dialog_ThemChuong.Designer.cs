@@ -32,7 +32,8 @@
             lblTenChuong = new Label();
             txtTenChuong = new TextBox();
             btnThem = new Button();
-            btnHuy = new Button();
+            lblMaChuong = new Label();
+            txtMaChuong = new TextBox();
             SuspendLayout();
             // 
             // lblTitle
@@ -49,7 +50,7 @@
             // 
             lblTenChuong.AutoSize = true;
             lblTenChuong.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblTenChuong.Location = new Point(36, 70);
+            lblTenChuong.Location = new Point(36, 178);
             lblTenChuong.Name = "lblTenChuong";
             lblTenChuong.Size = new Size(135, 30);
             lblTenChuong.TabIndex = 1;
@@ -58,7 +59,7 @@
             // txtTenChuong
             // 
             txtTenChuong.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtTenChuong.Location = new Point(36, 116);
+            txtTenChuong.Location = new Point(36, 223);
             txtTenChuong.Name = "txtTenChuong";
             txtTenChuong.Size = new Size(400, 35);
             txtTenChuong.TabIndex = 2;
@@ -66,36 +67,44 @@
             // btnThem
             // 
             btnThem.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnThem.Location = new Point(115, 199);
+            btnThem.Location = new Point(149, 285);
             btnThem.Name = "btnThem";
-            btnThem.Size = new Size(98, 44);
+            btnThem.Size = new Size(159, 44);
             btnThem.TabIndex = 3;
             btnThem.Text = "Thêm";
             btnThem.UseVisualStyleBackColor = true;
             btnThem.Click += btnThem_Click;
             // 
-            // btnHuy
+            // lblMaChuong
             // 
-            btnHuy.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnHuy.Location = new Point(254, 199);
-            btnHuy.Name = "btnHuy";
-            btnHuy.Size = new Size(98, 44);
-            btnHuy.TabIndex = 4;
-            btnHuy.Text = "Hủy";
-            btnHuy.UseVisualStyleBackColor = true;
-            btnHuy.Click += btnHuy_Click;
+            lblMaChuong.AutoSize = true;
+            lblMaChuong.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblMaChuong.Location = new Point(36, 81);
+            lblMaChuong.Name = "lblMaChuong";
+            lblMaChuong.Size = new Size(132, 30);
+            lblMaChuong.TabIndex = 5;
+            lblMaChuong.Text = "Mã chương:";
+            // 
+            // txtMaChuong
+            // 
+            txtMaChuong.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtMaChuong.Location = new Point(36, 124);
+            txtMaChuong.Name = "txtMaChuong";
+            txtMaChuong.Size = new Size(400, 35);
+            txtMaChuong.TabIndex = 6;
             // 
             // Dialog_ThemChuong
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(btnHuy);
+            Controls.Add(txtMaChuong);
+            Controls.Add(lblMaChuong);
             Controls.Add(btnThem);
             Controls.Add(txtTenChuong);
             Controls.Add(lblTenChuong);
             Controls.Add(lblTitle);
             Name = "Dialog_ThemChuong";
-            Size = new Size(475, 262);
+            Size = new Size(475, 359);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -106,6 +115,7 @@
         private Label lblTenChuong;
         private TextBox txtTenChuong;
         private Button btnThem;
-        private Button btnHuy;
+        private Label lblMaChuong;
+        private TextBox txtMaChuong;
     }
 }

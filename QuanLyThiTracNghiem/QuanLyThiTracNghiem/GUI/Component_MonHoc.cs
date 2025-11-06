@@ -21,6 +21,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             LoadDataLenTableMonHoc();
             dgvMonHoc.CellClick += new DataGridViewCellEventHandler(dgvMonHoc_CellClick);
             btnThemChuong.Click += btnThemChuong_Click;
+            btnXoaChuong.Click += btnXoaChuong_Click;
             btnReset.Click += btnReset_Click;
             btnThem.Click += btnThem_Click;
             btnXoa.Click += btnXoa_Click;
@@ -92,19 +93,51 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         public void btnThemChuong_Click(object sender, EventArgs e)
         {
+            if (txtMaMonHoc.Text == "")
+            {
+                MyDialog dlg = new MyDialog("Chưa chọn môn học để thêm chương!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return;
+            }
             Form popup = new Form();
             popup.Text = "Thêm Chương";
             popup.StartPosition = FormStartPosition.CenterScreen;
             popup.FormBorderStyle = FormBorderStyle.FixedDialog;
             popup.MaximizeBox = false;
             popup.MinimizeBox = false;
-            popup.Size = new Size(500, 350);
+            popup.Size = new Size(500, 400);
 
             Dialog_ThemChuong themChuong = new Dialog_ThemChuong();
             themChuong.Dock = DockStyle.Fill;
+            themChuong.MaMonHoc = txtMaMonHoc.Text;
 
             popup.Controls.Add(themChuong);
             popup.ShowDialog();
+            LoadDataLenTableChuong(txtMaMonHoc.Text);
+        }
+
+        public void btnXoaChuong_Click(object sender, EventArgs e)
+        {
+            if (dgvChuong.SelectedRows.Count > 0)
+            {
+                DataGridViewRow row = dgvChuong.SelectedRows[0];
+
+                string maChuong = dgvChuong.SelectedRows[0].Cells[0].Value.ToString();
+
+                if (chuongBUS.XoaChuong(maChuong, txtMaMonHoc.Text))
+                {
+                    MyDialog dlg = new MyDialog("Xóa chương thành công!", MyDialog.SUCCESS_DIALOG);
+                    dlg.ShowDialog();
+                    LoadDataLenTableChuong(txtMaMonHoc.Text);
+                    return;
+                }
+            }
+            else
+            {
+                MyDialog dlg = new MyDialog("Chưa chọn chương để xóa!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return;
+            }
         }
 
         public void btnReset_Click(object sender, EventArgs e)
@@ -149,7 +182,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         public void btnXoa_Click(object sender, EventArgs e)
         {
             bool flag = monHocBUS.XoaMonHoc(txtMaMonHoc.Text);
-            if (flag)
+            bool flag1 = chuongBUS.XoaChuongTheoMonHoc(txtMaMonHoc.Text);
+            if (flag && flag1)
             {
                 LoadDataLenTableMonHoc();
                 btnReset_Click(sender, e);

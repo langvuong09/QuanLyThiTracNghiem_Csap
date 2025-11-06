@@ -77,15 +77,21 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         {
             try
             {
-                string sql = "DELETE FROM monhoc WHERE maMonHoc = @maMonHoc";
-
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
+                    MySqlCommand disableFK = new MySqlCommand("SET FOREIGN_KEY_CHECKS=0;", conn);
+                    disableFK.ExecuteNonQuery();
+
+                    string sql = "DELETE FROM monhoc WHERE maMonHoc = @maMonHoc";
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@maMonHoc", maMonHoc);
                     int rowsAffected = cmd.ExecuteNonQuery();
+
+                    MySqlCommand enableFK = new MySqlCommand("SET FOREIGN_KEY_CHECKS=1;", conn);
+                    enableFK.ExecuteNonQuery();
+
                     return rowsAffected > 0;
                 }
             }
@@ -94,6 +100,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                 return false;
             }
         }
+
 
         public bool SuaMonHoc(string maMonHoc, string tenMonHoc, int tinChi, int soTietLyThuyet, int soTietThucHanh, int heSo)
         {
