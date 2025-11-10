@@ -113,6 +113,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             catch (Exception ex) { return false; }
         }
         
+        // Hàm 
         public GiaoVien getGiaoVienByID(string maGiaoVien)
         {
             try
@@ -129,12 +130,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                     {
                         GiaoVien gv = new GiaoVien
                         {
-                            maGiaoVien = reader.GetString(0),
-                            tenGiaoVien = reader.GetString(1),
-                            email = reader.GetString(2),
-                            SDT = reader.GetString(3),
-                            moTa = reader.GetString(4),
-                            quyen = reader.GetString(5),
+                            maGiaoVien = reader.GetString("maGiaoVien"),
+                            tenGiaoVien = reader.GetString("tenGiaoVien"),
+                            email = reader.GetString("email"),
+                            quyen = reader.GetString("maQuyen"),
                         };
                         return gv;
                     }

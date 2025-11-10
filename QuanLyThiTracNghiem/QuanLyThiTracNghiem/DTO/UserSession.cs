@@ -10,5 +10,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
     {
         public static string userId { get; set; }
         public static string password { get; set; }
+        public static string username { get; set; }
+
+        public static int Quyen { get; set; }
     }
 }

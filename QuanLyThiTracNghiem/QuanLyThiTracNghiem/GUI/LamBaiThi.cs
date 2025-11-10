@@ -144,10 +144,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
           
             label_Diem.Visible = true;
             label_SoCauDung.Visible = true;
+
             pictureBox_iconCauDung.Visible = true;
             pictureBox_iconSoCauDung.Visible = true;
+
             button_NopBai.Visible= false;
-            label_DemThoiGian.Visible= false;
+            
             label_SoCauDung.Text = "Số Câu Đúng:\t" + socau.ToString();
             label_Diem.Text= "Tổng Điểm:\t"+diem.ToString();
 
@@ -171,7 +173,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
             // Nếu chưa hết thời gian thì hỏi xác nhận
             DialogResult result = MessageBox.Show(
-                "Bạn có chắc chắn muốn thoát không? Nếu thoát, bài làm sẽ không được lưu lại.",
+                "Bạn có chắc chắn muốn thoát không? Nếu thoát, mà chưa nộp bài thì bài làm sẽ không được lưu lại.",
                 "Xác nhận thoát",
                 MessageBoxButtons.OKCancel,
                 MessageBoxIcon.Question
