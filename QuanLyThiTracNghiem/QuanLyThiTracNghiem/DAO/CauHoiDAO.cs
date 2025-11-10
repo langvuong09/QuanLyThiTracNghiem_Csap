@@ -320,7 +320,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
 
                     string sql = @"
                 SELECT c.maCauHoi, c.maMonHoc, c.maChuong, c.doKho, c.noiDungCauHoi
-                FROM cauhoi_dekiemtra cd
+                FROM `cauhoi-dekiemtra` cd
                 INNER JOIN cauhoi c ON cd.maCauHoi = c.maCauHoi
                 WHERE cd.maDe = @MaDe";
 
