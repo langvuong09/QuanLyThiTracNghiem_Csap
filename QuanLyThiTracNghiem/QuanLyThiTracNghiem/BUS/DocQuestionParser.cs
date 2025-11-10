@@ -60,9 +60,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             return lines.ToArray();
         }
 
-        /// <summary>
-        /// Parse file .docx → List<CauHoiJSON> (có kiểm tra hợp lệ)
-        /// </summary>
+        /// Parse file .docx → List<CauHoiJSON> 
+
         public List<CauHoiJSON> ParseFile(string path)
         {
             var lines = ReadDocxFile(path);
@@ -159,10 +158,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             MessageBox.Show($"Xuất thành công {questions.Count} câu hỏi hợp lệ!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        // === Các hàm chuyển đổi & lưu DB (giữ nguyên logic cũ) ===
-        /// <summary>
+      
+      
         /// Chuyển 1 CauHoiJSON → (CauHoi, List<DapAn>, maDapAnTiepTheo)
-        /// </summary>
         public (CauHoi cauHoi, List<DapAn> dsDapAn, int maDapAnTiepTheo)
             BienDoiCauHoiJSON_sang_CauHoiVaListDapAn(
                 CauHoiJSON input,
