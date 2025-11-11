@@ -50,6 +50,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
         }
 
+        // Lấy danh sách bài làm theo mã đề thi kèm thông tin sinh viên
+        public List<Dictionary<string, object>> GetBaiLamByMaDeWithSinhVien(int maDe)
+        {
+            return baiLamDAO.GetBaiLamByMaDeWithSinhVien(maDe);
+        }
 
         
     }

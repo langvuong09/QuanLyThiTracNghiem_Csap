@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,6 +10,19 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
+
+/*
+ * File: Component_DeKiemTra.cs
+ * Mô tả: UserControl quản lý danh sách đề kiểm tra
+ * Chức năng:
+ *   - Hiển thị danh sách đề thi với phân trang
+ *   - Lọc đề thi theo trạng thái (Tất cả, Đang diễn ra, Sắp diễn ra, Đã kết thúc)
+ *   - Tìm kiếm đề thi theo tên hoặc mã môn học
+ *   - Tạo mới, sửa, xóa, xem chi tiết đề thi
+ *   - Tự động xác định trạng thái đề thi dựa trên thời gian hiện tại
+ * Dùng trong: Form chính quản lý đề thi
+ */
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
@@ -21,8 +35,20 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         }
 
         private DeKiemTraBUS deKiemTraBUS = new DeKiemTraBUS();
+        private MonHocDAO monHocDAO = new MonHocDAO();
+        private Dictionary<string, string> dictMonHoc = new Dictionary<string, string>(); // Dictionary để map maMonHoc -> tenMonHoc
         private List<DeKiemTra> danhSachDeThi = new List<DeKiemTra>();
+        private List<DeKiemTra> danhSachDeThiHienTai = new List<DeKiemTra>(); // Danh sách đề thi hiển thị (sau khi lọc/tìm)
         private bool isInitializing = false; // Flag để kiểm tra đang khởi tạo
+        private string currentFilterStatus = "Tất cả"; // Trạng thái lọc hiện tại
+        private string currentSearchKeyword = ""; // Từ khóa tìm kiếm hiện tại
+        
+   
+        private int currentPage = 1;
+        private int itemsPerPage = 3; // Số đề thi hiển thị mỗi trang
+        private int totalPages = 1;
+
+        
 
         private void InitializeData()
         {
@@ -31,14 +57,24 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             {
                 isInitializing = true; // Đánh dấu đang khởi tạo
                 
-                // Khởi tạo ComboBox
+                // Khởi tạo các biến lọc
+                currentFilterStatus = "Tất cả";
+                currentSearchKeyword = "";
+                
+                // Load danh sách môn học vào dictionary
+                LoadMonHocDictionary();
+                
+                // Khởi tạo ComboBox - chỉ 4 lựa chọn
                 combobox1.Items.Clear();
                 combobox1.Items.Add("Tất cả");
-                combobox1.Items.Add("Đang mở");
-                combobox1.Items.Add("Đã đóng");
+                combobox1.Items.Add("Đang diễn ra");
                 combobox1.Items.Add("Sắp diễn ra");
                 combobox1.Items.Add("Đã kết thúc");
                 combobox1.SelectedIndex = 0; // Chọn "Tất cả" mặc định
+                
+                // Khởi tạo phân trang
+                currentPage = 1;
+                itemsPerPage = 3;
                 
                 // Load dữ liệu đề thi từ database
                 LoadDeThiData();
@@ -52,7 +88,38 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        // LOAD DỮ LIỆU ĐỀ THI TỪ DATABASE
+        // Load danh sách môn học vào dictionary để tra cứu nhanh
+        private void LoadMonHocDictionary()
+        {
+            try
+            {
+                dictMonHoc.Clear();
+                ArrayList danhSachMonHoc = monHocDAO.GetListMonHoc();
+                
+                if (danhSachMonHoc != null)
+                {
+                    foreach (MonHoc monHoc in danhSachMonHoc)
+                    {
+                        if (monHoc != null && !string.IsNullOrEmpty(monHoc.maMonHoc) && !string.IsNullOrEmpty(monHoc.tenMonHoc))
+                        {
+                            dictMonHoc[monHoc.maMonHoc] = monHoc.tenMonHoc;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Nếu có lỗi, dictionary sẽ rỗng và sẽ hiển thị chỉ mã môn học
+                dictMonHoc.Clear();
+                // Có thể log lỗi ở đây nếu cần
+                System.Diagnostics.Debug.WriteLine($"Lỗi khi load danh sách môn học: {ex.Message}");
+            }
+        }
+
+        //========================================================================
+        // LOAD DỮ LIỆU
+        //========================================================================
+
         private void LoadDeThiData()
         {
             try
@@ -60,8 +127,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 // Load tất cả đề thi từ database
                 danhSachDeThi = deKiemTraBUS.GetListDeKiemTra();
                 
-                // Hiển thị dữ liệu lên giao diện
-                DisplayDeThiData();
+                // Reset về trang đầu khi reload
+                currentPage = 1;
+                
+                // Áp dụng lại bộ lọc và tìm kiếm hiện tại
+                ApplyFilters();
             }
             catch (Exception ex)
             {
@@ -69,42 +139,92 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        // HIỂN THỊ DỮ LIỆU ĐỀ THI LÊN GIAO DIỆN
+        // HIỂN THỊ DỮ LIỆU ĐỀ THI LÊN GIAO DIỆN VỚI PHÂN TRANG
         private void DisplayDeThiData()
         {
             try
             {
-                if (danhSachDeThi != null && danhSachDeThi.Count > 0)
+                // Không ghi đè danhSachDeThiHienTai - chỉ hiển thị dữ liệu đã được lọc
+                if (danhSachDeThiHienTai == null)
                 {
-                    // Xóa các panel cũ
-                    ClearAllDeThiPanels();
+                    danhSachDeThiHienTai = new List<DeKiemTra>();
+                }
+                
+                // Tính toán phân trang
+                totalPages = (int)Math.Ceiling((double)danhSachDeThiHienTai.Count / itemsPerPage);
+                if (totalPages == 0) totalPages = 1;
+                
+                // Đảm bảo currentPage không vượt quá totalPages
+                if (currentPage > totalPages)
+                    currentPage = totalPages;
+                if (currentPage < 1)
+                    currentPage = 1;
+                
+                // Xóa các panel cũ
+                ClearAllDeThiPanels();
+                
+                if (danhSachDeThiHienTai != null && danhSachDeThiHienTai.Count > 0)
+                {
+                    // Tính toán vị trí bắt đầu và kết thúc
+                    int startIndex = (currentPage - 1) * itemsPerPage;
+                    int endIndex = Math.Min(startIndex + itemsPerPage, danhSachDeThiHienTai.Count);
                     
-                    // Tạo panel cho từng đề thi
+                    // Tạo panel cho từng đề thi trong trang hiện tại
                     int yPosition = 10;
-                    foreach (var deThi in danhSachDeThi)
+                    for (int i = startIndex; i < endIndex; i++)
                     {
-                        CreateDeThiPanel(deThi, yPosition);
+                        CreateDeThiPanel(danhSachDeThiHienTai[i], yPosition);
                         yPosition += 160; // Khoảng cách giữa các panel
                     }
                 }
                 else
                 {
                     // Không có dữ liệu
-                    ClearAllDeThiPanels();
                     labelkiemtra.Text = "CHƯA CÓ ĐỀ THI";
                     labelhocphan.Text = "Chưa có môn học";
                     labeltime.Text = "Chưa có thời gian";
                     labeltrangthaithuc.Text = "Không có dữ liệu";
                     labeltrangthaithuc.ForeColor = Color.Gray;
                 }
+                
+                // Cập nhật UI phân trang
+                UpdatePaginationUI();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Lỗi khi hiển thị dữ liệu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        
+        private void UpdatePaginationUI()
+        {
+            try
+            {
+                // Cập nhật label thông tin trang
+                lblPageInfo.Text = $"Trang {currentPage} / {totalPages}";
+                
+                // Cập nhật trạng thái nút Previous
+                btnPrevious.Enabled = currentPage > 1;
+                btnPrevious.BackColor = currentPage > 1 
+                    ? Color.FromArgb(52, 152, 219) 
+                    : Color.FromArgb(200, 200, 200);
+                
+                // Cập nhật trạng thái nút Next
+                btnNext.Enabled = currentPage < totalPages;
+                btnNext.BackColor = currentPage < totalPages 
+                    ? Color.FromArgb(52, 152, 219) 
+                    : Color.FromArgb(200, 200, 200);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi cập nhật phân trang: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
-        // TẠO PANEL CHO MỘT ĐỀ THI
+        //========================================================================
+        // TẠO VÀ QUẢN LÝ UI
+        //========================================================================
+
         private void CreateDeThiPanel(DeKiemTra deThi, int yPosition)
         {
             // Tạo panel chính
@@ -124,11 +244,47 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             lblTenDe.Size = new Size(800, 30);
             lblTenDe.ForeColor = Color.FromArgb(51, 51, 51);
 
+            // Lấy tên môn học từ dictionary
+            string tenMonHoc = "";
+            string maMonHoc = deThi.maMonHoc?.Trim() ?? "";
+            
+            if (!string.IsNullOrEmpty(maMonHoc) && dictMonHoc != null && dictMonHoc.ContainsKey(maMonHoc))
+            {
+                tenMonHoc = dictMonHoc[maMonHoc];
+            }
+            
+            // Nếu không tìm thấy trong dictionary, thử load trực tiếp từ database
+            if (string.IsNullOrEmpty(tenMonHoc) && !string.IsNullOrEmpty(maMonHoc))
+            {
+                try
+                {
+                    MonHoc monHoc = monHocDAO.getMonHocByID(maMonHoc);
+                    if (monHoc != null && !string.IsNullOrEmpty(monHoc.tenMonHoc))
+                    {
+                        tenMonHoc = monHoc.tenMonHoc;
+                        // Cập nhật vào dictionary để lần sau không cần query lại
+                        dictMonHoc[maMonHoc] = tenMonHoc;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Nếu có lỗi, chỉ hiển thị mã môn học
+                    System.Diagnostics.Debug.WriteLine($"Lỗi khi lấy tên môn học cho mã {maMonHoc}: {ex.Message}");
+                }
+            }
+            
             Label lblMonHoc = new Label();
-            lblMonHoc.Text = $"Môn học: {deThi.maMonHoc}";
+            if (!string.IsNullOrEmpty(tenMonHoc))
+            {
+                lblMonHoc.Text = $"Môn học: {maMonHoc} - {tenMonHoc}";
+            }
+            else
+            {
+                lblMonHoc.Text = string.IsNullOrEmpty(maMonHoc) ? "Môn học: (Chưa có)" : $"Môn học: {maMonHoc}";
+            }
             lblMonHoc.Font = new Font("Segoe UI", 12F);
             lblMonHoc.Location = new Point(15, 50);
-            lblMonHoc.Size = new Size(400, 25);
+            lblMonHoc.Size = new Size(800, 25);
 
             Label lblThoiGian = new Label();
             lblThoiGian.Text = $"Thời gian: {deThi.thoiGianBatDau:dd/MM/yyyy HH:mm} - {deThi.thoiGianKetThuc:dd/MM/yyyy HH:mm}";
@@ -228,7 +384,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        // XÓA ĐỀ THI
+        //========================================================================
+        // XỬ LÝ NGHIỆP VỤ
+        //========================================================================
+
         private void DeleteDeThi(DeKiemTra deThi)
         {
             try
@@ -278,6 +437,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 XemChiTietDeThi xemChiTietDeThi = new XemChiTietDeThi();
                 xemChiTietDeThi.Size = new Size(1200, 800);
                 xemChiTietDeThi.Location = new Point(0, 0);
+                
+                // Load dữ liệu theo mã đề thi
+                xemChiTietDeThi.LoadDataByMaDe(deThi.maDe);
 
                 // Thêm vào panel và form
                 scrollPanel.Controls.Add(xemChiTietDeThi);
@@ -292,7 +454,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        // XÁC ĐỊNH TRẠNG THÁI ĐỀ THI DỰA TRÊN THỜI GIAN
         private string GetTrangThaiDeThi(DeKiemTra deThi, DateTime now)
         {
             if (now < deThi.thoiGianBatDau)
@@ -301,7 +462,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
             else if (now >= deThi.thoiGianBatDau && now <= deThi.thoiGianKetThuc)
             {
-                return "[Đang mở]";
+                return "[Đang diễn ra]";
             }
             else
             {
@@ -309,11 +470,16 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
+        //========================================================================
+        // XỬ LÝ SỰ KIỆN
+        //========================================================================
+
         private void Component_DeKiemTra_Load(object sender, EventArgs e)
         {
 
         }
 
+        // Tạo đề kiểm tra mới
         private void button2_Click(object sender, EventArgs e)
         {
             // TẠO ĐỀ KIỂM TRA MỚI
@@ -333,9 +499,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         }
 
+        // Lọc đề kiểm tra theo trạng thái
         private void combobox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // LỌC ĐỀ KIỂM TRA THEO COMBOBOX
             try
             {
                 // Bỏ qua nếu đang khởi tạo
@@ -343,9 +509,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                     return;
                 
                 string selectedValue = combobox1.SelectedItem?.ToString() ?? "Tất cả";
+                currentFilterStatus = selectedValue;
                 
-                // Lọc và hiển thị dữ liệu theo trạng thái
-                FilterDeThiByStatus(selectedValue);
+                // Áp dụng cả lọc trạng thái và tìm kiếm
+                ApplyFilters();
             }
             catch (Exception ex)
             {
@@ -353,22 +520,16 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
+        // Tìm kiếm đề kiểm tra theo từ khóa
         private void textBoxTimKiem_TextChanged(object sender, EventArgs e)
         {
-            // TÌM KIẾM ĐỀ KIỂM TRA THEO TỪ KHÓA
             try
             {
                 string searchKeyword = textBoxTimKiem.Text.Trim();
+                currentSearchKeyword = searchKeyword;
                 
-                if (string.IsNullOrEmpty(searchKeyword))
-                {
-                    // Hiển thị tất cả đề kiểm tra khi không có từ khóa
-                    DisplayDeThiData();
-                    return;
-                }
-                
-                // Tìm kiếm đề thi theo từ khóa
-                SearchDeThi(searchKeyword);
+                // Áp dụng cả lọc trạng thái và tìm kiếm
+                ApplyFilters();
             }
             catch (Exception ex)
             {
@@ -376,30 +537,33 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        // LỌC ĐỀ THI THEO TRẠNG THÁI
-        private void FilterDeThiByStatus(string status)
+        //========================================================================
+        // LỌC VÀ TÌM KIẾM
+        //========================================================================
+
+        // Áp dụng cả lọc trạng thái và tìm kiếm
+        private void ApplyFilters()
         {
             try
             {
                 if (danhSachDeThi == null || danhSachDeThi.Count == 0)
                 {
+                    danhSachDeThiHienTai = new List<DeKiemTra>();
                     DisplayDeThiData();
                     return;
                 }
 
+                // Bước 1: Lọc theo trạng thái
                 List<DeKiemTra> filteredList = new List<DeKiemTra>();
                 DateTime now = DateTime.Now;
 
-                switch (status)
+                switch (currentFilterStatus)
                 {
                     case "Tất cả":
-                        filteredList = danhSachDeThi;
+                        filteredList = danhSachDeThi.ToList(); // Tạo bản sao
                         break;
-                    case "Đang mở":
+                    case "Đang diễn ra":
                         filteredList = danhSachDeThi.Where(d => now >= d.thoiGianBatDau && now <= d.thoiGianKetThuc).ToList();
-                        break;
-                    case "Đã đóng":
-                        filteredList = danhSachDeThi.Where(d => now > d.thoiGianKetThuc).ToList();
                         break;
                     case "Sắp diễn ra":
                         filteredList = danhSachDeThi.Where(d => now < d.thoiGianBatDau).ToList();
@@ -408,54 +572,29 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                         filteredList = danhSachDeThi.Where(d => now > d.thoiGianKetThuc).ToList();
                         break;
                     default:
-                        filteredList = danhSachDeThi;
+                        filteredList = danhSachDeThi.ToList();
                         break;
                 }
 
-                // Hiển thị các panel đề thi đã lọc
-                ClearAllDeThiPanels();
-                int yPosition = 10;
-                foreach (var deThi in filteredList)
+                // Bước 2: Áp dụng tìm kiếm (nếu có từ khóa)
+                if (!string.IsNullOrWhiteSpace(currentSearchKeyword))
                 {
-                    CreateDeThiPanel(deThi, yPosition);
-                    yPosition += 160;
+                    filteredList = filteredList.Where(d => 
+                        d.tenDe.ToLower().Contains(currentSearchKeyword.ToLower()) ||
+                        d.maMonHoc.ToLower().Contains(currentSearchKeyword.ToLower())
+                    ).ToList();
                 }
+
+                // Cập nhật danh sách hiện tại
+                danhSachDeThiHienTai = filteredList;
+                currentPage = 1; // Reset về trang đầu
+                
+                // Hiển thị dữ liệu với phân trang
+                DisplayDeThiData();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi lọc đề thi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        // TÌM KIẾM ĐỀ THI THEO TỪ KHÓA
-        private void SearchDeThi(string keyword)
-        {
-            try
-            {
-                if (danhSachDeThi == null || danhSachDeThi.Count == 0)
-                {
-                    DisplayDeThiData();
-                    return;
-                }
-
-                // Tìm kiếm theo tên đề thi hoặc mã môn học
-                var searchResults = danhSachDeThi.Where(d => 
-                    d.tenDe.ToLower().Contains(keyword.ToLower()) ||
-                    d.maMonHoc.ToLower().Contains(keyword.ToLower())
-                ).ToList();
-
-                // Hiển thị các panel đề thi tìm được
-                ClearAllDeThiPanels();
-                int yPosition = 10;
-                foreach (var deThi in searchResults)
-                {
-                    CreateDeThiPanel(deThi, yPosition);
-                    yPosition += 160;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Lỗi khi tìm kiếm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Lỗi khi áp dụng bộ lọc: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -476,9 +615,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         }
 
+        // Hiển thị dialog tạo/sửa đề thi
         private void ShowCreateExamDialog(bool isEditMode, DTO.DeKiemTra deThiToEdit)
         {
-            // HIỂN THỊ DIALOG TẠO/SỬA ĐỀ THI
             try
             {
                 // Tạo Form tạm thời để hiển thị UserControl như dialog
@@ -504,6 +643,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 
                 // ĐĂNG KÝ EVENT ĐỂ RELOAD DỮ LIỆU KHI CÓ THAY ĐỔI
                 dialogTaoDeThi.DataChanged += (sender, e) => {
+                    LoadMonHocDictionary(); // Reload danh sách môn học
                     LoadDeThiData(); // Reload dữ liệu khi có thay đổi
                 };
                 
@@ -531,11 +671,14 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
+        // Reload dữ liệu đề kiểm tra
         private void btnReload_Click(object sender, EventArgs e)
         {
-            // RELOAD DỮ LIỆU ĐỀ KIỂM TRA
             try
             {
+                // Load lại danh sách môn học
+                LoadMonHocDictionary();
+                
                 // Load lại dữ liệu từ database
                 LoadDeThiData();
                 MessageBox.Show("Đã reload dữ liệu đề kiểm tra!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -546,9 +689,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
+        // Xem chi tiết đề kiểm tra
         private void btnXem_Click(object sender, EventArgs e)
         {
-            // XEM CHI TIẾT ĐỀ KIỂM TRA
             try
             {
                 // Tạo Form tạm thời để hiển thị UserControl như dialog
@@ -575,9 +718,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
+        // Sửa đề kiểm tra đã chọn
         private void btnSua_Click(object sender, EventArgs e)
         {
-            // SỬA ĐỀ KIỂM TRA ĐÃ CHỌN
             try
             {
                 // Kiểm tra xem có đề nào được chọn trong ListBox không
@@ -599,9 +742,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
+        // Xóa đề kiểm tra đã chọn
         private void btnXoa_Click(object sender, EventArgs e)
         {
-            // XÓA ĐỀ KIỂM TRA ĐÃ CHỌN
             try
             {
                 // Kiểm tra xem có đề nào được chọn trong ListBox không
@@ -636,5 +779,77 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 MessageBox.Show($"Lỗi khi xóa đề kiểm tra: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        
+        //========================================================================
+        // PHÂN TRANG
+        //========================================================================
+
+        // Chuyển về trang trước
+        private void btnPrevious_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (currentPage > 1)
+                {
+                    currentPage--;
+                    DisplayDeThiData();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi chuyển trang: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        
+        // Chuyển sang trang sau
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (currentPage < totalPages)
+                {
+                    currentPage++;
+                    DisplayDeThiData();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi chuyển trang: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        
+        // Hiệu ứng hover cho nút phân trang
+        private void btnPrevious_MouseEnter(object sender, EventArgs e)
+        {
+            if (btnPrevious.Enabled)
+            {
+                btnPrevious.BackColor = Color.FromArgb(41, 128, 185);
+            }
+        }
+        
+        private void btnPrevious_MouseLeave(object sender, EventArgs e)
+        {
+            if (btnPrevious.Enabled)
+            {
+                btnPrevious.BackColor = Color.FromArgb(52, 152, 219);
+            }
+        }
+        
+        private void btnNext_MouseEnter(object sender, EventArgs e)
+        {
+            if (btnNext.Enabled)
+            {
+                btnNext.BackColor = Color.FromArgb(41, 128, 185);
+            }
+        }
+        
+        private void btnNext_MouseLeave(object sender, EventArgs e)
+        {
+            if (btnNext.Enabled)
+            {
+                btnNext.BackColor = Color.FromArgb(52, 152, 219);
+            }
+        }
     }
 }
+

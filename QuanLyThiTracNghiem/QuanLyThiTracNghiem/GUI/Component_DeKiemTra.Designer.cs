@@ -45,9 +45,9 @@
             labelkiemtra = new Label();
             listBoxDeThi = new ListBox();
             contextMenuStrip1 = new ContextMenuStrip(components);
-            button1 = new Button();
-            button2 = new Button();
-            button3 = new Button();
+            btnPrevious = new Button();
+            lblPageInfo = new Label();
+            btnNext = new Button();
             panelKiemTra.SuspendLayout();
             SuspendLayout();
             // 
@@ -228,41 +228,60 @@
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.Size = new Size(61, 4);
             // 
-            // button1
+            // btnPrevious
             // 
-            button1.Location = new Point(1119, 836);
-            button1.Name = "button1";
-            button1.Size = new Size(117, 60);
-            button1.TabIndex = 6;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
+            btnPrevious.BackColor = Color.FromArgb(52, 152, 219);
+            btnPrevious.FlatAppearance.BorderSize = 0;
+            btnPrevious.FlatStyle = FlatStyle.Flat;
+            btnPrevious.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnPrevious.ForeColor = Color.White;
+            btnPrevious.Location = new Point(550, 780);
+            btnPrevious.Name = "btnPrevious";
+            btnPrevious.Size = new Size(120, 40);
+            btnPrevious.TabIndex = 6;
+            btnPrevious.Text = "◀ Trước";
+            btnPrevious.UseVisualStyleBackColor = false;
+            btnPrevious.Click += btnPrevious_Click;
+            btnPrevious.MouseEnter += btnPrevious_MouseEnter;
+            btnPrevious.MouseLeave += btnPrevious_MouseLeave;
             // 
-            // button2
+            // lblPageInfo
             // 
-            button2.Location = new Point(1254, 836);
-            button2.Name = "button2";
-            button2.Size = new Size(109, 60);
-            button2.TabIndex = 7;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
+            lblPageInfo.AutoSize = true;
+            lblPageInfo.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblPageInfo.ForeColor = Color.FromArgb(51, 51, 51);
+            lblPageInfo.Location = new Point(690, 788);
+            lblPageInfo.Name = "lblPageInfo";
+            lblPageInfo.Size = new Size(152, 21);
+            lblPageInfo.TabIndex = 7;
+            lblPageInfo.Text = "Trang 1 / 1";
+            lblPageInfo.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // button3
+            // btnNext
             // 
-            button3.Location = new Point(1385, 836);
-            button3.Name = "button3";
-            button3.Size = new Size(115, 60);
-            button3.TabIndex = 8;
-            button3.Text = "button3";
-            button3.UseVisualStyleBackColor = true;
+            btnNext.BackColor = Color.FromArgb(52, 152, 219);
+            btnNext.FlatAppearance.BorderSize = 0;
+            btnNext.FlatStyle = FlatStyle.Flat;
+            btnNext.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnNext.ForeColor = Color.White;
+            btnNext.Location = new Point(860, 780);
+            btnNext.Name = "btnNext";
+            btnNext.Size = new Size(120, 40);
+            btnNext.TabIndex = 8;
+            btnNext.Text = "Sau ▶";
+            btnNext.UseVisualStyleBackColor = false;
+            btnNext.Click += btnNext_Click;
+            btnNext.MouseEnter += btnNext_MouseEnter;
+            btnNext.MouseLeave += btnNext_MouseLeave;
             // 
             // Component_DeKiemTra
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            Controls.Add(button3);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(btnNext);
+            Controls.Add(lblPageInfo);
+            Controls.Add(btnPrevious);
             Controls.Add(panelKiemTra);
             Controls.Add(btnTaodethi);
             Controls.Add(btnReload);
@@ -294,8 +313,8 @@
         private Button btnSua;
         private Button btnXem;
         private ListBox listBoxDeThi;
-        private Button button1;
-        private Button button2;
-        private Button button3;
+        private Button btnPrevious;
+        private Label lblPageInfo;
+        private Button btnNext;
     }
 }

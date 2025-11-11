@@ -90,12 +90,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
         }
 
-        // ==========================================
-        // LẤY MÃ ĐỀ THI TIẾP THEO
-        // ==========================================
+        // Lấy mã đề thi tiếp theo (max + 1)
         private int GetNextMaDe()
         {
-            return DateTime.Now.Millisecond + new Random().Next(1000, 9999);
+            int maxMaDe = deKiemTraDAO.GetMaxMaDe();
+            return maxMaDe + 1;
         }
 
 
@@ -138,7 +137,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             // Kiểm tra bài làm đã kết thúc chưa
             if (dekiemtra.DeKiemTra.thoiGianKetThuc <= DateTime.Now)
             {
-                // Bài kiểm tra đã kết thúc
                 Console.WriteLine("Bài kiểm tra đã kết thúc.");
                 MyDialog dialog = new MyDialog("Bài kiểm tra đã kết thúc rồi.", MyDialog.WARNING_DIALOG);
                 dialog.ShowDialog();
@@ -186,11 +184,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
 
         }
-
-        
-
-
-
         /*
          Phương thức dùng để đổ dữ liệu item_DeThi danh sách bài kiểm tra vào panel
             Input :FlowLayoutPanel flowLayoutPanel_Main,ComboBox comboBox_LocTheoNhom, Form panel_TrangChu,string maSinhVien, int currentPage, int pageSize, ComboBox ComboBox_PhanTrang
@@ -339,11 +332,5 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
 
         }
-
-
-
-
-
-
     }
 }

@@ -235,7 +235,7 @@
         private Label labelNgaySinh;
         private Label labelEmail;
         private Button buttonThaydoithongtin;
-        private TextBox textBox1;
+        private TextBox textboxMonhoc;
         private Label labelGioiTinh;
         private ComboBox comboBoxGioiTinh;
     }

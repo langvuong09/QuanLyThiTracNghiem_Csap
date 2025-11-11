@@ -42,7 +42,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             ColDiem = new DataGridViewTextBoxColumn();
             ColTimeVaoThi = new DataGridViewTextBoxColumn();
             ColTimeNopBai = new DataGridViewTextBoxColumn();
-            ColHanhDong = new DataGridViewTextBoxColumn();
+            ColHanhDong = new DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -111,7 +111,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Size = new Size(1211, 639);
             dataGridView1.TabIndex = 4;
-            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+            dataGridView1.CellClick += dataGridView1_CellClick;
             // 
             // ColMSSV
             // 
@@ -173,6 +173,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private DataGridViewTextBoxColumn ColDiem;
         private DataGridViewTextBoxColumn ColTimeVaoThi;
         private DataGridViewTextBoxColumn ColTimeNopBai;
-        private DataGridViewTextBoxColumn ColHanhDong;
+        private DataGridViewButtonColumn ColHanhDong;
     }
 }

@@ -77,20 +77,75 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             catch (Exception ex) { return false; }
         }
 
+        // Lấy mã đề lớn nhất trong database
+        public int GetMaxMaDe()
+        {
+            try
+            {
+                string sql = "SELECT COALESCE(MAX(maDe), 0) FROM dekiemtra";
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    object result = cmd.ExecuteScalar();
+                    return result != null && result != DBNull.Value ? Convert.ToInt32(result) : 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
+
         public bool XoaDeKiemTra(int maDe)
         {
             try
             {
-                string sql = "UPDATE dekiemtra SET trangThai = 0 WHERE maDe = @maDe";
-
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
-
-                    MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@maDe", maDe);
-                    int rowsAffected = cmd.ExecuteNonQuery();
-                    return rowsAffected > 0;
+                    
+                    // Sử dụng transaction để đảm bảo tính toàn vẹn dữ liệu
+                    using (MySqlTransaction transaction = conn.BeginTransaction())
+                    {
+                        try
+                        {
+                            // Xóa các bảng liên quan trước (mặc dù có CASCADE nhưng để chắc chắn)
+                            // Xóa trong bảng dekiemtra-nhom
+                            string sqlDeleteDeKiemTraNhom = "DELETE FROM `dekiemtra-nhom` WHERE maDe = @maDe";
+                            MySqlCommand cmdDeleteNhom = new MySqlCommand(sqlDeleteDeKiemTraNhom, conn, transaction);
+                            cmdDeleteNhom.Parameters.AddWithValue("@maDe", maDe);
+                            cmdDeleteNhom.ExecuteNonQuery();
+                            
+                            // Xóa trong bảng cauhoi-dekiemtra
+                            string sqlDeleteCauHoiDeKiemTra = "DELETE FROM `cauhoi-dekiemtra` WHERE maDe = @maDe";
+                            MySqlCommand cmdDeleteCauHoi = new MySqlCommand(sqlDeleteCauHoiDeKiemTra, conn, transaction);
+                            cmdDeleteCauHoi.Parameters.AddWithValue("@maDe", maDe);
+                            cmdDeleteCauHoi.ExecuteNonQuery();
+                            
+                            // Xóa đề thi (các bảng liên quan khác như bailam sẽ tự động xóa do CASCADE)
+                            string sql = "DELETE FROM dekiemtra WHERE maDe = @maDe";
+                            MySqlCommand cmd = new MySqlCommand(sql, conn, transaction);
+                            cmd.Parameters.AddWithValue("@maDe", maDe);
+                            int rowsAffected = cmd.ExecuteNonQuery();
+                            
+                            if (rowsAffected > 0)
+                            {
+                                transaction.Commit();
+                                return true;
+                            }
+                            else
+                            {
+                                transaction.Rollback();
+                                return false;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+                            throw;
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -405,9 +460,5 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
 
             return list;
         }
-
-
-
-
     }
 }

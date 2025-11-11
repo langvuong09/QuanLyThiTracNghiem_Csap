@@ -10,139 +10,224 @@ using System.Windows.Forms;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 
+/*
+ * File: Dialog_TaoDeThi.cs
+ * Mô tả: UserControl để tạo mới hoặc chỉnh sửa đề thi
+ * Chức năng:
+ *   - Tạo đề thi mới với thông tin: tên đề, thời gian, môn học, số câu hỏi
+ *   - Chỉnh sửa đề thi đã có
+ *   - Quản lý chương của môn học được chọn
+ *   - Tự động tính toán thời gian làm bài, thời gian kết thúc, thời gian cảnh báo
+ * Dùng trong: Component_DeKiemTra
+ */
+
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
     public partial class Dialog_TaoDeThi : UserControl
     {
         private bool isEditMode = false;
+        private bool isInitializing = true; // Flag để bỏ qua validation khi khởi tạo
         private DeKiemTra currentDeThi = null;
         private ChuongBUS chuongBUS = new ChuongBUS();
         private DeKiemTraBUS deThiBUS = new DeKiemTraBUS();
         private MonHocBUS monHocBUS = new MonHocBUS();
+        private CauHoiBUS cauHoiBUS = new CauHoiBUS();
         
-        // EVENT ĐỂ THÔNG BÁO KHI CÓ THAY ĐỔI DỮ LIỆU
         public event EventHandler DataChanged;
 
         public Dialog_TaoDeThi()
         {
             InitializeComponent();
+            
+            // Tạm thời unsubscribe event handler để tránh trigger khi set giá trị mặc định
+            dateTimePickerBatDau.ValueChanged -= DateTimePickerBatDau_ValueChanged;
+            
             SetupDataGridView();
             LoadMonHocData();
             LoadChuongData();
+            
+            // Ràng buộc nhập số nguyên cho các ô số câu
+            textBoxSoCauDe.KeyPress += OnlyDigits_KeyPress;
+            textBoxSoCauTB.KeyPress += OnlyDigits_KeyPress;
+            textBoxSoCauKho.KeyPress += OnlyDigits_KeyPress;
+            textBoxSoCauDe.TextChanged += IntegerTextBox_TextChanged;
+            textBoxSoCauTB.TextChanged += IntegerTextBox_TextChanged;
+            textBoxSoCauKho.TextChanged += IntegerTextBox_TextChanged;
+            
+            // Đặt giá trị mặc định cho DateTimePicker sau khi khởi tạo
+            dateTimePickerBatDau.Value = DateTime.Now.AddMinutes(1);
+            
+            // Subscribe lại event handler sau khi đã set giá trị mặc định
+            dateTimePickerBatDau.ValueChanged += DateTimePickerBatDau_ValueChanged;
+            
+            // Đánh dấu đã khởi tạo xong
+            isInitializing = false;
         }
 
         private void SetupDataGridView()
         {
-            // Thiết lập màu nền và font cho header
             dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(126, 164, 241);
             dataGridView1.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
             dataGridView1.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-            // Thiết lập font cho nội dung các cell
             dataGridView1.DefaultCellStyle.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dataGridView1.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridView1.DefaultCellStyle.BackColor = Color.White; // Nền trắng cho tất cả hàng
+            dataGridView1.DefaultCellStyle.BackColor = Color.White;
+            
+            // Thêm sự kiện cho header checkbox
+            dataGridView1.ColumnHeaderMouseClick += DataGridView1_ColumnHeaderMouseClick;
+        }
+        
+        // Xử lý click vào header checkbox để chọn/bỏ chọn tất cả
+        private void DataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.ColumnIndex == 0 && e.RowIndex == -1) // Click vào header của cột checkbox
+            {
+                bool allChecked = true;
+                
+                // Kiểm tra xem tất cả đã được chọn chưa
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if (row.Cells[0].Value == null || !(bool)row.Cells[0].Value)
+                    {
+                        allChecked = false;
+                        break;
+                    }
+                }
+                
+                // Chọn/bỏ chọn tất cả
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    row.Cells[0].Value = !allChecked;
+                }
+                
+                dataGridView1.Refresh();
+            }
         }
 
-        // LOAD DỮ LIỆU MÔN HỌC VÀO COMBOBOX
         private void LoadMonHocData()
         {
             try
             {
-                // Load dữ liệu môn học từ database
                 List<MonHoc> monHocList = monHocBUS.GetAllMonHoc();
-                
-                // Clear và thêm dữ liệu vào ComboBox
                 comboBoxMonHoc.Items.Clear();
-                comboBoxMonHoc.DataSource = monHocList;
+                
+                MonHoc placeholderMonHoc = new MonHoc
+                {
+                    maMonHoc = "",
+                    tenMonHoc = "Chọn học phần",
+                    tinChi = 0,
+                    soTietLyThuyet = 0,
+                    soTietThucHanh = 0,
+                    heSo = 0
+                };
+                comboBoxMonHoc.Items.Add(placeholderMonHoc);
+                
+                foreach (MonHoc monHoc in monHocList)
+                {
+                    comboBoxMonHoc.Items.Add(monHoc);
+                }
+                
                 comboBoxMonHoc.DisplayMember = "tenMonHoc";
                 comboBoxMonHoc.ValueMember = "maMonHoc";
-                
-                // Set môn học đầu tiên làm mặc định
-                if (monHocList.Count > 0)
-                {
-                    comboBoxMonHoc.SelectedIndex = 0;
-                    
-                    // Hiển thị thông tin môn học đầu tiên vào textBox1
-                    MonHoc firstMonHoc = monHocList[0];
-                    textBox1.Text = $"Môn học: {firstMonHoc.tenMonHoc}\nMã môn học: {firstMonHoc.maMonHoc}\nTín chỉ: {firstMonHoc.tinChi}\nLý thuyết: {firstMonHoc.soTietLyThuyet} tiết\nThực hành: {firstMonHoc.soTietThucHanh} tiết";
-                }
+                comboBoxMonHoc.SelectedIndex = 0;
+                textboxMonhoc.Text = "";
+                dataGridView1.Rows.Clear();
             }
-            catch (Exception ex)
-            {
-                // Không hiển thị MessageBox
-            }
+            catch (Exception ex) { }
         }
 
-        // LOAD DỮ LIỆU CHƯƠNG THEO MÔN HỌC ĐÃ CHỌN VÀO DATAGRIDVIEW
         private void LoadChuongData()
         {
             try
             {
-                dataGridView1.Rows.Clear();
+                if (comboBoxMonHoc.SelectedIndex == 0 || comboBoxMonHoc.SelectedItem == null)
+                {
+                    dataGridView1.Rows.Clear();
+                    return;
+                }
                 
-                // Lấy mã môn học từ comboBoxMonHoc
-                string maMonHoc = comboBoxMonHoc.SelectedValue?.ToString() ?? "";
+                if (comboBoxMonHoc.SelectedItem is MonHoc selectedMonHoc && string.IsNullOrEmpty(selectedMonHoc.maMonHoc))
+                {
+                    dataGridView1.Rows.Clear();
+                    return;
+                }
+                
+                string maMonHoc = "";
+                if (comboBoxMonHoc.SelectedItem is MonHoc monHocSelected)
+                {
+                    maMonHoc = monHocSelected.maMonHoc ?? "";
+                }
+                
+                if (string.IsNullOrEmpty(maMonHoc))
+                {
+                    maMonHoc = comboBoxMonHoc.SelectedValue?.ToString() ?? "";
+                }
                 
                 if (!string.IsNullOrEmpty(maMonHoc))
                 {
+                    var selectedChuongIds = GetSelectedChuongIds();
+                    dataGridView1.Rows.Clear();
                     List<Chuong> chuongList = chuongBUS.GetChuongByMonHoc(maMonHoc);
 
-                    // Load chương vào DataGridView
                     foreach (Chuong chuong in chuongList)
                     {
-                        dataGridView1.Rows.Add(false, chuong.maChuong, chuong.tenChuong);
+                        bool isSelected = selectedChuongIds.Contains(chuong.maChuong);
+                        dataGridView1.Rows.Add(isSelected, chuong.maChuong, chuong.tenChuong);
                     }
                 }
                 else
                 {
-                    // Nếu chưa chọn môn học, load tất cả chương
-                    List<Chuong> chuongList = chuongBUS.GetAllChuong();
-
-                    foreach (Chuong chuong in chuongList)
+                    dataGridView1.Rows.Clear();
+                }
+            }
+            catch (Exception ex) { }
+        }
+        
+        private List<int> GetSelectedChuongIds()
+        {
+            List<int> selectedIds = new List<int>();
+            try
+            {
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if (row.Cells[0].Value != null && (bool)row.Cells[0].Value == true)
                     {
-                        dataGridView1.Rows.Add(false, chuong.maChuong, chuong.tenChuong);
+                        if (row.Cells[1].Value != null && int.TryParse(row.Cells[1].Value.ToString(), out int maChuong))
+                        {
+                            selectedIds.Add(maChuong);
+                        }
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                // Không hiển thị MessageBox
+                // Bỏ qua lỗi
             }
+            return selectedIds;
         }
 
-        // Phương thức để thiết lập chế độ chỉnh sửa
+        //========================================================================
+        // QUẢN LÝ CHẾ ĐỘ (TẠO MỚI / CHỈNH SỬA)
+        //========================================================================
+
         public void SetEditMode(DeKiemTra deThi)
         {
             isEditMode = true;
             currentDeThi = deThi;
-
-            // Hiển thị các nút xóa
             btnXoaND.Visible = true;
             btnXoaChuong.Visible = true;
-
-            // Thay đổi text nút chính
             btnTaoDeThi.Text = "Cập Nhật Đề Thi";
-
-            // Điền dữ liệu vào form
             LoadDeThiData();
         }
 
-        // Phương thức để thiết lập chế độ tạo mới
         public void SetCreateMode()
         {
             isEditMode = false;
             currentDeThi = null;
-
-            // Ẩn các nút xóa
             btnXoaND.Visible = false;
             btnXoaChuong.Visible = false;
-
-            // Thay đổi text nút chính
             btnTaoDeThi.Text = "Tạo Đề Thi";
-
-            // Xóa dữ liệu form
             ClearForm();
         }
 
@@ -150,57 +235,66 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         {
             if (currentDeThi != null)
             {
+                // Tạm thời unsubscribe event handler để tránh trigger khi set giá trị
+                dateTimePickerBatDau.ValueChanged -= DateTimePickerBatDau_ValueChanged;
+                dateTimePickerKetThuc.ValueChanged -= DateTimePickerKetThuc_ValueChanged;
+                
                 textBoxTendethi.Text = currentDeThi.tenDe;
                 dateTimePickerBatDau.Value = currentDeThi.thoiGianBatDau;
                 dateTimePickerKetThuc.Value = currentDeThi.thoiGianKetThuc;
 
-                // Tính thời gian làm bài từ thời gian bắt đầu và kết thúc
                 TimeSpan thoiGianLamBai = currentDeThi.thoiGianKetThuc - currentDeThi.thoiGianBatDau;
-                textBoxTimeLamBai.Text = $"{thoiGianLamBai.Minutes:D2}:{thoiGianLamBai.Seconds:D2}";
+                int totalMinutes = (int)thoiGianLamBai.TotalMinutes;
+                int hours = totalMinutes / 60;
+                int minutes = totalMinutes % 60;
+                textBoxTimeLamBai.Text = $"{hours:D2}:{minutes:D2}";
 
-                // Tính thời gian cảnh báo từ thời gian kết thúc và cảnh báo
                 TimeSpan thoiGianCanhBao = currentDeThi.thoiGianKetThuc - currentDeThi.thoiGianCanhBao;
-                textBoxTimeCB.Text = $"{thoiGianCanhBao.Minutes:D2}:{thoiGianCanhBao.Seconds:D2}";
+                int phutCanhBao = (int)thoiGianCanhBao.TotalMinutes;
+                textBoxTimeCB.Text = phutCanhBao.ToString();
 
-                // Set môn học trong ComboBox
-                foreach (MonHoc monHoc in comboBoxMonHoc.Items)
+                // Load môn học đã chọn
+                if (!string.IsNullOrEmpty(currentDeThi.maMonHoc))
                 {
-                    if (monHoc.maMonHoc == currentDeThi.maMonHoc)
+                    for (int i = 1; i < comboBoxMonHoc.Items.Count; i++)
                     {
-                        comboBoxMonHoc.SelectedItem = monHoc;
-                        break;
+                        if (comboBoxMonHoc.Items[i] is MonHoc monHoc && 
+                            !string.IsNullOrEmpty(monHoc.maMonHoc) &&
+                            monHoc.maMonHoc.Trim() == currentDeThi.maMonHoc.Trim())
+                        {
+                            comboBoxMonHoc.SelectedIndex = i;
+                            break;
+                        }
                     }
+                }
+                else
+                {
+                    // Nếu không có maMonHoc, chọn item đầu tiên (placeholder)
+                    comboBoxMonHoc.SelectedIndex = 0;
                 }
                 textBoxSoCauDe.Text = currentDeThi.soCauDe.ToString();
                 textBoxSoCauTB.Text = currentDeThi.soCauTrungBinh.ToString();
                 textBoxSoCauKho.Text = currentDeThi.soCauKho.ToString();
-
-                // Note: DeKiemTra DTO không có field LoaiDe, có thể thêm logic khác
-                // checkBoxDeLuyenTap.Checked = currentDeThi.LoaiDe == "Luyện tập";
+                
+                // Subscribe lại event handler sau khi đã set giá trị
+                dateTimePickerBatDau.ValueChanged += DateTimePickerBatDau_ValueChanged;
+                dateTimePickerKetThuc.ValueChanged += DateTimePickerKetThuc_ValueChanged;
             }
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
+        private void checkBox1_CheckedChanged(object sender, EventArgs e) { }
 
-        }
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            // Xử lý khi click vào cell trong DataGridView
-        }
+        private void labelTimeKetThuc_Click(object sender, EventArgs e) { }
 
-        private void labelTimeKetThuc_Click(object sender, EventArgs e)
-        {
-            // XỬ LÝ CLICK VÀO LABEL THỜI GIAN KẾT THÚC
-        }
+        //========================================================================
+        // XỬ LÝ SỰ KIỆN
+        //========================================================================
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-            // Xử lý khi click vào label
-        }
+        private void label1_Click(object sender, EventArgs e) { }
 
-        // Sự kiện cho nút Tạo/Cập nhật đề thi
+        // Tạo hoặc cập nhật đề thi
         private void btnTaoDeThi_Click(object sender, EventArgs e)
         {
             try
@@ -223,7 +317,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        // Sự kiện cho nút Xóa ND
+        // Xóa nội dung đề thi
         private void btnXoaND_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Bạn có chắc chắn muốn xóa nội dung đề thi này?", "Xác nhận",
@@ -233,7 +327,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        // Sự kiện cho nút Xóa Chương
+        // Xóa chương đã chọn
         private void btnXoaChuong_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count > 0)
@@ -253,7 +347,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        // Validate dữ liệu đầu vào
+        //========================================================================
+        // XỬ LÝ NGHIỆP VỤ
+        //========================================================================
+
         private bool ValidateInput()
         {
             if (string.IsNullOrWhiteSpace(textBoxTendethi.Text))
@@ -263,23 +360,37 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 return false;
             }
 
-            // Kiểm tra thời gian làm bài có định dạng hợp lệ
             if (string.IsNullOrWhiteSpace(textBoxTimeLamBai.Text) || !IsValidTimeFormat(textBoxTimeLamBai.Text))
             {
-                MessageBox.Show("Vui lòng nhập thời gian làm bài theo định dạng MM:SS!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng nhập thời gian làm bài theo định dạng HH:MM (giờ:phút)!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 textBoxTimeLamBai.Focus();
                 return false;
             }
+            
+            // Kiểm tra thời gian bắt đầu phải lớn hơn thời gian hiện tại (chỉ khi tạo mới)
+            if (!isEditMode && dateTimePickerBatDau.Value <= DateTime.Now)
+            {
+                MessageBox.Show("Thời gian bắt đầu phải lớn hơn thời điểm hiện tại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                dateTimePickerBatDau.Focus();
+                return false;
+            }
+            
+            if (dateTimePickerKetThuc.Value <= dateTimePickerBatDau.Value)
+            {
+                MessageBox.Show("Thời gian kết thúc phải lớn hơn thời gian bắt đầu!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                dateTimePickerKetThuc.Focus();
+                return false;
+            }
 
-            // Kiểm tra học phần
-            if (comboBoxMonHoc.SelectedItem == null)
+            if (comboBoxMonHoc.SelectedIndex == 0 || comboBoxMonHoc.SelectedItem == null || 
+                !(comboBoxMonHoc.SelectedItem is MonHoc selectedMonHoc) || 
+                string.IsNullOrEmpty(selectedMonHoc.maMonHoc))
             {
                 MessageBox.Show("Vui lòng chọn học phần!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 comboBoxMonHoc.Focus();
                 return false;
             }
 
-            // Kiểm tra số câu hỏi
             if (string.IsNullOrWhiteSpace(textBoxSoCauDe.Text) || !int.TryParse(textBoxSoCauDe.Text, out int soCauDe) || soCauDe <= 0)
             {
                 MessageBox.Show("Vui lòng nhập số câu dễ hợp lệ!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -301,14 +412,41 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 return false;
             }
 
-            // Kiểm tra có chọn ít nhất một chương
+            // Giới hạn thời gian làm bài theo tổng số câu: 0.8 - 1.0 phút/câu
+            try
+            {
+                int tongSoCau = soCauDe + soCauTB + soCauKho;
+                string[] timeParts = textBoxTimeLamBai.Text.Split(':');
+                int hours = int.Parse(timeParts[0]);
+                int minutes = int.Parse(timeParts[1]);
+                int tongPhut = hours * 60 + minutes;
+                double minPhut = Math.Ceiling(0.8 * tongSoCau);
+                
+                if (tongPhut < minPhut)
+                {
+                    MessageBox.Show($"Thời gian làm bài quá ngắn.\nTối thiểu 0.8 phút/câu ⇒ tối thiểu {minPhut} phút cho {tongSoCau} câu.\nBạn có thể chọn thời gian dài hơn.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    textBoxTimeLamBai.Focus();
+                    return false;
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Không thể tính được thời gian làm bài từ HH:MM.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                textBoxTimeLamBai.Focus();
+                return false;
+            }
+
             bool hasSelectedChuong = false;
+            List<int> selectedChuongIds = new List<int>();
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 if (row.Cells[0].Value != null && (bool)row.Cells[0].Value == true)
                 {
                     hasSelectedChuong = true;
-                    break;
+                    if (row.Cells[1].Value != null && int.TryParse(row.Cells[1].Value.ToString(), out int maChuong))
+                    {
+                        selectedChuongIds.Add(maChuong);
+                    }
                 }
             }
             
@@ -318,24 +456,96 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 return false;
             }
 
+            // Kiểm tra số câu hỏi có đủ không
+            if (!KiemTraSoCauHoi(selectedChuongIds, soCauDe, soCauTB, soCauKho))
+            {
+                return false;
+            }
+
             return true;
         }
 
-        // Tạo đề thi mới
+        // Kiểm tra số câu hỏi có đủ trong các chương đã chọn
+        private bool KiemTraSoCauHoi(List<int> danhSachMaChuong, int soCauDe, int soCauTB, int soCauKho)
+        {
+            try
+            {
+                // Đếm số câu hỏi theo từng độ khó
+                int soCauDeCo = cauHoiBUS.DemSoCauHoiTheoChuongVaDoKho(danhSachMaChuong, "Dễ");
+                int soCauTBCo = cauHoiBUS.DemSoCauHoiTheoChuongVaDoKho(danhSachMaChuong, "Trung Bình");
+                int soCauKhoCo = cauHoiBUS.DemSoCauHoiTheoChuongVaDoKho(danhSachMaChuong, "Khó");
+
+                // Kiểm tra từng loại câu hỏi
+                bool coLoi = false;
+                string thongBaoLoi = "Số câu hỏi trong các chương đã chọn không đủ:\n\n";
+
+                if (soCauDeCo < soCauDe)
+                {
+                    coLoi = true;
+                    thongBaoLoi += $"• Câu dễ: Yêu cầu {soCauDe} câu, nhưng chỉ có {soCauDeCo} câu\n";
+                }
+
+                if (soCauTBCo < soCauTB)
+                {
+                    coLoi = true;
+                    thongBaoLoi += $"• Câu trung bình: Yêu cầu {soCauTB} câu, nhưng chỉ có {soCauTBCo} câu\n";
+                }
+
+                if (soCauKhoCo < soCauKho)
+                {
+                    coLoi = true;
+                    thongBaoLoi += $"• Câu khó: Yêu cầu {soCauKho} câu, nhưng chỉ có {soCauKhoCo} câu\n";
+                }
+
+                if (coLoi)
+                {
+                    thongBaoLoi += "\nVui lòng chọn thêm chương hoặc giảm số câu hỏi yêu cầu!";
+                    MessageBox.Show(thongBaoLoi, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi kiểm tra số câu hỏi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
         private void CreateDeThi()
         {
-            // Lấy thời gian bắt đầu và kết thúc từ DateTimePicker
             DateTime thoiGianBatDau = dateTimePickerBatDau.Value;
             DateTime thoiGianKetThuc = dateTimePickerKetThuc.Value;
+            DateTime thoiGianCanhBao = thoiGianKetThuc.AddMinutes(-15);
             
-            // Tính thời gian cảnh báo từ textbox MM:SS (nếu có)
-            DateTime thoiGianCanhBao = thoiGianKetThuc.AddMinutes(-15); // Mặc định 15 phút
-            if (!string.IsNullOrWhiteSpace(textBoxTimeCB.Text) && IsValidTimeFormat(textBoxTimeCB.Text))
+            if (!string.IsNullOrWhiteSpace(textBoxTimeCB.Text))
             {
-                string[] parts = textBoxTimeCB.Text.Split(':');
-                int minutes = int.Parse(parts[0]);
-                int seconds = int.Parse(parts[1]);
-                thoiGianCanhBao = thoiGianKetThuc.AddMinutes(-minutes).AddSeconds(-seconds);
+                if (int.TryParse(textBoxTimeCB.Text, out int phutCanhBao) && phutCanhBao >= 0)
+                {
+                    thoiGianCanhBao = thoiGianKetThuc.AddMinutes(-phutCanhBao);
+                }
+            }
+
+            // Lấy maMonHoc từ SelectedItem
+            string maMonHoc = "";
+            if (comboBoxMonHoc.SelectedItem is MonHoc selectedMonHoc)
+            {
+                maMonHoc = selectedMonHoc.maMonHoc ?? "";
+            }
+            
+            // Fallback: nếu không lấy được từ SelectedItem, thử SelectedValue
+            if (string.IsNullOrEmpty(maMonHoc))
+            {
+                maMonHoc = comboBoxMonHoc.SelectedValue?.ToString() ?? "";
+            }
+
+            // Kiểm tra maMonHoc không được rỗng
+            if (string.IsNullOrEmpty(maMonHoc))
+            {
+                MessageBox.Show("Vui lòng chọn học phần!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                comboBoxMonHoc.Focus();
+                return;
             }
 
             DeKiemTra newDeThi = new DeKiemTra
@@ -344,19 +554,17 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 thoiGianBatDau = thoiGianBatDau,
                 thoiGianKetThuc = thoiGianKetThuc,
                 thoiGianCanhBao = thoiGianCanhBao,
-                maMonHoc = comboBoxMonHoc.SelectedValue?.ToString() ?? "",  // THÊM LẠI FIELD NÀY
+                maMonHoc = maMonHoc,
                 soCauDe = int.Parse(textBoxSoCauDe.Text),
                 soCauTrungBinh = int.Parse(textBoxSoCauTB.Text),
                 soCauKho = int.Parse(textBoxSoCauKho.Text),
-                trangThai = 1 // 1 = hoạt động, 0 = đã xóa
+                trangThai = checkBoxDeLuyenTap.Checked ? 0 : 1
             };
 
             if (deThiBUS.CreateDeThi(newDeThi))
             {
                 MessageBox.Show("Tạo đề thi thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ClearForm();
-                
-                // THÔNG BÁO CHO COMPONENT_DEKIEMTRA ĐỂ RELOAD DỮ LIỆU
                 DataChanged?.Invoke(this, EventArgs.Empty);
             }
             else
@@ -365,37 +573,54 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        // Cập nhật đề thi
         private void UpdateDeThi()
         {
-            // Lấy thời gian bắt đầu và kết thúc từ DateTimePicker
             DateTime thoiGianBatDau = dateTimePickerBatDau.Value;
             DateTime thoiGianKetThuc = dateTimePickerKetThuc.Value;
-
-            // Tính thời gian cảnh báo từ textbox MM:SS (nếu có)
-            DateTime thoiGianCanhBao = thoiGianKetThuc.AddMinutes(-15); // Mặc định 15 phút
-            if (!string.IsNullOrWhiteSpace(textBoxTimeCB.Text) && IsValidTimeFormat(textBoxTimeCB.Text))
+            DateTime thoiGianCanhBao = thoiGianKetThuc.AddMinutes(-15);
+            
+            if (!string.IsNullOrWhiteSpace(textBoxTimeCB.Text))
             {
-                string[] parts = textBoxTimeCB.Text.Split(':');
-                int minutes = int.Parse(parts[0]);
-                int seconds = int.Parse(parts[1]);
-                thoiGianCanhBao = thoiGianKetThuc.AddMinutes(-minutes).AddSeconds(-seconds);
+                if (int.TryParse(textBoxTimeCB.Text, out int phutCanhBao) && phutCanhBao >= 0)
+                {
+                    thoiGianCanhBao = thoiGianKetThuc.AddMinutes(-phutCanhBao);
+                }
+            }
+
+            // Lấy maMonHoc từ SelectedItem
+            string maMonHoc = "";
+            if (comboBoxMonHoc.SelectedItem is MonHoc selectedMonHoc)
+            {
+                maMonHoc = selectedMonHoc.maMonHoc ?? "";
+            }
+            
+            // Fallback: nếu không lấy được từ SelectedItem, thử SelectedValue
+            if (string.IsNullOrEmpty(maMonHoc))
+            {
+                maMonHoc = comboBoxMonHoc.SelectedValue?.ToString() ?? "";
+            }
+
+            // Kiểm tra maMonHoc không được rỗng
+            if (string.IsNullOrEmpty(maMonHoc))
+            {
+                MessageBox.Show("Vui lòng chọn học phần!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                comboBoxMonHoc.Focus();
+                return;
             }
 
             currentDeThi.tenDe = textBoxTendethi.Text;
             currentDeThi.thoiGianBatDau = thoiGianBatDau;
             currentDeThi.thoiGianKetThuc = thoiGianKetThuc;
             currentDeThi.thoiGianCanhBao = thoiGianCanhBao;
-            currentDeThi.maMonHoc = comboBoxMonHoc.SelectedValue?.ToString() ?? "";  // THÊM LẠI FIELD NÀY
+            currentDeThi.maMonHoc = maMonHoc;
             currentDeThi.soCauDe = int.Parse(textBoxSoCauDe.Text);
             currentDeThi.soCauTrungBinh = int.Parse(textBoxSoCauTB.Text);
             currentDeThi.soCauKho = int.Parse(textBoxSoCauKho.Text);
+            currentDeThi.trangThai = checkBoxDeLuyenTap.Checked ? 0 : 1;
 
             if (deThiBUS.UpdateDeThi(currentDeThi))
             {
                 MessageBox.Show("Cập nhật đề thi thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                
-                // THÔNG BÁO CHO COMPONENT_DEKIEMTRA ĐỂ RELOAD DỮ LIỆU
                 DataChanged?.Invoke(this, EventArgs.Empty);
             }
             else
@@ -404,20 +629,27 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        // Xóa form
         private void ClearForm()
         {
+            // Tạm thời unsubscribe event handler để tránh trigger khi set giá trị
+            dateTimePickerBatDau.ValueChanged -= DateTimePickerBatDau_ValueChanged;
+            dateTimePickerKetThuc.ValueChanged -= DateTimePickerKetThuc_ValueChanged;
+            
             textBoxTendethi.Clear();
-            dateTimePickerBatDau.Value = DateTime.Now;
-            dateTimePickerKetThuc.Value = DateTime.Now.AddHours(2); // Mặc định 2 giờ sau
-            textBoxTimeLamBai.Text = "00:00";
-            textBoxTimeCB.Text = "10:00"; // Mặc định cảnh báo 10 phút
-            comboBoxMonHoc.SelectedIndex = -1;
+            dateTimePickerBatDau.Value = DateTime.Now.AddMinutes(1); // Đặt giá trị hợp lệ
+            dateTimePickerKetThuc.Value = DateTime.Now.AddHours(2);
+            textBoxTimeLamBai.Text = "02:00";
+            textBoxTimeCB.Text = "00";
+            comboBoxMonHoc.SelectedIndex = 0;
             textBoxSoCauDe.Clear();
             textBoxSoCauTB.Clear();
             textBoxSoCauKho.Clear();
             checkBoxDeLuyenTap.Checked = false;
             dataGridView1.ClearSelection();
+            
+            // Subscribe lại event handler sau khi đã set giá trị
+            dateTimePickerBatDau.ValueChanged += DateTimePickerBatDau_ValueChanged;
+            dateTimePickerKetThuc.ValueChanged += DateTimePickerKetThuc_ValueChanged;
         }
 
         private void Dialog_TaoDeThi_Load(object sender, EventArgs e)
@@ -425,94 +657,129 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         }
 
-        private void label1_Click_1(object sender, EventArgs e)
-        {
-            // XỬ LÝ CLICK VÀO LABEL CẢNH BÁO
-        }
+        private void label1_Click_1(object sender, EventArgs e) { }
 
-        // XỬ LÝ SỰ KIỆN THAY ĐỔI THỜI GIAN CẢNH BÁO
-        private void textBoxTimeCB_TextChanged(object sender, EventArgs e)
+        private void textBoxTimeCB_TextChanged(object sender, EventArgs e) { }
+
+        private void textBoxTimeLamBai_TextChanged(object sender, EventArgs e) { }
+        
+        // Nhấn Enter trong textbox thời gian làm bài
+        private void textBoxTimeLamBai_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                ProcessTimeLamBai();
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+        }
+        
+        // Rời khỏi textbox thời gian làm bài
+        private void textBoxTimeLamBai_Leave(object sender, EventArgs e)
+        {
+            ProcessTimeLamBai();
+        }
+        
+        private void ProcessTimeLamBai()
         {
             try
             {
-                // KIỂM TRA ĐỊNH DẠNG MM:SS
-                if (IsValidTimeFormat(textBoxTimeCB.Text))
-                {
-                    // Tính toán thời gian cảnh báo dựa trên thời gian kết thúc
-                    UpdateCanhBaoTime();
-                }
-            }
-            catch (Exception ex)
-            {
-                // Không hiển thị lỗi khi đang nhập
-            }
-        }
-
-        // XỬ LÝ SỰ KIỆN THAY ĐỔI THỜI GIAN LÀM BÀI
-        private void textBoxTimeLamBai_TextChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                // KIỂM TRA ĐỊNH DẠNG MM:SS
+                dateTimePickerKetThuc.ValueChanged -= DateTimePickerKetThuc_ValueChanged;
+                
                 if (IsValidTimeFormat(textBoxTimeLamBai.Text))
                 {
-                    // Tính toán thời gian kết thúc dựa trên thời gian bắt đầu và làm bài
                     UpdateKetThucTime();
+                    UpdateCanhBaoTimeFromKetThuc();
                 }
+                
+                dateTimePickerKetThuc.ValueChanged += DateTimePickerKetThuc_ValueChanged;
             }
             catch (Exception ex)
             {
-                // Không hiển thị lỗi khi đang nhập
+                dateTimePickerKetThuc.ValueChanged += DateTimePickerKetThuc_ValueChanged;
+            }
+        }
+        
+        // Thay đổi thời gian bắt đầu
+        private void DateTimePickerBatDau_ValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                // Bỏ qua validation khi đang khởi tạo form
+                if (isInitializing)
+                {
+                    return;
+                }
+                
+                // Kiểm tra realtime: thời gian bắt đầu phải lớn hơn thời gian hiện tại (chỉ khi tạo mới)
+                if (!isEditMode && dateTimePickerBatDau.Value <= DateTime.Now)
+                {
+                    MessageBox.Show("Thời gian bắt đầu phải lớn hơn thời điểm hiện tại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    dateTimePickerBatDau.Value = DateTime.Now.AddMinutes(1);
+                    return;
+                }
+                
+                textBoxTimeLamBai.TextChanged -= textBoxTimeLamBai_TextChanged;
+                dateTimePickerKetThuc.ValueChanged -= DateTimePickerKetThuc_ValueChanged;
+                
+                if (IsValidTimeFormat(textBoxTimeLamBai.Text))
+                {
+                    UpdateKetThucTime();
+                    UpdateCanhBaoTimeFromKetThuc();
+                }
+                else
+                {
+                    UpdateLamBaiTime();
+                }
+                
+                textBoxTimeLamBai.TextChanged += textBoxTimeLamBai_TextChanged;
+                dateTimePickerKetThuc.ValueChanged += DateTimePickerKetThuc_ValueChanged;
+            }
+            catch (Exception ex)
+            {
+                textBoxTimeLamBai.TextChanged += textBoxTimeLamBai_TextChanged;
+                dateTimePickerKetThuc.ValueChanged += DateTimePickerKetThuc_ValueChanged;
+            }
+        }
+        
+        // Thay đổi thời gian kết thúc
+        private void DateTimePickerKetThuc_ValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                textBoxTimeLamBai.TextChanged -= textBoxTimeLamBai_TextChanged;
+                UpdateLamBaiTime();
+                UpdateCanhBaoTimeFromKetThuc();
+                textBoxTimeLamBai.TextChanged += textBoxTimeLamBai_TextChanged;
+            }
+            catch (Exception ex)
+            {
+                textBoxTimeLamBai.TextChanged += textBoxTimeLamBai_TextChanged;
             }
         }
 
-        // KIỂM TRA ĐỊNH DẠNG THỜI GIAN MM:SS
+        //========================================================================
+        // XỬ LÝ THỜI GIAN
+        //========================================================================
+
         private bool IsValidTimeFormat(string timeText)
         {
             if (string.IsNullOrEmpty(timeText)) return false;
             
-            // Kiểm tra định dạng MM:SS
             if (timeText.Length == 5 && timeText[2] == ':')
             {
                 string[] parts = timeText.Split(':');
                 if (parts.Length == 2)
                 {
-                    if (int.TryParse(parts[0], out int minutes) && int.TryParse(parts[1], out int seconds))
+                    if (int.TryParse(parts[0], out int firstPart) && int.TryParse(parts[1], out int secondPart))
                     {
-                        return minutes >= 0 && minutes <= 59 && seconds >= 0 && seconds <= 59;
+                        return firstPart >= 0 && firstPart <= 99 && secondPart >= 0 && secondPart <= 59;
                     }
                 }
             }
             return false;
         }
 
-        // CẬP NHẬT THỜI GIAN CẢNH BÁO
-        private void UpdateCanhBaoTime()
-        {
-            try
-            {
-                if (IsValidTimeFormat(textBoxTimeCB.Text))
-                {
-                    string[] parts = textBoxTimeCB.Text.Split(':');
-                    int minutes = int.Parse(parts[0]);
-                    int seconds = int.Parse(parts[1]);
-                    
-                    // Tính thời gian cảnh báo = thời gian kết thúc - thời gian cảnh báo
-                    DateTime thoiGianKetThuc = dateTimePickerKetThuc.Value;
-                    DateTime thoiGianCanhBao = thoiGianKetThuc.AddMinutes(-minutes).AddSeconds(-seconds);
-                    
-                    // Cập nhật thời gian bắt đầu để đảm bảo logic hợp lý
-                    DateTime thoiGianBatDau = thoiGianCanhBao.AddMinutes(-GetLamBaiMinutes());
-                    dateTimePickerBatDau.Value = thoiGianBatDau;
-                }
-            }
-            catch (Exception ex)
-            {
-                // Xử lý lỗi
-            }
-        }
-
-        // CẬP NHẬT THỜI GIAN KẾT THÚC
         private void UpdateKetThucTime()
         {
             try
@@ -520,40 +787,59 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 if (IsValidTimeFormat(textBoxTimeLamBai.Text))
                 {
                     string[] parts = textBoxTimeLamBai.Text.Split(':');
-                    int minutes = int.Parse(parts[0]);
-                    int seconds = int.Parse(parts[1]);
+                    int hours = int.Parse(parts[0]);
+                    int minutes = int.Parse(parts[1]);
                     
-                    // Tính thời gian kết thúc = thời gian bắt đầu + thời gian làm bài
+                    // Luôn xử lý theo định dạng HH:MM (giờ:phút)
+                    int totalMinutes = hours * 60 + minutes;
+                    
                     DateTime thoiGianBatDau = dateTimePickerBatDau.Value;
-                    DateTime thoiGianKetThuc = thoiGianBatDau.AddMinutes(minutes).AddSeconds(seconds);
-                    
+                    DateTime thoiGianKetThuc = thoiGianBatDau.AddMinutes(totalMinutes);
                     dateTimePickerKetThuc.Value = thoiGianKetThuc;
-                    
-                    // Cập nhật thời gian cảnh báo nếu đã có
-                    if (IsValidTimeFormat(textBoxTimeCB.Text))
-                    {
-                        UpdateCanhBaoTime();
-                    }
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) { }
+        }
+        
+        private void UpdateLamBaiTime()
+        {
+            try
             {
-                // Xử lý lỗi
+                DateTime thoiGianBatDau = dateTimePickerBatDau.Value;
+                DateTime thoiGianKetThuc = dateTimePickerKetThuc.Value;
+                TimeSpan khoangThoiGian = thoiGianKetThuc - thoiGianBatDau;
+                
+                if (khoangThoiGian.TotalMinutes < 0)
+                {
+                    return;
+                }
+                
+                int totalMinutes = (int)khoangThoiGian.TotalMinutes;
+                int hours = totalMinutes / 60;
+                int minutes = totalMinutes % 60;
+                textBoxTimeLamBai.Text = $"{hours:D2}:{minutes:D2}";
+            }
+            catch (Exception ex) { }
+        }
+        
+        private void UpdateCanhBaoTimeFromKetThuc()
+        {
+            if (string.IsNullOrWhiteSpace(textBoxTimeCB.Text))
+            {
+                textBoxTimeCB.Text = "15";
             }
         }
 
-        // LẤY SỐ PHÚT LÀM BÀI
         private int GetLamBaiMinutes()
         {
             if (IsValidTimeFormat(textBoxTimeLamBai.Text))
             {
                 string[] parts = textBoxTimeLamBai.Text.Split(':');
-                return int.Parse(parts[0]);
+                return int.Parse(parts[0]) * 60 + int.Parse(parts[1]);
             }
             return 0;
         }
 
-        // LẤY DANH SÁCH CHƯƠNG ĐÃ CHỌN
         private List<int> GetSelectedChuong()
         {
             List<int> selectedChuong = new List<int>();
@@ -570,18 +856,62 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             return selectedChuong;
         }
 
-        // XỬ LÝ SỰ KIỆN THAY ĐỔI MÔN HỌC
+        // Thay đổi môn học
         private void comboBoxMonHoc_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Hiển thị thông tin môn học đã chọn vào textBox1
-            if (comboBoxMonHoc.SelectedItem != null)
+            try
             {
-                MonHoc selectedMonHoc = (MonHoc)comboBoxMonHoc.SelectedItem;
-                textBox1.Text = $"Môn học: {selectedMonHoc.tenMonHoc}\nMã môn học: {selectedMonHoc.maMonHoc}\nTín chỉ: {selectedMonHoc.tinChi}\nLý thuyết: {selectedMonHoc.soTietLyThuyet} tiết\nThực hành: {selectedMonHoc.soTietThucHanh} tiết";
+                if (comboBoxMonHoc.SelectedItem is MonHoc selectedMonHoc && string.IsNullOrEmpty(selectedMonHoc.maMonHoc))
+                {
+                    textboxMonhoc.Text = "";
+                    dataGridView1.Rows.Clear();
+                    return;
+                }
+                
+                if (comboBoxMonHoc.SelectedItem is MonHoc monHoc && !string.IsNullOrEmpty(monHoc.maMonHoc))
+                {
+                    textboxMonhoc.Text = $"Môn học: {monHoc.tenMonHoc}\r\n" +
+                                         $"Mã môn học: {monHoc.maMonHoc}\r\n" +
+                                         $"Tín chỉ: {monHoc.tinChi}\r\n" +
+                                         $"Lý thuyết: {monHoc.soTietLyThuyet} tiết\r\n" +
+                                         $"Thực hành: {monHoc.soTietThucHanh} tiết";
+                    LoadChuongData();
+                }
+                else
+                {
+                    dataGridView1.Rows.Clear();
+                    textboxMonhoc.Text = "";
+                }
             }
-            
-            // Khi thay đổi môn học, load lại danh sách chương
-            LoadChuongData();
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi thay đổi môn học: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        //========================================================================
+        // RÀNG BUỘC NHẬP SỐ NGUYÊN
+        //========================================================================
+        private void OnlyDigits_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void IntegerTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (sender is TextBox tb)
+            {
+                string digitsOnly = new string(tb.Text.Where(char.IsDigit).ToArray());
+                if (tb.Text != digitsOnly)
+                {
+                    int selectionStart = tb.SelectionStart;
+                    tb.Text = digitsOnly;
+                    tb.SelectionStart = Math.Min(selectionStart, tb.Text.Length);
+                }
+            }
         }
 
     }

@@ -357,10 +357,117 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             return result;
         }
 
+        /*
+         Phương thức lấy danh sách câu hỏi theo mã đề thi (KHÔNG trộn, giữ nguyên thứ tự)
+            Input: int MaDe
+            Output: List<CauHoi> (sắp xếp theo maCauHoi)
+            Created by: Hoàng Quyên
+        */
+        public List<CauHoi> GetListCauHoiTheoMaDeKhongTron(int maDe)
+        {
+            List<CauHoi> result = new List<CauHoi>();
 
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
 
+                    string sql = @"
+                SELECT c.maCauHoi, c.maMonHoc, c.maChuong, c.doKho, c.noiDungCauHoi
+                FROM `cauhoi-dekiemtra` cd
+                INNER JOIN cauhoi c ON cd.maCauHoi = c.maCauHoi
+                WHERE cd.maDe = @MaDe
+                ORDER BY c.maCauHoi";
 
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@MaDe", maDe);
 
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                result.Add(new CauHoi
+                                {
+                                    maCauHoi = reader.GetInt32("maCauHoi"),
+                                    maMonHoc = reader.GetString("maMonHoc"),
+                                    maChuong = reader.GetInt32("maChuong"),
+                                    doKho = reader.GetString("doKho"),
+                                    noiDungCauHoi = reader.GetString("noiDungCauHoi")
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi lấy danh sách câu hỏi theo mã đề {maDe} (không trộn): {ex.Message}");
+            }
+
+            return result;
+        }
+
+        /*
+         Phương thức đếm số câu hỏi theo danh sách chương và độ khó
+            Input: List<int> danhSachMaChuong, string doKho
+            Output: int (số lượng câu hỏi)
+            Created by: Hoàng Quyên
+        */
+        public int DemSoCauHoiTheoChuongVaDoKho(List<int> danhSachMaChuong, string doKho)
+        {
+            int count = 0;
+            try
+            {
+                if (danhSachMaChuong == null || danhSachMaChuong.Count == 0)
+                {
+                    return 0;
+                }
+
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+
+                    // Tạo parameterized query an toàn
+                    var parameters = new List<string>();
+                    for (int i = 0; i < danhSachMaChuong.Count; i++)
+                    {
+                        parameters.Add($"@maChuong{i}");
+                    }
+                    
+                    string chuongList = string.Join(",", parameters);
+                    string sql = $@"
+                        SELECT COUNT(*) 
+                        FROM cauhoi 
+                        WHERE maChuong IN ({chuongList}) 
+                        AND doKho = @doKho";
+
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                    {
+                        // Thêm parameters cho danh sách chương
+                        for (int i = 0; i < danhSachMaChuong.Count; i++)
+                        {
+                            cmd.Parameters.AddWithValue($"@maChuong{i}", danhSachMaChuong[i]);
+                        }
+                        
+                        cmd.Parameters.AddWithValue("@doKho", doKho);
+                        
+                        object result = cmd.ExecuteScalar();
+                        if (result != null && result != DBNull.Value)
+                        {
+                            count = Convert.ToInt32(result);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi đếm số câu hỏi theo chương và độ khó: {ex.Message}");
+            }
+
+            return count;
+        }
 
     }
 

@@ -43,6 +43,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 textBoxTenSV.ReadOnly = true;
                 textBoxCauHoi.ReadOnly = true;
                 
+                // Vô hiệu hóa các radio button (chỉ để xem)
+                radioA.Enabled = false;
+                radioB.Enabled = false;
+                radioC.Enabled = false;
+                radioD.Enabled = false;
+                
                 // Thiết lập màu nền cho các textbox
                 textBoxMSSV.BackColor = Color.White;
                 textBoxTenSV.BackColor = Color.White;
@@ -59,22 +65,60 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         {
             try
             {
-                if (currentMaDe > 0)
+                if (currentMaDe > 0 && currentMaBaiLam > 0)
                 {
-                    // Load danh sách câu hỏi của đề thi
-                    danhSachCauHoi = cauHoiBUS.GetCauHoiByDeThi(currentMaDe);
+                    // Load chi tiết bài làm của sinh viên trước
+                    chiTietBaiLam = chiTietBaiLamBUS.GetChiTietBaiLamByMaBaiLam(currentMaBaiLam);
                     
-                    if (danhSachCauHoi.Count > 0)
+                    if (chiTietBaiLam == null || chiTietBaiLam.Count == 0)
                     {
-                        // Load đáp án cho câu hỏi đầu tiên
-                        LoadDapAnForCurrentQuestion();
-                        
-                        // Load chi tiết bài làm của sinh viên
-                        chiTietBaiLam = chiTietBaiLamBUS.GetChiTietBaiLamByMaBaiLam(currentMaBaiLam);
-                        
-                        // Hiển thị câu hỏi đầu tiên
-                        DisplayCurrentQuestion();
+                        MessageBox.Show("Không tìm thấy chi tiết bài làm của sinh viên!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
                     }
+                    
+                    // Load danh sách câu hỏi của đề thi (KHÔNG xáo trộn để giữ thứ tự)
+                    danhSachCauHoi = cauHoiBUS.GetCauHoiByDeThiKhongTron(currentMaDe);
+                    
+                    if (danhSachCauHoi == null || danhSachCauHoi.Count == 0)
+                    {
+                        MessageBox.Show("Không tìm thấy câu hỏi cho đề thi này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    
+                    // Sắp xếp câu hỏi theo thứ tự trong chi tiết bài làm (theo maCauHoi)
+                    // Đảm bảo thứ tự hiển thị giống với thứ tự trong bài làm
+                    var sortedCauHoi = new List<CauHoi>();
+                    foreach (var chiTiet in chiTietBaiLam.OrderBy(ct => ct.maCauHoi))
+                    {
+                        var cauHoi = danhSachCauHoi.FirstOrDefault(ch => ch.maCauHoi == chiTiet.maCauHoi);
+                        if (cauHoi != null)
+                        {
+                            sortedCauHoi.Add(cauHoi);
+                        }
+                    }
+                    
+                    // Thêm các câu hỏi còn lại (nếu có)
+                    foreach (var cauHoi in danhSachCauHoi)
+                    {
+                        if (!sortedCauHoi.Any(ch => ch.maCauHoi == cauHoi.maCauHoi))
+                        {
+                            sortedCauHoi.Add(cauHoi);
+                        }
+                    }
+                    
+                    danhSachCauHoi = sortedCauHoi;
+                    
+                    // Reset về câu hỏi đầu tiên
+                    currentCauHoiIndex = 0;
+                    
+                    // Load đáp án cho câu hỏi đầu tiên
+                    LoadDapAnForCurrentQuestion();
+                    
+                    // Hiển thị câu hỏi đầu tiên
+                    DisplayCurrentQuestion();
+                    
+                    // Cập nhật phân trang
+                    UpdatePagination();
                 }
             }
             catch (Exception ex)
@@ -105,16 +149,22 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         {
             try
             {
-                if (currentCauHoiIndex < danhSachCauHoi.Count)
+                if (currentCauHoiIndex >= 0 && currentCauHoiIndex < danhSachCauHoi.Count)
                 {
                     // Hiển thị câu hỏi
                     textBoxCauHoi.Text = $"Câu {currentCauHoiIndex + 1}: {danhSachCauHoi[currentCauHoiIndex].noiDungCauHoi}";
+                    
+                    // Load đáp án cho câu hỏi hiện tại
+                    LoadDapAnForCurrentQuestion();
                     
                     // Hiển thị đáp án
                     DisplayAnswers();
                     
                     // Hiển thị đáp án sinh viên đã chọn
                     DisplayStudentAnswer();
+                    
+                    // Cập nhật phân trang
+                    UpdatePagination();
                 }
             }
             catch (Exception ex)
@@ -134,22 +184,37 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 radioC.Checked = false;
                 radioD.Checked = false;
                 
-                // Hiển thị đáp án A, B, C, D
+                // Reset text và ẩn nếu không có đáp án
+                radioA.Text = "A.";
+                radioB.Text = "B.";
+                radioC.Text = "C.";
+                radioD.Text = "D.";
+                
+                radioA.Visible = false;
+                radioB.Visible = false;
+                radioC.Visible = false;
+                radioD.Visible = false;
+                
+                // Hiển thị đáp án A, B, C, D với khoảng cách rõ ràng
                 if (danhSachDapAn.Count >= 1)
                 {
                     radioA.Text = $"A. {danhSachDapAn[0].tenDapAn}";
+                    radioA.Visible = true;
                 }
                 if (danhSachDapAn.Count >= 2)
                 {
                     radioB.Text = $"B. {danhSachDapAn[1].tenDapAn}";
+                    radioB.Visible = true;
                 }
                 if (danhSachDapAn.Count >= 3)
                 {
                     radioC.Text = $"C. {danhSachDapAn[2].tenDapAn}";
+                    radioC.Visible = true;
                 }
                 if (danhSachDapAn.Count >= 4)
                 {
                     radioD.Text = $"D. {danhSachDapAn[3].tenDapAn}";
+                    radioD.Visible = true;
                 }
             }
             catch (Exception ex)
@@ -163,7 +228,19 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         {
             try
             {
-                if (currentCauHoiIndex < danhSachCauHoi.Count)
+                // Reset màu sắc cho tất cả radio button
+                radioA.ForeColor = Color.Black;
+                radioB.ForeColor = Color.Black;
+                radioC.ForeColor = Color.Black;
+                radioD.ForeColor = Color.Black;
+                
+                // Reset checked
+                radioA.Checked = false;
+                radioB.Checked = false;
+                radioC.Checked = false;
+                radioD.Checked = false;
+                
+                if (currentCauHoiIndex >= 0 && currentCauHoiIndex < danhSachCauHoi.Count)
                 {
                     int maCauHoi = danhSachCauHoi[currentCauHoiIndex].maCauHoi;
                     
@@ -173,17 +250,67 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                     if (dapAnDaChon != null)
                     {
                         // Tìm đáp án trong danh sách
-                        var dapAn = danhSachDapAn.FirstOrDefault(da => da.maDapAn == dapAnDaChon.maDapAnDuocChon);
+                        var dapAnSVChon = danhSachDapAn.FirstOrDefault(da => da.maDapAn == dapAnDaChon.maDapAnDuocChon);
                         
-                        if (dapAn != null)
+                        // Tìm đáp án đúng
+                        var dapAnDung = danhSachDapAn.FirstOrDefault(da => da.dungSai == 1);
+                        
+                        if (dapAnSVChon != null)
                         {
-                            int index = danhSachDapAn.IndexOf(dapAn);
+                            int index = danhSachDapAn.IndexOf(dapAnSVChon);
+                            RadioButton selectedRadio = null;
+                            
                             switch (index)
                             {
-                                case 0: radioA.Checked = true; break;
-                                case 1: radioB.Checked = true; break;
-                                case 2: radioC.Checked = true; break;
-                                case 3: radioD.Checked = true; break;
+                                case 0: 
+                                    radioA.Checked = true;
+                                    selectedRadio = radioA;
+                                    break;
+                                case 1: 
+                                    radioB.Checked = true;
+                                    selectedRadio = radioB;
+                                    break;
+                                case 2: 
+                                    radioC.Checked = true;
+                                    selectedRadio = radioC;
+                                    break;
+                                case 3: 
+                                    radioD.Checked = true;
+                                    selectedRadio = radioD;
+                                    break;
+                            }
+                            
+                            // Đánh dấu màu sắc: xanh nếu đúng, đỏ nếu sai
+                            if (selectedRadio != null)
+                            {
+                                if (dapAnSVChon.dungSai == 1)
+                                {
+                                    selectedRadio.ForeColor = Color.Green;
+                                }
+                                else
+                                {
+                                    selectedRadio.ForeColor = Color.Red;
+                                }
+                            }
+                        }
+                        
+                        // Đánh dấu đáp án đúng bằng màu xanh (nếu sinh viên chọn sai)
+                        if (dapAnDung != null && (dapAnSVChon == null || dapAnSVChon.dungSai != 1))
+                        {
+                            int indexDung = danhSachDapAn.IndexOf(dapAnDung);
+                            RadioButton radioDung = null;
+                            
+                            switch (indexDung)
+                            {
+                                case 0: radioDung = radioA; break;
+                                case 1: radioDung = radioB; break;
+                                case 2: radioDung = radioC; break;
+                                case 3: radioDung = radioD; break;
+                            }
+                            
+                            if (radioDung != null && !radioDung.Checked)
+                            {
+                                radioDung.ForeColor = Color.Green;
                             }
                         }
                     }
@@ -230,19 +357,70 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            // XỬ LÝ KHI RADIO BUTTON THAY ĐỔI
+            // XỬ LÝ KHI RADIO BUTTON THAY ĐỔI (chỉ để xem, không cho chỉnh sửa)
+            // Không cần xử lý gì vì đây là chế độ xem
+        }
+        
+        // CẬP NHẬT PHÂN TRANG
+        private void UpdatePagination()
+        {
             try
             {
-                RadioButton selectedRadio = sender as RadioButton;
-                if (selectedRadio != null && selectedRadio.Checked)
+                if (danhSachCauHoi != null && danhSachCauHoi.Count > 0)
                 {
-                    string selectedAnswer = selectedRadio.Text;
-                    // Sinh viên đã chọn đáp án: selectedAnswer
+                    // Cập nhật label số câu
+                    labelSoCau.Text = $"Câu {currentCauHoiIndex + 1} / {danhSachCauHoi.Count}";
+                    
+                    // Enable/Disable nút Previous
+                    btnPrevious.Enabled = currentCauHoiIndex > 0;
+                    
+                    // Enable/Disable nút Next
+                    btnNext.Enabled = currentCauHoiIndex < danhSachCauHoi.Count - 1;
+                }
+                else
+                {
+                    labelSoCau.Text = "Câu 0 / 0";
+                    btnPrevious.Enabled = false;
+                    btnNext.Enabled = false;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi xử lý đáp án: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Lỗi khi cập nhật phân trang: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        
+        // XỬ LÝ NÚT PREVIOUS
+        private void btnPrevious_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (currentCauHoiIndex > 0)
+                {
+                    currentCauHoiIndex--;
+                    DisplayCurrentQuestion();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi chuyển câu hỏi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        
+        // XỬ LÝ NÚT NEXT
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (currentCauHoiIndex < danhSachCauHoi.Count - 1)
+                {
+                    currentCauHoiIndex++;
+                    DisplayCurrentQuestion();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi chuyển câu hỏi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

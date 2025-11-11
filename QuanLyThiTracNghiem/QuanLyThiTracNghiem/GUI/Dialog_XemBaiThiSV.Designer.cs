@@ -41,9 +41,14 @@
             radioB = new RadioButton();
             radioC = new RadioButton();
             radioD = new RadioButton();
+            panelPhanTrang = new Panel();
+            btnPrevious = new Button();
+            btnNext = new Button();
+            labelSoCau = new Label();
             panel1.SuspendLayout();
             panelNoiDung.SuspendLayout();
             panelDapAn.SuspendLayout();
+            panelPhanTrang.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -100,12 +105,13 @@
             // 
             // panelNoiDung
             // 
+            panelNoiDung.Controls.Add(panelPhanTrang);
             panelNoiDung.Controls.Add(panelDapAn);
             panelNoiDung.Controls.Add(textBoxCauHoi);
             panelNoiDung.Controls.Add(labelCauHoi);
             panelNoiDung.Location = new Point(39, 134);
             panelNoiDung.Name = "panelNoiDung";
-            panelNoiDung.Size = new Size(994, 394);
+            panelNoiDung.Size = new Size(994, 450);
             panelNoiDung.TabIndex = 1;
             // 
             // labelCauHoi
@@ -129,64 +135,112 @@
             // 
             // panelDapAn
             // 
-            panelDapAn.BackColor = SystemColors.ActiveCaption;
+            panelDapAn.BackColor = Color.FromArgb(245, 245, 250);
             panelDapAn.Controls.Add(radioD);
             panelDapAn.Controls.Add(radioC);
             panelDapAn.Controls.Add(radioB);
             panelDapAn.Controls.Add(radioA);
-            panelDapAn.Location = new Point(0, 327);
+            panelDapAn.Location = new Point(0, 300);
             panelDapAn.Name = "panelDapAn";
-            panelDapAn.Size = new Size(994, 67);
+            panelDapAn.Size = new Size(994, 94);
             panelDapAn.TabIndex = 2;
             // 
             // radioA
             // 
             radioA.AutoSize = true;
-            radioA.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            radioA.Location = new Point(259, 19);
+            radioA.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            radioA.Location = new Point(20, 10);
             radioA.Name = "radioA";
-            radioA.Size = new Size(43, 29);
+            radioA.Padding = new Padding(0, 5, 0, 5);
+            radioA.Size = new Size(450, 30);
             radioA.TabIndex = 0;
             radioA.TabStop = true;
-            radioA.Text = "A";
+            radioA.Text = "A.";
             radioA.UseVisualStyleBackColor = true;
             radioA.CheckedChanged += this.radioButton1_CheckedChanged;
             // 
             // radioB
             // 
             radioB.AutoSize = true;
-            radioB.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            radioB.Location = new Point(426, 19);
+            radioB.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            radioB.Location = new Point(20, 50);
             radioB.Name = "radioB";
-            radioB.Size = new Size(41, 29);
+            radioB.Padding = new Padding(0, 5, 0, 5);
+            radioB.Size = new Size(450, 30);
             radioB.TabIndex = 1;
             radioB.TabStop = true;
-            radioB.Text = "B";
+            radioB.Text = "B.";
             radioB.UseVisualStyleBackColor = true;
             // 
             // radioC
             // 
             radioC.AutoSize = true;
-            radioC.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            radioC.Location = new Point(586, 19);
+            radioC.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            radioC.Location = new Point(500, 10);
             radioC.Name = "radioC";
-            radioC.Size = new Size(42, 29);
+            radioC.Padding = new Padding(0, 5, 0, 5);
+            radioC.Size = new Size(450, 30);
             radioC.TabIndex = 2;
             radioC.TabStop = true;
-            radioC.Text = "C";
+            radioC.Text = "C.";
             radioC.UseVisualStyleBackColor = true;
             // 
             // radioD
             // 
             radioD.AutoSize = true;
-            radioD.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            radioD.Location = new Point(751, 19);
+            radioD.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            radioD.Location = new Point(500, 50);
             radioD.Name = "radioD";
-            radioD.Size = new Size(44, 29);
+            radioD.Padding = new Padding(0, 5, 0, 5);
+            radioD.Size = new Size(450, 30);
             radioD.TabIndex = 3;
             radioD.TabStop = true;
-            radioD.Text = "D";
+            radioD.Text = "D.";
             radioD.UseVisualStyleBackColor = true;
+            // 
+            // panelPhanTrang
+            // 
+            panelPhanTrang.BackColor = Color.FromArgb(240, 240, 240);
+            panelPhanTrang.Controls.Add(btnPrevious);
+            panelPhanTrang.Controls.Add(btnNext);
+            panelPhanTrang.Controls.Add(labelSoCau);
+            panelPhanTrang.Location = new Point(0, 394);
+            panelPhanTrang.Name = "panelPhanTrang";
+            panelPhanTrang.Size = new Size(994, 56);
+            panelPhanTrang.TabIndex = 3;
+            // 
+            // btnPrevious
+            // 
+            btnPrevious.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnPrevious.Location = new Point(300, 12);
+            btnPrevious.Name = "btnPrevious";
+            btnPrevious.Size = new Size(120, 35);
+            btnPrevious.TabIndex = 0;
+            btnPrevious.Text = "◄ Câu trước";
+            btnPrevious.UseVisualStyleBackColor = true;
+            btnPrevious.Click += btnPrevious_Click;
+            // 
+            // btnNext
+            // 
+            btnNext.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnNext.Location = new Point(574, 12);
+            btnNext.Name = "btnNext";
+            btnNext.Size = new Size(120, 35);
+            btnNext.TabIndex = 1;
+            btnNext.Text = "Câu sau ►";
+            btnNext.UseVisualStyleBackColor = true;
+            btnNext.Click += btnNext_Click;
+            // 
+            // labelSoCau
+            // 
+            labelSoCau.AutoSize = true;
+            labelSoCau.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelSoCau.Location = new Point(450, 17);
+            labelSoCau.Name = "labelSoCau";
+            labelSoCau.Size = new Size(94, 25);
+            labelSoCau.TabIndex = 2;
+            labelSoCau.Text = "Câu 1 / 5";
+            labelSoCau.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // Dialog_XemBaiThiSV
             // 
@@ -202,6 +256,8 @@
             panelNoiDung.PerformLayout();
             panelDapAn.ResumeLayout(false);
             panelDapAn.PerformLayout();
+            panelPhanTrang.ResumeLayout(false);
+            panelPhanTrang.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -220,5 +276,9 @@
         private RadioButton radioB;
         private RadioButton radioD;
         private RadioButton radioC;
+        private Panel panelPhanTrang;
+        private Button btnPrevious;
+        private Button btnNext;
+        private Label labelSoCau;
     }
 }

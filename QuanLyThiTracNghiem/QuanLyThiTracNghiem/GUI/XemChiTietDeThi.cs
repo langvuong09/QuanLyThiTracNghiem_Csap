@@ -8,16 +8,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
     public partial class XemChiTietDeThi : UserControl
     {
+        private BaiLamBUS baiLamBUS = new BaiLamBUS();
+        private ChiTietBaiLamBUS chiTietBaiLamBUS = new ChiTietBaiLamBUS();
+        private int currentMaDe = 0;
+        private List<Dictionary<string, object>> danhSachBaiLam = new List<Dictionary<string, object>>();
+        private List<Dictionary<string, object>> danhSachBaiLamHienTai = new List<Dictionary<string, object>>();
+
         public XemChiTietDeThi()
         {
             InitializeComponent();
             SetupDataGridView();
             InitializeData();
+        }
+
+        // Phương thức public để load dữ liệu theo mã đề thi
+        public void LoadDataByMaDe(int maDe)
+        {
+            currentMaDe = maDe;
+            LoadBaiLamData();
         }
 
         private void SetupDataGridView()
@@ -54,8 +69,16 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             // KHỞI TẠO DỮ LIỆU CHO DATAGRIDVIEW
             try
             {
-                // TODO: Load dữ liệu từ database
-                LoadSampleData();
+                // Chỉ load dữ liệu nếu có mã đề thi
+                if (currentMaDe > 0)
+                {
+                    LoadBaiLamData();
+                }
+                else
+                {
+                    // Xóa dữ liệu nếu chưa có mã đề thi
+                    dataGridView1.Rows.Clear();
+                }
             }
             catch (Exception ex)
             {
@@ -63,17 +86,82 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        private void LoadSampleData()
+        private void LoadBaiLamData()
         {
-            // DỮ LIỆU MẪU ĐỂ TEST - Sử dụng MSSV thực tế từ database
-            dataGridView1.Rows.Clear();
-            
-            dataGridView1.Rows.Add("3122410006", "Mai Anh", "8.5", "08:00", "09:30", "Xem");
-            dataGridView1.Rows.Add("111111", "Cường", "7.2", "08:05", "09:25", "Xem");
-            dataGridView1.Rows.Add("3122410006", "Mai Anh", "9.0", "08:10", "09:35", "Xem");
-            dataGridView1.Rows.Add("111111", "Cường", "6.8", "08:15", "09:20", "Xem");
-            dataGridView1.Rows.Add("3122410006", "Mai Anh", "8.0", "08:20", "09:40", "Xem");
+            try
+            {
+                if (currentMaDe == 0)
+                {
+                    dataGridView1.Rows.Clear();
+                    return;
+                }
+
+                // Load dữ liệu từ database
+                danhSachBaiLam = baiLamBUS.GetBaiLamByMaDeWithSinhVien(currentMaDe);
+                
+                // Nếu không có dữ liệu từ database, xóa dữ liệu hiển thị
+                if (danhSachBaiLam == null || danhSachBaiLam.Count == 0)
+                {
+                    dataGridView1.Rows.Clear();
+                    danhSachBaiLamHienTai = new List<Dictionary<string, object>>();
+                    return;
+                }
+
+                // Cập nhật danh sách hiện tại
+                danhSachBaiLamHienTai = danhSachBaiLam;
+                
+                // Hiển thị dữ liệu
+                DisplayBaiLamData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi load dữ liệu bài làm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                dataGridView1.Rows.Clear();
+            }
         }
+
+        private void DisplayBaiLamData()
+        {
+            try
+            {
+                dataGridView1.Rows.Clear();
+                
+                foreach (var baiLam in danhSachBaiLamHienTai)
+                {
+                    string mssv = baiLam["maSinhVien"].ToString();
+                    string tenSV = baiLam["hoVaTen"].ToString();
+                    string diem = baiLam["tongDiem"].ToString();
+                    int maBaiLam = Convert.ToInt32(baiLam["maBaiLam"]);
+                    
+                    // Lấy thời gian bắt đầu và nộp bài từ database
+                    string timeVaoThi = "N/A";
+                    string timeNopBai = "N/A";
+                    
+                    if (baiLam.ContainsKey("thoiGianBatDau") && baiLam["thoiGianBatDau"] != null)
+                    {
+                        DateTime thoiGianBatDau = (DateTime)baiLam["thoiGianBatDau"];
+                        timeVaoThi = thoiGianBatDau.ToString("dd/MM/yyyy HH:mm:ss");
+                    }
+                    
+                    if (baiLam.ContainsKey("thoiGianNopBai") && baiLam["thoiGianNopBai"] != null)
+                    {
+                        DateTime thoiGianNopBai = (DateTime)baiLam["thoiGianNopBai"];
+                        timeNopBai = thoiGianNopBai.ToString("dd/MM/yyyy HH:mm:ss");
+                    }
+                    
+                    // Thêm row vào DataGridView
+                    int rowIndex = dataGridView1.Rows.Add(mssv, tenSV, diem, timeVaoThi, timeNopBai, "Xem");
+                    
+                    // Lưu maBaiLam vào Tag của row để dùng khi click Xem
+                    dataGridView1.Rows[rowIndex].Tag = maBaiLam;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi hiển thị dữ liệu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
 
 
         private void comboBoxTatCa_SelectedIndexChanged(object sender, EventArgs e)
@@ -81,8 +169,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             // LỌC THEO COMBOBOX TẤT CẢ
             try
             {
-                string selectedValue = comboBoxTatCa.SelectedItem?.ToString() ?? "Tất cả";
-                MessageBox.Show($"Lọc theo: {selectedValue}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ApplyFilters();
             }
             catch (Exception ex)
             {
@@ -95,8 +182,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             // LỌC THEO TRẠNG THÁI NỘP BÀI
             try
             {
-                string selectedValue = comboBoxTrangThaiNop.SelectedItem?.ToString() ?? "Đã nộp bài";
-                MessageBox.Show($"Lọc theo trạng thái: {selectedValue}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ApplyFilters();
             }
             catch (Exception ex)
             {
@@ -109,21 +195,41 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             // TÌM KIẾM THEO TỪ KHÓA
             try
             {
-                string searchKeyword = textBoxTimKiem.Text.Trim();
-                
-                if (string.IsNullOrEmpty(searchKeyword))
-                {
-                    // Hiển thị tất cả dữ liệu khi không có từ khóa
-                    LoadSampleData();
-                    return;
-                }
-                
-                // TODO: Thực hiện tìm kiếm
-                MessageBox.Show($"Tìm kiếm: {searchKeyword}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ApplyFilters();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Lỗi khi tìm kiếm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void ApplyFilters()
+        {
+            try
+            {
+                if (danhSachBaiLam == null || danhSachBaiLam.Count == 0)
+                {
+                    dataGridView1.Rows.Clear();
+                    return;
+                }
+
+                // Lọc theo từ khóa tìm kiếm
+                string searchKeyword = textBoxTimKiem.Text.Trim().ToLower();
+                var filteredList = danhSachBaiLam.Where(b => 
+                    string.IsNullOrEmpty(searchKeyword) ||
+                    b["maSinhVien"].ToString().ToLower().Contains(searchKeyword) ||
+                    b["hoVaTen"].ToString().ToLower().Contains(searchKeyword)
+                ).ToList();
+
+                // Cập nhật danh sách hiện tại
+                danhSachBaiLamHienTai = filteredList;
+                
+                // Hiển thị lại dữ liệu
+                DisplayBaiLamData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi áp dụng bộ lọc: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -132,7 +238,23 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             // XUẤT EXCEL
             try
             {
-                MessageBox.Show("Chức năng xuất Excel đang được phát triển!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (danhSachBaiLamHienTai == null || danhSachBaiLamHienTai.Count == 0)
+                {
+                    MessageBox.Show("Không có dữ liệu để xuất Excel!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Hiển thị dialog chọn nơi lưu file
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "Excel Files|*.xlsx|CSV Files|*.csv|All Files|*.*";
+                saveFileDialog.FileName = $"DanhSachBaiLam_DeThi_{currentMaDe}_{DateTime.Now:yyyyMMdd_HHmmss}.csv";
+                
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = saveFileDialog.FileName;
+                    ExportToExcel(filePath);
+                    MessageBox.Show("Xuất Excel thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             catch (Exception ex)
             {
@@ -140,9 +262,44 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void ExportToExcel(string filePath)
         {
-            // XỬ LÝ CLICK VÀO ICON XEM BÀI LÀM
+            try
+            {
+                // Tạo file CSV (đơn giản hơn Excel, có thể mở bằng Excel)
+                using (StreamWriter writer = new StreamWriter(filePath, false, Encoding.UTF8))
+                {
+                    // Ghi BOM để Excel nhận diện UTF-8
+                    writer.Write('\uFEFF');
+                    
+                    // Ghi header
+                    writer.WriteLine("MSSV,Tên Sinh Viên,Điểm,Thời Gian Vào Thi,Thời Gian Nộp Bài");
+                    
+                    // Ghi dữ liệu
+                    foreach (DataGridViewRow row in dataGridView1.Rows)
+                    {
+                        if (row.IsNewRow) continue;
+                        
+                        string mssv = row.Cells["ColMSSV"].Value?.ToString() ?? "";
+                        string ten = row.Cells["ColTen"].Value?.ToString() ?? "";
+                        string diem = row.Cells["ColDiem"].Value?.ToString() ?? "";
+                        string timeVao = row.Cells["ColTimeVaoThi"].Value?.ToString() ?? "";
+                        string timeNop = row.Cells["ColTimeNopBai"].Value?.ToString() ?? "";
+                        
+                        // Escape dấu phẩy trong dữ liệu
+                        writer.WriteLine($"\"{mssv}\",\"{ten}\",\"{diem}\",\"{timeVao}\",\"{timeNop}\"");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Lỗi khi ghi file Excel: {ex.Message}");
+            }
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // XỬ LÝ CLICK VÀO NÚT XEM BÀI LÀM
             try
             {
                 if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
@@ -153,11 +310,26 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                         // Lấy thông tin sinh viên
                         string mssv = dataGridView1.Rows[e.RowIndex].Cells["ColMSSV"].Value?.ToString();
                         string tenSV = dataGridView1.Rows[e.RowIndex].Cells["ColTen"].Value?.ToString();
+                        int maBaiLam = 0;
                         
-                        if (!string.IsNullOrEmpty(mssv))
+                        // Lấy maBaiLam từ Tag hoặc từ danh sách
+                        if (dataGridView1.Rows[e.RowIndex].Tag != null)
+                        {
+                            maBaiLam = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Tag);
+                        }
+                        else if (danhSachBaiLamHienTai != null && e.RowIndex < danhSachBaiLamHienTai.Count)
+                        {
+                            maBaiLam = Convert.ToInt32(danhSachBaiLamHienTai[e.RowIndex]["maBaiLam"]);
+                        }
+                        
+                        if (!string.IsNullOrEmpty(mssv) && maBaiLam > 0)
                         {
                             // Mở dialog xem bài làm của sinh viên
-                            OpenBaiLamDialog(mssv, tenSV);
+                            OpenBaiLamDialog(mssv, tenSV, currentMaDe, maBaiLam);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Không tìm thấy thông tin bài làm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
                 }
@@ -168,7 +340,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        private void OpenBaiLamDialog(string mssv, string tenSV)
+        private void OpenBaiLamDialog(string mssv, string tenSV, int maDe, int maBaiLam)
         {
             // MỞ DIALOG XEM BÀI LÀM CỦA SINH VIÊN
             try
@@ -188,9 +360,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 dialogXemBaiThi.Dock = DockStyle.Fill;
                 
                 // Truyền dữ liệu bài làm của sinh viên vào dialog
-                // Lấy maDe và maBaiLam tương ứng với MSSV
-                int maDe = GetMaDeByMSSV(mssv);
-                int maBaiLam = GetMaBaiLamByMSSV(mssv);
                 dialogXemBaiThi.LoadBaiLam(mssv, tenSV, maDe, maBaiLam);
                 
                 dialogForm.Controls.Add(dialogXemBaiThi);
@@ -203,35 +372,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 MessageBox.Show($"Lỗi khi mở dialog xem bài làm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        // LẤY MÃ ĐỀ THI THEO MSSV (DỮ LIỆU MẪU)
-        private int GetMaDeByMSSV(string mssv)
-        {
-            // Dữ liệu mẫu để test
-            switch (mssv)
-            {
-                case "3122410006":
-                    return 1; // Mai Anh làm đề thi 1
-                case "111111":
-                    return 1; // Cường làm đề thi 1
-                default:
-                    return 1; // Mặc định đề thi 1
-            }
-        }
-
-        // LẤY MÃ BÀI LÀM THEO MSSV (DỮ LIỆU MẪU)
-        private int GetMaBaiLamByMSSV(string mssv)
-        {
-            // Dữ liệu mẫu để test
-            switch (mssv)
-            {
-                case "3122410006":
-                    return 1; // Mai Anh có bài làm 1
-                case "111111":
-                    return 2; // Cường có bài làm 2
-                default:
-                    return 1; // Mặc định bài làm 1
-            }
-        }
     }
 }
+

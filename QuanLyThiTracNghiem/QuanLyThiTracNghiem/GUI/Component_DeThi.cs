@@ -14,7 +14,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
      
 
-        private Form panel_TrangChu;
+        private Form? panel_TrangChu;
         private String maSinhVien;
 
         private int currentPage = 1;
