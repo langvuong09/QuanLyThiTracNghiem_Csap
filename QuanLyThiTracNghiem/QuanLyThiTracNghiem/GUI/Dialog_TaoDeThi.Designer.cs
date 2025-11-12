@@ -60,7 +60,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             btnXoaChuong = new Button();
             labelTimeCanhBao = new Label();
             textBoxTimeCB = new TextBox();
+            panelNhomHocPhan = new Panel();
+            labelNhomLop = new Label();
+            checkBoxTatCaNhom = new CheckBox();
+            flowLayoutPanelNhom = new FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            panelNhomHocPhan.SuspendLayout();
             SuspendLayout();
             // 
             // labelTendethi
@@ -196,9 +201,50 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             textboxMonhoc.Multiline = true;
             textboxMonhoc.Name = "textboxMonhoc";
             textboxMonhoc.ReadOnly = true;
-            textboxMonhoc.Size = new Size(930, 149);
+            textboxMonhoc.Size = new Size(450, 149);
             textboxMonhoc.TabIndex = 10;
             textboxMonhoc.BackColor = Color.White;
+            // 
+            // panelNhomHocPhan
+            // 
+            panelNhomHocPhan.BorderStyle = BorderStyle.FixedSingle;
+            panelNhomHocPhan.Controls.Add(flowLayoutPanelNhom);
+            panelNhomHocPhan.Controls.Add(checkBoxTatCaNhom);
+            panelNhomHocPhan.Controls.Add(labelNhomLop);
+            panelNhomHocPhan.Location = new Point(510, 396);
+            panelNhomHocPhan.Name = "panelNhomHocPhan";
+            panelNhomHocPhan.Size = new Size(450, 149);
+            panelNhomHocPhan.TabIndex = 29;
+            // 
+            // labelNhomLop
+            // 
+            labelNhomLop.AutoSize = true;
+            labelNhomLop.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelNhomLop.Location = new Point(10, 10);
+            labelNhomLop.Name = "labelNhomLop";
+            labelNhomLop.Size = new Size(90, 21);
+            labelNhomLop.TabIndex = 0;
+            labelNhomLop.Text = "Nhóm lớp:";
+            // 
+            // checkBoxTatCaNhom
+            // 
+            checkBoxTatCaNhom.AutoSize = true;
+            checkBoxTatCaNhom.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            checkBoxTatCaNhom.Location = new Point(10, 35);
+            checkBoxTatCaNhom.Name = "checkBoxTatCaNhom";
+            checkBoxTatCaNhom.Size = new Size(75, 25);
+            checkBoxTatCaNhom.TabIndex = 1;
+            checkBoxTatCaNhom.Text = "Tất cả";
+            checkBoxTatCaNhom.UseVisualStyleBackColor = true;
+            checkBoxTatCaNhom.Visible = false;
+            // 
+            // flowLayoutPanelNhom
+            // 
+            flowLayoutPanelNhom.AutoScroll = true;
+            flowLayoutPanelNhom.Location = new Point(10, 65);
+            flowLayoutPanelNhom.Name = "flowLayoutPanelNhom";
+            flowLayoutPanelNhom.Size = new Size(430, 75);
+            flowLayoutPanelNhom.TabIndex = 2;
             // 
             // labelChuong
             // 
@@ -393,6 +439,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
+            Controls.Add(panelNhomHocPhan);
             Controls.Add(textBoxTimeCB);
             Controls.Add(labelTimeCanhBao);
             Controls.Add(btnXoaChuong);
@@ -424,6 +471,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             Size = new Size(1500, 1249);
             Load += Dialog_TaoDeThi_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            panelNhomHocPhan.ResumeLayout(false);
+            panelNhomHocPhan.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -460,5 +509,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private Button btnXoaChuong;
         private Label labelTimeCanhBao;
         public TextBox textBoxTimeCB;
+        private Panel panelNhomHocPhan;
+        private Label labelNhomLop;
+        private CheckBox checkBoxTatCaNhom;
+        private FlowLayoutPanel flowLayoutPanelNhom;
     }
 }

@@ -51,7 +51,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             comboBoxTatCa.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
             comboBoxTatCa.FormattingEnabled = true;
             comboBoxTatCa.Items.AddRange(new object[] { "Tất cả", "" });
-            comboBoxTatCa.Location = new Point(42, 36);
+            comboBoxTatCa.Location = new Point(20, 36);
             comboBoxTatCa.Name = "comboBoxTatCa";
             comboBoxTatCa.Size = new Size(149, 38);
             comboBoxTatCa.TabIndex = 0;
@@ -63,7 +63,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             comboBoxTrangThaiNop.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
             comboBoxTrangThaiNop.FormattingEnabled = true;
             comboBoxTrangThaiNop.Items.AddRange(new object[] { "Đã nộp bài", "Chưa nộp bài", "" });
-            comboBoxTrangThaiNop.Location = new Point(229, 36);
+            comboBoxTrangThaiNop.Location = new Point(189, 36);
             comboBoxTrangThaiNop.Name = "comboBoxTrangThaiNop";
             comboBoxTrangThaiNop.Size = new Size(149, 38);
             comboBoxTrangThaiNop.TabIndex = 1;
@@ -72,19 +72,21 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             // 
             // textBoxTimKiem
             // 
+            textBoxTimKiem.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             textBoxTimKiem.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxTimKiem.Location = new Point(419, 36);
+            textBoxTimKiem.Location = new Point(358, 36);
             textBoxTimKiem.Multiline = true;
             textBoxTimKiem.Name = "textBoxTimKiem";
-            textBoxTimKiem.Size = new Size(483, 38);
+            textBoxTimKiem.Size = new Size(541, 38);
             textBoxTimKiem.TabIndex = 2;
             textBoxTimKiem.TextChanged += textBoxTimKiem_TextChanged;
             // 
             // btnXuatExcel
             // 
+            btnXuatExcel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnXuatExcel.BackColor = Color.FromArgb(126, 164, 241);
             btnXuatExcel.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnXuatExcel.Location = new Point(1026, 26);
+            btnXuatExcel.Location = new Point(1027, 26);
             btnXuatExcel.Name = "btnXuatExcel";
             btnXuatExcel.Size = new Size(229, 57);
             btnXuatExcel.TabIndex = 3;
@@ -94,6 +96,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             // 
             // dgvMonHoc
             // 
+            dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView1.ColumnHeadersHeight = 40;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { ColMSSV, ColTen, ColDiem, ColTimeVaoThi, ColTimeNopBai, ColHanhDong });
@@ -102,14 +105,15 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dataGridView1.DefaultCellStyle.SelectionForeColor = Color.Black;
             dataGridView1.EnableHeadersVisualStyles = false;
             dataGridView1.GridColor = Color.LightGray;
-            dataGridView1.Location = new Point(44, 118);
+            dataGridView1.Location = new Point(0, 118);
+            dataGridView1.Margin = new Padding(0);
             dataGridView1.MultiSelect = false;
             dataGridView1.Name = "dgvMonHoc";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersVisible = false;
             dataGridView1.RowTemplate.Height = 50;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new Size(1211, 639);
+            dataGridView1.Size = new Size(1300, 682);
             dataGridView1.TabIndex = 4;
             dataGridView1.CellClick += dataGridView1_CellClick;
             // 
@@ -155,6 +159,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             Controls.Add(comboBoxTatCa);
             Name = "XemChiTietDeThi";
             Size = new Size(1300, 800);
+            Resize += XemChiTietDeThi_Resize;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();

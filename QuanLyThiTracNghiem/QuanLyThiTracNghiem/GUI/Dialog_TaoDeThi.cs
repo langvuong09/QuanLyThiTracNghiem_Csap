@@ -26,12 +26,16 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
     public partial class Dialog_TaoDeThi : UserControl
     {
         private bool isEditMode = false;
-        private bool isInitializing = true; // Flag để bỏ qua validation khi khởi tạo
+        private bool isInitializing = true;
         private DeKiemTra currentDeThi = null;
         private ChuongBUS chuongBUS = new ChuongBUS();
         private DeKiemTraBUS deThiBUS = new DeKiemTraBUS();
         private MonHocBUS monHocBUS = new MonHocBUS();
         private CauHoiBUS cauHoiBUS = new CauHoiBUS();
+        private NhomBUS nhomBUS = new NhomBUS();
+        private DeKiemTra_NhomBUS deKiemTra_NhomBUS = new DeKiemTra_NhomBUS();
+        private CTDeKiemTraBUS ctDeKiemTraBUS = new CTDeKiemTraBUS();
+        private Dictionary<int, CheckBox> checkBoxNhomDict = new Dictionary<int, CheckBox>();
         
         public event EventHandler DataChanged;
 
@@ -39,7 +43,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         {
             InitializeComponent();
             
-            // Tạm thời unsubscribe event handler để tránh trigger khi set giá trị mặc định
             dateTimePickerBatDau.ValueChanged -= DateTimePickerBatDau_ValueChanged;
             
             SetupDataGridView();
@@ -54,16 +57,16 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             textBoxSoCauTB.TextChanged += IntegerTextBox_TextChanged;
             textBoxSoCauKho.TextChanged += IntegerTextBox_TextChanged;
             
-            // Đặt giá trị mặc định cho DateTimePicker sau khi khởi tạo
             dateTimePickerBatDau.Value = DateTime.Now.AddMinutes(1);
-            
-            // Subscribe lại event handler sau khi đã set giá trị mặc định
             dateTimePickerBatDau.ValueChanged += DateTimePickerBatDau_ValueChanged;
             
-            // Đánh dấu đã khởi tạo xong
             isInitializing = false;
+            checkBoxTatCaNhom.CheckedChanged += CheckBoxTatCaNhom_CheckedChanged;
         }
 
+        /// <summary>
+        /// Thiết lập màu sắc, font và kích thước cho DataGridView
+        /// </summary>
         private void SetupDataGridView()
         {
             dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(126, 164, 241);
@@ -74,18 +77,28 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dataGridView1.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridView1.DefaultCellStyle.BackColor = Color.White;
             
-            // Thêm sự kiện cho header checkbox
             dataGridView1.ColumnHeaderMouseClick += DataGridView1_ColumnHeaderMouseClick;
+            dataGridView1.CurrentCellDirtyStateChanged += DataGridView1_CurrentCellDirtyStateChanged;
         }
         
-        // Xử lý click vào header checkbox để chọn/bỏ chọn tất cả
+        /// <summary>
+        /// Xử lý sự kiện khi trạng thái của cell được thay đổi
+        /// Lưu lại thay đổi khi người dùng chọn/bỏ chọn checkbox
+        /// </summary>
+        private void DataGridView1_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (dataGridView1.IsCurrentCellDirty && dataGridView1.CurrentCell is DataGridViewCheckBoxCell)
+            {
+                dataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
+        }
+        
         private void DataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.ColumnIndex == 0 && e.RowIndex == -1) // Click vào header của cột checkbox
             {
                 bool allChecked = true;
                 
-                // Kiểm tra xem tất cả đã được chọn chưa
                 foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
                     if (row.Cells[0].Value == null || !(bool)row.Cells[0].Value)
@@ -95,7 +108,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                     }
                 }
                 
-                // Chọn/bỏ chọn tất cả
                 foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
                     row.Cells[0].Value = !allChecked;
@@ -166,7 +178,19 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 
                 if (!string.IsNullOrEmpty(maMonHoc))
                 {
-                    var selectedChuongIds = GetSelectedChuongIds();
+                    // Lấy danh sách chương đã chọn từ DataGridView (nếu đang edit thì lấy từ database)
+                    List<int> selectedChuongIds = new List<int>();
+                    if (isEditMode && currentDeThi != null)
+                    {
+                        // Load từ database khi đang ở chế độ edit
+                        selectedChuongIds = ctDeKiemTraBUS.GetListMaChuongByMaDe(currentDeThi.maDe);
+                    }
+                    else
+                    {
+                        // Lấy từ DataGridView khi đang tạo mới
+                        selectedChuongIds = GetSelectedChuongIds();
+                    }
+                    
                     dataGridView1.Rows.Clear();
                     List<Chuong> chuongList = chuongBUS.GetChuongByMonHoc(maMonHoc);
 
@@ -184,6 +208,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             catch (Exception ex) { }
         }
         
+        /// <summary>
+        /// Lấy danh sách mã chương đã chọn trong DataGridView
+        /// </summary>
+        /// <returns>Danh sách mã chương đã chọn</returns>
         private List<int> GetSelectedChuongIds()
         {
             List<int> selectedIds = new List<int>();
@@ -207,10 +235,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             return selectedIds;
         }
 
-        //========================================================================
-        // QUẢN LÝ CHẾ ĐỘ (TẠO MỚI / CHỈNH SỬA)
-        //========================================================================
-
+        /// <summary>
+        /// Thiết lập chế độ chỉnh sửa đề thi
+        /// </summary>
+        /// <param name="deThi">Đề thi cần chỉnh sửa</param>
         public void SetEditMode(DeKiemTra deThi)
         {
             isEditMode = true;
@@ -221,6 +249,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             LoadDeThiData();
         }
 
+        /// <summary>
+        /// Thiết lập chế độ tạo mới đề thi
+        /// </summary>
         public void SetCreateMode()
         {
             isEditMode = false;
@@ -231,11 +262,13 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             ClearForm();
         }
 
+        /// <summary>
+        /// Load dữ liệu đề thi vào form để chỉnh sửa
+        /// </summary>
         private void LoadDeThiData()
         {
             if (currentDeThi != null)
             {
-                // Tạm thời unsubscribe event handler để tránh trigger khi set giá trị
                 dateTimePickerBatDau.ValueChanged -= DateTimePickerBatDau_ValueChanged;
                 dateTimePickerKetThuc.ValueChanged -= DateTimePickerKetThuc_ValueChanged;
                 
@@ -276,25 +309,34 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 textBoxSoCauTB.Text = currentDeThi.soCauTrungBinh.ToString();
                 textBoxSoCauKho.Text = currentDeThi.soCauKho.ToString();
                 
-                // Subscribe lại event handler sau khi đã set giá trị
                 dateTimePickerBatDau.ValueChanged += DateTimePickerBatDau_ValueChanged;
                 dateTimePickerKetThuc.ValueChanged += DateTimePickerKetThuc_ValueChanged;
             }
         }
 
+        /// <summary>
+        /// Xử lý sự kiện khi checkbox được chọn/bỏ chọn
+        /// </summary>
         private void checkBox1_CheckedChanged(object sender, EventArgs e) { }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 0 && e.RowIndex >= 0)
+            {
+                
+                dataGridView1.CurrentCell = dataGridView1.Rows[e.RowIndex].Cells[0];
+                dataGridView1.Rows[e.RowIndex].Selected = true;
+            }
+        }
 
         private void labelTimeKetThuc_Click(object sender, EventArgs e) { }
 
-        //========================================================================
-        // XỬ LÝ SỰ KIỆN
-        //========================================================================
-
         private void label1_Click(object sender, EventArgs e) { }
 
-        // Tạo hoặc cập nhật đề thi
+        /// <summary>
+        /// Xử lý sự kiện click nút tạo hoặc cập nhật đề thi
+        /// Kiểm tra dữ liệu đầu vào, sau đó tạo mới hoặc cập nhật đề thi tùy theo chế độ
+        /// </summary>
         private void btnTaoDeThi_Click(object sender, EventArgs e)
         {
             try
@@ -317,7 +359,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        // Xóa nội dung đề thi
+        /// <summary>
+        /// Xử lý sự kiện click nút xóa nội dung đề thi
+        /// Hiển thị hộp thoại xác nhận trước khi xóa
+        /// </summary>
         private void btnXoaND_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Bạn có chắc chắn muốn xóa nội dung đề thi này?", "Xác nhận",
@@ -327,7 +372,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        // Xóa chương đã chọn
+        /// <summary>
+        /// Xử lý sự kiện click nút xóa chương đã chọn
+        /// Xóa các chương được chọn trong DataGridView sau khi xác nhận
+        /// </summary>
         private void btnXoaChuong_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count > 0)
@@ -347,10 +395,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        //========================================================================
-        // XỬ LÝ NGHIỆP VỤ
-        //========================================================================
-
+        /// <summary>
+        /// Kiểm tra tính hợp lệ của dữ liệu đầu vào trước khi tạo/cập nhật đề thi
+        /// </summary>
+        /// <returns>true nếu dữ liệu hợp lệ, false nếu không</returns>
         private bool ValidateInput()
         {
             if (string.IsNullOrWhiteSpace(textBoxTendethi.Text))
@@ -412,7 +460,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 return false;
             }
 
-            // Giới hạn thời gian làm bài theo tổng số câu: 0.8 - 1.0 phút/câu
             try
             {
                 int tongSoCau = soCauDe + soCauTB + soCauKho;
@@ -462,15 +509,29 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 return false;
             }
 
+            // Kiểm tra có chọn ít nhất một nhóm
+            List<int> selectedNhomIds = GetSelectedNhomIds();
+            if (selectedNhomIds.Count == 0)
+            {
+                MessageBox.Show("Vui lòng chọn ít nhất một nhóm học phần!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
             return true;
         }
 
-        // Kiểm tra số câu hỏi có đủ trong các chương đã chọn
+        /// <summary>
+        /// Kiểm tra số câu hỏi có đủ trong các chương đã chọn theo từng độ khó
+        /// </summary>
+        /// <param name="danhSachMaChuong">Danh sách mã chương đã chọn</param>
+        /// <param name="soCauDe">Số câu dễ yêu cầu</param>
+        /// <param name="soCauTB">Số câu trung bình yêu cầu</param>
+        /// <param name="soCauKho">Số câu khó yêu cầu</param>
+        /// <returns>true nếu đủ số câu hỏi, false nếu không đủ</returns>
         private bool KiemTraSoCauHoi(List<int> danhSachMaChuong, int soCauDe, int soCauTB, int soCauKho)
         {
             try
             {
-                // Đếm số câu hỏi theo từng độ khó
                 int soCauDeCo = cauHoiBUS.DemSoCauHoiTheoChuongVaDoKho(danhSachMaChuong, "Dễ");
                 int soCauTBCo = cauHoiBUS.DemSoCauHoiTheoChuongVaDoKho(danhSachMaChuong, "Trung Bình");
                 int soCauKhoCo = cauHoiBUS.DemSoCauHoiTheoChuongVaDoKho(danhSachMaChuong, "Khó");
@@ -513,6 +574,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
+        /// <summary>
+        /// Tạo đề thi mới với thông tin từ form
+        /// Lưu đề thi, chương và nhóm học phần vào database
+        /// </summary>
         private void CreateDeThi()
         {
             DateTime thoiGianBatDau = dateTimePickerBatDau.Value;
@@ -563,6 +628,34 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
             if (deThiBUS.CreateDeThi(newDeThi))
             {
+                int maDe = deThiBUS.GetMaxMaDe();
+                
+                List<int> selectedChuongIds = GetSelectedChuong();
+                if (selectedChuongIds.Count > 0)
+                {
+                    try
+                    {
+                        if (!ctDeKiemTraBUS.SaveChuongForDeThi(maDe, maMonHoc, selectedChuongIds))
+                        {
+                            MessageBox.Show($"Tạo đề thi thành công nhưng có lỗi khi lưu chương!\nVui lòng kiểm tra Console để xem chi tiết lỗi.", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Lỗi khi lưu chương: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                
+                // Lưu danh sách nhóm đã chọn
+                List<int> selectedNhomIds = GetSelectedNhomIds();
+                if (selectedNhomIds.Count > 0)
+                {
+                    if (!deKiemTra_NhomBUS.SaveNhomForDeThi(maDe, selectedNhomIds))
+                    {
+                        MessageBox.Show("Tạo đề thi thành công nhưng có lỗi khi lưu nhóm học phần!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                
                 MessageBox.Show("Tạo đề thi thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ClearForm();
                 DataChanged?.Invoke(this, EventArgs.Empty);
@@ -573,6 +666,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
+        /// <summary>
+        /// Cập nhật đề thi đã có với thông tin từ form
+        /// Cập nhật đề thi, chương và nhóm học phần trong database
+        /// </summary>
         private void UpdateDeThi()
         {
             DateTime thoiGianBatDau = dateTimePickerBatDau.Value;
@@ -620,7 +717,25 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
             if (deThiBUS.UpdateDeThi(currentDeThi))
             {
-                MessageBox.Show("Cập nhật đề thi thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                List<int> selectedChuongIds = GetSelectedChuong();
+                if (selectedChuongIds.Count > 0)
+                {
+                    if (!ctDeKiemTraBUS.SaveChuongForDeThi(currentDeThi.maDe, maMonHoc, selectedChuongIds))
+                    {
+                        MessageBox.Show("Cập nhật đề thi thành công nhưng có lỗi khi lưu chương!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                
+                // Lưu danh sách nhóm đã chọn
+                List<int> selectedNhomIds = GetSelectedNhomIds();
+                if (!deKiemTra_NhomBUS.SaveNhomForDeThi(currentDeThi.maDe, selectedNhomIds))
+                {
+                    MessageBox.Show("Cập nhật đề thi thành công nhưng có lỗi khi lưu nhóm học phần!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    MessageBox.Show("Cập nhật đề thi thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
                 DataChanged?.Invoke(this, EventArgs.Empty);
             }
             else
@@ -629,14 +744,16 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
+        /// <summary>
+        /// Xóa tất cả dữ liệu trong form về trạng thái ban đầu
+        /// </summary>
         private void ClearForm()
         {
-            // Tạm thời unsubscribe event handler để tránh trigger khi set giá trị
             dateTimePickerBatDau.ValueChanged -= DateTimePickerBatDau_ValueChanged;
             dateTimePickerKetThuc.ValueChanged -= DateTimePickerKetThuc_ValueChanged;
             
             textBoxTendethi.Clear();
-            dateTimePickerBatDau.Value = DateTime.Now.AddMinutes(1); // Đặt giá trị hợp lệ
+            dateTimePickerBatDau.Value = DateTime.Now.AddMinutes(1);
             dateTimePickerKetThuc.Value = DateTime.Now.AddHours(2);
             textBoxTimeLamBai.Text = "02:00";
             textBoxTimeCB.Text = "00";
@@ -646,8 +763,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             textBoxSoCauKho.Clear();
             checkBoxDeLuyenTap.Checked = false;
             dataGridView1.ClearSelection();
+            ClearNhomCheckboxes();
             
-            // Subscribe lại event handler sau khi đã set giá trị
             dateTimePickerBatDau.ValueChanged += DateTimePickerBatDau_ValueChanged;
             dateTimePickerKetThuc.ValueChanged += DateTimePickerKetThuc_ValueChanged;
         }
@@ -663,7 +780,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void textBoxTimeLamBai_TextChanged(object sender, EventArgs e) { }
         
-        // Nhấn Enter trong textbox thời gian làm bài
+        /// <summary>
+        /// Xử lý sự kiện khi nhấn Enter trong textBoxTimeLamBai
+        /// Cập nhật thời gian kết thúc và thời gian cảnh báo từ thời gian làm bài
+        /// </summary>
         private void textBoxTimeLamBai_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -674,7 +794,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
         
-        // Rời khỏi textbox thời gian làm bài
         private void textBoxTimeLamBai_Leave(object sender, EventArgs e)
         {
             ProcessTimeLamBai();
@@ -700,18 +819,19 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
         
-        // Thay đổi thời gian bắt đầu
+        /// <summary>
+        /// Xử lý sự kiện khi thời gian bắt đầu được thay đổi
+        /// Cập nhật thời gian làm bài và thời gian cảnh báo từ thời gian bắt đầu
+        /// </summary>
         private void DateTimePickerBatDau_ValueChanged(object sender, EventArgs e)
         {
             try
             {
-                // Bỏ qua validation khi đang khởi tạo form
                 if (isInitializing)
                 {
                     return;
                 }
                 
-                // Kiểm tra realtime: thời gian bắt đầu phải lớn hơn thời gian hiện tại (chỉ khi tạo mới)
                 if (!isEditMode && dateTimePickerBatDau.Value <= DateTime.Now)
                 {
                     MessageBox.Show("Thời gian bắt đầu phải lớn hơn thời điểm hiện tại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -742,7 +862,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
         
-        // Thay đổi thời gian kết thúc
+        /// <summary>
+        /// Xử lý sự kiện khi thời gian kết thúc được thay đổi
+        /// Cập nhật thời gian làm bài và thời gian cảnh báo từ thời gian kết thúc
+        /// </summary>
         private void DateTimePickerKetThuc_ValueChanged(object sender, EventArgs e)
         {
             try
@@ -758,10 +881,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        //========================================================================
-        // XỬ LÝ THỜI GIAN
-        //========================================================================
-
+        /// <summary>
+        /// Kiểm tra định dạng thời gian
+        /// </summary>
+        /// <param name="timeText">Chuỗi thời gian</param>
+        /// <returns>true nếu định dạng hợp lệ, false nếu không</returns>
         private bool IsValidTimeFormat(string timeText)
         {
             if (string.IsNullOrEmpty(timeText)) return false;
@@ -790,7 +914,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                     int hours = int.Parse(parts[0]);
                     int minutes = int.Parse(parts[1]);
                     
-                    // Luôn xử lý theo định dạng HH:MM (giờ:phút)
                     int totalMinutes = hours * 60 + minutes;
                     
                     DateTime thoiGianBatDau = dateTimePickerBatDau.Value;
@@ -822,6 +945,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             catch (Exception ex) { }
         }
         
+        /// <summary>
+        /// Cập nhật thời gian cảnh báo từ thời gian kết thúc
+        /// </summary>
         private void UpdateCanhBaoTimeFromKetThuc()
         {
             if (string.IsNullOrWhiteSpace(textBoxTimeCB.Text))
@@ -830,6 +956,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
+        /// <summary>
+        /// Lấy thời gian làm bài từ textBoxTimeLamBai
+        /// </summary>
+        /// <returns>Thời gian làm bài tính bằng phút</returns>
         private int GetLamBaiMinutes()
         {
             if (IsValidTimeFormat(textBoxTimeLamBai.Text))
@@ -840,6 +970,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             return 0;
         }
 
+        /// <summary>
+        /// Lấy danh sách mã chương đã chọn trong DataGridView
+        /// </summary>
+        /// <returns>Danh sách mã chương đã chọn</returns>
         private List<int> GetSelectedChuong()
         {
             List<int> selectedChuong = new List<int>();
@@ -856,7 +990,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             return selectedChuong;
         }
 
-        // Thay đổi môn học
+        /// <summary>
+        /// Xử lý sự kiện khi chọn môn học trong comboBox
+        /// Tải danh sách chương và nhóm học phần theo môn học đã chọn
+        /// </summary>
         private void comboBoxMonHoc_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -865,6 +1002,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 {
                     textboxMonhoc.Text = "";
                     dataGridView1.Rows.Clear();
+                    ClearNhomCheckboxes();
                     return;
                 }
                 
@@ -876,11 +1014,13 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                                          $"Lý thuyết: {monHoc.soTietLyThuyet} tiết\r\n" +
                                          $"Thực hành: {monHoc.soTietThucHanh} tiết";
                     LoadChuongData();
+                    LoadNhomData(monHoc.maMonHoc);
                 }
                 else
                 {
                     dataGridView1.Rows.Clear();
                     textboxMonhoc.Text = "";
+                    ClearNhomCheckboxes();
                 }
             }
             catch (Exception ex)
@@ -889,9 +1029,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        //========================================================================
-        // RÀNG BUỘC NHẬP SỐ NGUYÊN
-        //========================================================================
+        /// <summary>
+        /// Xử lý sự kiện khi nhấn phím trong textBox
+        /// Chỉ cho phép nhập số nguyên
+        /// </summary>
         private void OnlyDigits_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
@@ -900,6 +1041,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
+        /// <summary>
+        /// Xử lý sự kiện khi nhập số nguyên trong textBox
+        /// Chỉ cho phép nhập số nguyên
+        /// </summary>
         private void IntegerTextBox_TextChanged(object sender, EventArgs e)
         {
             if (sender is TextBox tb)
@@ -911,6 +1056,139 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                     tb.Text = digitsOnly;
                     tb.SelectionStart = Math.Min(selectionStart, tb.Text.Length);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Load danh sách nhóm học phần theo mã môn học
+        /// </summary>
+        /// <param name="maMonHoc">Mã môn học</param>
+        private void LoadNhomData(string maMonHoc)
+        {
+            try
+            {
+                ClearNhomCheckboxes();
+                
+                List<Nhom> danhSachNhom = nhomBUS.GetListNhomByMonHoc(maMonHoc);
+                
+                if (danhSachNhom == null || danhSachNhom.Count == 0)
+                {
+                    checkBoxTatCaNhom.Visible = false;
+                    return;
+                }
+                
+                checkBoxTatCaNhom.Visible = true;
+                
+                foreach (Nhom nhom in danhSachNhom)
+                {
+                    CheckBox checkBox = new CheckBox
+                    {
+                        Text = $"{nhom.tenNhom} ({nhom.namHoc}-HK{nhom.hocKy})",
+                        Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0),
+                        AutoSize = true,
+                        Tag = nhom.maNhom
+                    };
+                    checkBox.CheckedChanged += CheckBoxNhom_CheckedChanged;
+                    
+                    checkBoxNhomDict[nhom.maNhom] = checkBox;
+                    flowLayoutPanelNhom.Controls.Add(checkBox);
+                }
+                
+                if (isEditMode && currentDeThi != null)
+                {
+                    LoadSelectedNhom();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi load danh sách nhóm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        /// <summary>
+        /// Xóa tất cả checkbox nhóm học phần
+        /// </summary>
+        private void ClearNhomCheckboxes()
+        {
+            checkBoxTatCaNhom.Checked = false;
+            checkBoxTatCaNhom.Visible = false;
+            flowLayoutPanelNhom.Controls.Clear();
+            checkBoxNhomDict.Clear();
+        }
+
+        private void CheckBoxTatCaNhom_CheckedChanged(object sender, EventArgs e)
+        {
+            bool isChecked = checkBoxTatCaNhom.Checked;
+            
+            foreach (var checkBox in checkBoxNhomDict.Values)
+            {
+                checkBox.CheckedChanged -= CheckBoxNhom_CheckedChanged;
+                checkBox.Checked = isChecked;
+                checkBox.CheckedChanged += CheckBoxNhom_CheckedChanged;
+            }
+        }
+
+        private void CheckBoxNhom_CheckedChanged(object sender, EventArgs e)
+        {
+            bool allChecked = checkBoxNhomDict.Values.Count > 0 && 
+                             checkBoxNhomDict.Values.All(cb => cb.Checked);
+            
+            checkBoxTatCaNhom.CheckedChanged -= CheckBoxTatCaNhom_CheckedChanged;
+            checkBoxTatCaNhom.Checked = allChecked;
+            checkBoxTatCaNhom.CheckedChanged += CheckBoxTatCaNhom_CheckedChanged;
+        }
+
+        /// <summary>
+        /// Lấy danh sách mã nhóm học phần đã được chọn
+        /// </summary>
+        /// <returns>Danh sách mã nhóm đã chọn</returns>
+        private List<int> GetSelectedNhomIds()
+        {
+            List<int> selectedIds = new List<int>();
+            foreach (var kvp in checkBoxNhomDict)
+            {
+                if (kvp.Value.Checked)
+                {
+                    selectedIds.Add(kvp.Key);
+                }
+            }
+            return selectedIds;
+        }
+
+        /// <summary>
+        /// Load danh sách nhóm học phần đã được chọn cho đề thi đang chỉnh sửa
+        /// </summary>
+        private void LoadSelectedNhom()
+        {
+            if (currentDeThi == null) return;
+            
+            try
+            {
+                List<int> selectedNhomIds = deKiemTra_NhomBUS.GetListMaNhomByMaDe(currentDeThi.maDe);
+                
+                foreach (var checkBox in checkBoxNhomDict.Values)
+                {
+                    checkBox.CheckedChanged -= CheckBoxNhom_CheckedChanged;
+                }
+                
+                foreach (int maNhom in selectedNhomIds)
+                {
+                    if (checkBoxNhomDict.ContainsKey(maNhom))
+                    {
+                        checkBoxNhomDict[maNhom].Checked = true;
+                    }
+                }
+                
+                foreach (var checkBox in checkBoxNhomDict.Values)
+                {
+                    checkBox.CheckedChanged += CheckBoxNhom_CheckedChanged;
+                }
+                
+                CheckBoxNhom_CheckedChanged(null, null);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi load nhóm đã chọn: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

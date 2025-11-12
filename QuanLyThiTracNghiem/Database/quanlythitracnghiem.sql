@@ -910,6 +910,18 @@ INSERT INTO `dekiemtra` (`maDe`, `tenDe`, `thoiGianBatDau`, `thoiGianKetThuc`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ctdekiemtra`
+--
+
+CREATE TABLE `ctdekiemtra` (
+  `maDe` int(11) NOT NULL,
+  `maMonHoc` varchar(11) NOT NULL,
+  `maChuong` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `dekiemtra-nhom`
 --
 
@@ -1263,6 +1275,14 @@ ALTER TABLE `dekiemtra`
   ADD PRIMARY KEY (`maDe`);
 
 --
+-- Indexes for table `ctdekiemtra`
+--
+ALTER TABLE `ctdekiemtra`
+  ADD KEY `fk_ctdekiemtra_dekiemtra` (`maDe`),
+  ADD KEY `fk_ctdekiemtra_monhoc` (`maMonHoc`),
+  ADD KEY `fk_ctdekiemtra_chuong` (`maChuong`);
+
+--
 -- Indexes for table `dekiemtra-nhom`
 --
 ALTER TABLE `dekiemtra-nhom`
@@ -1388,6 +1408,14 @@ ALTER TABLE `ctnhomquyen`
 --
 ALTER TABLE `dapan`
   ADD CONSTRAINT `fk_dapan_cauhoi` FOREIGN KEY (`maCauHoi`) REFERENCES `cauhoi` (`maCauHoi`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ctdekiemtra`
+--
+ALTER TABLE `ctdekiemtra`
+  ADD CONSTRAINT `fk_ctdekiemtra_dekiemtra` FOREIGN KEY (`maDe`) REFERENCES `dekiemtra` (`maDe`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_ctdekiemtra_monhoc` FOREIGN KEY (`maMonHoc`) REFERENCES `monhoc` (`maMonHoc`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_ctdekiemtra_chuong` FOREIGN KEY (`maChuong`) REFERENCES `chuong` (`maChuong`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `dekiemtra-nhom`
