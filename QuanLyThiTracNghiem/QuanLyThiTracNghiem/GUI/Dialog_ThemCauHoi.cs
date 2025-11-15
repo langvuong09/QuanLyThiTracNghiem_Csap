@@ -49,7 +49,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void ResetMenuItemColor()
         {
-            Color defaultColor = Color.LavenderBlush; // màu nền mặc định
+            Color defaultColor = Color.White; // màu nền mặc định
             thêmThủCôngToolStripMenuItem.BackColor = defaultColor;
             thêmTừFileToolStripMenuItem.BackColor = defaultColor;
         }

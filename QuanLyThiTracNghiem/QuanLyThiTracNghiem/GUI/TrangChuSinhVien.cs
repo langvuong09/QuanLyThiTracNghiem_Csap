@@ -42,6 +42,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void customFormTrangChuSinhVien_Load()
         {
+          
+
             // 1) Đặt form nằm giữa màn hình
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Size = new Size(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -84,6 +86,16 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             button_ThongTin.BackColor = System.Drawing.ColorTranslator.FromHtml("#83A7EE");
             button_ThongTin.FlatStyle = FlatStyle.Flat;
             button_ThongTin.FlatAppearance.BorderSize = 0;
+            button_ThongTin.TextImageRelation = TextImageRelation.TextBeforeImage;
+            button_ThongTin.ImageAlign = ContentAlignment.MiddleRight;
+            button_ThongTin.TextAlign = ContentAlignment.MiddleLeft;
+            button_ThongTin.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            button_ThongTin.AutoSize = true;
+            button_ThongTin.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            button_ThongTin.Padding = new Padding(10, 5, 10, 5);
+
+
+
 
             //BUTTON TRANG CHỦ
             button_TrangChu.BackColor = System.Drawing.ColorTranslator.FromHtml("#83A7EE");
