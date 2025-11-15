@@ -109,7 +109,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
         {
             try
             {
-                ArrayList arrayList = NhomDAO.GetListNhom(maMonHoc);
+                ArrayList arrayList = nhomDAO.GetListNhom(maMonHoc);
                 List<Nhom> result = new List<Nhom>();
 
                 if (arrayList != null)
