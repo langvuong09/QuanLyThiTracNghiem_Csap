@@ -18,6 +18,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
     public partial class Login : Form
     {
         private TaiKhoanBUS tkBUS = new TaiKhoanBUS();
+        private SinhVienBUS svBUS = new SinhVienBUS();
+        private GiaoVienBUS gvBUS = new GiaoVienBUS();
         public Login()
         {
             InitializeComponent();
@@ -84,7 +86,22 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             {
                 UserSession.userId = tk.userId;
                 UserSession.password = tk.password;
-                new MyDialog("Đăng nhập thành công!", MyDialog.SUCCESS_DIALOG).ShowDialog();
+                // Kiểm tra người đó là học sinh hay sinh viên hay là admin
+                SinhVien sv= svBUS.GetSinhVienByID(tk.userId);
+                if (sv == null) {
+                    // Kiểm tra là admin hoặc giáo viên
+                    GiaoVien gv = gvBUS.getGiaoVienByID(tk.userId);
+                    UserSession.username = gv.tenGiaoVien;
+                    UserSession.Quyen = int.Parse(gv.quyen);
+
+                }
+                else
+                {
+                    UserSession.username = sv.hoVaTen;
+                    UserSession.Quyen = 3;
+                }
+
+                    new MyDialog("Đăng nhập thành công!", MyDialog.SUCCESS_DIALOG).ShowDialog();
                 TrangChuSinhVien s = new TrangChuSinhVien();
                 s.Show();
                 this.Hide();

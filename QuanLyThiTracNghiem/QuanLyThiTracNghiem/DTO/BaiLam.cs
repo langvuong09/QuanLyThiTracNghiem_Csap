@@ -12,6 +12,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
         public string maSinhVien {  get; set; }
         public int maDe {  get; set; }
         public float tongDiem { get; set; }
+        public DateTime? thoiGianBatDau { get; set; }
+        public DateTime? thoiGianNopBai { get; set; }
 
         public BaiLam() { }
         public BaiLam(int maBaiLam, string maSinhVien, int maDe, float tongDiem)

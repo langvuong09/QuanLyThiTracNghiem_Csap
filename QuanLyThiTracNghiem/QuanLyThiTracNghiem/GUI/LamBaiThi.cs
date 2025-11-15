@@ -46,11 +46,14 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
             //PANEL TOP
             panel_Top.BackColor = System.Drawing.ColorTranslator.FromHtml("#83A7EE");
-            panel_Top.Visible = false;
+            
 
             //PANEL BOTTOM
             panel_Bottom.BackColor = System.Drawing.ColorTranslator.FromHtml("#83A7EE");
-            panel_Bottom.Visible = false;
+            label_Diem.Visible=false;
+            label_SoCauDung.Visible = false;
+            pictureBox_iconCauDung.Visible = false;
+            pictureBox_iconSoCauDung.Visible = false;
 
             // FLOWLAYOUTPANEL_CAUHOI 
             flowLayoutPanel_CauHoi.AutoScroll = true;
@@ -61,8 +64,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             label_MaSinhVien.Text = UserSession.userId;
 
             this.maDe = maDe;
-            this.tongThoiGian = thoiGianKetThuc - thoiGianCanhBao;
+            this.tongThoiGian = thoiGianKetThuc - thoiGianBatDau;
             this.thoiGianCanhBaoThucTe = DateTime.Now + (thoiGianCanhBao - thoiGianBatDau);
+
 
             bailamSinhVien.maDe = this.maDe;
             bailamSinhVien.maSinhVien = UserSession.userId;
@@ -71,6 +75,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             this.dsItem = cauHoi_DeKiemTraBUS.Display_ItemCauHoi_InPanel(flowLayoutPanel_CauHoi, this.maDe, bailamSinhVien.maBaiLam);
             flowLayoutPanel_CauHoi.SuspendLayout();
             flowLayoutPanel_CauHoi.ResumeLayout();
+            this.Load += new System.EventHandler(this.LamBaiThi_Load);
+
         }
 
 
@@ -79,6 +85,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private void LamBaiThi_Load(object sender, EventArgs e)
         {
             this.thoiGianBatDauThucTe = DateTime.Now;
+            label_DemThoiGian.Visible = true;
+
             this.timer.Interval = 1000; // 1 giây
             this.timer.Tick += Timer_Tick;
             this.timer.Start();
@@ -90,10 +98,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             TimeSpan daLam = DateTime.Now - thoiGianBatDauThucTe;
             TimeSpan conLai = tongThoiGian - daLam;
 
-            label_DemThoiGian.Text = conLai.ToString(@"mm\:ss");
-
-            if (conLai.TotalSeconds <= 0)
+            if (conLai.TotalSeconds > 0)
+                label_DemThoiGian.Text = conLai.TotalHours >= 1 ?
+                    conLai.ToString(@"h\:mm\:ss") : conLai.ToString(@"mm\:ss");
+            else
             {
+                label_DemThoiGian.Text = "00:00";
                 timer.Stop();
                 MyDialog dialog = new MyDialog("Hết giờ, bài sẽ được nộp tự động!", MyDialog.WARNING_DIALOG);
                 dialog.ShowDialog();
@@ -106,14 +116,22 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             int socau = 0;
             foreach (var item in dsItem)
             {
+                if (item.MaDapAnChon == -1)
+                {
+                    item.HienThiDapAnDung();
+                    continue;
+                }
                 item.HienThiDapAnDung();
+            
                 listChiTietBaiLam.Add(new ChiTietBaiLam(this.bailamSinhVien.maBaiLam, item.MaCauHoi, item.MaDapAnChon));
                 if (item.MaDapAnChon == item.MaDapAnDung)
                     socau++;
     
             }
 
-            float sodiemtren1cau = 10 / this.dsItem.Count;
+
+            float sodiemtren1cau = 10f / this.dsItem.Count;
+
             float diem = socau*sodiemtren1cau;
 
             // Kiểm tra nếu là đề chính thức sẽ lưu bài làm và chi tiết bài làm
@@ -123,7 +141,15 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
 
 
-            panel_Top.Visible = true;
+          
+            label_Diem.Visible = true;
+            label_SoCauDung.Visible = true;
+
+            pictureBox_iconCauDung.Visible = true;
+            pictureBox_iconSoCauDung.Visible = true;
+
+            button_NopBai.Visible= false;
+            
             label_SoCauDung.Text = "Số Câu Đúng:\t" + socau.ToString();
             label_Diem.Text= "Tổng Điểm:\t"+diem.ToString();
 
@@ -147,7 +173,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
             // Nếu chưa hết thời gian thì hỏi xác nhận
             DialogResult result = MessageBox.Show(
-                "Bạn có chắc chắn muốn thoát không? Nếu thoát, bài làm sẽ không được lưu lại.",
+                "Bạn có chắc chắn muốn thoát không? Nếu thoát, mà chưa nộp bài thì bài làm sẽ không được lưu lại.",
                 "Xác nhận thoát",
                 MessageBoxButtons.OKCancel,
                 MessageBoxIcon.Question

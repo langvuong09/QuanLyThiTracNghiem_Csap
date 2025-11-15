@@ -11,19 +11,14 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
         public string maGiaoVien {  get; set; }
         public string tenGiaoVien { get; set; }
         public string email { get; set; }
-        public string SDT { get; set; }
-        public string moTa { get; set; }
+        public string gioiTinh { get; set; }
+        public DateTime ngaySinh { get; set; }
+
+        public string anhDaiDien { get; set; }
+
         public string quyen { get; set; }
 
         public GiaoVien() { }
-        public GiaoVien(string maGiaoVien, string tenGiaoVien, string email, string sDT, string moTa, string quyen)
-        {
-            this.maGiaoVien = maGiaoVien;
-            this.tenGiaoVien = tenGiaoVien;
-            this.email = email;
-            SDT = sDT;
-            this.moTa = moTa;
-            this.quyen = quyen;
-        }
+       
     }
 }

@@ -38,11 +38,28 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private void thêmThủCôngToolStripMenuItem_Click(object sender, EventArgs e)
         {
             themCauHoiThuCong.BringToFront();
+            HighlightMenuItem(thêmThủCôngToolStripMenuItem);
         }
 
         private void thêmTừFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             themCauHoiTuFile.BringToFront();
+            HighlightMenuItem(thêmTừFileToolStripMenuItem);
         }
+
+        private void ResetMenuItemColor()
+        {
+            Color defaultColor = Color.LavenderBlush; // màu nền mặc định
+            thêmThủCôngToolStripMenuItem.BackColor = defaultColor;
+            thêmTừFileToolStripMenuItem.BackColor = defaultColor;
+        }
+
+        private void HighlightMenuItem(ToolStripMenuItem menuItem)
+        {
+            ResetMenuItemColor(); // reset tất cả về mặc định
+            menuItem.BackColor = Color.LightBlue; // màu nổi bật
+        }
+
+
     }
 }

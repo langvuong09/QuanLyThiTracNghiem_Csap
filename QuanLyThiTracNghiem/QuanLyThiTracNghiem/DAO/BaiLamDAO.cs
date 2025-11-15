@@ -219,6 +219,82 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             return tonTai;
         }
 
+        // Lấy danh sách bài làm theo mã đề thi kèm thông tin sinh viên
+        public List<Dictionary<string, object>> GetBaiLamByMaDeWithSinhVien(int maDe)
+        {
+            List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = @"SELECT bl.maBaiLam, bl.maSinhVien, bl.maDe, bl.tongDiem,
+                                   bl.thoiGianBatDau, bl.thoiGianNopBai,
+                                   sv.hoVaTen
+                                   FROM bailam bl
+                                   LEFT JOIN sinhvien sv ON bl.maSinhVien = sv.maSinhVien
+                                   WHERE bl.maDe = @maDe
+                                   ORDER BY bl.maBaiLam";
+                    
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@maDe", maDe);
+                        
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Dictionary<string, object> row = new Dictionary<string, object>();
+                                row["maBaiLam"] = reader.GetInt32("maBaiLam");
+                                row["maSinhVien"] = reader.GetString("maSinhVien");
+                                row["maDe"] = reader.GetInt32("maDe");
+                                row["tongDiem"] = reader.GetFloat("tongDiem");
+                                
+                                // Xử lý hoVaTen có thể null
+                                if (reader.IsDBNull(reader.GetOrdinal("hoVaTen")))
+                                {
+                                    row["hoVaTen"] = "";
+                                }
+                                else
+                                {
+                                    row["hoVaTen"] = reader.GetString("hoVaTen");
+                                }
+                                
+                                // Xử lý thoiGianBatDau có thể null
+                                int thoiGianBatDauOrdinal = reader.GetOrdinal("thoiGianBatDau");
+                                if (reader.IsDBNull(thoiGianBatDauOrdinal))
+                                {
+                                    row["thoiGianBatDau"] = null;
+                                }
+                                else
+                                {
+                                    row["thoiGianBatDau"] = reader.GetDateTime("thoiGianBatDau");
+                                }
+                                
+                                // Xử lý thoiGianNopBai có thể null
+                                int thoiGianNopBaiOrdinal = reader.GetOrdinal("thoiGianNopBai");
+                                if (reader.IsDBNull(thoiGianNopBaiOrdinal))
+                                {
+                                    row["thoiGianNopBai"] = null;
+                                }
+                                else
+                                {
+                                    row["thoiGianNopBai"] = reader.GetDateTime("thoiGianNopBai");
+                                }
+                                
+                                result.Add(row);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi lấy danh sách bài làm: {ex.Message}");
+            }
+            return result;
+        }
+
 
     }
 }

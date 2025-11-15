@@ -1,14 +1,14 @@
-﻿using System;
+﻿using QuanLyThiTracNghiem.MyCustom;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-
-using QuanLyThiTracNghiem.MyCustom;
-using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
-using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
+using System.Windows.Forms;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 {
@@ -151,5 +151,15 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
                 return false;
             }
         }
+
+
+        public List<SinhVien> GetAllSinhVien()
+        {
+            ArrayList arr = svDAO.GetListSinhVien();
+            List<SinhVien> list = arr.OfType<SinhVien>().ToList();
+
+            return list;
+        }
+
     }
 }

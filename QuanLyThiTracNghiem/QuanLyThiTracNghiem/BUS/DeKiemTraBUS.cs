@@ -11,6 +11,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/*
+ * File: DeKiemTraBUS.cs
+ * Mô tả: BUS cho bảng dekiemtra
+ * Chức năng:
+ *   - Tạo đề thi mới
+ *   - Cập nhật đề thi
+ *   - Xóa đề thi
+ *   - Lấy danh sách đề thi
+ */
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 {
     internal class DeKiemTraBUS
@@ -19,9 +28,13 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
         private DeKiemTraDAO deKiemTraDAO = new DeKiemTraDAO();
         private SinhVien_DeKiemTraDAO SinhVien_DeKiemTraDAO = new SinhVien_DeKiemTraDAO();
         public DeKiemTraBUS() { }
-        // ==========================================
-        // TẠO ĐỀ THI MỚI
-        // ==========================================
+        
+        /*
+         Phương thức tạo đề thi
+         Input: DeKiemTra deThi - Đề thi
+         Output: bool
+         Created by: Hoàng Quyên
+         */
         public bool CreateDeThi(DeKiemTra deThi)
         {
             try
@@ -48,9 +61,13 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
         }
 
-        // ==========================================
-        // CẬP NHẬT ĐỀ THI
-        // ==========================================
+    
+        /*
+         Phương thức cập nhật đề thi
+         Input: DeKiemTra deThi - Đề thi
+         Output: bool
+         Created by: Hoàng Quyên
+         */
         public bool UpdateDeThi(DeKiemTra deThi)
         {
             try
@@ -73,10 +90,14 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
                 return false;
             }
         }
-
-        // ==========================================
-        // XÓA ĐỀ THI
-        // ==========================================
+ 
+       
+        /*
+         Phương thức xóa đề thi
+         Input: int maDe - Mã đề thi
+         Output: bool
+         Created by: Hoàng Quyên
+         */
         public bool DeleteDeThi(int maDe)
         {
             try
@@ -90,18 +111,25 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
         }
 
-        // ==========================================
-        // LẤY MÃ ĐỀ THI TIẾP THEO
-        // ==========================================
+        // Lấy mã đề thi tiếp theo (max + 1)
         private int GetNextMaDe()
         {
-            return DateTime.Now.Millisecond + new Random().Next(1000, 9999);
+            int maxMaDe = deKiemTraDAO.GetMaxMaDe();
+            return maxMaDe + 1;
         }
 
+        public int GetMaxMaDe()
+        {
+            return deKiemTraDAO.GetMaxMaDe();
+        }
 
-        // ==========================================
-        // LẤY DANH SÁCH TẤT CẢ ĐỀ THI
-        // ==========================================
+        /*
+         Phương thức lấy danh sách đề thi
+         Input: none
+         Output: List<DeKiemTra>
+         Created by: Hoàng Quyên
+         */
+
         public List<DeKiemTra> GetListDeKiemTra()
         {
             try
@@ -132,13 +160,13 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
          Kiểm tra thòi gian để có mở form làm bài hay không
              Input: DeKTra_Mon_Nhom dekiemtra
              Output: bool
+             Created by: Hoàng Quyên
          */
         public bool KiemTraBaiThi(DeKTra_Mon_Nhom dekiemtra)
         {
             // Kiểm tra bài làm đã kết thúc chưa
             if (dekiemtra.DeKiemTra.thoiGianKetThuc <= DateTime.Now)
             {
-                // Bài kiểm tra đã kết thúc
                 Console.WriteLine("Bài kiểm tra đã kết thúc.");
                 MyDialog dialog = new MyDialog("Bài kiểm tra đã kết thúc rồi.", MyDialog.WARNING_DIALOG);
                 dialog.ShowDialog();
@@ -186,11 +214,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
 
         }
-
-        
-
-
-
         /*
          Phương thức dùng để đổ dữ liệu item_DeThi danh sách bài kiểm tra vào panel
             Input :FlowLayoutPanel flowLayoutPanel_Main,ComboBox comboBox_LocTheoNhom, Form panel_TrangChu,string maSinhVien, int currentPage, int pageSize, ComboBox ComboBox_PhanTrang
@@ -339,11 +362,5 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
 
         }
-
-
-
-
-
-
     }
 }

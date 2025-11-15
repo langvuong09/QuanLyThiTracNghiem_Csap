@@ -46,8 +46,8 @@
             button_NhomHocPhan = new Button();
             button_DeThi = new Button();
             button_HocPhan = new Button();
-            panel_Main = new Panel();
             button_NguoiDung = new Button();
+            panel_Main = new Panel();
             panel_Top.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Logo).BeginInit();
             panel_Left.SuspendLayout();
@@ -106,6 +106,7 @@
             button_DangXuat.Size = new Size(65, 65);
             button_DangXuat.TabIndex = 2;
             button_DangXuat.UseVisualStyleBackColor = false;
+            button_DangXuat.Click += button_DangXuat_Click;
             // 
             // label_TitleTrangChu
             // 
@@ -307,14 +308,6 @@
             button_HocPhan.UseVisualStyleBackColor = false;
             button_HocPhan.Click += button_HocPhan_Click;
             // 
-            // panel_Main
-            // 
-            panel_Main.BackColor = SystemColors.ButtonHighlight;
-            panel_Main.Location = new Point(363, 107);
-            panel_Main.Name = "panel_Main";
-            panel_Main.Size = new Size(1541, 934);
-            panel_Main.TabIndex = 2;
-            // 
             // button_NguoiDung
             // 
             button_NguoiDung.BackColor = Color.DarkGray;
@@ -330,6 +323,14 @@
             button_NguoiDung.Text = "Người Dùng";
             button_NguoiDung.UseVisualStyleBackColor = false;
             button_NguoiDung.Click += button_NguoiDung_Click;
+            // 
+            // panel_Main
+            // 
+            panel_Main.BackColor = SystemColors.ButtonHighlight;
+            panel_Main.Location = new Point(363, 107);
+            panel_Main.Name = "panel_Main";
+            panel_Main.Size = new Size(1541, 934);
+            panel_Main.TabIndex = 2;
             // 
             // TrangChuSinhVien
             // 

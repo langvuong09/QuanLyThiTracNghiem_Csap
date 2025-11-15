@@ -22,7 +22,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
-                    string sql = "SELECT * FROM dekiemtra-nhom";
+                    string sql = "SELECT * FROM `dekiemtra-nhom`";
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
 
                     MySqlDataReader reader = cmd.ExecuteReader();
@@ -49,8 +49,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         {
             try
             {
-                string sql = "INSERT INTO dekiemtra-nhom(maDe, maNhom)" +
-                    "VaLUES (@maDe, @maNhom)";
+                string sql = "INSERT INTO `dekiemtra-nhom`(maDe, maNhom)" +
+                    "VALUES (@maDe, @maNhom)";
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
@@ -69,7 +69,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         {
             try
             {
-                string sql = "DELETE FROM dekiemtra-nhom WHERE maDe = @maDe";
+                string sql = "DELETE FROM `dekiemtra-nhom` WHERE maDe = @maDe";
 
                 using (MySqlConnection conn = db.GetConnection())
                 {
@@ -91,7 +91,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         {
             try
             {
-                string sql = "DELETE FROM dekiemtra-nhom WHERE maNhom = @maNhom";
+                string sql = "DELETE FROM `dekiemtra-nhom` WHERE maNhom = @maNhom";
 
                 using (MySqlConnection conn = db.GetConnection())
                 {
@@ -107,6 +107,45 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             {
                 return false;
             }
+        }
+
+        /*
+         * Phương thức lấy danh sách nhóm học phần theo mã đề thi
+         * Input: int maDe - Mã đề thi cần lấy danh sách nhóm
+         * Output: ArrayList - Danh sách các đối tượng DeKiemTra_Nhom
+         * Dùng trong: Dialog_TaoDeThi (để load lại nhóm đã chọn khi chỉnh sửa đề thi)
+         * Created by: Hoàng Quyên
+         */
+        public ArrayList GetListDKT_NhomByMaDe(int maDe)
+        {
+            ArrayList listDKT_Nhom = new ArrayList();
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT * FROM `dekiemtra-nhom` WHERE maDe = @maDe";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maDe", maDe);
+
+                    MySqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        DeKiemTra_Nhom dkt_nhom = new DeKiemTra_Nhom
+                        {
+                            maDe = reader.GetInt32(0),
+                            maNhom = reader.GetInt32(1),
+                        };
+                        listDKT_Nhom.Add(dkt_nhom);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            return listDKT_Nhom;
         }
     }
 }

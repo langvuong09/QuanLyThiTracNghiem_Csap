@@ -184,7 +184,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             panel_Main.Controls.Add(tb);
             panel_Main.Controls.Add(ttcn);
             panel_Main.Controls.Add(nd);
-            button_ThongTin.Text = UserSession.userId;
+            button_ThongTin.Text = UserSession.username;
 
 
 
@@ -194,67 +194,125 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void button_HocPhan_Click(object sender, EventArgs e)
         {
+            HighlightButton(button_HocPhan);
             hp.BringToFront();
         }
 
         private void button_TrangChu_Click(object sender, EventArgs e)
         {
+            HighlightButton(button_TrangChu);
             tc.BringToFront();
         }
 
         private void button_PhanQuyen_Click(object sender, EventArgs e)
         {
+            HighlightButton(button_PhanQuyen);
             pq.BringToFront();
         }
 
         private void button_PhanCong_Click(object sender, EventArgs e)
         {
+            HighlightButton(button_PhanCong);
             pc.BringToFront();
         }
 
         private void button_MonHoc_Click(object sender, EventArgs e)
         {
+            HighlightButton(button_MonHoc);
             mh.BringToFront();
         }
 
         private void button_ThongBaoAdmin_Click(object sender, EventArgs e)
         {
+            HighlightButton(button_ThongBaoAdmin);
             tba.BringToFront();
         }
 
         private void button_CauHoi_Click(object sender, EventArgs e)
         {
+            HighlightButton(button_CauHoi);
             ch.BringToFront();
         }
 
         private void button_DeKiemTra_Click(object sender, EventArgs e)
         {
+            HighlightButton(button_DeKiemTra);
             dkt.BringToFront();
         }
 
         private void button_NhomHocPhan_Click(object sender, EventArgs e)
         {
+            HighlightButton(button_NhomHocPhan);
             nhp.BringToFront();
         }
 
         private void button_DeThi_Click(object sender, EventArgs e)
         {
+            HighlightButton(button_DeThi);
             dt.BringToFront();
         }
 
         private void button_ThongBao_Click(object sender, EventArgs e)
         {
+            HighlightButton(button_ThongBao);
             tb.BringToFront();
         }
 
         private void button_ThongTin_Click(object sender, EventArgs e)
         {
+            HighlightButton(button_ThongTin);
             ttcn.BringToFront();
         }
 
         private void button_NguoiDung_Click(object sender, EventArgs e)
         {
+            HighlightButton(button_NguoiDung);
             nd.BringToFront();
+        }
+
+        private void ResetButtonColor()
+        {
+            Color defaultColor = ColorTranslator.FromHtml("#83A7EE");
+
+            button_TrangChu.BackColor = defaultColor;
+            button_HocPhan.BackColor = defaultColor;
+            button_DeThi.BackColor = defaultColor;
+            button_NhomHocPhan.BackColor = defaultColor;
+            button_DeKiemTra.BackColor = defaultColor;
+            button_CauHoi.BackColor = defaultColor;
+            button_ThongBaoAdmin.BackColor = defaultColor;
+            button_MonHoc.BackColor = defaultColor;
+            button_PhanCong.BackColor = defaultColor;
+            button_PhanQuyen.BackColor = defaultColor;
+            button_NguoiDung.BackColor = defaultColor;
+            button_ThongBao.BackColor = defaultColor;
+            button_ThongTin.BackColor = defaultColor;
+        }
+
+        private void HighlightButton(Button btn)
+        {
+            ResetButtonColor(); // Đặt tất cả về mặc định
+            btn.BackColor = ColorTranslator.FromHtml("#1E90FF"); // Màu nổi bật, ví dụ xanh đậm
+        }
+
+        private void button_DangXuat_Click(object sender, EventArgs e)
+        {
+            // Hiển thị MessageBox xác nhận
+            DialogResult result = MessageBox.Show(
+                "Bạn có chắc chắn muốn đăng xuất không?",
+                "Xác nhận đăng xuất",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                // Đóng form hiện tại
+                this.Close();
+
+                // Mở lại form Login
+                Login loginForm = new Login();
+                loginForm.Show();
+            }
         }
     }
 }

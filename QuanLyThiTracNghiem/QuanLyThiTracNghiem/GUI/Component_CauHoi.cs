@@ -24,13 +24,14 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         //Các biến phục vụ phân trang
         private int currentPage = 1;// Trang hiện tại
-        private int pageSize = 10; // Số mục trên mỗi trang
+        private int pageSize = 25; // Số mục trên mỗi trang
         private int totalPages = 0; // Tổng số trang
 
         //Xử lý các biến lọc
         private String is_MonHocSelected = "0"; // Môn học được chọn trong ComboBox
         private String is_DoKho = "0"; // Độ khó được chọn trong ComboBox
         private int is_Chuong = 0; // Chương được chọn trong ComboBox
+        private bool isComboBoxChanging = false;
 
 
         public Component_CauHoi()
@@ -106,19 +107,22 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                     this.is_DoKho
                 );
 
-              
+
                 // Cập nhật combobox phân trang
+                isComboBoxChanging = true;
                 comboBox_ChiSo.Items.Clear();
                 for (int i = 1; i <= this.totalPages; i++)
                 {
                     comboBox_ChiSo.Items.Add(i.ToString());
                 }
+
                 if (this.totalPages > 0)
                 {
                     comboBox_ChiSo.SelectedIndex = this.currentPage - 1;
                 }
+                isComboBoxChanging = false;
 
-              
+
                 // Ẩn/hiện nút Prev/Next 
                 button_Prev.Visible = currentPage > 1;
                 button_Next.Visible = currentPage < totalPages;
@@ -428,9 +432,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void comboBox_ChiSo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(comboBox_ChiSo.SelectedIndex<0) 
-                return;
-            this.currentPage = comboBox_ChiSo.SelectedIndex;
+            if (isComboBoxChanging) return; 
+            if (comboBox_ChiSo.SelectedIndex < 0) return;
+
+            this.currentPage = comboBox_ChiSo.SelectedIndex + 1;
             LoadData_DSCauHoi();
         }
     }

@@ -323,7 +323,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
         }
 
-        // LẤY DANH SÁCH CÂU HỎI THEO MÃ ĐỀ THI
+        // LẤY DANH SÁCH CÂU HỎI THEO MÃ ĐỀ THI (có xáo trộn - dùng khi thi)
         public List<CauHoi> GetCauHoiByDeThi(int maDe)
         {
             try
@@ -334,6 +334,34 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             {
                 Console.WriteLine("CauHoiBUS => Lỗi khi lấy câu hỏi theo đề thi: " + ex.Message);
                 return new List<CauHoi>();
+            }
+        }
+
+        // LẤY DANH SÁCH CÂU HỎI THEO MÃ ĐỀ THI (KHÔNG xáo trộn - dùng khi xem bài làm)
+        public List<CauHoi> GetCauHoiByDeThiKhongTron(int maDe)
+        {
+            try
+            {
+                return CauHoiDAO.GetListCauHoiTheoMaDeKhongTron(maDe);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("CauHoiBUS => Lỗi khi lấy câu hỏi theo đề thi: " + ex.Message);
+                return new List<CauHoi>();
+            }
+        }
+
+        // ĐẾM SỐ CÂU HỎI THEO DANH SÁCH CHƯƠNG VÀ ĐỘ KHÓ
+        public int DemSoCauHoiTheoChuongVaDoKho(List<int> danhSachMaChuong, string doKho)
+        {
+            try
+            {
+                return CauHoiDAO.DemSoCauHoiTheoChuongVaDoKho(danhSachMaChuong, doKho);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("CauHoiBUS => Lỗi khi đếm số câu hỏi: " + ex.Message);
+                return 0;
             }
         }
     }

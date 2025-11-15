@@ -42,7 +42,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             labelHocPhan = new Label();
             textBoxTimeLamBai = new TextBox();
             comboBoxMonHoc = new ComboBox();
-            textBox1 = new TextBox();
+            textboxMonhoc = new TextBox();
             labelChuong = new Label();
             dataGridView1 = new DataGridView();
             ColumnChon = new DataGridViewCheckBoxColumn();
@@ -60,7 +60,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             btnXoaChuong = new Button();
             labelTimeCanhBao = new Label();
             textBoxTimeCB = new TextBox();
+            panelNhomHocPhan = new Panel();
+            labelNhomLop = new Label();
+            checkBoxTatCaNhom = new CheckBox();
+            flowLayoutPanelNhom = new FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            panelNhomHocPhan.SuspendLayout();
             SuspendLayout();
             // 
             // labelTendethi
@@ -133,6 +138,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dateTimePickerBatDau.Name = "dateTimePickerBatDau";
             dateTimePickerBatDau.Size = new Size(286, 32);
             dateTimePickerBatDau.TabIndex = 4;
+            dateTimePickerBatDau.ValueChanged += DateTimePickerBatDau_ValueChanged;
             // 
             // dateTimePickerKetThuc
             // 
@@ -143,6 +149,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dateTimePickerKetThuc.Name = "dateTimePickerKetThuc";
             dateTimePickerKetThuc.Size = new Size(297, 32);
             dateTimePickerKetThuc.TabIndex = 5;
+            dateTimePickerKetThuc.ValueChanged += DateTimePickerKetThuc_ValueChanged;
             // 
             // labelTimeLambai
             // 
@@ -173,6 +180,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             textBoxTimeLamBai.Size = new Size(415, 47);
             textBoxTimeLamBai.TabIndex = 8;
             textBoxTimeLamBai.TextChanged += textBoxTimeLamBai_TextChanged;
+            textBoxTimeLamBai.KeyDown += textBoxTimeLamBai_KeyDown;
+            textBoxTimeLamBai.Leave += textBoxTimeLamBai_Leave;
             // 
             // comboBoxMonHoc
             // 
@@ -185,14 +194,57 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             comboBoxMonHoc.TabIndex = 9;
             comboBoxMonHoc.SelectedIndexChanged += comboBoxMonHoc_SelectedIndexChanged;
             // 
-            // textBox1
+            // textboxMonhoc
             // 
-            textBox1.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox1.Location = new Point(30, 396);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(930, 149);
-            textBox1.TabIndex = 10;
+            textboxMonhoc.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textboxMonhoc.Location = new Point(30, 396);
+            textboxMonhoc.Multiline = true;
+            textboxMonhoc.Name = "textboxMonhoc";
+            textboxMonhoc.ReadOnly = true;
+            textboxMonhoc.Size = new Size(450, 149);
+            textboxMonhoc.TabIndex = 10;
+            textboxMonhoc.BackColor = Color.White;
+            // 
+            // panelNhomHocPhan
+            // 
+            panelNhomHocPhan.BorderStyle = BorderStyle.FixedSingle;
+            panelNhomHocPhan.Controls.Add(flowLayoutPanelNhom);
+            panelNhomHocPhan.Controls.Add(checkBoxTatCaNhom);
+            panelNhomHocPhan.Controls.Add(labelNhomLop);
+            panelNhomHocPhan.Location = new Point(510, 396);
+            panelNhomHocPhan.Name = "panelNhomHocPhan";
+            panelNhomHocPhan.Size = new Size(450, 149);
+            panelNhomHocPhan.TabIndex = 29;
+            // 
+            // labelNhomLop
+            // 
+            labelNhomLop.AutoSize = true;
+            labelNhomLop.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelNhomLop.Location = new Point(10, 10);
+            labelNhomLop.Name = "labelNhomLop";
+            labelNhomLop.Size = new Size(90, 21);
+            labelNhomLop.TabIndex = 0;
+            labelNhomLop.Text = "Nhóm lớp:";
+            // 
+            // checkBoxTatCaNhom
+            // 
+            checkBoxTatCaNhom.AutoSize = true;
+            checkBoxTatCaNhom.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            checkBoxTatCaNhom.Location = new Point(10, 35);
+            checkBoxTatCaNhom.Name = "checkBoxTatCaNhom";
+            checkBoxTatCaNhom.Size = new Size(75, 25);
+            checkBoxTatCaNhom.TabIndex = 1;
+            checkBoxTatCaNhom.Text = "Tất cả";
+            checkBoxTatCaNhom.UseVisualStyleBackColor = true;
+            checkBoxTatCaNhom.Visible = false;
+            // 
+            // flowLayoutPanelNhom
+            // 
+            flowLayoutPanelNhom.AutoScroll = true;
+            flowLayoutPanelNhom.Location = new Point(10, 65);
+            flowLayoutPanelNhom.Name = "flowLayoutPanelNhom";
+            flowLayoutPanelNhom.Size = new Size(430, 75);
+            flowLayoutPanelNhom.TabIndex = 2;
             // 
             // labelChuong
             // 
@@ -237,7 +289,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             // 
             // ColumnChon
             // 
-            ColumnChon.HeaderText = "Chọn";
+            ColumnChon.HeaderText = "☑";
             ColumnChon.Name = "ColumnChon";
             ColumnChon.Width = 60;
             // 
@@ -387,6 +439,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
+            Controls.Add(panelNhomHocPhan);
             Controls.Add(textBoxTimeCB);
             Controls.Add(labelTimeCanhBao);
             Controls.Add(btnXoaChuong);
@@ -401,7 +454,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             Controls.Add(textBoxSoCauDe);
             Controls.Add(dataGridView1);
             Controls.Add(labelChuong);
-            Controls.Add(textBox1);
+            Controls.Add(textboxMonhoc);
             Controls.Add(comboBoxMonHoc);
             Controls.Add(textBoxTimeLamBai);
             Controls.Add(labelHocPhan);
@@ -418,6 +471,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             Size = new Size(1500, 1249);
             Load += Dialog_TaoDeThi_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            panelNhomHocPhan.ResumeLayout(false);
+            panelNhomHocPhan.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -436,7 +491,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private Label labelHocPhan;
         public TextBox textBoxTimeLamBai;
         public ComboBox comboBoxMonHoc;
-        public TextBox textBox1;
+        public TextBox textboxMonhoc;
         private Label labelChuong;
         private DataGridView dataGridView1;
         private DataGridViewCheckBoxColumn ColumnChon;
@@ -454,5 +509,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private Button btnXoaChuong;
         private Label labelTimeCanhBao;
         public TextBox textBoxTimeCB;
+        private Panel panelNhomHocPhan;
+        private Label labelNhomLop;
+        private CheckBox checkBoxTatCaNhom;
+        private FlowLayoutPanel flowLayoutPanelNhom;
     }
 }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 {
@@ -95,6 +96,37 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
                 }
             }
             return null;
+        }
+
+        /*
+         * Phương thức lấy danh sách nhóm học phần theo mã môn học
+         * Input: string maMonHoc - Mã môn học cần lấy danh sách nhóm
+         * Output: List<Nhom> - Danh sách các nhóm học phần của môn học đó
+         * Dùng trong: Dialog_TaoDeThi (để hiển thị danh sách nhóm khi chọn môn học)
+         * Created by: Hoàng Quyên
+         */
+        public List<Nhom> GetListNhomByMonHoc(string maMonHoc)
+        {
+            try
+            {
+                ArrayList arrayList = NhomDAO.GetListNhom(maMonHoc);
+                List<Nhom> result = new List<Nhom>();
+
+                if (arrayList != null)
+                {
+                    foreach (Nhom item in arrayList)
+                    {
+                        result.Add(item);
+                    }
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi lấy danh sách nhóm theo môn học: {ex.Message}");
+                return new List<Nhom>();
+            }
         }
     }
 }
