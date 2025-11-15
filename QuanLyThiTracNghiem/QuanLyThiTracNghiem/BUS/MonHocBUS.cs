@@ -253,20 +253,31 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
         }
 
+        public MonHoc GetMaMonHoc(string tenMonHoc)
+        {
+            var dsMonHoc = monHocDAO.GetListMonHoc().Cast<MonHoc>();
+            MonHoc monHoc = dsMonHoc
+                .FirstOrDefault(mh => mh.tenMonHoc.Equals(tenMonHoc, StringComparison.OrdinalIgnoreCase));
+            return monHoc;
+        }
+
+        //LinQ phương thức
         public ArrayList GetListDSMonHoc(string tenMonHoc)
         {
-            ArrayList dsmh = monHocDAO.GetListMonHoc();
-            ArrayList dsTimKiem = new ArrayList();
+            var dsTimKiem = new ArrayList(
+                monHocDAO.GetListMonHoc()
+                .Cast<MonHoc>()
+                .Where(mh => mh.tenMonHoc.IndexOf(tenMonHoc, StringComparison.OrdinalIgnoreCase) >= 0)
+                .ToList()
+            );
 
-            foreach (MonHoc mh in dsmh)
-            {
-                if (mh.tenMonHoc.IndexOf(tenMonHoc, StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    dsTimKiem.Add(mh);
-                }
-            }
             return dsTimKiem;
         }
 
+        public string GetMonHoc(string maMonHoc)
+        {
+            MonHoc mh = monHocDAO.GetMonHocByID(maMonHoc);
+            return mh.tenMonHoc;
+        }
     }
 }

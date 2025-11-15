@@ -1,4 +1,5 @@
-﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
+﻿using QuanLyThiTracNghiem.MyCustom;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 using System;
 using System.Collections;
@@ -11,7 +12,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 {
     internal class NhomBUS
     {
-        private NhomDAO NhomDAO = new NhomDAO();
+        private NhomDAO nhomDAO = new NhomDAO();
         public NhomBUS() { }
         /*Lấy danh sách nhóm theo mã số sinh viên bỏ nó vô comboBox*/
         public void GetListNhomTheoMaSV(string maSV, ComboBox combo)
@@ -20,7 +21,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             combo.DataSource = null;
             combo.Items.Clear();
 
-            ArrayList dsn = NhomDAO.getListNhomTheoMaSinhVien(maSV);
+            ArrayList dsn = nhomDAO.getListNhomTheoMaSinhVien(maSV);
 
             dsn.Insert(0, new Nhom(0,"Chọn nhóm học phần"));
 
@@ -30,6 +31,70 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             combo.ValueMember = "maNhom";
             combo.SelectedIndex = 0;
 
+            DocListNhom();
+
+        }
+        private ArrayList listNhom;
+        private ArrayList listNhomTheoMonHoc;
+        public void DocListNhom()
+        {
+            this.listNhom = nhomDAO.GetListNhom();
+        }
+        public ArrayList GetListNhom()
+        {
+            if(listNhom == null)
+            {
+                DocListNhom();
+            }
+            return listNhom;
+        }
+
+        public void DocListNhomTheoMonHoc(string maMonHoc)
+        {
+            this.listNhomTheoMonHoc = nhomDAO.GetListNhom(maMonHoc);
+        }
+        public ArrayList GetListNhom(string maMonHoc)
+        {
+            if (listNhomTheoMonHoc == null)
+            {
+                DocListNhomTheoMonHoc(maMonHoc);
+            }
+            return listNhomTheoMonHoc;
+        }
+
+        public ArrayList GetListNhom(string maNhom, string maMonHoc)
+        {
+            listNhomTheoMonHoc = null;
+            if (listNhomTheoMonHoc == null)
+            {
+                DocListNhomTheoMonHoc(maMonHoc);
+            }
+            return listNhomTheoMonHoc;
+        }
+
+        public Nhom GetNhom(string tenNhom)
+        {
+            foreach (Nhom nhom in listNhom)
+            {
+                if(nhom.tenNhom == tenNhom)
+                {
+                    return nhom;
+                }
+            }
+            return null;
+        }
+
+        public Nhom GetNhom(int maNhom)
+        {
+            DocListNhom();
+            foreach (Nhom nhom in listNhom)
+            {
+                if (nhom.maNhom == maNhom)
+                {
+                    return nhom;
+                }
+            }
+            return null;
         }
     }
 }

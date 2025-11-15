@@ -15,6 +15,40 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
     internal class NhomDAO
     {
         private MyConnect db = new MyConnect();
+        public ArrayList GetListNhom()
+        {
+            ArrayList dsn = new ArrayList();
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT * FROM nhom";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Nhom nhom = new Nhom
+                        {
+                            maNhom = reader.GetInt32(0),
+                            tenNhom = reader.GetString(1),
+                            ghiChu = reader.GetString(2),
+                            maMonHoc = reader.GetString(3),
+                            maGiaoVien = reader.GetString(4),
+                            namHoc = reader.GetInt32(5),
+                            hocKy = reader.GetInt32(6),
+                            soLuong = reader.GetInt32(7),
+                        };
+                        dsn.Add(nhom);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            return dsn;
+        }
         public ArrayList GetListNhom(string maMonHoc)
         {
             ArrayList dsn = new ArrayList();
