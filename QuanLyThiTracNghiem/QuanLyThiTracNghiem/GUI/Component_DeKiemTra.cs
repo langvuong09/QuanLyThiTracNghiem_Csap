@@ -226,7 +226,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             {
                 try
                 {
-                    MonHoc monHoc = monHocDAO.getMonHocByID(maMonHoc);
+                    MonHoc monHoc = monHocDAO.GetMonHocByID(maMonHoc);
                     if (monHoc != null && !string.IsNullOrEmpty(monHoc.tenMonHoc))
                     {
                         tenMonHoc = monHoc.tenMonHoc;
