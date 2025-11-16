@@ -37,7 +37,7 @@
             // 
             // menuStrip_Top
             // 
-            menuStrip_Top.BackColor = SystemColors.ActiveCaption;
+            menuStrip_Top.BackColor = SystemColors.ButtonHighlight;
             menuStrip_Top.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
             menuStrip_Top.Items.AddRange(new ToolStripItem[] { thêmThủCôngToolStripMenuItem, thêmTừFileToolStripMenuItem });
             menuStrip_Top.Location = new Point(0, 0);

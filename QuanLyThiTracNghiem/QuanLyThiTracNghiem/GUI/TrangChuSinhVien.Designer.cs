@@ -69,17 +69,18 @@
             // 
             // button_ThongTin
             // 
+            button_ThongTin.AutoSize = true;
+            button_ThongTin.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             button_ThongTin.BackColor = SystemColors.AppWorkspace;
             button_ThongTin.FlatStyle = FlatStyle.Flat;
             button_ThongTin.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_ThongTin.ForeColor = SystemColors.ButtonHighlight;
             button_ThongTin.Image = (Image)resources.GetObject("button_ThongTin.Image");
             button_ThongTin.ImageAlign = ContentAlignment.MiddleRight;
-            button_ThongTin.Location = new Point(1411, 9);
+            button_ThongTin.Location = new Point(1610, 3);
             button_ThongTin.Name = "button_ThongTin";
-            button_ThongTin.Size = new Size(275, 65);
+            button_ThongTin.Size = new Size(79, 79);
             button_ThongTin.TabIndex = 4;
-            button_ThongTin.Text = "Phạm Công Thành";
             button_ThongTin.TextAlign = ContentAlignment.MiddleLeft;
             button_ThongTin.UseVisualStyleBackColor = false;
             button_ThongTin.Click += button_ThongTin_Click;
