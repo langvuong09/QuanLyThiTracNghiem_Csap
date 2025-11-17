@@ -70,7 +70,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             txtSearch.Location = new Point(20, 20);
             txtSearch.Name = "txtSearch";
             txtSearch.PlaceholderText = "Tìm kiếm nhóm quyền theo mã/ tên ...";
-            txtSearch.Size = new Size(400, 23);
+			txtSearch.Font = new Font("Segoe UI", 12F);
+			txtSearch.Size = new Size(400, 30);
             txtSearch.TabIndex = 0;
             txtSearch.TextChanged += txtSearch_TextChanged;
 
@@ -80,11 +81,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             btnTaoNhomQuyen.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnTaoNhomQuyen.BackColor = Color.LightSkyBlue;
             btnTaoNhomQuyen.FlatStyle = FlatStyle.Flat;
-            btnTaoNhomQuyen.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+			btnTaoNhomQuyen.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnTaoNhomQuyen.ForeColor = Color.White;
             btnTaoNhomQuyen.Location = new Point(1350, 15);
             btnTaoNhomQuyen.Name = "btnTaoNhomQuyen";
-            btnTaoNhomQuyen.Size = new Size(170, 35);
+			btnTaoNhomQuyen.Size = new Size(170, 42);
             btnTaoNhomQuyen.TabIndex = 1;
             btnTaoNhomQuyen.Text = "TẠO NHÓM QUYỀN";
             btnTaoNhomQuyen.UseVisualStyleBackColor = false;
@@ -98,7 +99,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dgvNhomQuyen.BackgroundColor = Color.White;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+			dataGridViewCellStyle1.Font = new Font("Segoe UI", 12F);
             dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
@@ -108,7 +109,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dgvNhomQuyen.Columns.AddRange(new DataGridViewColumn[] { colMaQuyen, colTenQuyen, colView, colEdit, colDelete });
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+			dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F);
             dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
             dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
@@ -119,6 +120,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dgvPopupChucNang.AutoGenerateColumns = false;
             dgvNhomQuyen.ReadOnly = true;
             dgvNhomQuyen.RowHeadersVisible = false;
+			dgvNhomQuyen.RowTemplate.Height = 32;
             dgvNhomQuyen.Size = new Size(1500, 830);
             dgvNhomQuyen.TabIndex = 2;
             dgvNhomQuyen.CellClick += dgvNhomQuyen_CellClick;
@@ -186,18 +188,20 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             // lblTenNhomQuyen
             // 
             lblTenNhomQuyen.AutoSize = true;
+			lblTenNhomQuyen.Font = new Font("Segoe UI", 12F);
             lblTenNhomQuyen.Location = new Point(20, 20);
             lblTenNhomQuyen.Name = "lblTenNhomQuyen";
-            lblTenNhomQuyen.Size = new Size(97, 15);
+			lblTenNhomQuyen.Size = new Size(97, 15);
             lblTenNhomQuyen.TabIndex = 0;
             lblTenNhomQuyen.Text = "Tên nhóm quyền";
             // 
             // txtTenNhomQuyen
             // 
-            txtTenNhomQuyen.Location = new Point(150, 18);
+			txtTenNhomQuyen.Location = new Point(150, 18);
+			txtTenNhomQuyen.Font = new Font("Segoe UI", 12F);
             txtTenNhomQuyen.Name = "txtTenNhomQuyen";
             txtTenNhomQuyen.PlaceholderText = "VD: Giảng viên";
-            txtTenNhomQuyen.Size = new Size(300, 23);
+			txtTenNhomQuyen.Size = new Size(300, 30);
             txtTenNhomQuyen.TabIndex = 1;
             // 
             // dgvPopupChucNang
@@ -205,7 +209,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dgvPopupChucNang.AllowUserToAddRows = false;
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
+			dataGridViewCellStyle3.Font = new Font("Segoe UI", 12F);
             dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
             dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
@@ -214,7 +218,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dgvPopupChucNang.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn1, dataGridViewTextBoxColumn2, dataGridViewCheckBoxColumn1, dataGridViewCheckBoxColumn2, dataGridViewCheckBoxColumn3, dataGridViewCheckBoxColumn4 });
             dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle4.BackColor = SystemColors.Window;
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F);
+			dataGridViewCellStyle4.Font = new Font("Segoe UI", 12F);
             dataGridViewCellStyle4.ForeColor = SystemColors.ControlText;
             dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
@@ -280,9 +284,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             btnLuuPopup.BackColor = Color.LightSkyBlue;
             btnLuuPopup.FlatStyle = FlatStyle.Flat;
             btnLuuPopup.ForeColor = Color.White;
-            btnLuuPopup.Location = new Point(319, 520);
+			btnLuuPopup.Location = new Point(319, 520);
+			btnLuuPopup.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnLuuPopup.Name = "btnLuuPopup";
-            btnLuuPopup.Size = new Size(80, 30);
+			btnLuuPopup.Size = new Size(96, 36);
             btnLuuPopup.TabIndex = 3;
             //btnLuuPopup.Text = "Lưu";
             btnLuuPopup.UseVisualStyleBackColor = false;
@@ -290,9 +295,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             // 
             // btnHuyPopup
             // 
-            btnHuyPopup.Location = new Point(609, 20);
+			btnHuyPopup.Location = new Point(609, 20);
+			btnHuyPopup.Font = new Font("Segoe UI", 12F);
             btnHuyPopup.Name = "btnHuyPopup";
-            btnHuyPopup.Size = new Size(67, 23);
+			btnHuyPopup.Size = new Size(80, 30);
             btnHuyPopup.TabIndex = 4;
             btnHuyPopup.Text = "Hủy";
             btnHuyPopup.Click += btnHuyPopup_Click;
