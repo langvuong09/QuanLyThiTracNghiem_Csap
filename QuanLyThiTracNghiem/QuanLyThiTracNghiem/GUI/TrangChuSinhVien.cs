@@ -208,9 +208,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                     case 11:
                         panel_Left.Controls.Add(button_DeKiemTra);
                         break;
-                    case 12:
-                        panel_Left.Controls.Add(button_ThongBao);
-                        break;
+                    //case 13:
+                    //    panel_Left.Controls.Add(button_ThongKe);
+                    //    break;
                     default:
                         break;
                 }
