@@ -63,14 +63,17 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             return listNhomTheoMonHoc;
         }
 
-        public ArrayList GetListNhom(string maNhom, string maMonHoc)
-        {
-            listNhomTheoMonHoc = null;
-            if (listNhomTheoMonHoc == null)
+        public Nhom GetNhomTheoMa(int maNhom)
+        {            
+            ArrayList listN = nhomDAO.GetListNhom();
+            foreach (Nhom nhom in listN)
             {
-                DocListNhomTheoMonHoc(maMonHoc);
+                if (nhom.maNhom == maNhom)
+                {
+                    return nhom;
+                }
             }
-            return listNhomTheoMonHoc;
+            return null;
         }
 
         public Nhom GetNhom(string tenNhom)

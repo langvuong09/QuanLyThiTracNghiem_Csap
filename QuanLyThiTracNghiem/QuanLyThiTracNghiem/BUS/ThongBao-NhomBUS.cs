@@ -16,6 +16,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
         private ThongBao_NhomDAO thongBao_NhomDAO = new ThongBao_NhomDAO();
         private ArrayList listThongBao_Nhom;
         private ArrayList listThongBao_NhomTheoMaThongBao;
+        private ArrayList listThongBao_NhomTheoMaNhom;
         public ThongBao_NhomBUS()
         {
             DocListThongBao_Nhom();
@@ -41,12 +42,25 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 
         public ArrayList GetListThongBao_Nhom(int maThongBao)
         {
-            //listThongBao_NhomTheoMaThongBao.Clear();
             if (listThongBao_NhomTheoMaThongBao == null)
             {
                 DocListThongBao_Nhom(maThongBao);
             }
             return listThongBao_NhomTheoMaThongBao;
+        }
+
+        public void DocListThongBao_NhomTheoMaNhom(int maNhom)
+        {
+            this.listThongBao_NhomTheoMaNhom = thongBao_NhomDAO.GetListTB_NhomOfMaNhom(maNhom);
+        }
+
+        public ArrayList GetListThongBao_NhomTheoMaNhom(int maNhom)
+        {
+            if (listThongBao_NhomTheoMaNhom == null)
+            {
+                DocListThongBao_NhomTheoMaNhom(maNhom);
+            }
+            return listThongBao_NhomTheoMaNhom;
         }
 
         public bool ThemThongBao_Nhom(string maNhom,string maThongBao)

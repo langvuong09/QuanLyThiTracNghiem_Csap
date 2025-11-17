@@ -115,5 +115,36 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                 return null;
             }
         }
+
+        public ArrayList GetListTB_NhomOfMaNhom(int maNhom)
+        {
+            ArrayList dsch = new ArrayList();
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT * FROM `thongbao-nhom` WHERE maNhom = @maNhom";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maNhom", maNhom);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        ThongBao_Nhom tb_nhom = new ThongBao_Nhom
+                        {
+                            maNhom = reader.GetInt32(0),
+                            maThongBao = reader.GetInt32(1),
+                        };
+                        dsch.Add(tb_nhom);
+                    }
+                }
+                return dsch;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
     }
 }
