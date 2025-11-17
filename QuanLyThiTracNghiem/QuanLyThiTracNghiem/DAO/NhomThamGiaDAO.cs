@@ -24,7 +24,38 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                     conn.Open();
                     string sql = "SELECT * FROM nhomthamgia WHERE maNhom = @maNhom";
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maNhom", maNhom);
+                    MySqlDataReader reader = cmd.ExecuteReader();
 
+                    while (reader.Read())
+                    {
+                        NhomThamGia ntg = new NhomThamGia
+                        {
+                            maNhom = reader.GetInt32(0),
+                            maSinhVien = reader.GetString(1),
+                        };
+                        listNTG.Add(ntg);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            return listNTG;
+        }
+
+        public ArrayList GetListNhomTGOfSV(string maSinhVien)
+        {
+            ArrayList listNTG = new ArrayList();
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT * FROM nhomthamgia WHERE maSinhVien = @maSinhVien";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maSinhVien", maSinhVien);
                     MySqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
