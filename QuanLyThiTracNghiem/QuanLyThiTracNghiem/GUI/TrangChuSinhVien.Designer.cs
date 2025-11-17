@@ -133,17 +133,6 @@
             // panel_Left
             // 
             panel_Left.BackColor = SystemColors.ActiveCaption;
-            panel_Left.Controls.Add(button_TrangChu);
-            panel_Left.Controls.Add(button_PhanQuyen);
-            panel_Left.Controls.Add(button_PhanCong);
-            panel_Left.Controls.Add(button_MonHoc);
-            panel_Left.Controls.Add(button_ThongBaoAdmin);
-            panel_Left.Controls.Add(button_CauHoi);
-            panel_Left.Controls.Add(button_DeKiemTra);
-            panel_Left.Controls.Add(button_NhomHocPhan);
-            panel_Left.Controls.Add(button_DeThi);
-            panel_Left.Controls.Add(button_HocPhan);
-            panel_Left.Controls.Add(button_NguoiDung);
             panel_Left.Location = new Point(1, 107);
             panel_Left.Name = "panel_Left";
             panel_Left.Size = new Size(365, 934);
