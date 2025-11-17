@@ -9,22 +9,22 @@ namespace QuanLyThiTracNghiem
 {
     internal static class Program
     {
-        [DllImport("kernel32.dll")]
-        private static extern bool AllocConsole();
+        //[DllImport("kernel32.dll")]
+        //private static extern bool AllocConsole();
 
         [STAThread]
         static void Main()
         {
-            AllocConsole(); // show a console window
+            //AllocConsole(); // show a console window
 
-            var db = new QuanLyThiTracNghiem.DAO.MyConnect();
-            db.TestConnection();
+            //var db = new QuanLyThiTracNghiem.DAO.MyConnect();
+            //db.TestConnection();
 
-            Console.WriteLine("Press any key...");
-            Console.ReadKey();
+            //Console.WriteLine("Press any key...");
+            //Console.ReadKey();
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
             // Chạy ứng dụng với ApplicationContext tùy chỉnh
             Application.Run(new MyAppContext());
         }
@@ -53,5 +53,4 @@ namespace QuanLyThiTracNghiem
             startForm.Show();
         }
     }
-
 }

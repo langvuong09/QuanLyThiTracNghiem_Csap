@@ -1,4 +1,6 @@
-﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
+﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
+
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +15,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
     public partial class TrangChuSinhVien : Form
     {
+        private NhomQuyenBUS nhomQuyenBus = new NhomQuyenBUS();
+        private CTNhomQuyenBUS cTNhomQuyenBUS = new CTNhomQuyenBUS();
+
         public TrangChuSinhVien()
         {
             InitializeComponent();
@@ -153,20 +158,66 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             button_NguoiDung.FlatStyle = FlatStyle.Flat;
             button_NguoiDung.FlatAppearance.BorderSize = 0;
 
-            //ADD CÁC BUTTON VÔ PANEL LEFT
-            panel_Left.Controls.Add(button_TrangChu);
-            panel_Left.Controls.Add(button_HocPhan);
-            panel_Left.Controls.Add(button_DeThi);
-            panel_Left.Controls.Add(button_NhomHocPhan);
-            panel_Left.Controls.Add(button_DeKiemTra);
-            panel_Left.Controls.Add(button_CauHoi);
-            panel_Left.Controls.Add(button_ThongBaoAdmin);
-            panel_Left.Controls.Add(button_MonHoc);
-            panel_Left.Controls.Add(button_PhanCong);
-            panel_Left.Controls.Add(button_PhanQuyen);
-            panel_Left.Controls.Add(button_NguoiDung);
 
-            //ADD COMPONENT TRANG CHỦ VÀO PANEL MAIN
+            //panel_Left.Controls.Add(button_HocPhan);
+            //panel_Left.Controls.Add(button_DeThi);
+            //panel_Left.Controls.Add(button_NhomHocPhan);
+            //panel_Left.Controls.Add(button_DeKiemTra);
+            //panel_Left.Controls.Add(button_CauHoi);
+            //panel_Left.Controls.Add(button_ThongBaoAdmin);
+            //panel_Left.Controls.Add(button_MonHoc);
+            //panel_Left.Controls.Add(button_PhanCong);
+            //panel_Left.Controls.Add(button_PhanQuyen);
+            //panel_Left.Controls.Add(button_NguoiDung);
+
+            panel_Left.Controls.Add(button_TrangChu);
+
+            List<CTNhomQuyen> ctquyen = cTNhomQuyenBUS.FindByMaQuyen(UserSession.Quyen);
+
+            foreach (CTNhomQuyen ctnq in ctquyen)
+            {
+                switch (ctnq.maChucNang)
+                {
+                    case 1:
+                        panel_Left.Controls.Add(button_NguoiDung);
+                        break;
+                    case 2:
+                        panel_Left.Controls.Add(button_HocPhan);
+                        break;
+                    case 3:
+                        panel_Left.Controls.Add(button_CauHoi);
+                        break;
+                    case 4:
+                        panel_Left.Controls.Add(button_MonHoc);
+                        break;
+                    case 6:
+                        panel_Left.Controls.Add(button_PhanCong);
+                        break;
+                    case 7:
+                        panel_Left.Controls.Add(button_DeThi);
+                        break;
+                    case 8:
+                        panel_Left.Controls.Add(button_PhanQuyen);
+                        break;
+                    case 9:
+                        panel_Left.Controls.Add(button_ThongBaoAdmin);
+                        break;
+                    case 10:
+                        panel_Left.Controls.Add(button_NhomHocPhan);
+                        break;
+                    case 11:
+                        panel_Left.Controls.Add(button_DeKiemTra);
+                        break;
+                    case 12:
+                        panel_Left.Controls.Add(button_ThongBao);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            panel_Left.ResumeLayout();
+
+			//ADD COMPONENT TRANG CHỦ VÀO PANEL MAIN
             hp.Dock = DockStyle.Fill;
             tc.Dock = DockStyle.Fill;
             dt.Dock = DockStyle.Fill;
@@ -183,8 +234,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
 
 
-            panel_Main.Controls.Add(hp);
             panel_Main.Controls.Add(tc);
+            panel_Main.Controls.Add(hp);
             panel_Main.Controls.Add(dt);
             panel_Main.Controls.Add(nhp);
             panel_Main.Controls.Add(dkt);
