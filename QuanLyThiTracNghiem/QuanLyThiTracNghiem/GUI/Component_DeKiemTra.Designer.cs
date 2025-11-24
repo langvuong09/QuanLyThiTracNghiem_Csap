@@ -35,6 +35,7 @@
             btnReload = new Button();
             btnTaodethi = new Button();
             panelKiemTra = new Panel();
+            listBoxDeThi = new ListBox();
             btnXoa = new Button();
             btnSua = new Button();
             btnXem = new Button();
@@ -43,7 +44,6 @@
             labeltime = new Label();
             labelhocphan = new Label();
             labelkiemtra = new Label();
-            listBoxDeThi = new ListBox();
             contextMenuStrip1 = new ContextMenuStrip(components);
             btnPrevious = new Button();
             lblPageInfo = new Label();
@@ -115,6 +115,17 @@
             panelKiemTra.TabIndex = 4;
             panelKiemTra.Paint += panel1_Paint;
             // 
+            // listBoxDeThi
+            // 
+            listBoxDeThi.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            listBoxDeThi.FormattingEnabled = true;
+            listBoxDeThi.ItemHeight = 21;
+            listBoxDeThi.Location = new Point(13, 140);
+            listBoxDeThi.Name = "listBoxDeThi";
+            listBoxDeThi.Size = new Size(1000, 130);
+            listBoxDeThi.TabIndex = 8;
+            listBoxDeThi.Visible = false;
+            // 
             // btnXoa
             // 
             btnXoa.BackColor = Color.FromArgb(255, 128, 128);
@@ -146,7 +157,7 @@
             btnXem.BackColor = Color.PaleGreen;
             btnXem.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnXem.Location = new Point(1064, 11);
-            btnXem.Name = "btnThem";
+            btnXem.Name = "btnXem";
             btnXem.Size = new Size(111, 47);
             btnXem.TabIndex = 5;
             btnXem.Text = "Xem";
@@ -211,17 +222,6 @@
             labelkiemtra.Text = "KIỂM TRA LẦN 1";
             labelkiemtra.Visible = false;
             labelkiemtra.Click += label1_Click;
-            // 
-            // listBoxDeThi
-            // 
-            listBoxDeThi.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            listBoxDeThi.FormattingEnabled = true;
-            listBoxDeThi.ItemHeight = 21;
-            listBoxDeThi.Location = new Point(13, 140);
-            listBoxDeThi.Name = "listBoxDeThi";
-            listBoxDeThi.Size = new Size(1000, 130);
-            listBoxDeThi.TabIndex = 8;
-            listBoxDeThi.Visible = false;
             // 
             // contextMenuStrip1
             // 

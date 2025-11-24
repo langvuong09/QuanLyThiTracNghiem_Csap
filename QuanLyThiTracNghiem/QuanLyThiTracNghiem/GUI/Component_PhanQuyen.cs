@@ -193,15 +193,20 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             var colName = dgvNhomQuyen.Columns[e.ColumnIndex].Name;
             int maQuyen = Convert.ToInt32(dgvNhomQuyen.Rows[e.RowIndex].Cells["colMaQuyen"].Value);
 
+            string tenQuyen = dgvNhomQuyen.Rows[e.RowIndex].Cells["colTenQuyen"].Value?.ToString() ?? "";
             if (colName == "View")
             {
-                string tenQuyen = dgvNhomQuyen.Rows[e.RowIndex].Cells["colTenQuyen"].Value?.ToString() ?? "";
                 txtTenNhomQuyen.Text = tenQuyen;
                 dgvPopupChucNang.DataSource = cTNhomQuyen.FindByMaQuyen(maQuyen);
                 viewMode();
             }
             else if (colName == "Delete")
             {
+                if (tenQuyen == "admin")
+                {
+                    MessageBox.Show("Không thể xóa quyền này", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 var confirmResult = MessageBox.Show("Bạn có chắc chắn xóa nhóm quyền này?",
                                      "Xác nhận xóa",
                                      MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -217,9 +222,13 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
             else if (colName == "Edit")
             {
-                string tenQuyen = dgvNhomQuyen.Rows[e.RowIndex].Cells["colTenQuyen"].Value?.ToString() ?? "";
+                //string tenQuyen = dgvNhomQuyen.Rows[e.RowIndex].Cells["colTenQuyen"].Value?.ToString() ?? "";
                 txtTenNhomQuyen.Text = tenQuyen;
-
+                if (tenQuyen == "admin")
+                {
+                    MessageBox.Show("Không thể sửa quyền này", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 List<CTNhomQuyen> listCTNhomQuyen = cTNhomQuyen.FindByMaQuyen(maQuyen);
                 ArrayList list = molbus.GetListChucNang();
                 dgvPopupChucNang.DataSource = list;

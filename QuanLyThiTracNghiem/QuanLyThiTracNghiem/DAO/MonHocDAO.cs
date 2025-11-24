@@ -126,7 +126,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             catch (Exception ex) { return false; }
         }
 
-        public MonHoc getMonHocByID(string maMonHoc)
+        public MonHoc GetMonHocByID(string maMonHoc)
         {
             try
             {

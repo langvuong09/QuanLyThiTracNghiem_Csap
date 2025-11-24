@@ -22,7 +22,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
-                    string sql = "SELECT * FROM thongbao-nhom";
+                    string sql = "SELECT * FROM `thongbao-nhom`";
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
                     MySqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
@@ -47,8 +47,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         {
             try
             {
-                string sql = "INSERT INTO thongbao-nhom(maNhom, maThongBao)" +
-                    "VaLUES (@maThongBao, @maThongBao)";
+                string sql = "INSERT INTO `thongbao-nhom`(maNhom, maThongBao)" +
+                    "VaLUES (@maNhom, @maThongBao)";
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
@@ -67,7 +67,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         {
             try
             {
-                string sql = "DELETE FROM thongbao-nhom WHERE maThongBao = @maThongBao";
+                string sql = "DELETE FROM `thongbao-nhom` WHERE maThongBao = @maThongBao";
 
                 using (MySqlConnection conn = db.GetConnection())
                 {
@@ -82,6 +82,68 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             catch (Exception ex)
             {
                 return false;
+            }
+        }
+
+        public ArrayList GetListTB_Nhom(int maThongBao)
+        {
+            ArrayList dsch = new ArrayList();
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT * FROM `thongbao-nhom` WHERE maThongBao = @maThongBao";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maThongBao", maThongBao);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    
+                    while (reader.Read())
+                    {
+                        ThongBao_Nhom tb_nhom = new ThongBao_Nhom
+                        {
+                            maNhom = reader.GetInt32(0),
+                            maThongBao = reader.GetInt32(1),
+                        };
+                        dsch.Add(tb_nhom);
+                    }
+                }
+                return dsch;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public ArrayList GetListTB_NhomOfMaNhom(int maNhom)
+        {
+            ArrayList dsch = new ArrayList();
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT * FROM `thongbao-nhom` WHERE maNhom = @maNhom";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maNhom", maNhom);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        ThongBao_Nhom tb_nhom = new ThongBao_Nhom
+                        {
+                            maNhom = reader.GetInt32(0),
+                            maThongBao = reader.GetInt32(1),
+                        };
+                        dsch.Add(tb_nhom);
+                    }
+                }
+                return dsch;
+            }
+            catch (Exception ex)
+            {
+                return null;
             }
         }
     }

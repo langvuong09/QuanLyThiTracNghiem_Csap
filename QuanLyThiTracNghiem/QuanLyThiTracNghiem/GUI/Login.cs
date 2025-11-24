@@ -98,7 +98,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 else
                 {
                     UserSession.username = sv.hoVaTen;
-                    UserSession.Quyen = 3;
+                    UserSession.Quyen = int.Parse(sv.quyen);
                 }
 
                     new MyDialog("Đăng nhập thành công!", MyDialog.SUCCESS_DIALOG).ShowDialog();

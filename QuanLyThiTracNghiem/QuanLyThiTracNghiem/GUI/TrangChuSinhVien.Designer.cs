@@ -69,17 +69,18 @@
             // 
             // button_ThongTin
             // 
+            button_ThongTin.AutoSize = true;
+            button_ThongTin.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             button_ThongTin.BackColor = SystemColors.AppWorkspace;
             button_ThongTin.FlatStyle = FlatStyle.Flat;
             button_ThongTin.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_ThongTin.ForeColor = SystemColors.ButtonHighlight;
             button_ThongTin.Image = (Image)resources.GetObject("button_ThongTin.Image");
             button_ThongTin.ImageAlign = ContentAlignment.MiddleRight;
-            button_ThongTin.Location = new Point(1411, 9);
+            button_ThongTin.Location = new Point(1610, 3);
             button_ThongTin.Name = "button_ThongTin";
-            button_ThongTin.Size = new Size(275, 65);
+            button_ThongTin.Size = new Size(79, 79);
             button_ThongTin.TabIndex = 4;
-            button_ThongTin.Text = "Phạm Công Thành";
             button_ThongTin.TextAlign = ContentAlignment.MiddleLeft;
             button_ThongTin.UseVisualStyleBackColor = false;
             button_ThongTin.Click += button_ThongTin_Click;
@@ -132,17 +133,6 @@
             // panel_Left
             // 
             panel_Left.BackColor = SystemColors.ActiveCaption;
-            panel_Left.Controls.Add(button_TrangChu);
-            panel_Left.Controls.Add(button_PhanQuyen);
-            panel_Left.Controls.Add(button_PhanCong);
-            panel_Left.Controls.Add(button_MonHoc);
-            panel_Left.Controls.Add(button_ThongBaoAdmin);
-            panel_Left.Controls.Add(button_CauHoi);
-            panel_Left.Controls.Add(button_DeKiemTra);
-            panel_Left.Controls.Add(button_NhomHocPhan);
-            panel_Left.Controls.Add(button_DeThi);
-            panel_Left.Controls.Add(button_HocPhan);
-            panel_Left.Controls.Add(button_NguoiDung);
             panel_Left.Location = new Point(1, 107);
             panel_Left.Name = "panel_Left";
             panel_Left.Size = new Size(365, 934);
