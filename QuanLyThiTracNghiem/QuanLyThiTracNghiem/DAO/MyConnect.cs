@@ -36,5 +36,14 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
         }
 
+        internal void closeConnection()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void openConnection()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

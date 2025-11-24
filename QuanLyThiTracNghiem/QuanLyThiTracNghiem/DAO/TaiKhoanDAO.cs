@@ -194,5 +194,41 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                 return rs > 0;
             }
         }
+
+        public TaiKhoan GetTaiKhoanById(string userId)
+        {
+            try
+            {
+                string sql = "SELECT * FROM taikhoan WHERE ma=@ma";
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@ma", userId);
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                TaiKhoan tk = new TaiKhoan
+                                {
+                                    userId = reader["ma"].ToString(),
+                                    password = reader["password"].ToString(),
+                                    trangThai = Convert.ToInt32(reader["trangThai"])
+                                };
+                                return tk;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Lỗi khi lấy tài khoản: " + ex.Message);
+            }
+            return null;
+        }
+
+
     }
 }

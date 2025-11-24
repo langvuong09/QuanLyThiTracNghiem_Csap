@@ -1,4 +1,5 @@
-﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
+﻿using QuanLyThiTracNghiem.MyCustom;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 using System;
 using System.Collections;
@@ -44,9 +45,22 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             return list;
         }
 
-        internal GiaoVien getGiaoVienByID(string userId)
+        
+
+        public bool SuaGiaoVien(string maGiaoVien, string tenGiaoVien, string email, string gioiTinh, DateTime ngaySinh, string anhDaiDien)
         {
-            throw new NotImplementedException();
+            if (gvDAO.SuaGiaoVien(maGiaoVien, tenGiaoVien, email, gioiTinh, ngaySinh, anhDaiDien))
+            {
+                MyDialog dlg = new MyDialog("Cập nhật thông tin thành công!", MyDialog.SUCCESS_DIALOG);
+                dlg.ShowDialog();
+                return true;
+            }
+            else
+            {
+                MyDialog dlg = new MyDialog("Cập nhật thông tin thất bại!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return false;
+            }
         }
     }
 }

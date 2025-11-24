@@ -5,6 +5,8 @@ using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 using System;
 using System.Collections;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 {
@@ -22,7 +24,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
         }
         public TaiKhoan GetTaiKhoan(string username, string password)
         {
-            if(username == null || password == null)
+            if (username == null || password == null)
             {
                 MyDialog dlg = new MyDialog("Không được để trống thông tin!", MyDialog.ERROR_DIALOG);
                 dlg.ShowDialog();
@@ -47,9 +49,33 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
         }
 
+        public List<TaiKhoan> GetAllTaiKhoan()
+        {
+            ArrayList arr = tkDAO.GetListTaiKhoan();
+            if (arr == null) return new List<TaiKhoan>();
+            return arr.OfType<TaiKhoan>().ToList();
+        }
+
         public bool SuaMKTaiKhoan(string ma, string newPassword)
         {
             return tkDAO.SuaMKTaiKhoan(ma, newPassword);
         }
-    }      
+
+        public bool khoaTaiKhoan(string ma)
+        {
+            return tkDAO.khoaTaiKhoan(ma);
+        }
+
+        public bool moTaiKhoan(string ma)
+        {
+            return tkDAO.moTaiKhoan(ma);
+        }
+
+        public TaiKhoan GetTaiKhoanById(string userId)
+        {
+            return tkDAO.GetTaiKhoanById(userId);
+        }
+
+
+    }
 }

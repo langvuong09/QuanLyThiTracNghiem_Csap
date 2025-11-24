@@ -97,8 +97,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         {
             try
             {
-                string sql = "UPDATE giaovien SET tenGiaoVien = @tenGiaoVien, email = @email, ngaySinh = @ngaySinh," +
-                    "anhDaiDien = @anhDaiDien + WHERE maGiaoVien = @maGiaoVien";
+                string sql = "UPDATE giaovien SET tenGiaoVien = @tenGiaoVien, email = @email, gioiTinh= @gioiTinh, ngaySinh = @ngaySinh," +
+                    "anhDaiDien = @anhDaiDien WHERE maGiaoVien = @maGiaoVien";
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
@@ -108,7 +108,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                     cmd.Parameters.AddWithValue("@gioiTinh", gioiTinh);
                     cmd.Parameters.AddWithValue("@ngaySinh", ngaySinh);
                     cmd.Parameters.AddWithValue("@anhDaiDien", anhDaiDien);
-                    cmd.Parameters.AddWithValue("@maSinhVien", maGiaoVien);
+                    cmd.Parameters.AddWithValue("@maGiaoVien", maGiaoVien);
 
                     int rs = cmd.ExecuteNonQuery();
                     return rs > 0;
@@ -125,30 +125,36 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                 using(MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
-                    MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@maGiaoVien", maGiaoVien);
-                    MySqlDataReader reader = cmd.ExecuteReader();
-
-                    if (reader.Read())
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                     {
-                        GiaoVien gv = new GiaoVien
+                        cmd.Parameters.AddWithValue("@maGiaoVien", maGiaoVien);
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
-                            maGiaoVien = reader.GetString(0),
-                            tenGiaoVien = reader.GetString(1),
-                            email = reader.GetString(2),
-                            gioiTinh = reader.GetString(3),
-                            ngaySinh =  reader.GetDateTime(4),
-                            anhDaiDien = reader.GetString(5),
-                            quyen = reader.GetString(6),
-                        };
-                        return gv;
+                            if (reader.Read())
+                            {
+                                GiaoVien gv = new GiaoVien
+                                {
+                                    maGiaoVien = reader["maGiaoVien"].ToString(),
+                                    tenGiaoVien = reader["tenGiaoVien"].ToString(),
+                                    email = reader["email"].ToString(),
+                                    gioiTinh = reader["gioiTinh"].ToString(),
+                                    ngaySinh = reader.GetDateTime("ngaySinh"),
+                                    anhDaiDien = reader["anhDaiDien"].ToString(),
+                                    quyen = reader["maQuyen"].ToString()
+                                };
+                                return gv;
+                            }
+                        }
                     }
-                    else return null;
                 }
-            }catch (Exception ex)
-            {
-                return null;
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Lỗi khi lấy giáo viên: " + ex.Message);
+            }
+            return null;
+
         }
     }
 }

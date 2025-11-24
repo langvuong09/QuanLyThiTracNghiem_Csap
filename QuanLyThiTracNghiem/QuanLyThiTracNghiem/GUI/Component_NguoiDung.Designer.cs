@@ -28,14 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Component_NguoiDung));
             comboboxLoc = new ComboBox();
             textBoxTimKiem = new TextBox();
             dataGridView_DSGVSV = new DataGridView();
-            button_Xem = new Button();
-            button_Khoa = new Button();
-            button_Mokhoa = new Button();
+            panelThongTin = new Panel();
+            comboBoxGT = new ComboBox();
+            textBoxEmail = new TextBox();
+            textBoxNS = new TextBox();
+            textBoxHoTen = new TextBox();
+            textBoxMa = new TextBox();
+            label5 = new Label();
+            labelGT = new Label();
+            label3 = new Label();
+            labelHoTen = new Label();
+            labelMa = new Label();
+            buttonTrangThai = new Button();
+            buttonSua = new Button();
+            buttonThayAnh = new Button();
+            pictureBoxAVT = new PictureBox();
+            btnExit = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView_DSGVSV).BeginInit();
+            panelThongTin.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAVT).BeginInit();
             SuspendLayout();
             // 
             // comboboxLoc
@@ -45,7 +59,7 @@
             comboboxLoc.ForeColor = SystemColors.InactiveCaptionText;
             comboboxLoc.FormattingEnabled = true;
             comboboxLoc.Items.AddRange(new object[] { "Sinh Viên", "Giáo Viên" });
-            comboboxLoc.Location = new Point(1237, 46);
+            comboboxLoc.Location = new Point(1349, 46);
             comboboxLoc.Name = "comboboxLoc";
             comboboxLoc.Size = new Size(164, 45);
             comboboxLoc.TabIndex = 1;
@@ -57,7 +71,7 @@
             textBoxTimKiem.Location = new Point(24, 46);
             textBoxTimKiem.Multiline = true;
             textBoxTimKiem.Name = "textBoxTimKiem";
-            textBoxTimKiem.Size = new Size(1165, 45);
+            textBoxTimKiem.Size = new Size(1287, 45);
             textBoxTimKiem.TabIndex = 2;
             textBoxTimKiem.TextChanged += textBoxTimKiem_TextChanged;
             textBoxTimKiem.KeyDown += textBoxTimKiem_KeyDown;
@@ -68,63 +82,189 @@
             dataGridView_DSGVSV.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView_DSGVSV.Location = new Point(24, 145);
             dataGridView_DSGVSV.Name = "dataGridView_DSGVSV";
-            dataGridView_DSGVSV.Size = new Size(1377, 776);
+            dataGridView_DSGVSV.Size = new Size(1489, 776);
             dataGridView_DSGVSV.TabIndex = 4;
+            dataGridView_DSGVSV.CellClick += dataGridView_DSGVSV_CellClick;
             dataGridView_DSGVSV.DataBindingComplete += DataGridView_DSGVSV_DataBindingComplete;
             // 
-            // button_Xem
+            // panelThongTin
             // 
-            button_Xem.BackColor = Color.DeepSkyBlue;
-            button_Xem.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button_Xem.ForeColor = SystemColors.ButtonHighlight;
-            button_Xem.Image = (Image)resources.GetObject("button_Xem.Image");
-            button_Xem.ImageAlign = ContentAlignment.MiddleLeft;
-            button_Xem.Location = new Point(1418, 145);
-            button_Xem.Name = "button_Xem";
-            button_Xem.Size = new Size(120, 52);
-            button_Xem.TabIndex = 6;
-            button_Xem.Text = "XEM";
-            button_Xem.TextAlign = ContentAlignment.MiddleRight;
-            button_Xem.UseVisualStyleBackColor = false;
+            panelThongTin.BackColor = Color.FromArgb(224, 224, 224);
+            panelThongTin.BorderStyle = BorderStyle.Fixed3D;
+            panelThongTin.Controls.Add(comboBoxGT);
+            panelThongTin.Controls.Add(textBoxEmail);
+            panelThongTin.Controls.Add(textBoxNS);
+            panelThongTin.Controls.Add(textBoxHoTen);
+            panelThongTin.Controls.Add(textBoxMa);
+            panelThongTin.Controls.Add(label5);
+            panelThongTin.Controls.Add(labelGT);
+            panelThongTin.Controls.Add(label3);
+            panelThongTin.Controls.Add(labelHoTen);
+            panelThongTin.Controls.Add(labelMa);
+            panelThongTin.Controls.Add(buttonTrangThai);
+            panelThongTin.Controls.Add(buttonSua);
+            panelThongTin.Controls.Add(buttonThayAnh);
+            panelThongTin.Controls.Add(pictureBoxAVT);
+            panelThongTin.Controls.Add(btnExit);
+            panelThongTin.Location = new Point(370, 217);
+            panelThongTin.Name = "panelThongTin";
+            panelThongTin.Size = new Size(800, 500);
+            panelThongTin.TabIndex = 12;
+            panelThongTin.Visible = false;
             // 
-            // button_Khoa
+            // comboBoxGT
             // 
-            button_Khoa.BackColor = Color.DarkTurquoise;
-            button_Khoa.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button_Khoa.ForeColor = SystemColors.ButtonHighlight;
-            button_Khoa.Image = (Image)resources.GetObject("button_Khoa.Image");
-            button_Khoa.ImageAlign = ContentAlignment.MiddleLeft;
-            button_Khoa.Location = new Point(1418, 240);
-            button_Khoa.Name = "button_Khoa";
-            button_Khoa.Size = new Size(120, 52);
-            button_Khoa.TabIndex = 7;
-            button_Khoa.Text = "Khóa";
-            button_Khoa.TextAlign = ContentAlignment.MiddleRight;
-            button_Khoa.UseVisualStyleBackColor = false;
+            comboBoxGT.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            comboBoxGT.FormattingEnabled = true;
+            comboBoxGT.Items.AddRange(new object[] { "Nam", "Nữ" });
+            comboBoxGT.Location = new Point(369, 183);
+            comboBoxGT.Name = "comboBoxGT";
+            comboBoxGT.Size = new Size(303, 40);
+            comboBoxGT.TabIndex = 14;
             // 
-            // button_Mokhoa
+            // textBoxEmail
             // 
-            button_Mokhoa.BackColor = Color.DarkTurquoise;
-            button_Mokhoa.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button_Mokhoa.ForeColor = SystemColors.ButtonHighlight;
-            button_Mokhoa.Image = (Image)resources.GetObject("button_Mokhoa.Image");
-            button_Mokhoa.ImageAlign = ContentAlignment.MiddleLeft;
-            button_Mokhoa.Location = new Point(1418, 333);
-            button_Mokhoa.Name = "button_Mokhoa";
-            button_Mokhoa.Size = new Size(120, 52);
-            button_Mokhoa.TabIndex = 8;
-            button_Mokhoa.Text = "Mở ";
-            button_Mokhoa.TextAlign = ContentAlignment.MiddleRight;
-            button_Mokhoa.UseVisualStyleBackColor = false;
+            textBoxEmail.BorderStyle = BorderStyle.FixedSingle;
+            textBoxEmail.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBoxEmail.Location = new Point(369, 312);
+            textBoxEmail.Name = "textBoxEmail";
+            textBoxEmail.Size = new Size(303, 39);
+            textBoxEmail.TabIndex = 13;
+            // 
+            // textBoxNS
+            // 
+            textBoxNS.BorderStyle = BorderStyle.FixedSingle;
+            textBoxNS.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBoxNS.Location = new Point(369, 250);
+            textBoxNS.Name = "textBoxNS";
+            textBoxNS.Size = new Size(303, 39);
+            textBoxNS.TabIndex = 12;
+            // 
+            // textBoxHoTen
+            // 
+            textBoxHoTen.BorderStyle = BorderStyle.FixedSingle;
+            textBoxHoTen.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBoxHoTen.Location = new Point(369, 113);
+            textBoxHoTen.Name = "textBoxHoTen";
+            textBoxHoTen.Size = new Size(303, 39);
+            textBoxHoTen.TabIndex = 10;
+            // 
+            // textBoxMa
+            // 
+            textBoxMa.BorderStyle = BorderStyle.FixedSingle;
+            textBoxMa.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBoxMa.Location = new Point(369, 46);
+            textBoxMa.Name = "textBoxMa";
+            textBoxMa.Size = new Size(303, 39);
+            textBoxMa.TabIndex = 9;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label5.Location = new Point(273, 319);
+            label5.Name = "label5";
+            label5.Size = new Size(90, 32);
+            label5.TabIndex = 8;
+            label5.Text = "Email: ";
+            // 
+            // labelGT
+            // 
+            labelGT.AutoSize = true;
+            labelGT.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelGT.Location = new Point(232, 183);
+            labelGT.Name = "labelGT";
+            labelGT.Size = new Size(131, 32);
+            labelGT.TabIndex = 7;
+            labelGT.Text = "Giới Tính: ";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.Location = new Point(219, 250);
+            label3.Name = "label3";
+            label3.Size = new Size(144, 32);
+            label3.TabIndex = 6;
+            label3.Text = "Ngày Sinh: ";
+            // 
+            // labelHoTen
+            // 
+            labelHoTen.AutoSize = true;
+            labelHoTen.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelHoTen.Location = new Point(255, 113);
+            labelHoTen.Name = "labelHoTen";
+            labelHoTen.Size = new Size(108, 32);
+            labelHoTen.TabIndex = 5;
+            labelHoTen.Text = "Họ Tên: ";
+            // 
+            // labelMa
+            // 
+            labelMa.AutoSize = true;
+            labelMa.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelMa.Location = new Point(299, 46);
+            labelMa.Name = "labelMa";
+            labelMa.Size = new Size(64, 32);
+            labelMa.TabIndex = 4;
+            labelMa.Text = "Mã: ";
+            // 
+            // buttonTrangThai
+            // 
+            buttonTrangThai.Location = new Point(597, 407);
+            buttonTrangThai.Name = "buttonTrangThai";
+            buttonTrangThai.Size = new Size(75, 23);
+            buttonTrangThai.TabIndex = 0;
+            buttonTrangThai.Text = "Khóa";
+            buttonTrangThai.UseVisualStyleBackColor = true;
+            buttonTrangThai.Click += buttonTrangThai_Click;
+            // 
+            // buttonSua
+            // 
+            buttonSua.Location = new Point(369, 407);
+            buttonSua.Name = "buttonSua";
+            buttonSua.Size = new Size(75, 23);
+            buttonSua.TabIndex = 3;
+            buttonSua.Text = "Sửa";
+            buttonSua.UseVisualStyleBackColor = true;
+            buttonSua.Click += buttonSua_Click;
+            // 
+            // buttonThayAnh
+            // 
+            buttonThayAnh.Location = new Point(76, 277);
+            buttonThayAnh.Name = "buttonThayAnh";
+            buttonThayAnh.Size = new Size(75, 23);
+            buttonThayAnh.TabIndex = 2;
+            buttonThayAnh.Text = "Thay ảnh";
+            buttonThayAnh.UseVisualStyleBackColor = true;
+            buttonThayAnh.Visible = false;
+            buttonThayAnh.Click += buttonThayAnh_Click;
+            // 
+            // pictureBoxAVT
+            // 
+            pictureBoxAVT.BackColor = Color.White;
+            pictureBoxAVT.BorderStyle = BorderStyle.FixedSingle;
+            pictureBoxAVT.Location = new Point(42, 46);
+            pictureBoxAVT.Name = "pictureBoxAVT";
+            pictureBoxAVT.Size = new Size(150, 225);
+            pictureBoxAVT.TabIndex = 1;
+            pictureBoxAVT.TabStop = false;
+            // 
+            // btnExit
+            // 
+            btnExit.Location = new Point(731, 22);
+            btnExit.Name = "btnExit";
+            btnExit.Size = new Size(51, 23);
+            btnExit.TabIndex = 0;
+            btnExit.Text = "Đóng";
+            btnExit.UseVisualStyleBackColor = true;
+            btnExit.Click += btnExit_Click;
             // 
             // Component_NguoiDung
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
-            Controls.Add(button_Mokhoa);
-            Controls.Add(button_Khoa);
-            Controls.Add(button_Xem);
+            Controls.Add(panelThongTin);
             Controls.Add(dataGridView_DSGVSV);
             Controls.Add(textBoxTimKiem);
             Controls.Add(comboboxLoc);
@@ -132,6 +272,9 @@
             Size = new Size(1541, 934);
             Load += Component_NguoiDung_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView_DSGVSV).EndInit();
+            panelThongTin.ResumeLayout(false);
+            panelThongTin.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAVT).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -141,8 +284,21 @@
         private ComboBox comboboxLoc;
         private TextBox textBoxTimKiem;
         private DataGridView dataGridView_DSGVSV;
-        private Button button_Xem;
-        private Button button_Khoa;
-        private Button button_Mokhoa;
+        private Panel panelThongTin;
+        private Button btnExit;
+        private PictureBox pictureBoxAVT;
+        private Button buttonSua;
+        private Button buttonThayAnh;
+        private Button buttonTrangThai;
+        private Label labelHoTen;
+        private Label labelMa;
+        private Label label5;
+        private Label labelGT;
+        private Label label3;
+        private TextBox textBoxNS;
+        private TextBox textBoxHoTen;
+        private TextBox textBoxMa;
+        private TextBox textBoxEmail;
+        private ComboBox comboBoxGT;
     }
 }
