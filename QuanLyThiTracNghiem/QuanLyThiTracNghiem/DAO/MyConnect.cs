@@ -8,9 +8,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
     {
         private string server = "localhost";
         private string port = "3306";
-        private string database = "ThiTracNghiem";
-        private string username = "sa";
-        private string password = "123456";
+        private string database = "quanlythitracnghiem";
+        private string username = "root";
+        private string password = "";
         public MySqlConnection GetConnection()
         {
             string connString = $"Server={server};Port={port};Database={database};Uid={username};Pwd={password};SslMode=none;";

@@ -25,6 +25,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             InitializeComponent();
         }
 
+       
         private void Component_TTCaNhan_Load(object sender, EventArgs e)
         {
             // Khi load thì khóa các ô nhập
@@ -34,17 +35,15 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         }
 
         TaiKhoanBUS tkBUS = new TaiKhoanBUS();
+        SinhVienBUS svBUS = new SinhVienBUS();
+        GiaoVienBUS gvBUS = new GiaoVienBUS();
 
         private void LoadThongTinSinhVien()
         {
-            SinhVienBUS svBUS = new SinhVienBUS();
-            GiaoVienBUS gvBUS = new GiaoVienBUS();
             SinhVien sv = svBUS.GetSinhVienByID(UserSession.userId);
             GiaoVien gv = gvBUS.GetGiaoVienByID(UserSession.userId);
 
-            
-
-            if (UserSession.Quyen == 3)
+            if (sv != null)
             {
                 textBoxMaTK.Text = sv.maSinhVien;
                 textBoxHoTen.Text = sv.hoVaTen;
@@ -52,42 +51,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 textBoxNgaySinh.Text = sv.ngaySinh.ToShortDateString();
                 comboBoxGioiTinh.Text = sv.gioiTinh;
                 tenHinh = sv.anhDaiDien;
-                textBoxMK.Text = UserSession.password; // Lấy mật khẩu từ session
-
-                // ----- Load ảnh -----
-                if (!string.IsNullOrEmpty(tenHinh))
-                {
-                    string duongDanAnh = Path.Combine(Application.StartupPath, "Image", tenHinh);
-                    if (File.Exists(duongDanAnh))
-                    {
-                        // Giải phóng ảnh cũ trước khi load
-                        if (pictureBoxChanDung.Image != null)
-                        {
-                            pictureBoxChanDung.Image.Dispose();
-                            pictureBoxChanDung.Image = null;
-                        }
-
-                        using (FileStream fs = new FileStream(duongDanAnh, FileMode.Open, FileAccess.Read))
-                        {
-                            pictureBoxChanDung.Image = Image.FromStream(fs);
-                        }
-                    }
-                    else
-                    {
-                        pictureBoxChanDung.Image = null;
-                    }
-                }
-                else
-                {
-                    pictureBoxChanDung.Image = null;
-                }
-
-                textBoxMaTK.Text = gv.maGiaoVien;
-                textBoxHoTen.Text = gv.tenGiaoVien;
-                textBoxEmail.Text = gv.email;
-                textBoxNgaySinh.Text = gv.ngaySinh.ToShortDateString();
-                comboBoxGioiTinh.Text = gv.gioiTinh;
-                tenHinh = gv.anhDaiDien;
                 textBoxMK.Text = UserSession.password; // Lấy mật khẩu từ session
 
                 // ----- Load ảnh -----
@@ -190,6 +153,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         // ----------------- NÚT THAY ĐỔI THÔNG TIN -----------------
         private void buttonThaydoithongtin_Click(object sender, EventArgs e)
         {
+            SinhVien sv = svBUS.GetSinhVienByID(UserSession.userId);
+            GiaoVien gv = gvBUS.GetGiaoVienByID(UserSession.userId);
             if (!isEditing)
             {
                 // === Bật chế độ chỉnh sửa ===
@@ -197,7 +162,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 buttonThaydoithongtin.Text = "Lưu thông tin";
                 isEditing = true;
             }
-            else if(UserSession.Quyen == 3)
+            else if(sv !=null)
             {
                 // === Khi nhấn "Lưu thông tin" ===
                 SinhVienBUS svBUS = new SinhVienBUS();
