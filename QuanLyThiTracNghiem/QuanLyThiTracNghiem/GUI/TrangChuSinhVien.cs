@@ -39,6 +39,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private Component_PhanCong pc = new Component_PhanCong();
         private Component_PhanQuyen pq = new Component_PhanQuyen();
         private Component_NguoiDung nd = new Component_NguoiDung();
+        private Component_ThongKe tk = new Component_ThongKe();
 
         //Khai Báo Panel
         private Component_ThongBao tb = new Component_ThongBao();
@@ -157,7 +158,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             button_NguoiDung.BackColor = System.Drawing.ColorTranslator.FromHtml("#83A7EE");
             button_NguoiDung.FlatStyle = FlatStyle.Flat;
             button_NguoiDung.FlatAppearance.BorderSize = 0;
-
+            //BUTTON THỐNG KÊ
+            button_ThongKe.BackColor = System.Drawing.ColorTranslator.FromHtml("#83A7EE");
+            button_ThongKe.FlatStyle = FlatStyle.Flat;
+            button_ThongKe.FlatAppearance.BorderSize = 0;
 
             //panel_Left.Controls.Add(button_HocPhan);
             //panel_Left.Controls.Add(button_DeThi);
@@ -208,9 +212,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                     case 11:
                         panel_Left.Controls.Add(button_DeKiemTra);
                         break;
-                    //case 13:
-                    //    panel_Left.Controls.Add(button_ThongKe);
-                    //    break;
+                    case 12:
+                        panel_Left.Controls.Add(button_ThongKe);
+                        break;
                     default:
                         break;
                 }
@@ -231,8 +235,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             tb.Dock = DockStyle.Fill;
             ttcn.Dock = DockStyle.Fill;
             nd.Dock = DockStyle.Fill;
-
-
+            tk.Dock = DockStyle.Fill;
 
             panel_Main.Controls.Add(tc);
             panel_Main.Controls.Add(hp);
@@ -247,6 +250,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             panel_Main.Controls.Add(tb);
             panel_Main.Controls.Add(ttcn);
             panel_Main.Controls.Add(nd);
+            panel_Main.Controls.Add(tk);
             button_ThongTin.Text = UserSession.username;
 
 
@@ -333,6 +337,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             nd.BringToFront();
         }
 
+        private void button_ThongKe_Click(object sender, EventArgs e)
+        {
+            HighlightButton(button_ThongKe);
+            tk.BringToFront();
+        }
+
         private void ResetButtonColor()
         {
             Color defaultColor = ColorTranslator.FromHtml("#83A7EE");
@@ -350,6 +360,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             button_NguoiDung.BackColor = defaultColor;
             button_ThongBao.BackColor = defaultColor;
             button_ThongTin.BackColor = defaultColor;
+            button_ThongKe.BackColor = defaultColor;
         }
 
         private void HighlightButton(Button btn)

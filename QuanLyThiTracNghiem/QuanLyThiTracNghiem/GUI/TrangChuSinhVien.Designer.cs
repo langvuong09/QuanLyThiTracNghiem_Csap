@@ -47,6 +47,7 @@
             button_DeThi = new Button();
             button_HocPhan = new Button();
             button_NguoiDung = new Button();
+            button_ThongKe = new Button();
             panel_Main = new Panel();
             panel_Top.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Logo).BeginInit();
@@ -314,6 +315,22 @@
             button_NguoiDung.UseVisualStyleBackColor = false;
             button_NguoiDung.Click += button_NguoiDung_Click;
             // 
+            // button_ThongKe
+            // 
+            button_ThongKe.BackColor = Color.DarkGray;
+            button_ThongKe.FlatStyle = FlatStyle.Flat;
+            button_ThongKe.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button_ThongKe.ForeColor = SystemColors.ButtonHighlight;
+            button_ThongKe.Image = (Image)resources.GetObject("button_ThongKe.Image");
+            button_ThongKe.ImageAlign = ContentAlignment.MiddleLeft;
+            button_ThongKe.Location = new Point(3, 784);
+            button_ThongKe.Name = "button_ThongKe";
+            button_ThongKe.Size = new Size(353, 65);
+            button_ThongKe.TabIndex = 11;
+            button_ThongKe.Text = "Thống kê";
+            button_ThongKe.UseVisualStyleBackColor = false;
+            button_ThongKe.Click += button_ThongKe_Click;
+            // 
             // panel_Main
             // 
             panel_Main.BackColor = SystemColors.ButtonHighlight;
@@ -361,5 +378,6 @@
         private Button button_PhanCong;
         private Button button_MonHoc;
         private Button button_NguoiDung;
+        private Button button_ThongKe;
     }
 }
