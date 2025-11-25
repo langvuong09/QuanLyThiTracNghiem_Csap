@@ -116,13 +116,13 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             try
             {
                 string sql = "INSERT INTO taikhoan(ma,password,trangThai) " +
-                    "VALUES (@userId, @password, 1)";
+                    "VALUES (@ma, @password, 1)";
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
 
-                    cmd.Parameters.AddWithValue("@userId", ma);
+                    cmd.Parameters.AddWithValue("@ma", ma);
                     cmd.Parameters.AddWithValue("@password", password);
 
                     int rs = cmd.ExecuteNonQuery();

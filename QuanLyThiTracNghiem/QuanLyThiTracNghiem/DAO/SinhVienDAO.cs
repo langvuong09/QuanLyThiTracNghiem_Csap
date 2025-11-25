@@ -49,33 +49,30 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             return dssv;
         }
 
-        public bool ThemSinhVien(string maSinhVien, string hoVaTen, string email)
+        public bool ThemSinhVien(string maSinhVien, string hoVaTen, string email, string gioiTinh, DateTime ngaySinh, string anhDaiDien)
         {
             try
             {
                 string sql = "INSERT INTO sinhvien(maSinhVien, hoVaTen, email, gioiTinh, ngaySinh, anhDaiDien, maQuyen) " +
-             "VALUES (@maSinhVien, @hoVaTen, @email, @gioiTinh, @ngaySinh, @anhDaiDien, @maQuyen)";
+                    "VaLUES (@maSinhVien, @hoVaTen, @email, @gioiTinh, @ngaySinh, @anhDaiDien, 3)";
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
-
                     cmd.Parameters.AddWithValue("@maSinhVien", maSinhVien);
                     cmd.Parameters.AddWithValue("@hoVaTen", hoVaTen);
                     cmd.Parameters.AddWithValue("@email", email);
-                    cmd.Parameters.AddWithValue("@gioiTinh", "Nam");
-                    cmd.Parameters.AddWithValue("@ngaySinh", new DateTime(2000, 1, 1));
-                    cmd.Parameters.AddWithValue("@anhDaiDien", "default.jpg");
-                    cmd.Parameters.AddWithValue("@maQuyen", 3);
-
+                    cmd.Parameters.AddWithValue("@gioiTinh", gioiTinh);
+                    cmd.Parameters.AddWithValue("@ngaySinh", ngaySinh);
+                    cmd.Parameters.AddWithValue("@anhDaiDien", anhDaiDien);
+                    
                     int rs = cmd.ExecuteNonQuery();
                     return rs > 0;
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Lỗi: " + ex.Message);
-                return false;
+            catch (Exception ex) 
+            { 
+                return false; 
             }
         }
 

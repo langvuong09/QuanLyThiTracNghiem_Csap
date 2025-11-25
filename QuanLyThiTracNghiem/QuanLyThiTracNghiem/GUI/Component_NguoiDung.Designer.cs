@@ -28,13 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Component_NguoiDung));
             comboboxLoc = new ComboBox();
             textBoxTimKiem = new TextBox();
             dataGridView_DSGVSV = new DataGridView();
             panelThongTin = new Panel();
+            checkBoxAD = new CheckBox();
+            buttonTaoND = new Button();
+            textBoxNS = new DateTimePicker();
+            textBoxMK = new TextBox();
+            labelMK = new Label();
             comboBoxGT = new ComboBox();
             textBoxEmail = new TextBox();
-            textBoxNS = new TextBox();
             textBoxHoTen = new TextBox();
             textBoxMa = new TextBox();
             label5 = new Label();
@@ -47,6 +52,7 @@
             buttonThayAnh = new Button();
             pictureBoxAVT = new PictureBox();
             btnExit = new Button();
+            button_ThemND = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView_DSGVSV).BeginInit();
             panelThongTin.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxAVT).BeginInit();
@@ -59,7 +65,7 @@
             comboboxLoc.ForeColor = SystemColors.InactiveCaptionText;
             comboboxLoc.FormattingEnabled = true;
             comboboxLoc.Items.AddRange(new object[] { "Sinh Viên", "Giáo Viên" });
-            comboboxLoc.Location = new Point(1349, 46);
+            comboboxLoc.Location = new Point(1117, 46);
             comboboxLoc.Name = "comboboxLoc";
             comboboxLoc.Size = new Size(164, 45);
             comboboxLoc.TabIndex = 1;
@@ -71,7 +77,7 @@
             textBoxTimKiem.Location = new Point(24, 46);
             textBoxTimKiem.Multiline = true;
             textBoxTimKiem.Name = "textBoxTimKiem";
-            textBoxTimKiem.Size = new Size(1287, 45);
+            textBoxTimKiem.Size = new Size(1051, 45);
             textBoxTimKiem.TabIndex = 2;
             textBoxTimKiem.TextChanged += textBoxTimKiem_TextChanged;
             textBoxTimKiem.KeyDown += textBoxTimKiem_KeyDown;
@@ -91,9 +97,13 @@
             // 
             panelThongTin.BackColor = Color.FromArgb(224, 224, 224);
             panelThongTin.BorderStyle = BorderStyle.Fixed3D;
+            panelThongTin.Controls.Add(checkBoxAD);
+            panelThongTin.Controls.Add(buttonTaoND);
+            panelThongTin.Controls.Add(textBoxNS);
+            panelThongTin.Controls.Add(textBoxMK);
+            panelThongTin.Controls.Add(labelMK);
             panelThongTin.Controls.Add(comboBoxGT);
             panelThongTin.Controls.Add(textBoxEmail);
-            panelThongTin.Controls.Add(textBoxNS);
             panelThongTin.Controls.Add(textBoxHoTen);
             panelThongTin.Controls.Add(textBoxMa);
             panelThongTin.Controls.Add(label5);
@@ -111,6 +121,61 @@
             panelThongTin.Size = new Size(800, 500);
             panelThongTin.TabIndex = 12;
             panelThongTin.Visible = false;
+            // 
+            // checkBoxAD
+            // 
+            checkBoxAD.AutoSize = true;
+            checkBoxAD.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            checkBoxAD.Location = new Point(582, 431);
+            checkBoxAD.Name = "checkBoxAD";
+            checkBoxAD.Size = new Size(90, 29);
+            checkBoxAD.TabIndex = 21;
+            checkBoxAD.Text = "Admin";
+            checkBoxAD.UseVisualStyleBackColor = true;
+            checkBoxAD.Visible = false;
+            // 
+            // buttonTaoND
+            // 
+            buttonTaoND.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            buttonTaoND.Location = new Point(471, 424);
+            buttonTaoND.Name = "buttonTaoND";
+            buttonTaoND.Size = new Size(88, 36);
+            buttonTaoND.TabIndex = 20;
+            buttonTaoND.Text = "Thêm";
+            buttonTaoND.UseVisualStyleBackColor = true;
+            buttonTaoND.Visible = false;
+            buttonTaoND.Click += buttonTaoND_Click;
+            // 
+            // textBoxNS
+            // 
+            textBoxNS.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBoxNS.Format = DateTimePickerFormat.Short;
+            textBoxNS.Location = new Point(369, 250);
+            textBoxNS.Name = "textBoxNS";
+            textBoxNS.Size = new Size(303, 39);
+            textBoxNS.TabIndex = 19;
+            textBoxNS.ValueChanged += textBoxNS_ValueChanged;
+            // 
+            // textBoxMK
+            // 
+            textBoxMK.BorderStyle = BorderStyle.FixedSingle;
+            textBoxMK.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBoxMK.Location = new Point(369, 370);
+            textBoxMK.Name = "textBoxMK";
+            textBoxMK.Size = new Size(303, 39);
+            textBoxMK.TabIndex = 18;
+            textBoxMK.Visible = false;
+            // 
+            // labelMK
+            // 
+            labelMK.AutoSize = true;
+            labelMK.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelMK.Location = new Point(228, 372);
+            labelMK.Name = "labelMK";
+            labelMK.Size = new Size(135, 32);
+            labelMK.TabIndex = 17;
+            labelMK.Text = "Mật khẩu: ";
+            labelMK.Visible = false;
             // 
             // comboBoxGT
             // 
@@ -130,15 +195,6 @@
             textBoxEmail.Name = "textBoxEmail";
             textBoxEmail.Size = new Size(303, 39);
             textBoxEmail.TabIndex = 13;
-            // 
-            // textBoxNS
-            // 
-            textBoxNS.BorderStyle = BorderStyle.FixedSingle;
-            textBoxNS.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxNS.Location = new Point(369, 250);
-            textBoxNS.Name = "textBoxNS";
-            textBoxNS.Size = new Size(303, 39);
-            textBoxNS.TabIndex = 12;
             // 
             // textBoxHoTen
             // 
@@ -210,22 +266,24 @@
             // 
             // buttonTrangThai
             // 
-            buttonTrangThai.Location = new Point(597, 407);
+            buttonTrangThai.Location = new Point(597, 424);
             buttonTrangThai.Name = "buttonTrangThai";
             buttonTrangThai.Size = new Size(75, 23);
             buttonTrangThai.TabIndex = 0;
             buttonTrangThai.Text = "Khóa";
             buttonTrangThai.UseVisualStyleBackColor = true;
+            buttonTrangThai.Visible = false;
             buttonTrangThai.Click += buttonTrangThai_Click;
             // 
             // buttonSua
             // 
-            buttonSua.Location = new Point(369, 407);
+            buttonSua.Location = new Point(369, 424);
             buttonSua.Name = "buttonSua";
             buttonSua.Size = new Size(75, 23);
             buttonSua.TabIndex = 3;
             buttonSua.Text = "Sửa";
             buttonSua.UseVisualStyleBackColor = true;
+            buttonSua.Visible = false;
             buttonSua.Click += buttonSua_Click;
             // 
             // buttonThayAnh
@@ -259,11 +317,28 @@
             btnExit.UseVisualStyleBackColor = true;
             btnExit.Click += btnExit_Click;
             // 
+            // button_ThemND
+            // 
+            button_ThemND.BackColor = Color.DeepSkyBlue;
+            button_ThemND.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button_ThemND.ForeColor = SystemColors.ButtonHighlight;
+            button_ThemND.Image = (Image)resources.GetObject("button_ThemND.Image");
+            button_ThemND.ImageAlign = ContentAlignment.MiddleLeft;
+            button_ThemND.Location = new Point(1310, 46);
+            button_ThemND.Name = "button_ThemND";
+            button_ThemND.Size = new Size(203, 45);
+            button_ThemND.TabIndex = 13;
+            button_ThemND.Text = "THÊM SINH VIÊN";
+            button_ThemND.TextAlign = ContentAlignment.MiddleRight;
+            button_ThemND.UseVisualStyleBackColor = false;
+            button_ThemND.Click += button_ThemND_Click;
+            // 
             // Component_NguoiDung
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
+            Controls.Add(button_ThemND);
             Controls.Add(panelThongTin);
             Controls.Add(dataGridView_DSGVSV);
             Controls.Add(textBoxTimKiem);
@@ -295,10 +370,15 @@
         private Label label5;
         private Label labelGT;
         private Label label3;
-        private TextBox textBoxNS;
         private TextBox textBoxHoTen;
         private TextBox textBoxMa;
         private TextBox textBoxEmail;
         private ComboBox comboBoxGT;
+        private Button button_ThemND;
+        private TextBox textBoxMK;
+        private Label labelMK;
+        private DateTimePicker textBoxNS;
+        private Button buttonTaoND;
+        private CheckBox checkBoxAD;
     }
 }

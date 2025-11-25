@@ -148,8 +148,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             comboBoxGioiTinh.Enabled = true;
         }
 
-
-
         // ----------------- NÚT THAY ĐỔI THÔNG TIN -----------------
         private void buttonThaydoithongtin_Click(object sender, EventArgs e)
         {

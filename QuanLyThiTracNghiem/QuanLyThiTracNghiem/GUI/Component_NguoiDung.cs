@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
@@ -17,6 +18,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private readonly GiaoVienBUS gvBUS = new GiaoVienBUS();
         private readonly TaiKhoanBUS tkBUS = new TaiKhoanBUS();
         private readonly BindingSource bs = new BindingSource();
+        private readonly DateTime? parsedDate;
         private System.Windows.Forms.Timer searchTimer;
 
         private object currentSelectedItem = null;
@@ -59,6 +61,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             // Lấy danh sách từ BUS 
             var list = svBUS.GetAllSinhVien() ?? new List<SinhVien>();
             bs.DataSource = list;
+            button_ThemND.Text = "Thêm Sinh Viên";
             // Các cột sẽ được ẩn trong DataBindingComplete event
         }
 
@@ -66,6 +69,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         {
             var list = gvBUS.GetAllGiaoVien() ?? new List<GiaoVien>();
             bs.DataSource = list;
+            button_ThemND.Text = "Thêm Giáo Viên";
             // ẩn cột trong DataBindingComplete
         }
 
@@ -254,6 +258,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
             currentSelectedItem = item;
             panelThongTin.Visible = true;
+            buttonTrangThai.Visible = true;
+            buttonSua.Visible = true;
             lockControls();
             KhoaThongTin();
             LoadSelectedUser(item);
@@ -369,8 +375,13 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private void btnExit_Click(object sender, EventArgs e)
         {
             unlockControls();
+            buttonSua.Visible = false;
+            buttonTrangThai.Visible = false;
+            buttonTaoND.Visible = false;
+            labelMK.Visible = false;
+            textBoxMK.Visible = false;
             panelThongTin.Visible = false;
-
+            checkBoxAD.Visible = false;
         }
 
         private void KhoaThongTin()
@@ -380,6 +391,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             textBoxEmail.Enabled = false;
             textBoxNS.Enabled = false;
             comboBoxGT.Enabled = false;
+            buttonThayAnh.Visible = false;
 
         }
 
@@ -390,6 +402,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             textBoxNS.Enabled = true;
             comboBoxGT.Enabled = true;
             buttonThayAnh.Visible = true; // Hiện nút chọn ảnh
+            buttonThayAnh.Text = "Thay Ảnh";
         }
 
         private void buttonSua_Click(object sender, EventArgs e)
@@ -600,5 +613,116 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-    }   
+        private void button_ThemND_Click(object sender, EventArgs e)
+        {
+            isEditing = true;
+            clearInputFields(panelThongTin);
+            panelThongTin.Visible = true;
+            buttonTaoND.Visible = true;
+            labelMK.Visible = true;
+            textBoxMK.Visible = true;
+            textBoxMa.Enabled = true;
+            if (button_ThemND.Text == "Thêm Giáo Viên")
+            {
+                checkBoxAD.Visible = true;
+            }
+            else
+            {
+                checkBoxAD.Visible = false;
+            }
+            lockControls();
+            MoKhoaThongTin();
+            buttonThayAnh.Text = "Chọn Ảnh";
+            textBoxMK.Text = textBoxNS.Value.ToString("ddMMyyyy");
+        }
+
+
+        private void clearInputFields(Control parent)
+        {
+            foreach (Control c in parent.Controls)
+            {
+                if (c is TextBox)
+                    (c as TextBox).Text = "";
+
+                else if (c is ComboBox)
+                    (c as ComboBox).SelectedIndex = 0;
+
+                else if (c is DateTimePicker)
+                    (c as DateTimePicker).Value = DateTime.Now;
+
+                else if (c is PictureBox)
+                    (c as PictureBox).Image = null;
+            }
+        }
+
+
+        private void textBoxNS_ValueChanged(object sender, EventArgs e)
+        {
+            textBoxMK.Text = textBoxNS.Value.ToString("ddMMyyyy");
+        }
+
+        private void buttonTaoND_Click(object sender, EventArgs e)
+        {
+            if (button_ThemND.Text == "Thêm Sinh Viên")
+            {
+                string ma = textBoxMa.Text.Trim();
+                string ten = textBoxHoTen.Text.Trim();
+                string email = textBoxEmail.Text?.Trim();
+                string gioiTinh = comboBoxGT.Text?.Trim();
+                DateTime ngaySinh = textBoxNS.Value;
+                string mk = textBoxMK.Text.Trim();
+                string anh = selectedImageFileName ?? "default.jpg";
+
+                // Gọi BUS.SuaSinhVien
+                bool taoTK = tkBUS.ThemTaiKhoan(ma, mk);
+                if (!taoTK)
+                {
+                    return;
+                }
+
+                bool taoSV = svBUS.ThemSinhVien(ma, ten, email, gioiTinh, ngaySinh, anh);
+                if (!taoSV)
+                {
+                    tkBUS.xoaTaiKhoanError(ma);
+                    return;
+                }
+
+                HienthiSV();
+            }
+
+            else if (button_ThemND.Text == "Thêm Giáo Viên")
+            {
+                string ma = textBoxMa.Text.Trim();
+                string ten = textBoxHoTen.Text.Trim();
+                string email = textBoxEmail.Text?.Trim();
+                string gioiTinh = comboBoxGT.Text?.Trim();
+                DateTime ngaySinh = textBoxNS.Value;
+                string mk = textBoxMK.Text.Trim();
+                string anh = selectedImageFileName ?? "default.jpg";
+                int quyen = checkBoxAD.Checked ? 1 : 2;
+
+                // Gọi BUS.SuaSinhVien
+                bool taoTK = tkBUS.ThemTaiKhoan(ma, mk);
+                if (!taoTK)
+                {
+                    return;
+                }
+
+                bool taoGV = gvBUS.ThemGiaoVien(ma, ten, email, gioiTinh, ngaySinh, anh, quyen);
+                if (!taoGV)
+                {
+                    tkBUS.xoaTaiKhoanError(ma);
+                    return;
+                }
+
+                HienthiGV();
+            }
+
+            checkBoxAD.Checked = false;
+            checkBoxAD.Visible = false;
+            isEditing = false;
+            panelThongTin.Visible = false;
+            unlockControls();
+        }
+    }
 }

@@ -47,12 +47,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             return dsgv;
         }
 
-        public bool ThemGiaoVien(string maGiaoVien, string tenGiaoVien, string email, string gioiTinh, DateTime ngaySinh, string anhDaiDien, string quyen)
+        public bool ThemGiaoVien(string maGiaoVien, string tenGiaoVien, string email, string gioiTinh, DateTime ngaySinh, string anhDaiDien, int maQuyen)
         {
             try
             {
-                string sql = "INSERT INTO giaovien(maGiaoVien, tenGiaoVien, email, gioiTinh, ngaySinh, anhDaiDien, quyen)" +
-                    "VaLUES (@maGiaoVien, @tenGiaoVien, @email, @gioiTinh, @ngaySinh, @anhDaiDien, @quyen)";
+                string sql = "INSERT INTO giaovien(maGiaoVien, tenGiaoVien, email, gioiTinh, ngaySinh, anhDaiDien, maQuyen)" +
+                    "VaLUES (@maGiaoVien, @tenGiaoVien, @email, @gioiTinh, @ngaySinh, @anhDaiDien, @maQuyen)";
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
@@ -60,10 +60,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                     cmd.Parameters.AddWithValue("@maGiaoVien", maGiaoVien);
                     cmd.Parameters.AddWithValue("@tenGiaoVien", tenGiaoVien);
                     cmd.Parameters.AddWithValue("@email", email);
-                    cmd.Parameters.AddWithValue("@gioiTinh", "Nam");
-                    cmd.Parameters.AddWithValue("@ngaySinh", new DateTime(2000, 1, 1));
-                    cmd.Parameters.AddWithValue("@anhDaiDien", "default.jpg");
-                    cmd.Parameters.AddWithValue("@maQuyen", 3);
+                    cmd.Parameters.AddWithValue("@gioiTinh", gioiTinh);
+                    cmd.Parameters.AddWithValue("@ngaySinh", ngaySinh);
+                    cmd.Parameters.AddWithValue("@anhDaiDien", anhDaiDien);
+                    cmd.Parameters.AddWithValue("@maQuyen", maQuyen);
 
                     int rs = cmd.ExecuteNonQuery();
                     return rs > 0;

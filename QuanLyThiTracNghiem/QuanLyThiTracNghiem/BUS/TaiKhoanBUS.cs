@@ -76,6 +76,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             return tkDAO.GetTaiKhoanById(userId);
         }
 
+        public bool xoaTaiKhoanError(string ma)
+        {
+            return tkDAO.xoaTaiKhoan(ma);
+        }
 
     }
 }
