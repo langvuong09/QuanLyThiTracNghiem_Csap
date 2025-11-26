@@ -1,4 +1,5 @@
 ﻿using Google.Protobuf.WellKnownTypes;
+using Org.BouncyCastle.Math.Field;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 using System;
@@ -24,6 +25,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             InitializeComponent();
         }
 
+       
         private void Component_TTCaNhan_Load(object sender, EventArgs e)
         {
             // Khi load thì khóa các ô nhập
@@ -33,12 +35,13 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         }
 
         TaiKhoanBUS tkBUS = new TaiKhoanBUS();
+        SinhVienBUS svBUS = new SinhVienBUS();
+        GiaoVienBUS gvBUS = new GiaoVienBUS();
 
         private void LoadThongTinSinhVien()
         {
-            SinhVienBUS svBUS = new SinhVienBUS();
             SinhVien sv = svBUS.GetSinhVienByID(UserSession.userId);
-            
+            GiaoVien gv = gvBUS.GetGiaoVienByID(UserSession.userId);
 
             if (sv != null)
             {
@@ -48,6 +51,44 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 textBoxNgaySinh.Text = sv.ngaySinh.ToShortDateString();
                 comboBoxGioiTinh.Text = sv.gioiTinh;
                 tenHinh = sv.anhDaiDien;
+                textBoxMK.Text = UserSession.password; // Lấy mật khẩu từ session
+
+                // ----- Load ảnh -----
+                if (!string.IsNullOrEmpty(tenHinh))
+                {
+                    string duongDanAnh = Path.Combine(Application.StartupPath, "Image", tenHinh);
+                    if (File.Exists(duongDanAnh))
+                    {
+                        // Giải phóng ảnh cũ trước khi load
+                        if (pictureBoxChanDung.Image != null)
+                        {
+                            pictureBoxChanDung.Image.Dispose();
+                            pictureBoxChanDung.Image = null;
+                        }
+
+                        using (FileStream fs = new FileStream(duongDanAnh, FileMode.Open, FileAccess.Read))
+                        {
+                            pictureBoxChanDung.Image = Image.FromStream(fs);
+                        }
+                    }
+                    else
+                    {
+                        pictureBoxChanDung.Image = null;
+                    }
+                }
+                else
+                {
+                    pictureBoxChanDung.Image = null;
+                }
+            }
+            else 
+            {
+                textBoxMaTK.Text = gv.maGiaoVien;
+                textBoxHoTen.Text = gv.tenGiaoVien;
+                textBoxEmail.Text = gv.email;
+                textBoxNgaySinh.Text = gv.ngaySinh.ToShortDateString();
+                comboBoxGioiTinh.Text = gv.gioiTinh;
+                tenHinh = gv.anhDaiDien;
                 textBoxMK.Text = UserSession.password; // Lấy mật khẩu từ session
 
                 // ----- Load ảnh -----
@@ -107,11 +148,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             comboBoxGioiTinh.Enabled = true;
         }
 
-
-
         // ----------------- NÚT THAY ĐỔI THÔNG TIN -----------------
         private void buttonThaydoithongtin_Click(object sender, EventArgs e)
         {
+            SinhVien sv = svBUS.GetSinhVienByID(UserSession.userId);
+            GiaoVien gv = gvBUS.GetGiaoVienByID(UserSession.userId);
             if (!isEditing)
             {
                 // === Bật chế độ chỉnh sửa ===
@@ -119,7 +160,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 buttonThaydoithongtin.Text = "Lưu thông tin";
                 isEditing = true;
             }
-            else
+            else if(sv !=null)
             {
                 // === Khi nhấn "Lưu thông tin" ===
                 SinhVienBUS svBUS = new SinhVienBUS();
@@ -157,19 +198,58 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                         {
                         // Cập nhật lại mật khẩu trong session
                         UserSession.password = textBoxMK.Text;
-                        MessageBox.Show("Thông tin đã được lưu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        
+                        // Cập nhật lại form
+                        KhoaThongTin();
+                        buttonThaydoithongtin.Text = "Thay đổi thông tin";
+                        isEditing = false;
+                    }
+                }
+            }
+            else
+            {
+                // === Khi nhấn "Lưu thông tin" ===
+                GiaoVienBUS gvBUS = new GiaoVienBUS();
+
+                string maGiaoVien = textBoxMaTK.Text.Trim();
+                string tenGiaoVien = textBoxHoTen.Text.Trim();
+                string email = textBoxEmail.Text.Trim();
+                string gioiTinh = comboBoxGioiTinh.Text;
+                //string gioiTinh = "Nam"; // Nếu bạn có combobox giới tính thì thay bằng comboBoxGioiTinh.Text
+                DateTime ngaySinh;
+
+                // Kiểm tra ngày sinh hợp lệ
+                if (!DateTime.TryParse(textBoxNgaySinh.Text, out ngaySinh))
+                {
+                    MessageBox.Show("Ngày sinh không hợp lệ!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Lưu ảnh đại diện
+                string anhDaiDien = tenHinh;
+
+                // Kiểm tra dữ liệu bắt buộc
+                if (string.IsNullOrWhiteSpace(maGiaoVien) || string.IsNullOrWhiteSpace(tenGiaoVien) || string.IsNullOrWhiteSpace(email))
+                {
+                    MessageBox.Show("Vui lòng nhập đầy đủ thông tin!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Thực hiện lưu xuống DB
+                bool kq = gvBUS.SuaGiaoVien(maGiaoVien, tenGiaoVien, email, gioiTinh, ngaySinh, anhDaiDien);
+
+                if (kq)
+                {
+                    if (tkBUS.SuaMKTaiKhoan(textBoxMaTK.Text, textBoxMK.Text))
+                    {
+                        // Cập nhật lại mật khẩu trong session
+                        UserSession.password = textBoxMK.Text;
 
                         // Cập nhật lại form
                         KhoaThongTin();
                         buttonThaydoithongtin.Text = "Thay đổi thông tin";
                         isEditing = false;
                     }
-
-                    
-                }
-                else
-                {
-                    MessageBox.Show("Cập nhật thông tin thất bại. Vui lòng thử lại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

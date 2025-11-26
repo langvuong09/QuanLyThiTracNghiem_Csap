@@ -2,11 +2,13 @@
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
@@ -14,8 +16,18 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
     {
         private readonly SinhVienBUS svBUS = new SinhVienBUS();
         private readonly GiaoVienBUS gvBUS = new GiaoVienBUS();
+        private readonly TaiKhoanBUS tkBUS = new TaiKhoanBUS();
         private readonly BindingSource bs = new BindingSource();
+        private readonly DateTime? parsedDate;
         private System.Windows.Forms.Timer searchTimer;
+
+        private object currentSelectedItem = null;
+        private string selectedImageFileName = null;
+        private string IDaccount = null;
+        private bool isEditing = false;
+
+        private object currentSelectedAccount = null;
+
 
         public Component_NguoiDung()
         {
@@ -38,8 +50,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void Component_NguoiDung_Load(object sender, EventArgs e)
         {
-            
-
             if (comboboxLoc.Items.Count > 0)
                 comboboxLoc.SelectedIndex = 0;
 
@@ -51,6 +61,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             // Lấy danh sách từ BUS 
             var list = svBUS.GetAllSinhVien() ?? new List<SinhVien>();
             bs.DataSource = list;
+            button_ThemND.Text = "Thêm Sinh Viên";
             // Các cột sẽ được ẩn trong DataBindingComplete event
         }
 
@@ -58,6 +69,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         {
             var list = gvBUS.GetAllGiaoVien() ?? new List<GiaoVien>();
             bs.DataSource = list;
+            button_ThemND.Text = "Thêm Giáo Viên";
             // ẩn cột trong DataBindingComplete
         }
 
@@ -117,7 +129,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                         var normVal = NormalizeForSearch(rawVal);
                         if (normVal.Contains(normalizedKeyword)) return true;
                     }
-                    catch { /* ignore */ }
+                    catch { }
                 }
             }
 
@@ -134,14 +146,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                     if (norm.Contains(normalizedKeyword))
                         return true;
                 }
-                catch
-                {
-                    // ignore property không đọc được
-                }
+                catch { }
             }
-
             return false;
-        }  
+        }
 
         // Sau mỗi lần binding hoàn tất, ẩn cột nếu có
         private void DataGridView_DSGVSV_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
@@ -191,6 +199,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             try
             {
                 string keyword = textBoxTimKiem.Text?.Trim() ?? string.Empty;
+                keyword = NormalizeForSearch(keyword);
 
                 if (string.IsNullOrEmpty(keyword))
                 {
@@ -218,6 +227,502 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             {
                 MessageBox.Show("Lỗi tìm kiếm: " + ex.Message);
             }
+        }
+
+        private void lockControls()
+        {
+            dataGridView_DSGVSV.Enabled = false;
+            textBoxTimKiem.Enabled = false;
+            comboboxLoc.Enabled = false;
+        }
+
+        private void unlockControls()
+        {
+            dataGridView_DSGVSV.Enabled = true;
+            textBoxTimKiem.Enabled = true;
+            comboboxLoc.Enabled = true;
+        }
+
+
+
+
+
+        private void dataGridView_DSGVSV_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.RowIndex >= dataGridView_DSGVSV.Rows.Count)
+                return;
+
+            var row = dataGridView_DSGVSV.Rows[e.RowIndex];
+            var item = row.DataBoundItem;
+            if (item == null) return;
+
+            currentSelectedItem = item;
+            panelThongTin.Visible = true;
+            buttonTrangThai.Visible = true;
+            buttonSua.Visible = true;
+            lockControls();
+            KhoaThongTin();
+            LoadSelectedUser(item);
+        }
+
+
+        private void LoadSelectedUser(object obj)
+        {
+            if (obj == null) return;
+
+            string tenHinh = null;
+            string ngaySinhStr = string.Empty;
+
+            if (obj is SinhVien sv)
+            {
+                textBoxMa.Text = sv.maSinhVien ?? string.Empty;
+                textBoxHoTen.Text = sv.hoVaTen ?? string.Empty;
+                textBoxEmail.Text = sv.email ?? string.Empty;
+                comboBoxGT.Text = sv.gioiTinh ?? string.Empty;
+                IDaccount = sv.maSinhVien;
+
+                // xử lý ngày nếu nullable
+                if (sv.ngaySinh is DateTime dsv)
+                    ngaySinhStr = dsv.ToString("dd/MM/yyyy");
+                else
+                    ngaySinhStr = string.Empty;
+
+                tenHinh = sv.anhDaiDien;
+                checkTrangThai();
+            }
+            else if (obj is GiaoVien gv)
+            {
+                textBoxMa.Text = gv.maGiaoVien ?? string.Empty;
+                textBoxHoTen.Text = gv.tenGiaoVien ?? string.Empty;
+                textBoxEmail.Text = gv.email ?? string.Empty;
+                comboBoxGT.Text = gv.gioiTinh ?? string.Empty;
+                IDaccount = gv.maGiaoVien;
+
+                if (gv.ngaySinh is DateTime dgv)
+                    ngaySinhStr = dgv.ToString("dd/MM/yyyy");
+                else
+                    ngaySinhStr = string.Empty;
+
+                tenHinh = gv.anhDaiDien;
+                checkTrangThai();
+            }
+            else
+            {
+
+                return;
+            }
+
+            textBoxNS.Text = ngaySinhStr;
+
+            // load ảnh an toàn (copy vào Bitmap để không khoá file)
+            if (!string.IsNullOrWhiteSpace(tenHinh))
+            {
+                try
+                {
+                    string duongDanAnh = Path.Combine(Application.StartupPath, "Image", tenHinh);
+                    if (File.Exists(duongDanAnh))
+                    {
+                        // dispose ảnh cũ nếu có
+                        if (pictureBoxAVT.Image != null)
+                        {
+                            var old = pictureBoxAVT.Image;
+                            pictureBoxAVT.Image = null;
+                            old.Dispose();
+                        }
+
+                        using (var fs = new FileStream(duongDanAnh, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        using (var img = Image.FromStream(fs))
+                        {
+                            // copy để tránh giữ stream/khóa file
+                            var bmp = new Bitmap(img);
+                            pictureBoxAVT.Image = bmp;
+                        }
+                    }
+                    else
+                    {
+                        // file không tồn tại
+                        if (pictureBoxAVT.Image != null)
+                        {
+                            var old = pictureBoxAVT.Image;
+                            pictureBoxAVT.Image = null;
+                            old.Dispose();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // bắt lỗi hiển thị ảnh (ví dụ format lỗi). Log hoặc show nếu cần
+                    Debug.WriteLine("Lỗi load ảnh: " + ex);
+                    if (pictureBoxAVT.Image != null)
+                    {
+                        var old = pictureBoxAVT.Image;
+                        pictureBoxAVT.Image = null;
+                        old.Dispose();
+                    }
+                }
+            }
+            else
+            {
+                if (pictureBoxAVT.Image != null)
+                {
+                    var old = pictureBoxAVT.Image;
+                    pictureBoxAVT.Image = null;
+                    old.Dispose();
+                }
+            }
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            unlockControls();
+            buttonSua.Visible = false;
+            buttonTrangThai.Visible = false;
+            buttonTaoND.Visible = false;
+            labelMK.Visible = false;
+            textBoxMK.Visible = false;
+            panelThongTin.Visible = false;
+            checkBoxAD.Visible = false;
+        }
+
+        private void KhoaThongTin()
+        {
+            textBoxMa.Enabled = false;
+            textBoxHoTen.Enabled = false;
+            textBoxEmail.Enabled = false;
+            textBoxNS.Enabled = false;
+            comboBoxGT.Enabled = false;
+            buttonThayAnh.Visible = false;
+
+        }
+
+        private void MoKhoaThongTin()
+        {
+            textBoxHoTen.Enabled = true;
+            textBoxEmail.Enabled = true;
+            textBoxNS.Enabled = true;
+            comboBoxGT.Enabled = true;
+            buttonThayAnh.Visible = true; // Hiện nút chọn ảnh
+            buttonThayAnh.Text = "Thay Ảnh";
+        }
+
+        private void buttonSua_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!isEditing)
+                {
+                    // bắt đầu chỉnh sửa
+                    isEditing = true;
+                    buttonSua.Text = "Lưu";
+                    MoKhoaThongTin();
+                    buttonThayAnh.Visible = true;
+                    lockControls();
+                }
+                else
+                {
+                    // Lưu
+                    // Basic validation
+                    if (string.IsNullOrWhiteSpace(textBoxHoTen.Text))
+                    {
+                        MessageBox.Show("Họ và tên không được để trống.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    // Lấy ngày (nếu người dùng nhập)
+                    DateTime? parsedDate = null;
+                    if (!string.IsNullOrWhiteSpace(textBoxNS.Text))
+                    {
+                        if (DateTime.TryParseExact(textBoxNS.Text.Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime d))
+                            parsedDate = d;
+                        else
+                        {
+                            MessageBox.Show("Ngày sinh không đúng định dạng dd/MM/yyyy.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                    }
+
+
+
+                    // Nếu là SinhVien
+                    if (currentSelectedItem is SinhVien sv)
+                    {
+                        string ma = sv.maSinhVien;
+                        string ten = textBoxHoTen.Text.Trim();
+                        string email = textBoxEmail.Text?.Trim() ?? string.Empty;
+                        string gioiTinh = comboBoxGT.Text?.Trim() ?? string.Empty;
+                        DateTime ngaySinh = parsedDate ?? (sv.ngaySinh is DateTime ds ? ds : DateTime.MinValue);
+                        string anh = selectedImageFileName ?? sv.anhDaiDien ?? string.Empty;
+
+                        // Gọi BUS.SuaSinhVien
+                        bool ok = svBUS.SuaSinhVien(ma, ten, email, gioiTinh, ngaySinh, anh);
+
+
+                        // refresh hiển thị
+                        HienthiSV();
+                    }
+                    else if (currentSelectedItem is GiaoVien gv)
+                    {
+                        string ma = gv.maGiaoVien;
+                        string ten = textBoxHoTen.Text.Trim();
+                        string email = textBoxEmail.Text?.Trim() ?? string.Empty;
+                        string gioiTinh = comboBoxGT.Text?.Trim() ?? string.Empty;
+                        DateTime ngaySinh = parsedDate ?? (gv.ngaySinh is DateTime dg ? dg : DateTime.MinValue);
+                        string anh = selectedImageFileName ?? gv.anhDaiDien ?? string.Empty;
+
+                        // Gọi BUS.suaGiaoVien (theo BUS bạn đưa)
+                        bool ok = gvBUS.SuaGiaoVien(ma, ten, email, gioiTinh, ngaySinh, anh);
+
+                        HienthiGV();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Đối tượng không hợp lệ.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                    // reset trạng thái edit
+                    isEditing = false;
+                    buttonSua.Text = "Sửa";
+                    KhoaThongTin();
+                    buttonThayAnh.Visible = false;
+                    selectedImageFileName = null;
+                    unlockControls();
+
+                    // reselect item vừa lưu
+                    TryReselectSavedItem();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi lưu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void TryReselectSavedItem()
+        {
+            try
+            {
+                if (currentSelectedItem == null) return;
+
+                string key = null;
+                string keyName = null;
+
+                if (currentSelectedItem is SinhVien sv)
+                {
+                    key = sv.maSinhVien;
+                    keyName = "maSinhVien";
+                }
+                else if (currentSelectedItem is GiaoVien gv)
+                {
+                    key = gv.maGiaoVien;
+                    keyName = "maGiaoVien";
+                }
+                else return;
+
+                if (string.IsNullOrEmpty(key)) return;
+
+                // BindingSource có thể đang chứa List<SinhVien> hoặc List<GiaoVien>
+                var list = bs.DataSource as System.Collections.IEnumerable;
+                if (list == null) return;
+
+                int idx = -1, i = 0;
+                foreach (var it in list)
+                {
+                    if (it == null) { i++; continue; }
+                    var type = it.GetType();
+                    var prop = type.GetProperty(keyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+                    if (prop != null)
+                    {
+                        var val = prop.GetValue(it)?.ToString();
+                        if (val == key)
+                        {
+                            idx = i;
+                            break;
+                        }
+                    }
+                    i++;
+                }
+
+                if (idx >= 0 && idx < dataGridView_DSGVSV.Rows.Count)
+                {
+                    dataGridView_DSGVSV.ClearSelection();
+                    dataGridView_DSGVSV.Rows[idx].Selected = true;
+                    dataGridView_DSGVSV.FirstDisplayedScrollingRowIndex = Math.Max(0, idx - 3);
+                }
+            }
+            catch { }
+        }
+
+        private void buttonThayAnh_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "Image files|*.jpg;*.jpeg;*.png;*.bmp";
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    string fileName = Path.GetFileName(ofd.FileName);
+                    string destFolder = Path.Combine(Application.StartupPath, "Image");
+                    Directory.CreateDirectory(destFolder);
+                    string dest = Path.Combine(destFolder, fileName);
+
+                    // copy file (ghi đè nếu cần)
+                    File.Copy(ofd.FileName, dest, true);
+
+                    // update pictureBox
+                    if (pictureBoxAVT.Image != null)
+                    {
+                        var old = pictureBoxAVT.Image;
+                        pictureBoxAVT.Image = null;
+                        old.Dispose();
+                    }
+                    using (var fs = new FileStream(dest, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    using (var img = Image.FromStream(fs))
+                    {
+                        pictureBoxAVT.Image = new Bitmap(img);
+                    }
+
+                    selectedImageFileName = fileName;
+                }
+            }
+        }
+
+        private void buttonTrangThai_Click(object sender, EventArgs e)
+        {
+            TaiKhoan tk = tkBUS.GetTaiKhoanById(IDaccount);
+            if (buttonTrangThai.Text == "Khóa")
+            {
+                bool kq = tkBUS.khoaTaiKhoan(IDaccount);
+                buttonTrangThai.Text = "Mở khóa";
+            }
+            else
+            {
+                bool kq = tkBUS.moTaiKhoan(IDaccount);
+                buttonTrangThai.Text = "Khóa";
+            }
+        }
+
+        private void checkTrangThai()
+        {
+            TaiKhoan tk = tkBUS.GetTaiKhoanById(IDaccount);
+            if (tk.trangThai == 1)
+            {
+                buttonTrangThai.Text = "Khóa";
+            }
+            else
+            {
+                buttonTrangThai.Text = "Mở khóa";
+            }
+        }
+
+        private void button_ThemND_Click(object sender, EventArgs e)
+        {
+            isEditing = true;
+            clearInputFields(panelThongTin);
+            panelThongTin.Visible = true;
+            buttonTaoND.Visible = true;
+            labelMK.Visible = true;
+            textBoxMK.Visible = true;
+            textBoxMa.Enabled = true;
+            if (button_ThemND.Text == "Thêm Giáo Viên")
+            {
+                checkBoxAD.Visible = true;
+            }
+            else
+            {
+                checkBoxAD.Visible = false;
+            }
+            lockControls();
+            MoKhoaThongTin();
+            buttonThayAnh.Text = "Chọn Ảnh";
+            textBoxMK.Text = textBoxNS.Value.ToString("ddMMyyyy");
+        }
+
+
+        private void clearInputFields(Control parent)
+        {
+            foreach (Control c in parent.Controls)
+            {
+                if (c is TextBox)
+                    (c as TextBox).Text = "";
+
+                else if (c is ComboBox)
+                    (c as ComboBox).SelectedIndex = 0;
+
+                else if (c is DateTimePicker)
+                    (c as DateTimePicker).Value = DateTime.Now;
+
+                else if (c is PictureBox)
+                    (c as PictureBox).Image = null;
+            }
+        }
+
+
+        private void textBoxNS_ValueChanged(object sender, EventArgs e)
+        {
+            textBoxMK.Text = textBoxNS.Value.ToString("ddMMyyyy");
+        }
+
+        private void buttonTaoND_Click(object sender, EventArgs e)
+        {
+            if (button_ThemND.Text == "Thêm Sinh Viên")
+            {
+                string ma = textBoxMa.Text.Trim();
+                string ten = textBoxHoTen.Text.Trim();
+                string email = textBoxEmail.Text?.Trim();
+                string gioiTinh = comboBoxGT.Text?.Trim();
+                DateTime ngaySinh = textBoxNS.Value;
+                string mk = textBoxMK.Text.Trim();
+                string anh = selectedImageFileName ?? "default.jpg";
+
+                // Gọi BUS.SuaSinhVien
+                bool taoTK = tkBUS.ThemTaiKhoan(ma, mk);
+                if (!taoTK)
+                {
+                    return;
+                }
+
+                bool taoSV = svBUS.ThemSinhVien(ma, ten, email, gioiTinh, ngaySinh, anh);
+                if (!taoSV)
+                {
+                    tkBUS.xoaTaiKhoanError(ma);
+                    return;
+                }
+
+                HienthiSV();
+            }
+
+            else if (button_ThemND.Text == "Thêm Giáo Viên")
+            {
+                string ma = textBoxMa.Text.Trim();
+                string ten = textBoxHoTen.Text.Trim();
+                string email = textBoxEmail.Text?.Trim();
+                string gioiTinh = comboBoxGT.Text?.Trim();
+                DateTime ngaySinh = textBoxNS.Value;
+                string mk = textBoxMK.Text.Trim();
+                string anh = selectedImageFileName ?? "default.jpg";
+                int quyen = checkBoxAD.Checked ? 1 : 2;
+
+                // Gọi BUS.SuaSinhVien
+                bool taoTK = tkBUS.ThemTaiKhoan(ma, mk);
+                if (!taoTK)
+                {
+                    return;
+                }
+
+                bool taoGV = gvBUS.ThemGiaoVien(ma, ten, email, gioiTinh, ngaySinh, anh, quyen);
+                if (!taoGV)
+                {
+                    tkBUS.xoaTaiKhoanError(ma);
+                    return;
+                }
+
+                HienthiGV();
+            }
+
+            checkBoxAD.Checked = false;
+            checkBoxAD.Visible = false;
+            isEditing = false;
+            panelThongTin.Visible = false;
+            unlockControls();
         }
     }
 }
