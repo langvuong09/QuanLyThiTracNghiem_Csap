@@ -117,5 +117,28 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                 return false;
             }
         }
+
+        public int MaxNhomTG(int maNhom)
+        {
+            try
+            {
+                string sql = "SELECT COUNT(*) FROM nhomthamgia WHERE maNhom = @maNhom";
+
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maNhom", maNhom);
+
+                    object result = cmd.ExecuteScalar();
+                    return Convert.ToInt32(result);
+                }
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
     }
 }

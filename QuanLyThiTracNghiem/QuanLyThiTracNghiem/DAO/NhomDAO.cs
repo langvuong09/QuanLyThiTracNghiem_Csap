@@ -37,7 +37,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                             maGiaoVien = reader.GetString(4),
                             namHoc = reader.GetInt32(5),
                             hocKy = reader.GetInt32(6),
-                            soLuong = reader.GetInt32(7)
                         };
                         dsn.Add(nhom);
                     }
@@ -73,7 +72,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                             maGiaoVien = reader.GetString(4),
                             namHoc = reader.GetInt32(5),
                             hocKy = reader.GetInt32(6),
-                            soLuong = reader.GetInt32(7),
                         };
                         dsn.Add(nhom);
                     }
@@ -86,24 +84,22 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             return dsn;
         }
 
-        public bool ThemNhom(int maNhom, string tenNhom, string ghiChu, string maMonHoc,string maGiaoVien, int namHoc, int hocKy, int soLuong)
+        public bool ThemNhom(string tenNhom, string ghiChu, string maMonHoc,string maGiaoVien, int namHoc, int hocKy)
         {
             try
             {
-                string sql = "INSERT INTO nhom(maNhom, tenNhom, ghiChu, maMonHoc, maGiaoVien, namHoc, hocKy, soLuong)" +
-                    "VaLUES (@maNhom, @tenNhom, @ghiChu, @maMonHoc, @maGiaoVien, @namHoc, @hocKy, @soLuong)";
+                string sql = "INSERT INTO nhom(tenNhom, ghiChu, maMonHoc, maGiaoVien, namHoc, hocKy)" +
+                    "VaLUES (@tenNhom, @ghiChu, @maMonHoc, @maGiaoVien, @namHoc, @hocKy)";
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@maNhom", maNhom);
                     cmd.Parameters.AddWithValue("@tenNhom", tenNhom);
                     cmd.Parameters.AddWithValue("@ghiChu", ghiChu);
                     cmd.Parameters.AddWithValue("@maMonHoc", maMonHoc);
                     cmd.Parameters.AddWithValue("@maGiaoVien", maGiaoVien);
                     cmd.Parameters.AddWithValue("@namHoc", namHoc);
                     cmd.Parameters.AddWithValue("@hocKy", hocKy);
-                    cmd.Parameters.AddWithValue("@soLuong", soLuong);
 
                     int rs = cmd.ExecuteNonQuery();
                     return rs > 0;
@@ -134,11 +130,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
         }
 
-        public bool SuaNhom(int maNhom, string tenNhom, string ghiChu, string maMonHoc, string maGiaoVien, int namHoc, int hocKy, int soLuong)
+        public bool SuaNhom(int maNhom, string tenNhom, string ghiChu, string maMonHoc, string maGiaoVien, int namHoc, int hocKy)
         {
             try
             {
-                string sql = "UPDATE nhom SET maNhom = @maNhom, tenNhom = @tenNhom, ghiChu = @ghiChu, maMonHoc = @maMonHoc, maGiaoVien = @maGiaoVien, namHoc = @namHoc, hocKy = @hocKy, soLuong = @soLuong" +
+                string sql = "UPDATE nhom SET maNhom = @maNhom, tenNhom = @tenNhom, ghiChu = @ghiChu, maMonHoc = @maMonHoc, maGiaoVien = @maGiaoVien, namHoc = @namHoc, hocKy = @hocKy" +
                     " WHERE maCauHoi = @maCauHoi";
                 using (MySqlConnection conn = db.GetConnection())
                 {
@@ -151,7 +147,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                     cmd.Parameters.AddWithValue("@maGiaoVien", maGiaoVien);
                     cmd.Parameters.AddWithValue("@namHoc", namHoc);
                     cmd.Parameters.AddWithValue("@hocKy", hocKy);
-                    cmd.Parameters.AddWithValue("@soLuong", soLuong);
 
                     int rs = cmd.ExecuteNonQuery();
                     return rs > 0;

@@ -10,14 +10,14 @@ using System.Windows.Forms;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
-    public partial class Component_ThongKe : UserControl
+    public partial class Dialog_SuaNhom : UserControl
     {
-        public Component_ThongKe()
+        public Dialog_SuaNhom()
         {
             InitializeComponent();
         }
 
-        private void Component_ThongKe_Load(object sender, EventArgs e)
+        private void lblSoLuong_Click(object sender, EventArgs e)
         {
 
         }

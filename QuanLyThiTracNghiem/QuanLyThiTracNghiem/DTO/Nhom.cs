@@ -15,10 +15,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
         public string maGiaoVien { get; set; }
         public int namHoc { get; set; }
         public int hocKy { get; set; }
-        public int soLuong { get; set; }
 
         public Nhom() { }
-        public Nhom (int maNhom, string tenNhom, string ghiChu, string maMonHoc, string maGiaoVien, int namHoc, int hocKy, int soLuong)
+        public Nhom (int maNhom, string tenNhom, string ghiChu, string maMonHoc, string maGiaoVien, int namHoc, int hocKy)
         {
             this.maNhom = maNhom;
             this.tenNhom = tenNhom;
@@ -27,7 +26,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
             this.maGiaoVien = maGiaoVien;
             this.namHoc = namHoc;
             this.hocKy = hocKy;
-            this.soLuong = soLuong;
         }
         public Nhom(int maNhom, string tenNhom)
         {
@@ -38,7 +36,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
             this.maGiaoVien = "";
             this.namHoc = 0;
             this.hocKy = 0;
-            this.soLuong = 0;
         }
     }
 }

@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
-    public partial class Component_ThongKe : UserControl
+    public partial class Dialog_XemDSSVNhom : UserControl
     {
-        public Component_ThongKe()
+        public Dialog_XemDSSVNhom()
         {
             InitializeComponent();
-        }
-
-        private void Component_ThongKe_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

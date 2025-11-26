@@ -10,14 +10,24 @@ using System.Windows.Forms;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
-    public partial class Component_ThongKe : UserControl
+    public partial class Dialog_XemThongTinHocPhan : UserControl
     {
-        public Component_ThongKe()
+        public Dialog_XemThongTinHocPhan()
         {
             InitializeComponent();
         }
 
-        private void Component_ThongKe_Load(object sender, EventArgs e)
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblDeKiemTra_Click(object sender, EventArgs e)
         {
 
         }
