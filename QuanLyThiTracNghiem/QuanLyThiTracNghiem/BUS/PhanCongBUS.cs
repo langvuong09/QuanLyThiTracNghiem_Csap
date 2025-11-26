@@ -1,4 +1,5 @@
-﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
+﻿using QuanLyThiTracNghiem.MyCustom;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 using System;
 using System.Collections;
@@ -32,19 +33,37 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 
         public bool ThemPhanCong(int maPhanCong, string maMonHoc, string maGiaoVien)
         {
-            if (string.IsNullOrEmpty(maMonHoc) || string.IsNullOrEmpty(maGiaoVien))
+            if (pcDAO.ThemPhanCong(maPhanCong, maMonHoc, maGiaoVien))
+            {
+                MyDialog dlg = new MyDialog("Thêm phân công thành công!", MyDialog.SUCCESS_DIALOG);
+                dlg.ShowDialog();
+                return true;
+            }
+            else
+            {
+                MyDialog dlg = new MyDialog("Thêm phân công thất bại!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
                 return false;
-
-            return pcDAO.ThemPhanCong(maPhanCong, maMonHoc, maGiaoVien);
+            }
         }
 
         public bool XoaPhanCong(int maPhanCong)
         {
-            if (maPhanCong <= 0)
+            if (pcDAO.XoaPhanCong(maPhanCong))
+            {
+                MyDialog dlg = new MyDialog("Xóa phân công thành công!", MyDialog.SUCCESS_DIALOG);
+                dlg.ShowDialog();
+                return true;
+            }
+            else
+            {
+                MyDialog dlg = new MyDialog("Xóa phân công thất bại!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
                 return false;
-
-            return pcDAO.XoaPhanCong(maPhanCong);
+            }
         }
+
+
 
         public ArrayList GetListPhanCongOfGiaoVien(string maGiaoVien)
         {
@@ -60,6 +79,28 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             List<PhanCong> list = arr.OfType<PhanCong>().ToList();
 
             return list;
+        }
+
+        public int LayMaPhanCongTiepTheo()
+        {
+            int maxId = pcDAO.GetMaxMaPhanCong();
+            return maxId + 1;
+        }
+
+        public bool SuaPhanCong(int maPhanCong, string maMonHoc, string maGiaoVien)
+        {
+            if (pcDAO.SuaPhanCong(maPhanCong, maMonHoc, maGiaoVien))
+            {
+                MyDialog dlg = new MyDialog("Cập nhật thông tin thành công!", MyDialog.SUCCESS_DIALOG);
+                dlg.ShowDialog();
+                return true;
+            }
+            else
+            {
+                MyDialog dlg = new MyDialog("Cập nhật thông tin thất bại!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return false;
+            }
         }
     }
 }
