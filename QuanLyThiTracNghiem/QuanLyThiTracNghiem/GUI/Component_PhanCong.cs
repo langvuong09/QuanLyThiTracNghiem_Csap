@@ -21,7 +21,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         MonHocBUS mhBUS = new MonHocBUS();
         BindingSource bs = new BindingSource();
         private System.Windows.Forms.Timer searchTimer;
-
+        private object currentSelectedItem = null;
 
 
         public Component_PhanCong()
@@ -43,6 +43,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         {
             bs.DataSource = LoadData();
 
+
+            AddDeleteButtonColumn();
         }
 
         public class PhanCongView
@@ -62,21 +64,123 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
 
             var listAll = (from pc in listPC
-                            join mh in listMH on pc.maMonHoc equals mh.maMonHoc into mh_join
-                            from mh in mh_join.DefaultIfEmpty()
-                            join gv in listGV on pc.maGiaoVien equals gv.maGiaoVien into gv_join
-                            from gv in gv_join.DefaultIfEmpty()
-                            select new PhanCongView
-                            {
-                                MaPC = pc.maPhanCong.ToString(),
-                                MaMon = pc.maMonHoc,
-                                TenMon = mh?.tenMonHoc ?? "",
-                                MaGV = pc.maGiaoVien,
-                                TenGV = gv?.tenGiaoVien ?? ""
-                            }).ToList();
+                           join mh in listMH on pc.maMonHoc equals mh.maMonHoc into mh_join
+                           from mh in mh_join.DefaultIfEmpty()
+                           join gv in listGV on pc.maGiaoVien equals gv.maGiaoVien into gv_join
+                           from gv in gv_join.DefaultIfEmpty()
+                           select new PhanCongView
+                           {
+                               MaPC = pc.maPhanCong.ToString(),
+                               MaMon = pc.maMonHoc,
+                               TenMon = mh?.tenMonHoc ?? "",
+                               MaGV = pc.maGiaoVien,
+                               TenGV = gv?.tenGiaoVien ?? ""
+                           }).ToList();
 
             return listAll;
         }
+
+        private void AddDeleteButtonColumn()
+        {
+            // Nếu đã có cột thì không thêm nữa
+            if (!dataGridView_DSPC.Columns.Contains("btnDelete"))
+            {
+                DataGridViewButtonColumn btnDelete = new DataGridViewButtonColumn();
+                btnDelete.Name = "btnDelete";
+                btnDelete.HeaderText = "";
+                btnDelete.Text = "Xóa";
+                btnDelete.UseColumnTextForButtonValue = true;
+                btnDelete.Width = 70; 
+                btnDelete.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+
+                dataGridView_DSPC.Columns.Add(btnDelete);
+            }
+        }
+
+        private void dataGridView_DSPC_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (dataGridView_DSPC.Columns[e.ColumnIndex].Name == "btnDelete")
+            {
+                e.CellStyle.ForeColor = Color.Red;
+            }
+        }
+
+
+        private void dataGridView_DSPC_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0 )
+                return;
+
+            if (dataGridView_DSPC.Columns[e.ColumnIndex].Name == "btnDelete")
+            {
+                var row = dataGridView_DSPC.Rows[e.RowIndex];
+                var item = row.DataBoundItem;
+                if (item == null) return;
+
+                lockcontrols();
+                currentSelectedItem = item;
+                panel_PhanCong.Visible = true;
+                LoadPhanCong(item);
+                button_HanhDong.Text = "Xác nhận xóa";
+                button_HanhDong.ForeColor = Color.Red;
+            }
+            else
+            {
+                var row = dataGridView_DSPC.Rows[e.RowIndex];
+                var item = row.DataBoundItem;
+                if (item == null) return;
+
+                lockcontrols();
+                currentSelectedItem = item;
+                panel_PhanCong.Visible = true;
+                LoadPhanCong(item);
+                button_HanhDong.Text = "Sửa";
+            }
+        }
+
+        private void LoadPhanCong(object item)
+        {
+            if (item == null) return;
+            else if (item is PhanCongView pc)
+            {
+                textBox_MaPC.Text = pc.MaPC;
+
+                loadGiaoVien();
+                LoadMonHoc();
+
+                comboBox_GiaoVien.SelectedValue = pc.MaGV ?? "";
+                comboBox_MonHoc.SelectedValue = pc.MaMon ?? "";
+            }
+        }
+
+        private void lockcontrols()
+        {
+            dataGridView_DSPC.Enabled = false;
+            textBoxTimKiem.Enabled = false;
+            button_ThemPC.Enabled = false;
+        }
+
+        private void unlockcontrols()
+        {
+            dataGridView_DSPC.Enabled = true;
+            textBoxTimKiem.Enabled = true;
+            button_ThemPC.Enabled = true;
+        }
+
+        private void khoathongtin()
+        {
+            textBox_MaPC.Enabled = false;
+            comboBox_GiaoVien.Enabled = false;
+            comboBox_MonHoc.Enabled = false;
+        }
+
+        private void mothongtin()
+        {
+            textBox_MaPC.Enabled = true;
+            comboBox_GiaoVien.Enabled = true;
+            comboBox_MonHoc.Enabled = true;
+        }
+
 
         private static string NormalizeForSearch(string s)
         {
@@ -182,7 +286,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 keyword = NormalizeForSearch(keyword);
                 if (string.IsNullOrEmpty(keyword))
                 {
-                    bs.DataSource = LoadData();            }
+                    bs.DataSource = LoadData();
+                }
                 else
                 {
                     var all = LoadData();
@@ -195,6 +300,114 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             {
                 MessageBox.Show("Lỗi tìm kiếm: " + ex.Message);
             }
+        }
+
+        private void LoadMonHoc()
+        {
+            var listMH = mhBUS.GetAllMonHoc() ?? new List<MonHoc>();
+            var listWithDefault = new List<MonHoc>();
+            listWithDefault.Add(new MonHoc { maMonHoc = "", tenMonHoc = "-- Chọn môn --" });
+            listWithDefault.AddRange(listMH);
+
+            comboBox_MonHoc.DataSource = null;
+            comboBox_MonHoc.DataSource = listWithDefault;
+            comboBox_MonHoc.DisplayMember = "tenMonHoc";
+            comboBox_MonHoc.ValueMember = "maMonHoc";
+            comboBox_MonHoc.SelectedIndex = 0;
+        }
+
+        private void loadGiaoVien()
+        {
+            var listGV = gvBUS.GetAllGiaoVien() ?? new List<GiaoVien>();
+            // chèn option chọn
+            var listWithDefault = new List<GiaoVien>();
+            listWithDefault.Add(new GiaoVien { maGiaoVien = "", tenGiaoVien = "-- Chọn giáo viên --" });
+            listWithDefault.AddRange(listGV);
+
+            comboBox_GiaoVien.DataSource = null;
+            comboBox_GiaoVien.DataSource = listWithDefault;
+            comboBox_GiaoVien.DisplayMember = "tenGiaoVien";
+            comboBox_GiaoVien.ValueMember = "maGiaoVien";
+            comboBox_GiaoVien.SelectedIndex = 0;
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            panel_PhanCong.Visible = false;
+            khoathongtin();
+            unlockcontrols();
+        }
+
+        private void button_ThemPC_Click(object sender, EventArgs e)
+        {
+            lockcontrols();
+            mothongtin();
+            panel_PhanCong.Visible = true;
+            button_HanhDong.Text = "Thêm phân công";
+            textBox_MaPC.Text = pcBUS.LayMaPhanCongTiepTheo().ToString();
+            loadGiaoVien();
+            LoadMonHoc();
+        }
+
+        private void button_HanhDong_Click(object sender, EventArgs e)
+        {
+            if (button_HanhDong.Text == "Xác nhận xóa")
+            {
+                if (pcBUS.XoaPhanCong(int.Parse(textBox_MaPC.Text)))
+                {
+                    panel_PhanCong.Visible = false;
+                    bs.DataSource = LoadData();
+                    bs.ResetBindings(false);
+                    unlockcontrols();
+                }
+                else
+                {
+                    return;
+                }
+
+            }
+
+            else if (button_HanhDong.Text == "Thêm phân công")
+            {
+                string maMH = comboBox_MonHoc.SelectedValue as string;
+                string maGV = comboBox_GiaoVien.SelectedValue as string;
+                if (pcBUS.ThemPhanCong(int.Parse(textBox_MaPC.Text), maMH, maGV))
+                {
+                    panel_PhanCong.Visible = false;
+                    bs.DataSource = LoadData();
+                    bs.ResetBindings(false);
+                    unlockcontrols();
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            else if (button_HanhDong.Text == "Sửa")
+            {
+                mothongtin();
+                textBox_MaPC.Enabled = false;
+                button_HanhDong.Text = "Lưu";
+            }
+
+            else if (button_HanhDong.Text == "Lưu")
+            {
+                string maMH = comboBox_MonHoc.SelectedValue as string;
+                string maGV = comboBox_GiaoVien.SelectedValue as string;
+                if (pcBUS.SuaPhanCong(int.Parse(textBox_MaPC.Text), maMH, maGV))
+                {
+                    panel_PhanCong.Visible = false;
+                    bs.DataSource = LoadData();
+                    bs.ResetBindings(false);
+                    unlockcontrols();
+                }
+                else
+                {
+                    return;
+                }
+            }
+            
         }
     }
 }

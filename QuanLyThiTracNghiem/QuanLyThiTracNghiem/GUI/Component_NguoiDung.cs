@@ -308,7 +308,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
             else
             {
-
                 return;
             }
 
