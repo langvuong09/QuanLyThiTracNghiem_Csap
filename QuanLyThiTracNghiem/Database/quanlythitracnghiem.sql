@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 26, 2025 lúc 01:43 PM
+-- Thời gian đã tạo: Th10 30, 2025 lúc 04:40 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -1674,7 +1674,8 @@ INSERT INTO `nhom` (`maNhom`, `tenNhom`, `ghiChu`, `maMonHoc`, `maGiaoVien`, `na
 (17, 'Nhóm 1', 'Lập trình web frontend', 'CT109', 'GV006', 2025, 1),
 (18, 'Nhóm 2', 'Backend PHP', 'CT109', 'GV007', 2025, 1),
 (19, 'Nhóm 1', 'An toàn hệ thống', 'CT110', 'GV005', 2025, 2),
-(20, 'Nhóm 2', 'Mã hóa dữ liệu', 'CT110', 'GV009', 2025, 2);
+(20, 'Nhóm 2', 'Mã hóa dữ liệu', 'CT110', 'GV009', 2025, 2),
+(21, 'Cuowngf', 'hehehe', 'CT101', 'GV007', 2025, 1);
 
 -- --------------------------------------------------------
 
@@ -1706,6 +1707,17 @@ CREATE TABLE `nhomthamgia` (
   `maNhom` int(11) NOT NULL,
   `maSinhVien` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `nhomthamgia`
+--
+
+INSERT INTO `nhomthamgia` (`maNhom`, `maSinhVien`) VALUES
+(21, '3122410006'),
+(1, '111111'),
+(3, '111111'),
+(21, '111111'),
+(1, '3122410006');
 
 -- --------------------------------------------------------
 
@@ -1992,6 +2004,12 @@ ALTER TABLE `thongbao-nhom`
 --
 -- AUTO_INCREMENT cho các bảng đã đổ
 --
+
+--
+-- AUTO_INCREMENT cho bảng `nhom`
+--
+ALTER TABLE `nhom`
+  MODIFY `maNhom` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT cho bảng `thongbao`

@@ -185,7 +185,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         public ArrayList getListNhomTheoMaSinhVien (String maSinhVien)
         {
             ArrayList dsn = new ArrayList();
-                        try
+            try
             {
                 using (MySqlConnection conn = db.GetConnection())
                 {
@@ -207,7 +207,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
             catch (Exception ex)
             {
-                Console.WriteLine("DAO=> Lối khi lấy danh sách nhóm theo mã sinh viên",ex.Message);
                 return null;
             }
 

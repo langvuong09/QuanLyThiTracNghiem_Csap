@@ -28,6 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            colmaDe = new DataGridViewTextBoxColumn();
+            coltgBatDau = new DataGridViewTextBoxColumn();
+            coltgKetThuc = new DataGridViewTextBoxColumn();
+            colTongDiem = new DataGridViewTextBoxColumn();
             lblTitle = new Label();
             lblMonHoc = new Label();
             lblNhom = new Label();
@@ -51,7 +56,6 @@
             lblTitle.Size = new Size(199, 45);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "THÔNG TIN";
-            lblTitle.Click += label1_Click;
             // 
             // lblMonHoc
             // 
@@ -92,15 +96,55 @@
             lblTongBaiKiemTra.Size = new Size(193, 30);
             lblTongBaiKiemTra.TabIndex = 4;
             lblTongBaiKiemTra.Text = "Tổng bài kiểm tra:";
-            lblTongBaiKiemTra.Click += label5_Click;
             // 
             // dgvBaiKiemTra
             // 
+            dgvBaiKiemTra.AllowUserToAddRows = false;
+            dgvBaiKiemTra.AllowUserToDeleteRows = false;
             dgvBaiKiemTra.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvBaiKiemTra.BackgroundColor = SystemColors.ButtonFace;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(101, 224, 199);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            dgvBaiKiemTra.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dgvBaiKiemTra.ColumnHeadersHeight = 29;
+            dgvBaiKiemTra.Columns.AddRange(new DataGridViewColumn[] {colmaDe, coltgBatDau, coltgKetThuc, colTongDiem });
+            dgvBaiKiemTra.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#9BBCFF");           
+            dgvBaiKiemTra.EnableHeadersVisualStyles = false;
             dgvBaiKiemTra.Location = new Point(3, 210);
+            dgvBaiKiemTra.MultiSelect = false;
             dgvBaiKiemTra.Name = "dgvBaiKiemTra";
+            dgvBaiKiemTra.ReadOnly = true;
+            dgvBaiKiemTra.RowHeadersWidth = 51;
             dgvBaiKiemTra.Size = new Size(1176, 493);
             dgvBaiKiemTra.TabIndex = 5;
+            // 
+            // colmaDe
+            // 
+            colmaDe.HeaderText = "Mã đề";
+            colmaDe.MinimumWidth = 200;
+            colmaDe.Name = "colmaDe";
+            colmaDe.ReadOnly = false;
+            // 
+            // coltgBatDau
+            // 
+            coltgBatDau.HeaderText = "Thời gian bắt đầu";
+            coltgBatDau.MinimumWidth = 360;
+            coltgBatDau.Name = "coltgBatDau";
+            coltgBatDau.ReadOnly = false;
+            // 
+            // coltgKetThuc
+            // 
+            coltgKetThuc.HeaderText = "Thời gian kết thúc";
+            coltgKetThuc.MinimumWidth = 360;
+            coltgKetThuc.Name = "coltgKetThuc";
+            coltgKetThuc.ReadOnly = false;
+            // 
+            // colTongDiem
+            // 
+            colTongDiem.HeaderText = "Tổng điểm";
+            colTongDiem.MinimumWidth = 210;
+            colTongDiem.Name = "colTongDiem";
+            colTongDiem.ReadOnly = false;
             // 
             // lblDeKiemTra
             // 
@@ -111,13 +155,13 @@
             lblDeKiemTra.Size = new Size(275, 30);
             lblDeKiemTra.TabIndex = 6;
             lblDeKiemTra.Text = "DANH SÁCH ĐỀ KIỂM TRA";
-            lblDeKiemTra.Click += lblDeKiemTra_Click;
             // 
             // txtMonHoc
             // 
             txtMonHoc.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtMonHoc.Location = new Point(160, 63);
             txtMonHoc.Name = "txtMonHoc";
+            txtMonHoc.Enabled = false;
             txtMonHoc.Size = new Size(337, 34);
             txtMonHoc.TabIndex = 7;
             // 
@@ -126,6 +170,7 @@
             txtNhom.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtNhom.Location = new Point(160, 104);
             txtNhom.Name = "txtNhom";
+            txtNhom.Enabled = false;
             txtNhom.Size = new Size(337, 34);
             txtNhom.TabIndex = 8;
             // 
@@ -134,6 +179,7 @@
             txtGiangVien.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtGiangVien.Location = new Point(788, 63);
             txtGiangVien.Name = "txtGiangVien";
+            txtGiangVien.Enabled = false;
             txtGiangVien.Size = new Size(330, 34);
             txtGiangVien.TabIndex = 9;
             // 
@@ -142,6 +188,7 @@
             txtTongbaiKiemTra.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtTongbaiKiemTra.Location = new Point(788, 106);
             txtTongbaiKiemTra.Name = "txtTongbaiKiemTra";
+            txtTongbaiKiemTra.Enabled = false;
             txtTongbaiKiemTra.Size = new Size(330, 34);
             txtTongbaiKiemTra.TabIndex = 10;
             // 
@@ -168,7 +215,11 @@
         }
 
         #endregion
-
+        private DataGridViewCellStyle dataGridViewCellStyle1;
+        private DataGridViewTextBoxColumn colmaDe;
+        private DataGridViewTextBoxColumn coltgBatDau;  
+        private DataGridViewTextBoxColumn coltgKetThuc;  
+        private DataGridViewTextBoxColumn colTongDiem;  
         private Label lblTitle;
         private Label lblMonHoc;
         private Label lblNhom;

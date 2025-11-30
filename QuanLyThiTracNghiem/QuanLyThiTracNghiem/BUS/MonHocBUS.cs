@@ -253,7 +253,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
         }
 
-        public MonHoc GetMaMonHoc(string tenMonHoc)
+        public MonHoc GetMonHocTheoTen(string tenMonHoc)
         {
             var dsMonHoc = monHocDAO.GetListMonHoc().Cast<MonHoc>();
             MonHoc monHoc = dsMonHoc

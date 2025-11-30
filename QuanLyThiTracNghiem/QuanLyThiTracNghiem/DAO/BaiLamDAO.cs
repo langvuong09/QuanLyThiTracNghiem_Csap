@@ -11,7 +11,7 @@ using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
 {
-    internal class SinhVien_DeKiemTraDAO
+    internal class BaiLamDAO
     {
         private MyConnect db = new MyConnect();
         public ArrayList GetListBaiLam()
@@ -35,6 +35,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                             maSinhVien = reader.GetString(1),
                             maDe = reader.GetInt32(2),
                             tongDiem = reader.GetInt32(3),
+                            thoiGianBatDau = reader.GetDateTime(4),
+                            thoiGianNopBai = reader.GetDateTime(5)
                         };
                         listSVDKT.Add(sd);
                     }
@@ -46,7 +48,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             return listSVDKT;
         }
 
-        public ArrayList GetListSVOfBaiLam(string maSinhVien)
+        public ArrayList GetListBaiLamOfSV(string maSinhVien)
         {
             ArrayList listSVDKT = new ArrayList();
             try
@@ -69,6 +71,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                             maSinhVien = reader.GetString(1),
                             maDe = reader.GetInt32(2),
                             tongDiem = reader.GetInt32(3),
+                            thoiGianBatDau = reader.GetDateTime(4),
+                            thoiGianNopBai = reader.GetDateTime(5)
                         };
                         listSVDKT.Add(sd);
                     }
@@ -104,6 +108,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                             maSinhVien = reader.GetString(1),
                             maDe = reader.GetInt32(2),
                             tongDiem = reader.GetInt32(3),
+                            thoiGianBatDau = reader.GetDateTime(4),
+                            thoiGianNopBai = reader.GetDateTime(5)
                         };
                         listSVDKT.Add(sd);
                     }
@@ -158,6 +164,33 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             {
                 return false;
             }
+        }
+
+        public int GetCountBaiLam(int maDe)
+        {
+            int countMaBaiLam = 0;
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT COUNT(*) FROM bailam WHERE maDe = @maDe";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maDe", maDe);
+                    object result = cmd.ExecuteScalar();
+
+                    if (result != DBNull.Value && result != null)
+                    {
+                        countMaBaiLam = Convert.ToInt32(result);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                countMaBaiLam = 0;
+            }
+            return countMaBaiLam;
         }
 
         // Lấy max MaBaiLam

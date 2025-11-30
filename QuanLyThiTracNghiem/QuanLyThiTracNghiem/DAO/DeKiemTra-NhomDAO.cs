@@ -147,5 +147,37 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
             return listDKT_Nhom;
         }
+
+        public ArrayList GetListDKT_NhomByMaNhom(int maNhom)
+        {
+            ArrayList listDKT_Nhom = new ArrayList();
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT * FROM `dekiemtra-nhom` WHERE maNhom = @maNhom";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maNhom", maNhom);
+
+                    MySqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        DeKiemTra_Nhom dkt_nhom = new DeKiemTra_Nhom
+                        {
+                            maDe = reader.GetInt32(0),
+                            maNhom = reader.GetInt32(1),
+                        };
+                        listDKT_Nhom.Add(dkt_nhom);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            return listDKT_Nhom;
+        }
     }
 }

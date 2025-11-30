@@ -1,4 +1,5 @@
-﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
+﻿using QuanLyThiTracNghiem.MyCustom;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
 
 using System;
 using System.Collections;
@@ -42,6 +43,50 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
                 DocListNhomThamGiaOfMaSV(maSinhVien);
             }
             return listNhomThamGiaOfmaSV;
+        }
+
+        public bool ThemNhomThamGia(string maNhom, string maSV)
+        {
+            try
+            {
+                int maN = Convert.ToInt32(maNhom);
+                if (nhomThamGiaDAO.ThemNhomTG(maN, maSV))
+                {
+                    return true;
+                }else
+                {
+                    return false;
+                }
+            }catch(Exception ex)
+            {
+                MyDialog dlg = new MyDialog("Error! "+ex, MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return false;
+            }
+        }
+
+        public bool XoaNhomThamGiaOfSV(string maSV)
+        {
+            try
+            {
+                if(nhomThamGiaDAO.XoanhomTG(maSV))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                   return false;
+            }
+        }
+
+        public int MaxSVMoiNhom(int maNhom)
+        {
+            return nhomThamGiaDAO.MaxNhomTG(maNhom);
         }
     }
 }

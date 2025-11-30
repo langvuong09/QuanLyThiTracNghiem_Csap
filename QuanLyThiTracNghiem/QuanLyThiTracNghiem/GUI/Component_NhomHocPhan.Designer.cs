@@ -37,6 +37,8 @@
             txtTimKiem = new TextBox();
             btnReload = new Button();
             btnTaoNhom = new Button();
+            btnDSDeKiemTra = new Button();
+            btnDSSV = new Button();
             SuspendLayout();
             // 
             // pnNhom
@@ -52,7 +54,7 @@
             btnXoa.BackColor = Color.Salmon;
             btnXoa.BackgroundImage = (Image)resources.GetObject("btnXoa.BackgroundImage");
             btnXoa.BackgroundImageLayout = ImageLayout.Center;
-            btnXoa.Location = new Point(159, 113);
+            btnXoa.Location = new Point(133, 113);
             btnXoa.Name = "btnXoa";
             btnXoa.Size = new Size(74, 54);
             btnXoa.TabIndex = 30;
@@ -122,11 +124,37 @@
             btnTaoNhom.Text = "     TẠO NHÓM";
             btnTaoNhom.UseVisualStyleBackColor = false;
             // 
+            // btnDSDeKiemTra
+            // 
+            btnDSDeKiemTra.BackColor = Color.DarkSlateGray;
+            btnDSDeKiemTra.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnDSDeKiemTra.ForeColor = SystemColors.ButtonHighlight;
+            btnDSDeKiemTra.Location = new Point(511, 113);
+            btnDSDeKiemTra.Name = "btnDSDeKiemTra";
+            btnDSDeKiemTra.Size = new Size(261, 54);
+            btnDSDeKiemTra.TabIndex = 32;
+            btnDSDeKiemTra.Text = "Danh sách đề kiểm tra";
+            btnDSDeKiemTra.UseVisualStyleBackColor = false;
+            // 
+            // btnDSSV
+            // 
+            btnDSSV.BackColor = Color.DarkSlateGray;
+            btnDSSV.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnDSSV.ForeColor = SystemColors.ButtonHighlight;
+            btnDSSV.Location = new Point(234, 113);
+            btnDSSV.Name = "btnDSSV";
+            btnDSSV.Size = new Size(250, 54);
+            btnDSSV.TabIndex = 33;
+            btnDSSV.Text = "Danh sách sinh viên";
+            btnDSSV.UseVisualStyleBackColor = false;
+            // 
             // Component_NhomHocPhan
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
+            Controls.Add(btnDSSV);
+            Controls.Add(btnDSDeKiemTra);
             Controls.Add(pnNhom);
             Controls.Add(btnXoa);
             Controls.Add(button6);
@@ -151,5 +179,7 @@
         private TextBox txtTimKiem;
         private Button btnReload;
         private Button btnTaoNhom;
+        public Button btnDSDeKiemTra;
+        public Button btnDSSV;
     }
 }

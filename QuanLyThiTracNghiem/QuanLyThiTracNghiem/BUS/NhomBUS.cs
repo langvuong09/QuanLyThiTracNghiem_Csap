@@ -39,6 +39,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
         }
         private ArrayList listNhom;
         private ArrayList listNhomTheoMonHoc;
+        private ArrayList listNhomTheoMaSV;
         public void DocListNhom()
         {
             this.listNhom = nhomDAO.GetListNhom();
@@ -63,6 +64,19 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
                 DocListNhomTheoMonHoc(maMonHoc);
             }
             return listNhomTheoMonHoc;
+        }
+
+        public void DocListNhomTheoMaSV(string maSinhVien)
+        {
+            this.listNhomTheoMaSV = nhomDAO.getListNhomTheoMaSinhVien(maSinhVien);
+        }
+        public ArrayList GetListNhomTheoMaSV(string maSinhVien)
+        {
+            if (listNhomTheoMaSV == null)
+            {
+                DocListNhomTheoMaSV(maSinhVien);
+            }
+            return listNhomTheoMaSV;
         }
 
         public Nhom GetNhomTheoMa(int maNhom)
@@ -144,7 +158,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
                     return false;
                 }
 
-                string maMonHoc = monHocBUS.GetMaMonHoc(monHoc).maMonHoc;
+                string maMonHoc = monHocBUS.GetMonHocTheoTen(monHoc).maMonHoc;
                 int namH = Convert.ToInt32(namHoc);
                 int hocK = Convert.ToInt32(hocKy);
 
@@ -204,7 +218,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
                 }
 
                 int maN = Convert.ToInt32(maNhom);
-                string maMonHoc = monHocBUS.GetMaMonHoc(monHoc).maMonHoc;
+                string maMonHoc = monHocBUS.GetMonHocTheoTen(monHoc).maMonHoc;
                 int namH = Convert.ToInt32(namHoc);
                 int hocK = Convert.ToInt32(hocKy);
 
@@ -258,6 +272,23 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
                 dlg.ShowDialog();
                 return false;
             }
+        }
+
+        public ArrayList GetListNhomTheoMonHoc(string tenMonHoc)
+        {
+            ArrayList dsn = nhomDAO.GetListNhom();
+            ArrayList dsmh = monHocBUS.GetListDSMonHoc(tenMonHoc);
+            ArrayList dsTimKiem = new ArrayList();
+
+            foreach (Nhom n in dsn)
+            {
+                foreach (MonHoc mh in dsmh)
+                    if (n.maMonHoc == mh.maMonHoc)
+                    {
+                        dsTimKiem.Add(n);
+                    }
+            }
+            return dsTimKiem;
         }
 
         /*

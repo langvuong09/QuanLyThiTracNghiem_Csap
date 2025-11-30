@@ -184,9 +184,9 @@
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(btnLuu);
             Controls.Add(cbxGiangVien);
-            Controls.Add(cbxHocKy);
-            Controls.Add(cbxNamHoc);
             Controls.Add(cbxMonHoc);
+            Controls.Add(cbxNamHoc);
+            Controls.Add(cbxHocKy);
             Controls.Add(txtGhiChu);
             Controls.Add(txtTenNhom);
             Controls.Add(lblGiangVien);

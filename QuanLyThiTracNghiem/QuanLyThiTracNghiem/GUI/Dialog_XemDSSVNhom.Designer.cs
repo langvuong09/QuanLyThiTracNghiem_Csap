@@ -1,4 +1,6 @@
-﻿namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
+﻿using System.Windows.Forms;
+
+namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
     partial class Dialog_XemDSSVNhom
     {
@@ -28,6 +30,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            colSTT = new DataGridViewTextBoxColumn();
+            colMaSV = new DataGridViewTextBoxColumn();
+            colTenSV = new DataGridViewTextBoxColumn();
+            colEmail = new DataGridViewTextBoxColumn();
+            colGioiTinh = new DataGridViewTextBoxColumn();
+            colNgaySinh = new DataGridViewTextBoxColumn();
             lblTitle = new Label();
             btnTimKiem = new Button();
             txtTimKIem = new TextBox();
@@ -35,8 +44,8 @@
             txtMaSV = new TextBox();
             btnThem = new Button();
             lblMaSV = new Label();
-            dataGridView1 = new DataGridView();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            dgvSinhVien = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dgvSinhVien).BeginInit();
             SuspendLayout();
             // 
             // lblTitle
@@ -111,19 +120,78 @@
             lblMaSV.TabIndex = 6;
             lblMaSV.Text = "Mã SV:";
             // 
-            // dataGridView1
+            // dgvSinhVien
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(30, 160);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(1057, 571);
-            dataGridView1.TabIndex = 7;
+            dgvSinhVien.AllowUserToAddRows = false;
+            dgvSinhVien.AllowUserToDeleteRows = false;
+            dgvSinhVien.BackgroundColor = SystemColors.ButtonFace;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(155, 188, 255);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            dgvSinhVien.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dgvSinhVien.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvSinhVien.Columns.AddRange(new DataGridViewColumn[] {colSTT, colMaSV, colTenSV, colEmail, colGioiTinh, colNgaySinh });
+            dgvSinhVien.EnableHeadersVisualStyles = false;
+            dgvSinhVien.Location = new Point(30, 160);
+            dgvSinhVien.MultiSelect = false;
+            dgvSinhVien.Name = "dgvSinhVien";
+            dgvSinhVien.ReadOnly = true;
+            dgvSinhVien.RowHeadersWidth = 30;
+            dgvSinhVien.Size = new Size(1057, 571);
+            dgvSinhVien.TabIndex = 7;
+            // 
+            // colSTT
+            // 
+            colSTT.HeaderText = "STT";
+            colSTT.MinimumWidth = 70;
+            colSTT.Name = "colSTT";
+            colSTT.ReadOnly = true;
+            colSTT.Width = 70;
+            // 
+            // colMaSV
+            // 
+            colMaSV.HeaderText = "MSSV";
+            colMaSV.MinimumWidth = 100;
+            colMaSV.Name = "colMaSV";
+            colMaSV.ReadOnly = true;
+            colMaSV.Width = 100;
+            // 
+            // colTenSV
+            // 
+            colTenSV.HeaderText = "Họ và tên";
+            colTenSV.MinimumWidth = 205;
+            colTenSV.Name = "colTenSV";
+            colTenSV.ReadOnly = true;
+            colTenSV.Width = 205;
+            // 
+            // colEmail
+            // 
+            colEmail.HeaderText = "Email";
+            colEmail.MinimumWidth = 150;
+            colEmail.Name = "colEmail";
+            colEmail.ReadOnly = true;
+            colEmail.Width = 350;
+            // 
+            // colGioiTinh
+            // 
+            colGioiTinh.HeaderText = "Giới tính";
+            colGioiTinh.MinimumWidth = 100;
+            colGioiTinh.Name = "colGioiTinh";
+            colGioiTinh.ReadOnly = true;
+            colGioiTinh.Width = 100;
+            // 
+            // colNgaySinh
+            // 
+            colNgaySinh.HeaderText = "Ngày sinh";
+            colNgaySinh.MinimumWidth = 200;
+            colNgaySinh.Name = "colNgaySinh";
+            colNgaySinh.ReadOnly = true;
+            colNgaySinh.Width = 200;
             // 
             // Dialog_XemDSSVNhom
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(dataGridView1);
+            Controls.Add(dgvSinhVien);
             Controls.Add(lblMaSV);
             Controls.Add(txtMaSV);
             Controls.Add(btnThem);
@@ -133,13 +201,19 @@
             Controls.Add(lblTitle);
             Name = "Dialog_XemDSSVNhom";
             Size = new Size(1121, 734);
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvSinhVien).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
+        private DataGridViewCellStyle dataGridViewCellStyle1;
+        private DataGridViewTextBoxColumn colSTT;
+        private DataGridViewTextBoxColumn colMaSV;
+        private DataGridViewTextBoxColumn colTenSV;
+        private DataGridViewTextBoxColumn colEmail;
+        private DataGridViewTextBoxColumn colGioiTinh;
+        private DataGridViewTextBoxColumn colNgaySinh;
         private Label lblTitle;
         private Button btnTimKiem;
         private TextBox txtTimKIem;
@@ -147,6 +221,6 @@
         private TextBox txtMaSV;
         private Button btnThem;
         private Label lblMaSV;
-        private DataGridView dataGridView1;
+        private DataGridView dgvSinhVien;
     }
 }

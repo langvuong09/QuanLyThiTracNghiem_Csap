@@ -26,7 +26,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
     {
 
         private DeKiemTraDAO deKiemTraDAO = new DeKiemTraDAO();
-        private SinhVien_DeKiemTraDAO SinhVien_DeKiemTraDAO = new SinhVien_DeKiemTraDAO();
+        private BaiLamDAO SinhVien_DeKiemTraDAO = new BaiLamDAO();
+        private DeKiemTra_NhomDAO deKiemTra_NhomDAO = new DeKiemTra_NhomDAO();
         public DeKiemTraBUS() { }
         
         /*
@@ -360,7 +361,24 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 
                 flowLayoutPanel_Main.Controls.Add(item);
             }
+        }
 
+        public ArrayList GetListDeKiemTraTheoMaNhom(int maNhom)
+        {
+            ArrayList dsdkt = deKiemTraDAO.GetListDeKiemTra();
+            ArrayList dsdkt_n = deKiemTra_NhomDAO.GetListDKT_NhomByMaNhom(maNhom);
+            ArrayList arrayList = new ArrayList();
+            foreach (DeKiemTra dkt in dsdkt)
+            {
+                foreach (DeKiemTra_Nhom dkt_n in dsdkt_n)
+                {
+                    if (dkt.maDe == dkt_n.maDe)
+                    {
+                        arrayList.Add(dkt);
+                    }
+                }
+            }
+            return arrayList;
         }
     }
 }

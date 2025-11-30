@@ -114,7 +114,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private void btnThem_Click(object sender, EventArgs e)
         {
             string tenMonHoc = cbxMonHoc.SelectedItem?.ToString();
-            string maMonHoc = monHocBus.GetMaMonHoc(tenMonHoc).maMonHoc;
+            string maMonHoc = monHocBus.GetMonHocTheoTen(tenMonHoc).maMonHoc;
             int maThongBao = thongBaoBUS.GetMaxMaThongBao() + 1;
             string maTB = Convert.ToString(maThongBao);
             bool flag1 = thongBaoBUS.ThemThongBao(maTB, txtTieuDe.Text, txtNoiDung.Text, maMonHoc);

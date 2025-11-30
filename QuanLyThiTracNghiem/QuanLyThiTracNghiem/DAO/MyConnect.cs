@@ -9,11 +9,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         private string server = "localhost";
         private string port = "3306";
         private string database = "quanlythitracnghiem";
-<<<<<<< HEAD
         private string username = "qluser";
-=======
-        private string username = "root";
->>>>>>> f9a208312e10b0c304aad17ae441df21812228c1
+        //private string username = "root";
         private string password = "";
         public MySqlConnection GetConnection()
         {

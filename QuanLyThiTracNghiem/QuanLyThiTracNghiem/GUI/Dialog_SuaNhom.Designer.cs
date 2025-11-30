@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            btnLuu = new Button();
+            btnCapNhat = new Button();
             cbxGiangVien = new ComboBox();
             cbxHocKy = new ComboBox();
             cbxNamHoc = new ComboBox();
@@ -46,15 +46,15 @@
             // 
             // btnLuu
             // 
-            btnLuu.BackColor = Color.DodgerBlue;
-            btnLuu.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnLuu.ForeColor = SystemColors.Control;
-            btnLuu.Location = new Point(77, 445);
-            btnLuu.Name = "btnLuu";
-            btnLuu.Size = new Size(544, 48);
-            btnLuu.TabIndex = 27;
-            btnLuu.Text = "CẬP NHẬT";
-            btnLuu.UseVisualStyleBackColor = false;
+            btnCapNhat.BackColor = Color.DodgerBlue;
+            btnCapNhat.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCapNhat.ForeColor = SystemColors.Control;
+            btnCapNhat.Location = new Point(77, 445);
+            btnCapNhat.Name = "btnLuu";
+            btnCapNhat.Size = new Size(544, 48);
+            btnCapNhat.TabIndex = 27;
+            btnCapNhat.Text = "CẬP NHẬT";
+            btnCapNhat.UseVisualStyleBackColor = false;
             // 
             // cbxGiangVien
             // 
@@ -182,7 +182,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(btnLuu);
+            Controls.Add(btnCapNhat);
             Controls.Add(cbxGiangVien);
             Controls.Add(cbxHocKy);
             Controls.Add(cbxNamHoc);
@@ -204,7 +204,7 @@
 
         #endregion
 
-        private Button btnLuu;
+        private Button btnCapNhat;
         private ComboBox cbxGiangVien;
         private ComboBox cbxHocKy;
         private ComboBox cbxNamHoc;

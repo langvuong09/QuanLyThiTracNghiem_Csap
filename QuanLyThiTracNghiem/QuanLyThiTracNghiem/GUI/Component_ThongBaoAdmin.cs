@@ -19,7 +19,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             AddEvents();
         }
 
-        public void AddEvents()
+        private void AddEvents()
         {
             LoadDataLenTableThongBao();
             btnTaoThongBao.Click += btnTaoThongBao_Click;
@@ -29,7 +29,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             btnXem.Click += btnXem_Click;
         }
 
-        public void btnXoa_Click(object sender, EventArgs e)
+        private void btnXoa_Click(object sender, EventArgs e)
         {
             if (pnDangChon == null)
             {
@@ -62,7 +62,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        public void btnXem_Click(object sender, EventArgs e)
+        private void btnXem_Click(object sender, EventArgs e)
         {
             if(pnDangChon == null)
             {
@@ -83,6 +83,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
             string text = lblTieuDe.Text;
             string maThongBao = text.Substring(text.IndexOf(":") + 1).Trim();
+
             Dialog_XemThongBao xemThongBao = new Dialog_XemThongBao(maThongBao);
             xemThongBao.Dock = DockStyle.Fill;
 
@@ -90,7 +91,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dlgXemThongBao.Controls.Add(xemThongBao);
             dlgXemThongBao.ShowDialog();
         }
-        public void btnTimKiem_Click(object sender, EventArgs e)
+        private void btnTimKiem_Click(object sender, EventArgs e)
         {
             if(txtTimKiem.Text == "")
             {
@@ -100,7 +101,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
             LoadDataLenTableThongBao(txtTimKiem.Text);
         }
-        public void btnTaoThongBao_Click(object sender, EventArgs e)
+        private void btnTaoThongBao_Click(object sender, EventArgs e)
         {
             Form dlgTaoThongBao = new Form();
             dlgTaoThongBao.Text = "Tạo thông báo";
@@ -116,13 +117,13 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dlgTaoThongBao.Controls.Add(taoThongBao);
             dlgTaoThongBao.ShowDialog();
         }
-        public void btnReload_Click(object sender, EventArgs e)
+        private void btnReload_Click(object sender, EventArgs e)
         {
             LoadDataLenTableThongBao();
             txtTimKiem.Text = "";
         }
         
-        public void LoadDataLenTableThongBao()
+        private void LoadDataLenTableThongBao()
         {
             pnThongBao.Controls.Clear();
             thongBaoBUS.DocListThongBao();
@@ -206,7 +207,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        public void LoadDataLenTableThongBao(string tenMonHoc)
+        private void LoadDataLenTableThongBao(string tenMonHoc)
         {
             pnThongBao.Controls.Clear();
 
