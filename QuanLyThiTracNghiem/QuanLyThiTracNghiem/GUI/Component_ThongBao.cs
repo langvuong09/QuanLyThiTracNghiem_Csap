@@ -8,22 +8,22 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {   
     public partial class Component_ThongBao : UserControl
     {
-        ThongBaoBUS thongBaoBUS = new ThongBaoBUS();
-        ThongBao_NhomBUS thongBao_NhomBUS = new ThongBao_NhomBUS();
-        MonHocBUS monHocBUS = new MonHocBUS();
-        NhomBUS nhomBUS = new NhomBUS();
-        NhomThamGiaBUS nhomThamGiaBUS = new NhomThamGiaBUS();
+        
         private Panel pnDangChon = null;
         public Component_ThongBao()
         {
-            InitializeComponent();
+            InitializeComponent();            
             AddEvents();
+            this.VisibleChanged += Component_ThongBao_VisibleChanged;
         }
 
         private void AddEvents()
         {
-            LoadDataLenTableThongBao(UserSession.userId);
             btnReload.Click += btnReload_Click;
+        }
+        private void Component_ThongBao_VisibleChanged(object sender, EventArgs e)
+        {
+            LoadDataLenTableThongBao(UserSession.userId);
         }
 
         public void btnReload_Click(object sender, EventArgs e)
@@ -34,6 +34,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         public void LoadDataLenTableThongBao(string maSinhVien)
         {
+            ThongBaoBUS thongBaoBUS = new ThongBaoBUS();
+            ThongBao_NhomBUS thongBao_NhomBUS = new ThongBao_NhomBUS();
+            MonHocBUS monHocBUS = new MonHocBUS();
+            NhomBUS nhomBUS = new NhomBUS();
+            NhomThamGiaBUS nhomThamGiaBUS = new NhomThamGiaBUS();
             pnThongBao.Controls.Clear();
             thongBaoBUS.DocListThongBao();
             thongBao_NhomBUS.DocListThongBao_Nhom();
@@ -54,21 +59,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             foreach (NhomThamGia ntg in dsNhomOfSV)
             {
                 string maMonHoc = nhomBUS.GetNhomTheoMa(ntg.maNhom).maMonHoc;
-                string tenMonHoc = monHocBUS.GetMonHoc(maMonHoc);
-
-                Panel pnlItem = new Panel();
-                pnlItem.Width = pnThongBao.Width - 20;
-                pnlItem.Height = 150;
-                pnlItem.Margin = new Padding(0, 0, 0, 3);
-                pnlItem.BorderStyle = BorderStyle.FixedSingle;
-                pnlItem.BackColor = Color.LightGray;
-
-                // Tiêu đề in đậm
-                Label lblTieuDe = new Label();
-                lblTieuDe.Text = $"{tenMonHoc}"+" - "+$"Nhóm: {ntg.maNhom}";
-                lblTieuDe.Font = new Font("Segoe UI", 16, FontStyle.Bold);
-                lblTieuDe.Location = new Point(5, 5);
-                lblTieuDe.AutoSize = true;
+                string tenMonHoc = monHocBUS.GetMonHoc(maMonHoc);               
 
                 ArrayList dsTB_N = thongBao_NhomBUS.GetListThongBao_NhomTheoMaNhom(ntg.maNhom);
 
@@ -76,24 +67,38 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 {
                     foreach (ThongBao tb in dstb) 
                     {
-                        if (tbn.maThongBao == tb.maThongBao)
+                        if (tbn.maThongBao == tb.maThongBao && ntg.maNhom == tbn.maNhom)
                         {
+                            Panel pnlItem = new Panel();
+                            pnlItem.Width = pnThongBao.Width - 20;
+                            pnlItem.Height = 150;
+                            pnlItem.Margin = new Padding(0, 0, 0, 3);
+                            pnlItem.BorderStyle = BorderStyle.FixedSingle;
+                            pnlItem.BackColor = Color.LightGray;
+
+                            // Tiêu đề in đậm
+                            Label lblTieuDe = new Label();
+                            lblTieuDe.Text = $"{tenMonHoc}" + " - " + $"Nhóm: {ntg.maNhom}";
+                            lblTieuDe.Font = new Font("Segoe UI", 16, FontStyle.Bold);
+                            lblTieuDe.Location = new Point(5, 5);
+                            lblTieuDe.AutoSize = true;
+
                             Label lblGuiCho = new Label();
                             lblGuiCho.Text = $"THÔNG BÁO: {tb.tenThongBao}";
                             lblGuiCho.Font = new Font("Segoe UI", 14, FontStyle.Regular);
-                            lblGuiCho.Location = new Point(5, 35);
+                            lblGuiCho.Location = new Point(5, 38);
                             lblGuiCho.AutoSize = true;
 
                             Label lblNoiDung = new Label();
                             lblNoiDung.Text = $"Nội dung: {tb.noiDung}";
                             lblNoiDung.Font = new Font("Segoe UI", 14, FontStyle.Regular);
-                            lblNoiDung.Location = new Point(5, 60);
+                            lblNoiDung.Location = new Point(5, 63);
                             lblNoiDung.AutoSize = true;
 
                             Label lblThoiGian = new Label();
                             lblThoiGian.Text = $"Thời gian: {tb.thoiGian}";
                             lblThoiGian.Font = new Font("Segoe UI", 14, FontStyle.Regular);
-                            lblThoiGian.Location = new Point(5, 120);
+                            lblThoiGian.Location = new Point(5, 123);
                             lblThoiGian.AutoSize = true;
 
                             foreach (Control ctrl in new Control[] { lblTieuDe, lblGuiCho, lblNoiDung, lblThoiGian })
@@ -107,6 +112,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                             pnlItem.Controls.Add(lblThoiGian);
 
                             flow.Controls.Add(pnlItem);
+                            flow.Controls.SetChildIndex(pnlItem, 0);
                         }
                     }
                 }

@@ -105,6 +105,22 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             return ds;
         }
 
+        public ArrayList GetListBaiLamByDeKiemTra(string maDe)
+        {
+            DocListBaiLam();
+            int maD = Convert.ToInt32(maDe);
+            ArrayList dsbl = GetListBaiLam();
+            ArrayList ds = new ArrayList();
+            foreach (BaiLam bl in dsbl)
+            {
+                if(bl.maDe == maD)
+                {
+                    ds.Add(bl);
+                }
+            }
+            return ds;
+        }
+
         public int GetCountBaiLam(int maDe)
         {
             return baiLamDAO.GetCountBaiLam(maDe);

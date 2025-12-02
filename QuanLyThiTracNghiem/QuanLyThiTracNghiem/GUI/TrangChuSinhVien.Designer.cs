@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TrangChuSinhVien));
             panel_Top = new Panel();
+            btnNotice = new Button();
             button_ThongTin = new Button();
             button_ThongBao = new Button();
             button_DangXuat = new Button();
@@ -51,13 +52,13 @@
             panel_Main = new Panel();
             panel_Top.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Logo).BeginInit();
-            panel_Left.SuspendLayout();
             SuspendLayout();
             // 
             // panel_Top
             // 
             panel_Top.BackColor = SystemColors.ActiveCaption;
             panel_Top.BorderStyle = BorderStyle.Fixed3D;
+            panel_Top.Controls.Add(btnNotice);
             panel_Top.Controls.Add(button_ThongTin);
             panel_Top.Controls.Add(button_ThongBao);
             panel_Top.Controls.Add(button_DangXuat);
@@ -67,6 +68,16 @@
             panel_Top.Name = "panel_Top";
             panel_Top.Size = new Size(1920, 100);
             panel_Top.TabIndex = 0;
+            // 
+            // btnNotice
+            // 
+            btnNotice.BackColor = Color.OrangeRed;
+            btnNotice.FlatStyle = FlatStyle.Flat;
+            btnNotice.Location = new Point(1768, 61);
+            btnNotice.Name = "btnNotice";
+            btnNotice.Size = new Size(13, 13);
+            btnNotice.TabIndex = 5;
+            btnNotice.UseVisualStyleBackColor = false;
             // 
             // button_ThongTin
             // 
@@ -350,10 +361,10 @@
             Controls.Add(panel_Top);
             Name = "TrangChuSinhVien";
             Text = "TrangChuSinhVien";
+            Load += Form1_Load;
             panel_Top.ResumeLayout(false);
             panel_Top.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Logo).EndInit();
-            panel_Left.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -379,5 +390,6 @@
         private Button button_MonHoc;
         private Button button_NguoiDung;
         private Button button_ThongKe;
+        private Button btnNotice;
     }
 }

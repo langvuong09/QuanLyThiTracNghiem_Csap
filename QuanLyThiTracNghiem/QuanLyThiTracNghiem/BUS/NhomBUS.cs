@@ -59,10 +59,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
         }
         public ArrayList GetListNhom(string maMonHoc)
         {
-            if (listNhomTheoMonHoc == null)
-            {
-                DocListNhomTheoMonHoc(maMonHoc);
-            }
+            DocListNhomTheoMonHoc(maMonHoc);
             return listNhomTheoMonHoc;
         }
 

@@ -1,13 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 using QuanLyThiTracNghiem.MyCustom;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
@@ -21,6 +13,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private NhomBUS nhomBUS = new NhomBUS();
         private ThongBaoBUS thongBaoBUS = new ThongBaoBUS();
         private ThongBao_NhomBUS thongBao_NhomBUS = new ThongBao_NhomBUS();
+        private NhomThamGiaBUS nhomThamGiaBUS = new NhomThamGiaBUS();
         public Dialog_TaoThongBao()
         {
             InitializeComponent();
@@ -49,7 +42,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         }
 
         private void CbxMonHoc_Choose(object sender, EventArgs e)
-        {
+        {           
             string tenMonHoc = cbxMonHoc.SelectedItem?.ToString();
             if (string.IsNullOrEmpty(tenMonHoc) || tenMonHoc == "Chọn môn học")
                 return;
@@ -67,25 +60,40 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void CklbxNhom_Choose(object sender, EventArgs e)
         {
-            string luaChon = cklbxNhom.SelectedItem?.ToString();
+            if (cklbxNhom.SelectedItem == null)
+                return;
+
+            string luaChon = cklbxNhom.SelectedItem.ToString();
+
             if (luaChon == "Tất cả")
             {
                 CheckTatCa(true);
             }
             else
             {
-                CheckTatCa(false);
-            }                
+                cklbxNhom.SetItemChecked(0, false);
+            }
         }
+
 
         private void LoadDataLenListBoxNhomHoc(string maMonHoc)
         {
+            cklbxNhom.DataSource = null;
             cklbxNhom.Items.Clear();
+       
             ArrayList dsNhom = nhomBUS.GetListNhom(maMonHoc);
+     
             cklbxNhom.Items.Add("Tất cả");
-            foreach(Nhom n in dsNhom)
+            if (dsNhom != null)
             {
-                cklbxNhom.Items.Add(n.tenNhom);
+                foreach (Nhom n in dsNhom)
+                {
+                    cklbxNhom.Items.Add(n.tenNhom);
+                }
+            }
+            for (int i = 0; i < cklbxNhom.Items.Count; i++)
+            {
+                cklbxNhom.SetItemChecked(i, false);
             }
         }
 
@@ -131,11 +139,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                         dlg.ShowDialog();
                         return;
                     }
-                }
+                }                
                 Form parentForm = this.FindForm();
                 if (parentForm != null)
                     parentForm.Close();
-            }
+            }            
         }
+       
     }
 }

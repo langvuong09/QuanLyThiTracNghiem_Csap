@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Component_ThongBao));
             pnThongBao = new Panel();
             lbxThongBao = new ListBox();
-            button6 = new Button();
             btnReload = new Button();
             lblTitle = new Label();
             pnThongBao.SuspendLayout();
@@ -55,15 +54,6 @@
             lbxThongBao.Name = "lbxThongBao";
             lbxThongBao.Size = new Size(1445, 94);
             lbxThongBao.TabIndex = 0;
-            // 
-            // button6
-            // 
-            button6.Location = new Point(191, 134);
-            button6.Name = "button6";
-            button6.Size = new Size(8, 8);
-            button6.TabIndex = 7;
-            button6.Text = "button6";
-            button6.UseVisualStyleBackColor = true;
             // 
             // btnReload
             // 
@@ -93,7 +83,6 @@
             BackColor = Color.White;
             Controls.Add(lblTitle);
             Controls.Add(btnReload);
-            Controls.Add(button6);
             Controls.Add(pnThongBao);
             Name = "Component_ThongBao";
             Size = new Size(1541, 934);
@@ -105,7 +94,6 @@
         #endregion
         private Panel pnThongBao;
         private ListBox lbxThongBao;
-        private Button button6;
         private Button btnReload;
         private Label lblTitle;
     }

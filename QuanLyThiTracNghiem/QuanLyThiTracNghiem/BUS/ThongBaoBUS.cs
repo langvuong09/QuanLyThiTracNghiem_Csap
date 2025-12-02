@@ -16,6 +16,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
     internal class ThongBaoBUS
     {
         private ThongBaoDAO thongBaoDAO = new ThongBaoDAO();
+        private ThongBao_NhomDAO thongBao_NhomDAO = new ThongBao_NhomDAO();
+        private NhomThamGiaDAO nhomThamGiaDAO = new NhomThamGiaDAO();
         private MonHocBUS monHocBUS = new MonHocBUS();
         private ArrayList listThongBao;
 
@@ -29,10 +31,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
         }
         public ArrayList GetListThongBao()
         {
-            if (listThongBao == null)
-            {
-                DocListThongBao();
-            }
+            DocListThongBao();
             return listThongBao;
         }
 
@@ -164,7 +163,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             return thongBaoDAO.GetMaxMaThongBao();
         }
 
-        //LinQ Phương thức
         public ThongBao GetThongBaoTheoMa(string maThongBao)
         {
             try
@@ -190,6 +188,30 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
         }
 
+        public ArrayList GetListThongBaoTheoMaSinhVien(string maSinhVien)
+        {
+            ArrayList dsntg = nhomThamGiaDAO.GetListNhomTGOfSV(maSinhVien);
+            ArrayList ds= new ArrayList();
+            foreach (NhomThamGia ntg in dsntg)
+            {
+                ArrayList dstb_n = thongBao_NhomDAO.GetListTB_NhomOfMaNhom(ntg.maNhom);
+                foreach (ThongBao_Nhom tbn in dstb_n)
+                {
+                    DocListThongBao();
+                    foreach (ThongBao tb in listThongBao)
+                    {
+                        if (tbn.maThongBao == tb.maThongBao)
+                        {
+                            ds.Add(tb);
+                        }
+                    }
+
+                }
+            }
+            return ds;
+        }
+
+        //Linq
         public ArrayList TimThongBaoTheoTuKhoa(string tuKhoa)
         {
             var ketQua = thongBaoDAO.GetListThongBao()

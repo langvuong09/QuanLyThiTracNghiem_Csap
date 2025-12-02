@@ -1,15 +1,8 @@
 ﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
 
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Collections;
+using System.Drawing.Drawing2D;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
@@ -17,11 +10,16 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
     {
         private NhomQuyenBUS nhomQuyenBus = new NhomQuyenBUS();
         private CTNhomQuyenBUS cTNhomQuyenBUS = new CTNhomQuyenBUS();
+        private NhomThamGiaBUS nhomThamGiaBUS = new NhomThamGiaBUS();
+        private ThongBaoBUS thongBaoBUS = new ThongBaoBUS();
 
         public TrangChuSinhVien()
         {
             InitializeComponent();
             customFormTrangChuSinhVien_Load();
+            this.Load += TrangChuSinhVien_Load;
+            timer1 = new System.Windows.Forms.Timer();
+            timer1.Tick += timer1_Tick;                       
         }
         // Kích thước màn hình chính (Primary Screen)
         private static readonly int SCREEN_WIDTH = 1920;
@@ -42,7 +40,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private Component_ThongKe tk = new Component_ThongKe();
 
         //Khai Báo Panel
-        private Component_ThongBao tb = new Component_ThongBao();
+        
         private Component_TTCaNhan ttcn = new Component_TTCaNhan();
 
 
@@ -232,7 +230,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             mh.Dock = DockStyle.Fill;
             pc.Dock = DockStyle.Fill;
             pq.Dock = DockStyle.Fill;
-            tb.Dock = DockStyle.Fill;
+            
             ttcn.Dock = DockStyle.Fill;
             nd.Dock = DockStyle.Fill;
             tk.Dock = DockStyle.Fill;
@@ -247,7 +245,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             panel_Main.Controls.Add(mh);
             panel_Main.Controls.Add(pc);
             panel_Main.Controls.Add(pq);
-            panel_Main.Controls.Add(tb);
+            
             panel_Main.Controls.Add(ttcn);
             panel_Main.Controls.Add(nd);
             panel_Main.Controls.Add(tk);
@@ -321,7 +319,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void button_ThongBao_Click(object sender, EventArgs e)
         {
+            Component_ThongBao tb = new Component_ThongBao();
+            tb.Dock = DockStyle.Fill;
+            panel_Main.Controls.Add(tb);
+            BtnNotice_None();
             HighlightButton(button_ThongBao);
+            tb.LoadDataLenTableThongBao(UserSession.userId);
             tb.BringToFront();
         }
 
@@ -386,6 +389,45 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 // Mở lại form Login
                 Login loginForm = new Login();
                 loginForm.Show();
+            }
+        }
+
+        // Các hành động thông báo có thông báo mới
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            MakeButtonCircle(btnNotice);
+        }
+        private void MakeButtonCircle(Button btn)
+        {
+            GraphicsPath path = new GraphicsPath();
+            path.AddEllipse(0, 0, btn.Width, btn.Height);
+            btn.Region = new Region(path);
+        }
+
+        public void BtnNotice_None()
+        {
+            btnNotice.Visible = false;
+        }
+
+        private int lastCount;
+        private System.Windows.Forms.Timer timer1 = new System.Windows.Forms.Timer();
+
+        private void TrangChuSinhVien_Load(object sender, EventArgs e)
+        {
+            lastCount = thongBaoBUS.GetListThongBaoTheoMaSinhVien(UserSession.userId).Count;
+
+            timer1.Interval = 1000; // kiểm tra mỗi 1 giây
+            timer1.Start();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            int newCount = thongBaoBUS.GetListThongBaoTheoMaSinhVien(UserSession.userId).Count;
+
+            if (newCount > lastCount)
+            {
+                btnNotice.Visible = true;
+                lastCount = newCount;
             }
         }
     }

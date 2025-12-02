@@ -35,7 +35,6 @@
             lblNhom = new Label();
             lblBaiKiemTra = new Label();
             lblMonHoc = new Label();
-            btnHienThi = new Button();
             pnDoThi = new Panel();
             SuspendLayout();
             // 
@@ -51,6 +50,7 @@
             // 
             // cbxNhom
             // 
+            cbxNhom.DropDownStyle = ComboBoxStyle.DropDownList;
             cbxNhom.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cbxNhom.FormattingEnabled = true;
             cbxNhom.Location = new Point(619, 146);
@@ -69,6 +69,7 @@
             // 
             // cbxMonHoc
             // 
+            cbxMonHoc.DropDownStyle = ComboBoxStyle.DropDownList;
             cbxMonHoc.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cbxMonHoc.FormattingEnabled = true;
             cbxMonHoc.Location = new Point(177, 147);
@@ -106,16 +107,6 @@
             lblMonHoc.TabIndex = 7;
             lblMonHoc.Text = "Môn học:";
             // 
-            // btnHienThi
-            // 
-            btnHienThi.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnHienThi.Location = new Point(711, 294);
-            btnHienThi.Name = "btnHienThi";
-            btnHienThi.Size = new Size(116, 35);
-            btnHienThi.TabIndex = 8;
-            btnHienThi.Text = "HIỂN THỊ";
-            btnHienThi.UseVisualStyleBackColor = true;
-            // 
             // pnDoThi
             // 
             pnDoThi.BackColor = Color.Gainsboro;
@@ -130,7 +121,6 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             Controls.Add(pnDoThi);
-            Controls.Add(btnHienThi);
             Controls.Add(lblMonHoc);
             Controls.Add(lblBaiKiemTra);
             Controls.Add(lblNhom);
@@ -140,7 +130,6 @@
             Controls.Add(lblTitle);
             Name = "Component_ThongKe";
             Size = new Size(1541, 934);
-            Load += Component_ThongKe_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -158,7 +147,6 @@
         private Label lblNhom;
         private Label lblBaiKiemTra;
         private Label lblMonHoc;
-        private Button btnHienThi;
         private ComboBox cbxNhom;
         private CheckedListBox cklbxBaiKiemTra;
         private ComboBox cbxMonHoc;

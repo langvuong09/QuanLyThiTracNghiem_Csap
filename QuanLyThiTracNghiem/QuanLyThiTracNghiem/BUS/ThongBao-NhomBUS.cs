@@ -56,10 +56,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 
         public ArrayList GetListThongBao_NhomTheoMaNhom(int maNhom)
         {
-            if (listThongBao_NhomTheoMaNhom == null)
-            {
-                DocListThongBao_NhomTheoMaNhom(maNhom);
-            }
+            DocListThongBao_NhomTheoMaNhom(maNhom);
             return listThongBao_NhomTheoMaNhom;
         }
 

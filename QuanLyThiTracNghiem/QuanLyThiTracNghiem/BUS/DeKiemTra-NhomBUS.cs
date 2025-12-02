@@ -1,4 +1,5 @@
-﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
+﻿using QuanLyThiTracNghiem.MyCustom;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 using System;
 using System.Collections;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 {
@@ -78,6 +80,19 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
         }
 
-
+        public ArrayList GetListDeTheoMaNhom(int maNhom)
+        {
+            try
+            {
+                ArrayList dsdkt = deKiemTra_NhomDAO.GetListDKT_NhomByMaNhom(maNhom);  
+                return dsdkt;
+            }
+            catch (Exception ex)
+            {
+                MyDialog dlg = new MyDialog("Lỗi !"+ex, MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return null;
+            }
+        }
     }
 }

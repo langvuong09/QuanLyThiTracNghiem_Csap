@@ -38,10 +38,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
         }
         public ArrayList GetListNhomThamGiaOfMaSV(string maSinhVien)
         {
-            if (listNhomThamGiaOfmaSV == null)
-            {
-                DocListNhomThamGiaOfMaSV(maSinhVien);
-            }
+            DocListNhomThamGiaOfMaSV(maSinhVien);
             return listNhomThamGiaOfmaSV;
         }
 
