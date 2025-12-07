@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 30, 2025 lúc 04:40 PM
+-- Thời gian đã tạo: Th12 07, 2025 lúc 10:51 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -42,7 +42,35 @@ CREATE TABLE `bailam` (
 
 INSERT INTO `bailam` (`maBaiLam`, `maSinhVien`, `maDe`, `tongDiem`, `thoiGianBatDau`, `thoiGianNopBai`) VALUES
 (1, '3122410006', 1, 8.5, '2025-10-21 08:00:00', '2025-10-21 09:30:00'),
-(2, '111111', 1, 7.2, '2025-10-21 08:05:00', '2025-10-21 09:25:00');
+(2, '111111', 1, 7.2, '2025-10-21 08:05:00', '2025-10-21 09:25:00'),
+(3, '3122410007', 1, 9.3, '2025-10-21 08:00:00', '2025-10-21 09:30:00'),
+(4, '3122410008', 1, 6.8, '2025-10-21 08:02:00', '2025-10-21 09:31:00'),
+(5, '3122410009', 1, 7.5, '2025-10-21 08:04:00', '2025-10-21 09:29:00'),
+(6, '3122410010', 1, 8, '2025-10-21 08:01:00', '2025-10-21 09:26:00'),
+(7, '3122410011', 1, 9.8, '2025-10-21 08:03:00', '2025-10-21 09:28:00'),
+(8, '3122410012', 1, 5.5, '2025-10-21 08:06:00', '2025-10-21 09:33:00'),
+(9, '3122410013', 1, 4.9, '2025-10-21 08:07:00', '2025-10-21 09:34:00'),
+(10, '3122410014', 1, 8.7, '2025-10-21 08:03:00', '2025-10-21 09:30:00'),
+(11, '3122410015', 1, 6.3, '2025-10-21 08:09:00', '2025-10-21 09:27:00'),
+(12, '3122410016', 1, 9, '2025-10-21 08:11:00', '2025-10-21 09:32:00'),
+(13, '3122410017', 1, 7.9, '2025-10-21 08:10:00', '2025-10-21 09:30:00'),
+(14, '3122410018', 1, 8.2, '2025-10-21 08:03:00', '2025-10-21 09:29:00'),
+(15, '3122410019', 1, 6.1, '2025-10-21 08:12:00', '2025-10-21 09:35:00'),
+(16, '3122410020', 1, 7, '2025-10-21 08:04:00', '2025-10-21 09:30:00'),
+(17, '3122410021', 1, 8.9, '2025-10-21 08:08:00', '2025-10-21 09:31:00'),
+(18, '3122410022', 1, 5.7, '2025-10-21 08:14:00', '2025-10-21 09:33:00'),
+(19, '3122410023', 1, 9.5, '2025-10-21 08:00:00', '2025-10-21 09:28:00'),
+(20, '3122410024', 1, 6.9, '2025-10-21 08:13:00', '2025-10-21 09:37:00'),
+(21, '3122410025', 1, 7.4, '2025-10-21 08:05:00', '2025-10-21 09:26:00'),
+(22, '3122410026', 1, 10, '2025-10-21 08:02:00', '2025-10-21 09:24:00'),
+(23, '3122410027', 1, 8.3, '2025-10-21 08:09:00', '2025-10-21 09:30:00'),
+(24, '3122410028', 1, 6, '2025-10-21 08:06:00', '2025-10-21 09:34:00'),
+(25, '3122410029', 1, 5.2, '2025-10-21 08:11:00', '2025-10-21 09:36:00'),
+(26, '3122410030', 1, 9.1, '2025-10-21 08:01:00', '2025-10-21 09:23:00'),
+(27, '3122410031', 1, 7.8, '2025-10-21 08:08:00', '2025-10-21 09:30:00'),
+(28, '3122410032', 1, 8.6, '2025-10-21 08:10:00', '2025-10-21 09:29:00'),
+(29, '3122410033', 1, 4.7, '2025-10-21 08:12:00', '2025-10-21 09:38:00'),
+(30, '3122410034', 1, 9.4, '2025-10-21 08:03:00', '2025-10-21 09:27:00');
 
 -- --------------------------------------------------------
 
@@ -384,15 +412,12 @@ INSERT INTO `chucnang` (`maChucNang`, `tenChucNang`) VALUES
 (2, 'Học phần'),
 (3, 'Câu hỏi'),
 (4, 'Môn học'),
-(5, 'Chương'),
-(6, 'Phân công'),
-(7, 'Đề thi'),
-(8, 'Nhóm quyền'),
-(9, 'Gửi thông báo'),
-(10, 'Tài liệu'),
-(11, 'Đề kiểm tra'),
-(12, 'Thông báo'),
-(13, 'Thống kê');
+(5, 'Phân công'),
+(6, 'Đề thi'),
+(7, 'Nhóm quyền'),
+(8, 'Nhóm học phần'),
+(9, 'Đề kiểm tra'),
+(10, 'Thông báo');
 
 -- --------------------------------------------------------
 
@@ -504,9 +529,15 @@ INSERT INTO `ctnhomquyen` (`maQuyen`, `maChucNang`, `xem`, `them`, `capNhat`, `x
 (1, 8, 1, 1, 1, 1),
 (1, 9, 1, 1, 1, 1),
 (1, 10, 1, 1, 1, 1),
-(1, 11, 1, 1, 1, 1),
-(1, 12, 1, 1, 1, 1),
-(1, 13, 1, 1, 1, 1);
+(3, 2, 1, 0, 0, 0),
+(3, 4, 1, 0, 0, 0),
+(3, 6, 1, 0, 0, 0),
+(3, 10, 1, 0, 0, 0),
+(2, 3, 1, 1, 1, 1),
+(2, 4, 1, 0, 0, 0),
+(2, 6, 1, 1, 1, 1),
+(2, 9, 1, 1, 1, 1),
+(2, 10, 1, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1584,14 +1615,14 @@ CREATE TABLE `giaovien` (
   `gioiTinh` varchar(11) DEFAULT NULL,
   `ngaySinh` date DEFAULT NULL,
   `anhDaiDien` varchar(255) DEFAULT NULL,
-  `maQuyen` int(11) NOT NULL
+  `quyen` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `giaovien`
 --
 
-INSERT INTO `giaovien` (`maGiaoVien`, `tenGiaoVien`, `email`, `gioiTinh`, `ngaySinh`, `anhDaiDien`, `maQuyen`) VALUES
+INSERT INTO `giaovien` (`maGiaoVien`, `tenGiaoVien`, `email`, `gioiTinh`, `ngaySinh`, `anhDaiDien`, `quyen`) VALUES
 ('GV001', 'Thanh An', 'thanhan@university.edu.vn', 'Nam', '1980-01-01', 'giaovien.jpg', 2),
 ('GV002', 'Minh Tuấn', 'minhtuan@university.edu.vn', 'Nam', '1982-03-15', 'giaovien.jpg', 2),
 ('GV003', 'Lan Hương', 'lanhuong@university.edu.vn', 'Nữ', '1981-05-20', 'giaovien.jpg', 2),
@@ -1717,7 +1748,36 @@ INSERT INTO `nhomthamgia` (`maNhom`, `maSinhVien`) VALUES
 (1, '111111'),
 (3, '111111'),
 (21, '111111'),
-(1, '3122410006');
+(1, '3122410006'),
+(2, '3122410351'),
+(1, '3122410007'),
+(1, '3122410008'),
+(1, '3122410009'),
+(1, '3122410010'),
+(1, '3122410011'),
+(1, '3122410012'),
+(1, '3122410013'),
+(1, '3122410014'),
+(1, '3122410015'),
+(1, '3122410016'),
+(1, '3122410017'),
+(1, '3122410018'),
+(1, '3122410019'),
+(1, '3122410020'),
+(1, '3122410021'),
+(1, '3122410022'),
+(1, '3122410023'),
+(1, '3122410024'),
+(1, '3122410025'),
+(1, '3122410026'),
+(1, '3122410027'),
+(1, '3122410028'),
+(1, '3122410029'),
+(1, '3122410030'),
+(1, '3122410031'),
+(1, '3122410032'),
+(1, '3122410033'),
+(1, '3122410034');
 
 -- --------------------------------------------------------
 
@@ -1778,8 +1838,36 @@ CREATE TABLE `sinhvien` (
 --
 
 INSERT INTO `sinhvien` (`maSinhVien`, `hoVaTen`, `email`, `gioiTinh`, `ngaySinh`, `anhDaiDien`, `maQuyen`) VALUES
-('111111', 'Cường', 'cuong@gmail.comm', 'Nam', '2004-01-20', 'hello', 1),
+('111111', 'Cường', 'cuong@gmail.comm', 'Nam', '2004-01-20', 'kawasaki-ninja-h2r-242-8538.jpeg', 1),
 ('3122410006', 'Mai Anh', 'domaianhh20@gmail.com', 'Nữ', '2000-01-01', 'default.jpg', 3),
+('3122410007', 'Nguyễn Văn A', 'vana@gmail.com', 'Nam', '2003-05-10', 'default.jpg', 3),
+('3122410008', 'Trần Thị B', 'thib@gmail.com', 'Nữ', '2003-07-12', 'default.jpg', 3),
+('3122410009', 'Lê Minh C', 'minhc@gmail.com', 'Nam', '2002-02-22', 'default.jpg', 3),
+('3122410010', 'Phạm Thu D', 'thud@gmail.com', 'Nữ', '2004-09-21', 'default.jpg', 3),
+('3122410011', 'Bùi Quốc E', 'quoce@gmail.com', 'Nam', '2001-12-18', 'default.jpg', 2),
+('3122410012', 'Đỗ Mỹ F', 'myf@gmail.com', 'Nữ', '2003-11-10', 'default.jpg', 3),
+('3122410013', 'Lý Gia G', 'giag@gmail.com', 'Nam', '2004-03-03', 'default.jpg', 3),
+('3122410014', 'Võ Thanh H', 'thanhh@gmail.com', 'Nam', '2003-06-15', 'default.jpg', 3),
+('3122410015', 'Ngô Hà I', 'hahi@gmail.com', 'Nữ', '2002-04-07', 'default.jpg', 3),
+('3122410016', 'Huỳnh Minh J', 'minhj@gmail.com', 'Nam', '2004-10-05', 'default.jpg', 3),
+('3122410017', 'Phan Khánh K', 'khanhk@gmail.com', 'Nam', '2002-01-19', 'default.jpg', 3),
+('3122410018', 'Trịnh Tú L', 'tul@gmail.com', 'Nữ', '2004-05-25', 'default.jpg', 3),
+('3122410019', 'Nguyễn Hương M', 'huongm@gmail.com', 'Nữ', '2003-12-29', 'default.jpg', 3),
+('3122410020', 'Đinh Văn N', 'vann@gmail.com', 'Nam', '2001-08-14', 'default.jpg', 2),
+('3122410021', 'Tô Hải O', 'haio@gmail.com', 'Nam', '2004-02-02', 'default.jpg', 3),
+('3122410022', 'Trà Quỳnh P', 'quynhp@gmail.com', 'Nữ', '2003-07-09', 'default.jpg', 3),
+('3122410023', 'Lâm Mỹ Q', 'myq@gmail.com', 'Nữ', '2004-11-15', 'default.jpg', 3),
+('3122410024', 'Hồ Đức R', 'ducr@gmail.com', 'Nam', '2002-10-23', 'default.jpg', 3),
+('3122410025', 'Tăng Anh S', 'anhs@gmail.com', 'Nữ', '2004-06-06', 'default.jpg', 3),
+('3122410026', 'Khưu Trọng T', 'trongt@gmail.com', 'Nam', '2003-01-17', 'default.jpg', 3),
+('3122410027', 'Châu Bảo U', 'baou@gmail.com', 'Nam', '2004-03-29', 'default.jpg', 3),
+('3122410028', 'La Thu V', 'thuv@gmail.com', 'Nữ', '2003-09-13', 'default.jpg', 3),
+('3122410029', 'Hứa Ngọc W', 'ngocw@gmail.com', 'Nữ', '2004-12-01', 'default.jpg', 3),
+('3122410030', 'Nguyễn Thiện X', 'thienx@gmail.com', 'Nam', '2002-05-05', 'default.jpg', 3),
+('3122410031', 'Phùng Yến Y', 'yeny@gmail.com', 'Nữ', '2003-03-26', 'default.jpg', 3),
+('3122410032', 'Tạ Minh Z', 'minhz@gmail.com', 'Nam', '2004-04-14', 'default.jpg', 3),
+('3122410033', 'Vương Ngân AA', 'nganaa@gmail.com', 'Nữ', '2002-08-20', 'default.jpg', 3),
+('3122410034', 'Hồ Tấn AB', 'tanab@gmail.com', 'Nam', '2004-02-28', 'default.jpg', 3),
 ('3122410351', 'Hoàng Quyên', 'hoangquyen@gmail.com', 'Nữ', '2004-01-01', 'default.jpg', 3);
 
 -- --------------------------------------------------------
@@ -1839,7 +1927,15 @@ INSERT INTO `thongbao` (`maThongBao`, `tenThongBao`, `noiDung`, `maMonHoc`, `tho
 (5, 'sdxcvb', 'ưefsdg', 'CT103', '2025-11-11 20:39:20'),
 (6, 'sdxcvb', 'ưefsdg', 'CT103', '2025-11-11 20:39:20'),
 (7, 'sdxcvb', 'ưefsdg', 'CT103', '2025-11-11 20:39:20'),
-(8, 'sdxcvb', 'ưefsdg', 'CT103', '2025-11-11 20:39:20');
+(8, 'sdxcvb', 'ưefsdg', 'CT103', '2025-11-11 20:39:20'),
+(9, 'test 3', 'wdsvb', 'CT101', '2025-12-02 17:11:14'),
+(10, 'test 4', 'sdvc ', 'CT101', '2025-12-02 23:08:32'),
+(11, 'Test 5', 'wsdcv', 'CT101', '2025-12-02 23:44:57'),
+(12, 'Test 6', 'wsdffvbn', 'CT101', '2025-12-02 23:46:17'),
+(13, 'Test 8', 'wdsfvb', 'CT101', '2025-12-02 23:51:34'),
+(14, 'Test 9', 'ứadfcv', 'CT101', '2025-12-03 00:21:28'),
+(15, 'Test 10', 'dscxv ', 'CT101', '2025-12-03 00:28:30'),
+(16, 'Test Quyen', 'Quyen ngu', 'CT101', '2025-12-03 10:17:47');
 
 -- --------------------------------------------------------
 
@@ -1851,6 +1947,21 @@ CREATE TABLE `thongbao-nhom` (
   `maNhom` int(11) NOT NULL,
   `maThongBao` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `thongbao-nhom`
+--
+
+INSERT INTO `thongbao-nhom` (`maNhom`, `maThongBao`) VALUES
+(1, 9),
+(1, 10),
+(1, 11),
+(1, 12),
+(1, 13),
+(1, 14),
+(1, 15),
+(2, 16),
+(1, 1);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -1939,7 +2050,7 @@ ALTER TABLE `dekiemtra-nhom`
 --
 ALTER TABLE `giaovien`
   ADD PRIMARY KEY (`maGiaoVien`),
-  ADD KEY `fk_giaovien_nhomquyen` (`maQuyen`);
+  ADD KEY `fk_giaovien_nhomquyen` (`quyen`);
 
 --
 -- Chỉ mục cho bảng `monhoc`
@@ -2015,7 +2126,7 @@ ALTER TABLE `nhom`
 -- AUTO_INCREMENT cho bảng `thongbao`
 --
 ALTER TABLE `thongbao`
-  MODIFY `maThongBao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `maThongBao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -2086,7 +2197,7 @@ ALTER TABLE `dekiemtra-nhom`
 -- Các ràng buộc cho bảng `giaovien`
 --
 ALTER TABLE `giaovien`
-  ADD CONSTRAINT `fk_giaovien_nhomquyen` FOREIGN KEY (`maQuyen`) REFERENCES `nhomquyen` (`maQuyen`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_giaovien_nhomquyen` FOREIGN KEY (`quyen`) REFERENCES `nhomquyen` (`maQuyen`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_giaovien_taikhoan` FOREIGN KEY (`maGiaoVien`) REFERENCES `taikhoan` (`ma`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
