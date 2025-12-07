@@ -92,7 +92,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                     // Kiểm tra là admin hoặc giáo viên
                     GiaoVien gv = gvBUS.GetGiaoVienByID(tk.userId);
                     UserSession.username = gv.tenGiaoVien;
-                    UserSession.Quyen = int.Parse(gv.quyen);
+                    UserSession.Quyen = gv.quyen;
 
                 }
                 else

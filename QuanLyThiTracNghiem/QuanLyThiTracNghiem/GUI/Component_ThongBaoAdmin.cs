@@ -9,12 +9,14 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
     public partial class Component_ThongBaoAdmin : UserControl
     {
-        ThongBaoBUS thongBaoBUS = new ThongBaoBUS();
-        MonHocBUS monHocBUS = new MonHocBUS();
+        private ThongBaoBUS thongBaoBUS = new ThongBaoBUS();
+        private MonHocBUS monHocBUS = new MonHocBUS();
+        private CTNhomQuyenBUS ctnhomQuyenBUS = new CTNhomQuyenBUS();
         private Panel pnDangChon = null;
         public Component_ThongBaoAdmin()
         {
             InitializeComponent();
+            CheckPhanQuyen();
             pnThongBao.AutoScroll = true;
             AddEvents();
         }
@@ -258,6 +260,29 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
 
             pnThongBao.Controls.Add(flow);
+        }
+
+        private void CheckPhanQuyen()
+        {
+            ArrayList dspq = ctnhomQuyenBUS.GetListCTNhomQuyen(UserSession.Quyen);
+            foreach (CTNhomQuyen pq in dspq)
+            {
+                if(pq.maChucNang == 10)
+                {
+                    if(pq.xem == 0)
+                    {
+                        btnXem.Visible = false;
+                    }
+                    if(pq.them == 0)
+                    {
+                        btnTaoThongBao.Visible = false;
+                    }
+                    if(pq.xoa == 0)
+                    {
+                        btnXoa.Visible = false;
+                    }
+                }
+            }
         }
     }
 }

@@ -1,15 +1,9 @@
-﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
+﻿using QuanLyThiTracNghiem.MyCustom;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
@@ -17,11 +11,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
     {
         private NhomQuyenBUS rolebus = new NhomQuyenBUS();
         private ChucNangBUS molbus = new ChucNangBUS();
-        CTNhomQuyenBUS cTNhomQuyen = new CTNhomQuyenBUS();
+        private CTNhomQuyenBUS cTNhomQuyenBUS = new CTNhomQuyenBUS();
          
         public Component_PhanQuyen()
         {
             InitializeComponent();
+            CheckPhanQuyen();
             loadData();
         }
 
@@ -61,7 +56,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
             if (tenNhomQuyen == "")
             {
-                MessageBox.Show("Tên nhóm quyền không được để trống!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MyDialog dlg = new MyDialog("Tên nhóm quyền không được để trống!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
                 return;
             }
 
@@ -73,7 +69,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 case "Thêm":
                     if (rolebus.FindByName(tenNhomQuyen) != null)
                     {
-                        MessageBox.Show("Tên nhóm quyền đã tồn tại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MyDialog dlg = new MyDialog("Tên nhóm quyền đã tồn tại!", MyDialog.ERROR_DIALOG);
+                        dlg.ShowDialog();
                         return;
                     }
                     addNewRole(tenNhomQuyen);
@@ -99,7 +96,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
             if (permissions.Count == 0)
             {
-                MessageBox.Show("Phải chọn ít nhất một quyền cho nhóm quyền!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MyDialog dlg2 = new MyDialog("Phải chọn ít nhất một quyền cho nhóm quyền!", MyDialog.ERROR_DIALOG);
+                dlg2.ShowDialog();
                 return;
             }
             // get maQuyen from selected row in dgvNhomQuyen
@@ -109,20 +107,22 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             bool updateRoleNameSuccess = rolebus.CapNhatQuyen(maQuyen, tenNhomQuyen);
             if (!updateRoleNameSuccess)
             {
-                MessageBox.Show("Cập nhật tên nhóm quyền thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MyDialog dlg3 = new MyDialog("Cập nhật tên nhóm quyền thất bại!", MyDialog.ERROR_DIALOG);
+                dlg3.ShowDialog();
                 return;
             }
             // delete all existing permissions for the role
-            bool deleteSuccess = cTNhomQuyen.XoaCTNhomQuyen(maQuyen);
+            bool deleteSuccess = cTNhomQuyenBUS.XoaCTNhomQuyen(maQuyen);
             if (!deleteSuccess)
             {
-                MessageBox.Show("Lỗi khi xóa các chi tiết quyền đã tồn tại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MyDialog dlg3 = new MyDialog("Lỗi khi xóa các chi tiết quyền đã tồn tại!", MyDialog.ERROR_DIALOG);
+                dlg3.ShowDialog();
                 return;
             }
             // add new permissions
             foreach (var perm in permissions)
             {
-                bool success = cTNhomQuyen.ThemCTNhomQuyen(maQuyen,
+                bool success = cTNhomQuyenBUS.ThemCTNhomQuyen(maQuyen,
                                                            perm.Key,
                                                            perm.Value[0],
                                                            perm.Value[1],
@@ -130,11 +130,13 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                                                            perm.Value[3]);
                 if (!success)
                 {
-                    MessageBox.Show("Cập nhật chi tiết nhóm quyền thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MyDialog dlg1 = new MyDialog("Cập nhật chi tiết nhóm quyền thất bại!", MyDialog.ERROR_DIALOG);
+                    dlg1.ShowDialog();
                     return;
                 }
             }
-            MessageBox.Show("Cập nhật quyền thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MyDialog dlg = new MyDialog("Cập nhật quyền thành công!", MyDialog.SUCCESS_DIALOG);
+            dlg.ShowDialog();
             pnlPopup.Visible = false;
         }
         private void addNewRole(String tenNhomQuyen)
@@ -158,20 +160,22 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
             if (permissions.Count == 0)
             {
-                MessageBox.Show("Phải chọn ít nhất một quyền cho nhóm quyền!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MyDialog dlg2 = new MyDialog("Phải chọn ít nhất một quyền cho nhóm quyền!", MyDialog.ERROR_DIALOG);
+                dlg2.ShowDialog();
                 return;
             }
 
             NhomQuyen? role = rolebus.ThemQuyen(tenNhomQuyen);
             if (role == null)
             {
-                MessageBox.Show("Thêm nhóm quyền thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MyDialog dlg2 = new MyDialog("Thêm nhóm quyền thất bại!", MyDialog.ERROR_DIALOG);
+                dlg2.ShowDialog();
                 return;
             }
 
             foreach (var perm in permissions)
             {
-                bool success = cTNhomQuyen.ThemCTNhomQuyen(role.maQuyen,
+                bool success = cTNhomQuyenBUS.ThemCTNhomQuyen(role.maQuyen,
                                                            perm.Key,
                                                            perm.Value[0],
                                                            perm.Value[1],
@@ -179,11 +183,13 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                                                            perm.Value[3]);
                 if (!success)
                 {
-                    MessageBox.Show("Thêm chi tiết nhóm quyền thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MyDialog dlg = new MyDialog("Thêm chi tiết nhóm quyền thất bại!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
                     return;
                 }
             }
-            MessageBox.Show("Thêm quyền thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MyDialog dlg1 = new MyDialog("Thêm quyền thành công!", MyDialog.SUCCESS_DIALOG);
+            dlg1.ShowDialog();
             pnlPopup.Visible = false;
         }
         private void dgvNhomQuyen_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -197,14 +203,15 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             if (colName == "View")
             {
                 txtTenNhomQuyen.Text = tenQuyen;
-                dgvPopupChucNang.DataSource = cTNhomQuyen.FindByMaQuyen(maQuyen);
+                dgvPopupChucNang.DataSource = cTNhomQuyenBUS.FindByMaQuyen(maQuyen);
                 viewMode();
             }
             else if (colName == "Delete")
             {
                 if (tenQuyen == "admin")
                 {
-                    MessageBox.Show("Không thể xóa quyền này", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MyDialog dlg = new MyDialog("Không thể xóa quyền này!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
                     return;
                 }
                 var confirmResult = MessageBox.Show("Bạn có chắc chắn xóa nhóm quyền này?",
@@ -214,8 +221,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
                 if (rolebus.XoaNhomQuyen(maQuyen))
                 {
-                    MessageBox.Show("Xóa nhóm quyền thành công!", "Thành công",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MyDialog dlg1 = new MyDialog("Xóa nhóm quyền thành công!", MyDialog.SUCCESS_DIALOG);
+                    dlg1.ShowDialog();
                     pnlPopup.Visible = false;
                     loadData();
                 }
@@ -226,10 +233,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 txtTenNhomQuyen.Text = tenQuyen;
                 if (tenQuyen == "admin")
                 {
-                    MessageBox.Show("Không thể sửa quyền này", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MyDialog dlg = new MyDialog("Không thể sửa quyền này!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
                     return;
                 }
-                List<CTNhomQuyen> listCTNhomQuyen = cTNhomQuyen.FindByMaQuyen(maQuyen);
+                List<CTNhomQuyen> listCTNhomQuyen = cTNhomQuyenBUS.FindByMaQuyen(maQuyen);
                 ArrayList list = molbus.GetListChucNang();
                 dgvPopupChucNang.DataSource = list;
 
@@ -292,6 +300,33 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             btnHuyPopup.Text = "Hủy";
             pnlPopup.Visible = true;
             pnlPopup.BringToFront();
+        }
+
+        private void CheckPhanQuyen()
+        {
+            ArrayList dspq = cTNhomQuyenBUS.GetListCTNhomQuyen(UserSession.Quyen);
+            foreach(CTNhomQuyen pq in dspq)
+            {
+                if(pq.maChucNang == 7)
+                {
+                    if(pq.them == 0)
+                    {
+                        btnTaoNhomQuyen.Visible = false;
+                    }
+                    if(pq.xoa == 0)
+                    {
+                        dgvNhomQuyen.Columns["Xóa"].Visible = false;
+                    }
+                    if(pq.capNhat == 0)
+                    {
+                        dgvNhomQuyen.Columns["Sửa"].Visible = false;
+                    }
+                    if(pq.xem == 0)
+                    {
+                        dgvNhomQuyen.Columns["Xem"].Visible = false;
+                    }
+                }                    
+            }
         }
     }
 }

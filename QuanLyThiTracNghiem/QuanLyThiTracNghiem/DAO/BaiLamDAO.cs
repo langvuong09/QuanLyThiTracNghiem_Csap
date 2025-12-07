@@ -34,7 +34,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                             maBaiLam = reader.GetInt32(0),
                             maSinhVien = reader.GetString(1),
                             maDe = reader.GetInt32(2),
-                            tongDiem = reader.GetInt32(3),
+                            tongDiem = reader.GetFloat(3),
                             thoiGianBatDau = reader.GetDateTime(4),
                             thoiGianNopBai = reader.GetDateTime(5)
                         };
@@ -70,7 +70,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                             maBaiLam = reader.GetInt32(0),
                             maSinhVien = reader.GetString(1),
                             maDe = reader.GetInt32(2),
-                            tongDiem = reader.GetInt32(3),
+                            tongDiem = reader.GetFloat(3),
                             thoiGianBatDau = reader.GetDateTime(4),
                             thoiGianNopBai = reader.GetDateTime(5)
                         };
@@ -107,7 +107,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                             maBaiLam = reader.GetInt32(0),
                             maSinhVien = reader.GetString(1),
                             maDe = reader.GetInt32(2),
-                            tongDiem = reader.GetInt32(3),
+                            tongDiem = reader.GetFloat(3),
                             thoiGianBatDau = reader.GetDateTime(4),
                             thoiGianNopBai = reader.GetDateTime(5)
                         };

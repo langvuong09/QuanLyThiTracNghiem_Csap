@@ -1,6 +1,7 @@
 ﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -18,6 +19,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private readonly GiaoVienBUS gvBUS = new GiaoVienBUS();
         private readonly TaiKhoanBUS tkBUS = new TaiKhoanBUS();
         private readonly BindingSource bs = new BindingSource();
+        private CTNhomQuyenBUS cTNhomQuyenBUS = new CTNhomQuyenBUS();
         private readonly DateTime? parsedDate;
         private System.Windows.Forms.Timer searchTimer;
 
@@ -32,7 +34,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         public Component_NguoiDung()
         {
             InitializeComponent();
-
+            CheckPhanQuyen();
             // Dùng BindingSource để bind DataGridView ổn định
             dataGridView_DSGVSV.AutoGenerateColumns = true;
             dataGridView_DSGVSV.DataSource = bs;
@@ -722,6 +724,25 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             isEditing = false;
             panelThongTin.Visible = false;
             unlockControls();
+        }
+
+        private void CheckPhanQuyen()
+        {
+            ArrayList dspq = cTNhomQuyenBUS.GetListCTNhomQuyen(UserSession.Quyen);
+            foreach (CTNhomQuyen pq in dspq)
+            {
+                if (pq.maChucNang == 1)
+                {
+                    if(pq.them == 0)
+                    {
+                        button_ThemND.Visible = false;
+                    }
+                    if(pq.capNhat == 0)
+                    {
+                        buttonSua.Visible = false;
+                    }
+                }
+            }
         }
     }
 }

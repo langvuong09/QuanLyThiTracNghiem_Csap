@@ -1,4 +1,6 @@
-﻿namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
+﻿using System.Windows.Forms;
+
+namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
     partial class Component_NguoiDung
     {
@@ -28,6 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Component_NguoiDung));
             comboboxLoc = new ComboBox();
             textBoxTimKiem = new TextBox();
@@ -84,8 +87,14 @@
             // 
             // dataGridView_DSGVSV
             // 
+            dataGridView_DSGVSV.AllowUserToAddRows = false;
+            dataGridView_DSGVSV.AllowUserToDeleteRows = false;
             dataGridView_DSGVSV.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView_DSGVSV.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView_DSGVSV.BackgroundColor = SystemColors.ButtonFace;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(155, 188, 255);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            dataGridView_DSGVSV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dataGridView_DSGVSV.Location = new Point(24, 145);
             dataGridView_DSGVSV.Name = "dataGridView_DSGVSV";
             dataGridView_DSGVSV.Size = new Size(1489, 776);

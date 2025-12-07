@@ -62,11 +62,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
         }
 
-        public bool XoaNhomThamGiaOfSV(string maSV)
+        public bool XoaNhomThamGiaOfSV(string maSV, string maNhom)
         {
             try
             {
-                if(nhomThamGiaDAO.XoanhomTG(maSV))
+                int maN = Convert.ToInt32(maNhom);
+                if(nhomThamGiaDAO.XoanhomTG(maSV, maN))
                 {
                     return true;
                 }

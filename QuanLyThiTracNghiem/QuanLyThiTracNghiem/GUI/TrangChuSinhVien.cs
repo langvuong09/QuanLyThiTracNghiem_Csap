@@ -34,6 +34,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private Component_CauHoi ch = new Component_CauHoi();
         private Component_ThongBaoAdmin tba = new Component_ThongBaoAdmin();
         private Component_MonHoc mh = new Component_MonHoc();
+        private Component_MonHocNguoiDung mhnd = new Component_MonHocNguoiDung();
         private Component_PhanCong pc = new Component_PhanCong();
         private Component_PhanQuyen pq = new Component_PhanQuyen();
         private Component_NguoiDung nd = new Component_NguoiDung();
@@ -192,29 +193,30 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                     case 4:
                         panel_Left.Controls.Add(button_MonHoc);
                         break;
-                    case 6:
+                    case 5:
                         panel_Left.Controls.Add(button_PhanCong);
                         break;
-                    case 7:
+                    case 6:
                         panel_Left.Controls.Add(button_DeThi);
                         break;
-                    case 8:
+                    case 7:
                         panel_Left.Controls.Add(button_PhanQuyen);
                         break;
-                    case 9:
-                        panel_Left.Controls.Add(button_ThongBaoAdmin);
-                        break;
-                    case 10:
+                    case 8:
                         panel_Left.Controls.Add(button_NhomHocPhan);
-                        break;
-                    case 11:
+                        break;                        
+                    case 9:
                         panel_Left.Controls.Add(button_DeKiemTra);
-                        break;
-                    case 12:
-                        panel_Left.Controls.Add(button_ThongKe);
+                        break;                        
+                    case 10:
+                        panel_Left.Controls.Add(button_ThongBaoAdmin);
                         break;
                     default:
                         break;
+                }
+                if(UserSession.Quyen == 1)
+                {
+                    panel_Left.Controls.Add(button_ThongKe);
                 }
             }
             panel_Left.ResumeLayout();
@@ -227,14 +229,29 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dkt.Dock = DockStyle.Fill;
             ch.Dock = DockStyle.Fill;
             tba.Dock = DockStyle.Fill;
-            mh.Dock = DockStyle.Fill;
+            ArrayList ctpq = cTNhomQuyenBUS.GetListCTNhomQuyen(UserSession.Quyen);
+            foreach (CTNhomQuyen pq in ctpq)
+            {
+                if (pq.maChucNang == 4)
+                {
+                    if (pq.xem == 0)
+                    {
+                        mhnd.Dock = DockStyle.Fill;
+                        panel_Main.Controls.Add(mhnd);
+                    }else
+                    {
+                        mh.Dock = DockStyle.Fill;
+                        panel_Main.Controls.Add(mh);
+                    }
+                    
+                }
+            }            
             pc.Dock = DockStyle.Fill;
             pq.Dock = DockStyle.Fill;
             
             ttcn.Dock = DockStyle.Fill;
             nd.Dock = DockStyle.Fill;
-            tk.Dock = DockStyle.Fill;
-
+            
             panel_Main.Controls.Add(tc);
             panel_Main.Controls.Add(hp);
             panel_Main.Controls.Add(dt);
@@ -244,14 +261,15 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             panel_Main.Controls.Add(tba);
             panel_Main.Controls.Add(mh);
             panel_Main.Controls.Add(pc);
-            panel_Main.Controls.Add(pq);
-            
+            panel_Main.Controls.Add(pq);            
             panel_Main.Controls.Add(ttcn);
             panel_Main.Controls.Add(nd);
-            panel_Main.Controls.Add(tk);
+            if (UserSession.Quyen == 1)
+            {
+                tk.Dock = DockStyle.Fill;
+                panel_Main.Controls.Add(tk);
+            }
             button_ThongTin.Text = UserSession.username;
-
-
 
             tc.BringToFront(); // Hiển thị component Trang Chủ lên trên cùng khi load form
 
@@ -285,6 +303,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         {
             HighlightButton(button_MonHoc);
             mh.BringToFront();
+        }
+
+        private void button_MonHocNguoiDung_Click(object sender, EventArgs e)
+        {
+            HighlightButton(button_MonHoc);
+            mhnd.BringToFront();
         }
 
         private void button_ThongBaoAdmin_Click(object sender, EventArgs e)

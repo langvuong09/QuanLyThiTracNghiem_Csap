@@ -20,10 +20,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         MonHocBUS monHocBUS = new MonHocBUS();
         GiaoVienBUS giaoVienBUS = new GiaoVienBUS();
         NhomThamGiaBUS nhomThamGiaBUS = new NhomThamGiaBUS();
+        CTNhomQuyenBUS ctNhomQuyenBUS = new CTNhomQuyenBUS();
         private Panel pnDangChon = null;
         public Component_NhomHocPhan()
         {
             InitializeComponent();
+            CheckPhanQuyen();
             pnNhom.AutoScroll = true;
             AddEvents();
         }
@@ -373,6 +375,30 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 MyDialog dlg = new MyDialog("Error!", MyDialog.ERROR_DIALOG);
                 dlg.ShowDialog();
                 return;
+            }
+        }
+
+        private void CheckPhanQuyen()
+        {
+            ArrayList dspq = ctNhomQuyenBUS.GetListCTNhomQuyen(UserSession.Quyen);
+            foreach (CTNhomQuyen pq in dspq)
+            {
+                if(pq.maChucNang == 8)
+                {
+                    if(pq.them == 0)
+                    {
+                        btnTaoNhom.Visible = false;
+                    }
+                    if(pq.xoa == 0)
+                    {
+                        btnXoa.Visible = false;
+                    }
+                    if(pq.xem == 0)
+                    {
+                        btnDSDeKiemTra.Visible = false;
+                        btnDSSV.Visible = false;
+                    }
+                }
             }
         }
     }

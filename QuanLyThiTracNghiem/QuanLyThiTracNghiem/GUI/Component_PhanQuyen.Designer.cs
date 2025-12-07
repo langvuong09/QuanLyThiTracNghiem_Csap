@@ -98,8 +98,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dgvNhomQuyen.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvNhomQuyen.BackgroundColor = Color.White;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-			dataGridViewCellStyle1.Font = new Font("Segoe UI", 12F);
+            dgvNhomQuyen.BackgroundColor = SystemColors.ButtonFace;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(155, 188, 255);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
@@ -108,8 +109,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dgvNhomQuyen.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvNhomQuyen.Columns.AddRange(new DataGridViewColumn[] { colMaQuyen, colTenQuyen, colView, colEdit, colDelete });
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-			dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F);
+            dgvNhomQuyen.BackgroundColor = SystemColors.ButtonFace;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(155, 188, 255);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
             dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
@@ -208,8 +210,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             // 
             dgvPopupChucNang.AllowUserToAddRows = false;
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = SystemColors.Control;
-			dataGridViewCellStyle3.Font = new Font("Segoe UI", 12F);
+            dgvPopupChucNang.BackgroundColor = SystemColors.ButtonFace;
+            dataGridViewCellStyle3.BackColor = Color.FromArgb(155, 188, 255);
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
             dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;

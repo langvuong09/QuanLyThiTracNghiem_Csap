@@ -310,16 +310,20 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
                 Created by: Đỗ Mai Anh
                 Dùng trong : Panel_ThemCauHoiThuCong
          */
-        public void XoaCauHoi(int maCauHoi)
+        public bool XoaCauHoi(int maCauHoi)
         {
             bool soLuongCauHoiBiXoa = CauHoiDAO.XoaCauHoi(maCauHoi);
             if (soLuongCauHoiBiXoa ==true)
             {
-                Console.WriteLine("Xóa câu hỏi thành công");
+                MyDialog dialog = new MyDialog("Xóa câu hỏi thành công!", MyDialog.SUCCESS_DIALOG);
+                dialog.ShowDialog();
+                return true;
             }
             else
             {
-                Console.WriteLine("Xóa câu hỏi thất bại");
+                MyDialog dialog = new MyDialog("Xóa câu hỏi thất bại!", MyDialog.ERROR_DIALOG);
+                dialog.ShowDialog();
+                return false;
             }
         }
 

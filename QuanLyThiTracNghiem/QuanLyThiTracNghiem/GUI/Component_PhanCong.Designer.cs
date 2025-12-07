@@ -1,4 +1,6 @@
-﻿namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
+﻿using System.Windows.Forms;
+
+namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
     partial class Component_PhanCong
     {
@@ -17,6 +19,7 @@
 
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Component_PhanCong));
             dataGridView_DSPC = new DataGridView();
             textBoxTimKiem = new TextBox();
@@ -36,6 +39,12 @@
             // 
             // dataGridView_DSPC
             // 
+            dataGridView_DSPC.AllowUserToAddRows = false;
+            dataGridView_DSPC.AllowUserToDeleteRows = false;
+            dataGridView_DSPC.BackgroundColor = SystemColors.ButtonFace;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(155, 188, 255);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            dataGridView_DSPC.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dataGridView_DSPC.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView_DSPC.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView_DSPC.Location = new Point(16, 94);

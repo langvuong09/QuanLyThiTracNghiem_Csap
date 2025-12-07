@@ -30,7 +30,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         /// </summary>
         private void InitializeComponent()
         {
-            dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             colSTT = new DataGridViewTextBoxColumn();
             colMaSV = new DataGridViewTextBoxColumn();
             colTenSV = new DataGridViewTextBoxColumn();
@@ -45,8 +45,55 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             btnThem = new Button();
             lblMaSV = new Label();
             dgvSinhVien = new DataGridView();
+            btnXoaSV = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvSinhVien).BeginInit();
             SuspendLayout();
+            // 
+            // colSTT
+            // 
+            colSTT.HeaderText = "STT";
+            colSTT.MinimumWidth = 70;
+            colSTT.Name = "colSTT";
+            colSTT.ReadOnly = true;
+            colSTT.Width = 70;
+            // 
+            // colMaSV
+            // 
+            colMaSV.HeaderText = "MSSV";
+            colMaSV.MinimumWidth = 100;
+            colMaSV.Name = "colMaSV";
+            colMaSV.ReadOnly = true;
+            // 
+            // colTenSV
+            // 
+            colTenSV.HeaderText = "Họ và tên";
+            colTenSV.MinimumWidth = 205;
+            colTenSV.Name = "colTenSV";
+            colTenSV.ReadOnly = true;
+            colTenSV.Width = 205;
+            // 
+            // colEmail
+            // 
+            colEmail.HeaderText = "Email";
+            colEmail.MinimumWidth = 150;
+            colEmail.Name = "colEmail";
+            colEmail.ReadOnly = true;
+            colEmail.Width = 350;
+            // 
+            // colGioiTinh
+            // 
+            colGioiTinh.HeaderText = "Giới tính";
+            colGioiTinh.MinimumWidth = 100;
+            colGioiTinh.Name = "colGioiTinh";
+            colGioiTinh.ReadOnly = true;
+            // 
+            // colNgaySinh
+            // 
+            colNgaySinh.HeaderText = "Ngày sinh";
+            colNgaySinh.MinimumWidth = 200;
+            colNgaySinh.Name = "colNgaySinh";
+            colNgaySinh.ReadOnly = true;
+            colNgaySinh.Width = 200;
             // 
             // lblTitle
             // 
@@ -83,7 +130,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             btnXuat.BackColor = SystemColors.ActiveCaption;
             btnXuat.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnXuat.ForeColor = SystemColors.Control;
-            btnXuat.Location = new Point(930, 63);
+            btnXuat.Location = new Point(930, 120);
             btnXuat.Name = "btnXuat";
             btnXuat.Size = new Size(157, 46);
             btnXuat.TabIndex = 3;
@@ -93,9 +140,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             // txtMaSV
             // 
             txtMaSV.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtMaSV.Location = new Point(554, 68);
+            txtMaSV.Location = new Point(584, 68);
             txtMaSV.Name = "txtMaSV";
-            txtMaSV.Size = new Size(252, 35);
+            txtMaSV.Size = new Size(370, 35);
             txtMaSV.TabIndex = 5;
             // 
             // btnThem
@@ -103,7 +150,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             btnThem.BackColor = SystemColors.ActiveCaption;
             btnThem.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnThem.ForeColor = SystemColors.Control;
-            btnThem.Location = new Point(812, 63);
+            btnThem.Location = new Point(975, 63);
             btnThem.Name = "btnThem";
             btnThem.Size = new Size(112, 46);
             btnThem.TabIndex = 4;
@@ -114,7 +161,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             // 
             lblMaSV.AutoSize = true;
             lblMaSV.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblMaSV.Location = new Point(466, 73);
+            lblMaSV.Location = new Point(477, 73);
             lblMaSV.Name = "lblMaSV";
             lblMaSV.Size = new Size(82, 30);
             lblMaSV.TabIndex = 6;
@@ -129,68 +176,33 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dataGridViewCellStyle1.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             dgvSinhVien.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvSinhVien.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvSinhVien.Columns.AddRange(new DataGridViewColumn[] {colSTT, colMaSV, colTenSV, colEmail, colGioiTinh, colNgaySinh });
+            dgvSinhVien.Columns.AddRange(new DataGridViewColumn[] { colSTT, colMaSV, colTenSV, colEmail, colGioiTinh, colNgaySinh });
             dgvSinhVien.EnableHeadersVisualStyles = false;
-            dgvSinhVien.Location = new Point(30, 160);
+            dgvSinhVien.Location = new Point(30, 177);
             dgvSinhVien.MultiSelect = false;
             dgvSinhVien.Name = "dgvSinhVien";
             dgvSinhVien.ReadOnly = true;
             dgvSinhVien.RowHeadersWidth = 30;
-            dgvSinhVien.Size = new Size(1057, 571);
+            dgvSinhVien.Size = new Size(1057, 554);
             dgvSinhVien.TabIndex = 7;
             // 
-            // colSTT
+            // btnXoaSV
             // 
-            colSTT.HeaderText = "STT";
-            colSTT.MinimumWidth = 70;
-            colSTT.Name = "colSTT";
-            colSTT.ReadOnly = true;
-            colSTT.Width = 70;
-            // 
-            // colMaSV
-            // 
-            colMaSV.HeaderText = "MSSV";
-            colMaSV.MinimumWidth = 100;
-            colMaSV.Name = "colMaSV";
-            colMaSV.ReadOnly = true;
-            colMaSV.Width = 100;
-            // 
-            // colTenSV
-            // 
-            colTenSV.HeaderText = "Họ và tên";
-            colTenSV.MinimumWidth = 205;
-            colTenSV.Name = "colTenSV";
-            colTenSV.ReadOnly = true;
-            colTenSV.Width = 205;
-            // 
-            // colEmail
-            // 
-            colEmail.HeaderText = "Email";
-            colEmail.MinimumWidth = 150;
-            colEmail.Name = "colEmail";
-            colEmail.ReadOnly = true;
-            colEmail.Width = 350;
-            // 
-            // colGioiTinh
-            // 
-            colGioiTinh.HeaderText = "Giới tính";
-            colGioiTinh.MinimumWidth = 100;
-            colGioiTinh.Name = "colGioiTinh";
-            colGioiTinh.ReadOnly = true;
-            colGioiTinh.Width = 100;
-            // 
-            // colNgaySinh
-            // 
-            colNgaySinh.HeaderText = "Ngày sinh";
-            colNgaySinh.MinimumWidth = 200;
-            colNgaySinh.Name = "colNgaySinh";
-            colNgaySinh.ReadOnly = true;
-            colNgaySinh.Width = 200;
+            btnXoaSV.BackColor = SystemColors.ActiveCaption;
+            btnXoaSV.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnXoaSV.ForeColor = SystemColors.Control;
+            btnXoaSV.Location = new Point(768, 120);
+            btnXoaSV.Name = "btnXoaSV";
+            btnXoaSV.Size = new Size(135, 46);
+            btnXoaSV.TabIndex = 8;
+            btnXoaSV.Text = "Xóa SV";
+            btnXoaSV.UseVisualStyleBackColor = false;
             // 
             // Dialog_XemDSSVNhom
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(btnXoaSV);
             Controls.Add(dgvSinhVien);
             Controls.Add(lblMaSV);
             Controls.Add(txtMaSV);
@@ -222,5 +234,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private Button btnThem;
         private Label lblMaSV;
         private DataGridView dgvSinhVien;
+        private Button btnXoaSV;
     }
 }

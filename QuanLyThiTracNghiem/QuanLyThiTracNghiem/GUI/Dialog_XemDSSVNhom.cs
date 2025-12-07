@@ -31,6 +31,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             LoadDataLenTableSinhVien();
             btnTimKiem.Click += btnTimKiem_Click;
             btnThem.Click += btnThemSV_Click;
+            btnXoaSV.Click += btnXoaSinhVien_Click;
             btnXuat.Click += btnXuat_Click;
         }
 
@@ -151,6 +152,31 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 }
             }
             LoadDataLenTableSinhVien();
+        }
+
+        private void btnXoaSinhVien_Click(object sender, EventArgs e)
+        {
+            int row = dgvSinhVien.CurrentCell.RowIndex;
+            if ( row >= 0)
+            {
+                string maSV = dgvSinhVien.Rows[row].Cells[0].Value?.ToString();
+                if(nhomThamGiaBUS.XoaNhomThamGiaOfSV(maSV, maNhomDuocChon))
+                {
+                    MyDialog dlg = new MyDialog("Xóa sinh viên khỏi nhóm thành công!", MyDialog.SUCCESS_DIALOG);
+                    dlg.ShowDialog();
+                }
+                else
+                {
+                    MyDialog dlg = new MyDialog("Xóa sinh viên khỏi nhóm thất bại!", MyDialog.ERROR_DIALOG);
+                    dlg.ShowDialog();
+                }
+            }
+            else
+            {
+                MyDialog dlg = new MyDialog("Chưa chọn sinh viên để xóa khỏi nhóm!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return;
+            }
         }
 
         private void btnXuat_Click(object sender, EventArgs e)

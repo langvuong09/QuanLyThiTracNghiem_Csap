@@ -1,6 +1,7 @@
 ﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 using System;
+using System.Collections;
 using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
@@ -11,7 +12,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
     {
         private NhomBUS nhomBUS = new NhomBUS();
         private DeKiemTraBUS deKiemTraBUS = new DeKiemTraBUS();
-
+        private CTNhomQuyenBUS cTNhomQuyenBUS = new CTNhomQuyenBUS();
      
 
         private Form? panel_TrangChu;
@@ -143,5 +144,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             this.currentPage = comboBox_PhanTrang.SelectedIndex;
             Load_Data();
         }
+        
     }
 }

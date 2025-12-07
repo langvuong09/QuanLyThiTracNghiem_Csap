@@ -2,15 +2,7 @@
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Collections;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
@@ -20,7 +12,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private MonHocBUS monHocBUS = new MonHocBUS();
         private CauHoiBUS cauHoiBUS = new CauHoiBUS();
         private ChuongBUS chuongBUS = new ChuongBUS();
-
+        private CTNhomQuyenBUS ctNhomQuyenBUS = new CTNhomQuyenBUS();
 
         //Các biến phục vụ phân trang
         private int currentPage = 1;// Trang hiện tại
@@ -37,6 +29,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         public Component_CauHoi()
         {
             InitializeComponent();
+            checkPhanQuyen();
             Custom_Component_CauHoi();
             Custom_HeaderDataGridView_DSCauHoi();
             LoadMonHoc(comboBox_MonHoc);
@@ -437,6 +430,29 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
             this.currentPage = comboBox_ChiSo.SelectedIndex + 1;
             LoadData_DSCauHoi();
+        }
+
+        private void checkPhanQuyen()
+        {
+            ArrayList dsctnq = ctNhomQuyenBUS.GetListCTNhomQuyen(UserSession.Quyen);
+            foreach (CTNhomQuyen ctnq in dsctnq)
+            {
+                if (ctnq.maChucNang == 3)
+                {
+                    if (ctnq.them == 0)
+                    {
+                        button_ThemCauHoi.Visible = false;
+                    }
+                    if (ctnq.capNhat == 0)
+                    {
+                        button_Sua.Visible = false;
+                    }
+                    if(ctnq.xem == 0)
+                    {
+                        button_Xem.Visible = false;
+                    }
+                }
+            }
         }
     }
 }

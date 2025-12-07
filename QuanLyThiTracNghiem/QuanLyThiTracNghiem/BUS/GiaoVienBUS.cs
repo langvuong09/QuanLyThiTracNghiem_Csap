@@ -1,20 +1,16 @@
 ﻿using QuanLyThiTracNghiem.MyCustom;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Drawing;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 {
     internal class GiaoVienBUS
     {
         private GiaoVienDAO gvDAO = new GiaoVienDAO();
-        private ArrayList listGiaoVien;
+        private List<GiaoVien> listGiaoVien;
         public GiaoVienBUS()
         {
             DocListGiaoVien();
@@ -24,7 +20,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             this.listGiaoVien = gvDAO.GetListGiaoVien();
         }
 
-        public ArrayList GetListGiaoVien()
+        public List<GiaoVien> GetListGiaoVien()
         {
             if (this.listGiaoVien == null)
             {
@@ -33,23 +29,29 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             return listGiaoVien;
         }
 
-        public GiaoVien GetGiaoVienByID(string maGiaoVien)
+        public GiaoVien GetGiaoVienByID(string id)
         {
-            return gvDAO.getGiaoVienByID(maGiaoVien);
+            return gvDAO.GetGiaoVienByID(id);
         }
 
         public List<GiaoVien> GetAllGiaoVien()
         {
-            ArrayList arr = gvDAO.GetListGiaoVien();
-            List<GiaoVien> list = arr.OfType<GiaoVien>().ToList();
-
-            return list;
+            return gvDAO.GetListGiaoVien();
         }
 
 
         public bool SuaGiaoVien(string maGiaoVien, string tenGiaoVien, string email, string gioiTinh, DateTime ngaySinh, string anhDaiDien)
         {
-            if (gvDAO.SuaGiaoVien(maGiaoVien, tenGiaoVien, email, gioiTinh, ngaySinh, anhDaiDien))
+            GiaoVien gv = new GiaoVien
+            {
+                maGiaoVien = maGiaoVien,
+                tenGiaoVien = tenGiaoVien,
+                email = email,
+                gioiTinh = gioiTinh,
+                ngaySinh = ngaySinh,
+                anhDaiDien = anhDaiDien
+            };
+            if (gvDAO.SuaGiaoVien(gv))
             {
                 MyDialog dlg = new MyDialog("Cập nhật thông tin thành công!", MyDialog.SUCCESS_DIALOG);
                 dlg.ShowDialog();
@@ -97,27 +99,30 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
                 return false;
             }
             // ===== Gọi DAO (CHUẨN theo DAO bạn đưa) =====
-            if (gvDAO.ThemGiaoVien(maGiaoVien, tenGiaoVien, email, gioiTinh, ngaySinh, anhDaiDien, maQuyen))
+            GiaoVien gv = new GiaoVien
             {
-                return true;
-            }
-            else
+                maGiaoVien = maGiaoVien,
+                tenGiaoVien = tenGiaoVien,
+                email = email,
+                gioiTinh = gioiTinh,
+                ngaySinh = ngaySinh,
+                anhDaiDien = anhDaiDien,
+                quyen = maQuyen
+            };
+
+            return gvDAO.ThemGiaoVien(gv);
+        }
+
+        public bool XoaGiaoVien(string ma)
+        {
+            if(ma == null)
             {
+                new MyDialog("Chưa chọn giáo viên để xóa!", MyDialog.ERROR_DIALOG).ShowDialog();
                 return false;
             }
-        }
+            return gvDAO.XoaGiaoVien(ma);
+        }   
 
-
-        private bool CheckUsername(string username)
-        {
-            string pattern = @"^\d{6,}$";
-            return Regex.IsMatch(username, pattern);
-        }
-        private bool CheckPassword(string password)
-        {
-            string pattern = @"^\S{6,}$";
-            return Regex.IsMatch(password, pattern);
-        }
         private bool CheckTen(string ten)
         {
             string pattern = @"^[\p{L}]+(?:\s[\p{L}]+)*$";
@@ -127,8 +132,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
         {
             string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
             return Regex.IsMatch(email, pattern);
-        }
-
-        
+        }       
     }
 }

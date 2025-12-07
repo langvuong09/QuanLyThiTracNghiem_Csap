@@ -32,11 +32,13 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         public Component_DeKiemTra()
         {
             InitializeComponent();
+            CheckPhanQuyen();
             InitializeData();
         }
 
         private DeKiemTraBUS deKiemTraBUS = new DeKiemTraBUS();
         private MonHocDAO monHocDAO = new MonHocDAO();
+        private CTNhomQuyenBUS ctnqBUS = new CTNhomQuyenBUS();
         private Dictionary<string, string> dictMonHoc = new Dictionary<string, string>(); 
         private List<DeKiemTra> danhSachDeThi = new List<DeKiemTra>();
         private List<DeKiemTra> danhSachDeThiHienTai = new List<DeKiemTra>();
@@ -791,6 +793,29 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             if (btnNext.Enabled)
             {
                 btnNext.BackColor = Color.FromArgb(52, 152, 219);
+            }
+        }
+
+        private void CheckPhanQuyen()
+        {
+            ArrayList dspq = ctnqBUS.GetListCTNhomQuyen(UserSession.Quyen);
+            foreach (CTNhomQuyen pq in dspq)
+            {
+                if (pq.maChucNang == 9)
+                {
+                    if(pq.xoa == 0)
+                    {
+                        btnXoa.Visible = false;
+                    }
+                    if(pq.capNhat == 0)
+                    {
+                        btnSua.Visible = false;
+                    }
+                    if(pq.xem == 0)
+                    {
+                        btnXem.Visible = false;
+                    }
+                }
             }
         }
     }

@@ -1,4 +1,7 @@
-﻿namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
+﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
+using System.Collections;
+
+namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 {
     partial class TrangChuSinhVien
     {
@@ -212,7 +215,22 @@
             button_MonHoc.TabIndex = 7;
             button_MonHoc.Text = "Môn Học";
             button_MonHoc.UseVisualStyleBackColor = false;
-            button_MonHoc.Click += button_MonHoc_Click;
+            ArrayList ctpq = cTNhomQuyenBUS.GetListCTNhomQuyen(UserSession.Quyen);
+            foreach (CTNhomQuyen pq in ctpq)
+            {
+                if (pq.maChucNang == 4)
+                {
+                    if (pq.xem == 0)
+                    {
+                        button_MonHoc.Click += button_MonHocNguoiDung_Click;
+                    }
+                    else
+                    {
+                        button_MonHoc.Click += button_MonHoc_Click;
+                    }
+
+                }
+            }
             // 
             // button_ThongBaoAdmin
             // 

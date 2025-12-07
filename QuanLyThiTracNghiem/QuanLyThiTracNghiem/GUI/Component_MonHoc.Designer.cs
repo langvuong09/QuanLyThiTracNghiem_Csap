@@ -223,7 +223,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dgvChuong.AllowUserToDeleteRows = false;
             dgvChuong.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvChuong.BackgroundColor = SystemColors.ButtonFace;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(101, 224, 199);
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(155, 188, 255);
             dataGridViewCellStyle1.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             dgvChuong.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvChuong.ColumnHeadersHeight = 29;

@@ -11,9 +11,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
     {
         private MonHocBUS monHocBUS = new MonHocBUS();
         private ChuongBUS chuongBUS = new ChuongBUS();
+        private CTNhomQuyenBUS ctnhomQuyenBUS = new CTNhomQuyenBUS();
         public Component_MonHoc()
         {
-            InitializeComponent();            
+            InitializeComponent();      
+            CheckPhanQuyen();
             AddEvents();
         }
         private void AddEvents()
@@ -91,7 +93,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        public void btnThemChuong_Click(object sender, EventArgs e)
+        private void btnThemChuong_Click(object sender, EventArgs e)
         {
             if (txtMaMonHoc.Text == "")
             {
@@ -116,7 +118,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             LoadDataLenTableChuong(txtMaMonHoc.Text);
         }
 
-        public void btnXoaChuong_Click(object sender, EventArgs e)
+        private void btnXoaChuong_Click(object sender, EventArgs e)
         {
             if (dgvChuong.SelectedRows.Count > 0)
             {
@@ -140,7 +142,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        public void btnReset_Click(object sender, EventArgs e)
+        private void btnReset_Click(object sender, EventArgs e)
         {
             txtMaMonHoc.Text = "";
             txtTenMonHoc.Text = "";
@@ -152,7 +154,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             LoadDataLenTableMonHoc();
         }
 
-        public void btnThem_Click(object sender, EventArgs e)
+        private void btnThem_Click(object sender, EventArgs e)
         {
             ArrayList dsmh = monHocBUS.GetListMonHoc();
             foreach (MonHoc mh in dsmh)
@@ -179,7 +181,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        public void btnXoa_Click(object sender, EventArgs e)
+        private void btnXoa_Click(object sender, EventArgs e)
         {
             bool flag = monHocBUS.XoaMonHoc(txtMaMonHoc.Text);
             bool flag1 = chuongBUS.XoaChuongTheoMonHoc(txtMaMonHoc.Text);
@@ -197,7 +199,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        public void btnSua_Click(object sender, EventArgs e)
+        private void btnSua_Click(object sender, EventArgs e)
         {
             bool flag = monHocBUS.SuaMonHoc(txtMaMonHoc.Text, txtTenMonHoc.Text, txtTinChi.Text, txtSoTietLT.Text, txtSoTietTH.Text, txtHeSo.Text);
             if (flag)
@@ -214,7 +216,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
         }
 
-        public void XuLyTimKiem(object sender, EventArgs e)
+        private void XuLyTimKiem(object sender, EventArgs e)
         {
             dgvMonHoc.Rows.Clear();
             foreach (MonHoc mh in monHocBUS.GetListDSMonHoc(txtTimKiem.Text))
@@ -227,6 +229,29 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                     mh.soTietThucHanh,
                     mh.heSo
                     );
+            }
+        }
+
+        private void CheckPhanQuyen()
+        {
+            ArrayList ctpq = ctnhomQuyenBUS.GetListCTNhomQuyen(UserSession.Quyen);
+            foreach (CTNhomQuyen pq in ctpq)
+            {
+                if (pq.maChucNang == 4)
+                {
+                    if(pq.them == 0)
+                    {
+                        btnThem.Visible = false;
+                    }
+                    if(pq.capNhat == 0)
+                    {
+                        btnSua.Visible = false;
+                    }
+                    if(pq.xoa == 0)
+                    {
+                        btnXoa.Visible = false;
+                    }
+                }
             }
         }
     }

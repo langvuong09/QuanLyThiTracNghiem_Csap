@@ -13,6 +13,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private NhomBUS nhomBUS = new NhomBUS();
         private ThongBaoBUS thongBaoBUS = new ThongBaoBUS();
         private ThongBao_NhomBUS thongBao_NhomBUS = new ThongBao_NhomBUS();
+        private CTNhomQuyenBUS ctnhomQuyenBUS = new CTNhomQuyenBUS();
         public string maThongBaoDuocChon { get; set; }
         public Dialog_XemThongBao(string maThongBao)
         {
@@ -174,6 +175,21 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 Form parentForm = this.FindForm();
                 if (parentForm != null)
                     parentForm.Close();
+            }
+        }
+
+        private void CheckPhanQuyen()
+        {
+            ArrayList dspq = ctnhomQuyenBUS.GetListCTNhomQuyen(UserSession.Quyen);
+            foreach (CTNhomQuyen pq in dspq)
+            {
+                if (pq.maChucNang == 12)
+                {
+                    if (pq.capNhat == 0)
+                    {
+                        btnSua.Visible = false;
+                    }
+                }
             }
         }
     }

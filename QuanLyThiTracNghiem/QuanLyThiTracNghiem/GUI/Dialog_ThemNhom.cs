@@ -75,7 +75,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private void LoadDataLenComboBoxGiaoVien()
         {
             cbxGiangVien.Items.Clear();
-            ArrayList dsgv = giaoVienBUS.GetListGiaoVien();
+            List<GiaoVien> dsgv = giaoVienBUS.GetListGiaoVien();
 
             cbxGiangVien.Items.Add("Chọn giảng viên");
             foreach (GiaoVien gv in dsgv)
@@ -102,5 +102,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 return;
             }
         }
+
+        
     }
 }

@@ -1,160 +1,57 @@
-﻿    using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using System.Collections;
 using MySql.Data.MySqlClient;
-
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 
 namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
 {
     internal class GiaoVienDAO
     {
-        private MyConnect db = new MyConnect();
-        public ArrayList GetListGiaoVien()
+        private readonly QuanLyThiContext db = new QuanLyThiContext();
+
+        public List<GiaoVien> GetListGiaoVien()
         {
-            ArrayList dsgv = new ArrayList();
-            try
-            {
-                using (MySqlConnection conn = db.GetConnection())
-                {
-                    conn.Open();
-                    string sql = "SELECT * FROM giaovien";
-                    MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    MySqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        GiaoVien gv = new GiaoVien
-                        {
-                            maGiaoVien = reader.GetString(0),
-                            tenGiaoVien = reader.GetString(1),
-                            email = reader.GetString(2),
-                            gioiTinh = reader.GetString(3),
-                            ngaySinh = reader.GetDateTime(4),
-                            anhDaiDien = reader.GetString(5),
-                            
-                        };
-                        dsgv.Add(gv);
-                    }
-                }
-            }catch (Exception ex)
-            {
-                return null;
-            }
-            return dsgv;
+            return db.GiaoViens.ToList();
         }
 
-        public bool ThemGiaoVien(string maGiaoVien, string tenGiaoVien, string email, string gioiTinh, DateTime ngaySinh, string anhDaiDien, int maQuyen)
+        public bool ThemGiaoVien(GiaoVien gv)
         {
             try
             {
-                string sql = "INSERT INTO giaovien(maGiaoVien, tenGiaoVien, email, gioiTinh, ngaySinh, anhDaiDien, maQuyen)" +
-                    "VaLUES (@maGiaoVien, @tenGiaoVien, @email, @gioiTinh, @ngaySinh, @anhDaiDien, @maQuyen)";
-                using (MySqlConnection conn = db.GetConnection())
-                {
-                    conn.Open();
-                    MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@maGiaoVien", maGiaoVien);
-                    cmd.Parameters.AddWithValue("@tenGiaoVien", tenGiaoVien);
-                    cmd.Parameters.AddWithValue("@email", email);
-                    cmd.Parameters.AddWithValue("@gioiTinh", gioiTinh);
-                    cmd.Parameters.AddWithValue("@ngaySinh", ngaySinh);
-                    cmd.Parameters.AddWithValue("@anhDaiDien", anhDaiDien);
-                    cmd.Parameters.AddWithValue("@maQuyen", maQuyen);
-
-                    int rs = cmd.ExecuteNonQuery();
-                    return rs > 0;
-                }
-            }catch(Exception ex) { return false; }
+                db.GiaoViens.Add(gv);
+                db.SaveChanges();
+                return true;
+            }
+            catch { return false; }
         }
 
         public bool XoaGiaoVien(string maGiaoVien)
         {
             try
             {
-                string sql = "DELETE FROM giaovien WHERE maGiaoVien = @maGiaoVien";
+                var gv = db.GiaoViens.Find(maGiaoVien);
+                if (gv == null) return false;
 
-                using (MySqlConnection conn = db.GetConnection())
-                {
-                    conn.Open();
-
-                    MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@maGiaoVien", maGiaoVien);
-                    int rowsAffected = cmd.ExecuteNonQuery();
-                    return rowsAffected > 0;
-                }
+                db.GiaoViens.Remove(gv);
+                db.SaveChanges();
+                return true;
             }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            catch { return false; }
         }
 
-        public bool SuaGiaoVien(string maGiaoVien, string tenGiaoVien, string email, string gioiTinh, DateTime ngaySinh, string anhDaiDien)
+        public bool SuaGiaoVien(GiaoVien updated)
         {
             try
             {
-                string sql = "UPDATE giaovien SET tenGiaoVien = @tenGiaoVien, email = @email, gioiTinh= @gioiTinh, ngaySinh = @ngaySinh," +
-                    "anhDaiDien = @anhDaiDien WHERE maGiaoVien = @maGiaoVien";
-                using (MySqlConnection conn = db.GetConnection())
-                {
-                    conn.Open();
-                    MySqlCommand cmd = new MySqlCommand(sql, conn);              
-                    cmd.Parameters.AddWithValue("@tenGiaoVien", tenGiaoVien);
-                    cmd.Parameters.AddWithValue("@email", email);
-                    cmd.Parameters.AddWithValue("@gioiTinh", gioiTinh);
-                    cmd.Parameters.AddWithValue("@ngaySinh", ngaySinh);
-                    cmd.Parameters.AddWithValue("@anhDaiDien", anhDaiDien);
-                    cmd.Parameters.AddWithValue("@maGiaoVien", maGiaoVien);
-
-                    int rs = cmd.ExecuteNonQuery();
-                    return rs > 0;
-                }
+                db.GiaoViens.Update(updated);
+                db.SaveChanges();
+                return true;
             }
-            catch (Exception ex) { return false; }
+            catch { return false; }
         }
-        
-        public GiaoVien getGiaoVienByID(string maGiaoVien)
+
+        public GiaoVien GetGiaoVienByID(string id)
         {
-            try
-            {
-                string sql = "SELECT * FROM giaovien WHERE maGiaoVien = @maGiaoVien";
-                using(MySqlConnection conn = db.GetConnection())
-                {
-                    conn.Open();
-                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@maGiaoVien", maGiaoVien);
-
-                        using (MySqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                GiaoVien gv = new GiaoVien
-                                {
-                                    maGiaoVien = reader["maGiaoVien"].ToString(),
-                                    tenGiaoVien = reader["tenGiaoVien"].ToString(),
-                                    email = reader["email"].ToString(),
-                                    gioiTinh = reader["gioiTinh"].ToString(),
-                                    ngaySinh = reader.GetDateTime("ngaySinh"),
-                                    anhDaiDien = reader["anhDaiDien"].ToString(),
-                                    quyen = reader["maQuyen"].ToString()
-                                };
-                                return gv;
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Lỗi khi lấy giáo viên: " + ex.Message);
-            }
-            return null;
-
+            return db.GiaoViens.FirstOrDefault(g => g.maGiaoVien == id);
         }
     }
 }

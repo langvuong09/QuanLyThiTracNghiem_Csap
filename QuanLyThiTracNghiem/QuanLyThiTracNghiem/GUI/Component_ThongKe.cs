@@ -111,22 +111,25 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
             ArrayList dsDeKiemTra = baiLamBUS.GetListBaiLamByDeKiemTra(maDe);
 
-            // Danh sách điểm (float)
             List<float> dsDiem = new List<float>();
             foreach (BaiLam bl in dsDeKiemTra)
-            {
-                dsDiem.Add((float)bl.tongDiem);
-            }
+                dsDiem.Add(bl.tongDiem);
 
-            // Đếm số lượng sinh viên theo từng điểm (1–10)
-            int[] soLuong = new int[11]; // index 1..10
-            foreach (float d in dsDiem)
+            // Mốc 0 → 10 (bước 0.5)
+            List<float> diemMoc = new List<float>();
+            for (float d = 0.0f; d <= 10.0f; d += 0.5f)
+                diemMoc.Add(d);
+
+            int[] soLuong = new int[diemMoc.Count];
+
+            foreach (float diem in dsDiem)
             {
-                int diemLamTron = (int)Math.Round(d);
-                if (diemLamTron >= 1 && diemLamTron <= 10)
-                {
-                    soLuong[diemLamTron]++;
-                }
+                float diemLamTron = LamTronDiem_Custom(diem);
+
+                int index = diemMoc.FindIndex(x => Math.Abs(x - diemLamTron) < 0.001f);
+
+                if (index != -1)
+                    soLuong[index]++;
             }
 
             Chart chart = new Chart();
@@ -135,24 +138,42 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             ChartArea area = new ChartArea("Area1");
             area.AxisX.Title = "Điểm";
             area.AxisY.Title = "Số lượng sinh viên";
-            area.AxisX.Interval = 1;
-            area.AxisX.Minimum = 1;
+            area.AxisX.Interval = 0.5;
+            area.AxisX.Minimum = 0;
             area.AxisX.Maximum = 10;
             chart.ChartAreas.Add(area);
 
             Series slSeries = new Series("Số lượng");
-            slSeries.ChartType = SeriesChartType.Line;
+            slSeries.ChartType = SeriesChartType.Line;   // ← CHỈ SỬA DÒNG NÀY
             slSeries.BorderWidth = 3;
             slSeries.Color = Color.Blue;
 
-            for (int diem = 1; diem <= 10; diem++)
-            {
-                slSeries.Points.AddXY(diem, soLuong[diem]);
-            }
+            for (int i = 0; i < diemMoc.Count; i++)
+                slSeries.Points.AddXY(diemMoc[i], soLuong[i]);
 
             chart.Series.Add(slSeries);
-
             pnDoThi.Controls.Add(chart);
+        }
+
+        private float LamTronDiem_Custom(float d)
+        {
+            int nguyen = (int)Math.Truncate(d);
+            float thapPhan = d - nguyen;
+
+            float kq;
+
+            if (thapPhan <= 0.3f)
+                kq = nguyen;
+            else if (thapPhan <= 0.6f)
+                kq = nguyen + 0.5f;
+            else
+                kq = nguyen + 1;
+
+            // KHÔNG ép về 1
+            if (kq < 0f) kq = 0f;
+            if (kq > 10f) kq = 10f;
+
+            return kq;
         }
     }
 }

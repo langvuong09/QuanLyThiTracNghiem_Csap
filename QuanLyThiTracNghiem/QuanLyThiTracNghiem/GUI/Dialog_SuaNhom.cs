@@ -18,6 +18,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private NhomBUS nhomBUS = new NhomBUS();
         private MonHocBUS monHocBUS = new MonHocBUS();
         private GiaoVienBUS giangVienBUS = new GiaoVienBUS();
+        private CTNhomQuyenBUS ctNhomQuyenBUS = new CTNhomQuyenBUS();
         public string maNhomDuocChon { get; set; }
         public Dialog_SuaNhom(string maNhom)
         {
@@ -116,7 +117,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             cbxHocKy.Items.Clear();
             nhomBUS.DocListNhom();
             giangVienBUS.DocListGiaoVien();
-            ArrayList dsgv = giangVienBUS.GetListGiaoVien();
+            List<GiaoVien> dsgv = giangVienBUS.GetListGiaoVien();
             int maN = Convert.ToInt32(maNhom);
             Nhom n = nhomBUS.GetNhomTheoMa(maN);
             GiaoVien giaoVien = giangVienBUS.GetGiaoVienByID(n.maGiaoVien);
@@ -146,6 +147,21 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             if(nhomBUS.SuaNhom(maNhomDuocChon, txtTenNhom.Text, txtGhiChu.Text, monHoc, maGiaoVien, namHoc, hocKy))
             {
                 return;
+            }
+        }
+
+        private void CheckPhanQuyen()
+        {
+            ArrayList dspq = ctNhomQuyenBUS.GetListCTNhomQuyen(UserSession.Quyen);
+            foreach (CTNhomQuyen pq in dspq)
+            {
+                if (pq.maChucNang == 10)
+                {
+                    if (pq.capNhat == 0)
+                    {
+                        btnCapNhat.Visible = false;
+                    }
+                }
             }
         }
     }

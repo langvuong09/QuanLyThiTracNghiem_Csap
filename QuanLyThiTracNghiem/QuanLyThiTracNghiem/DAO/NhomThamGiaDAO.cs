@@ -96,11 +96,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             catch (Exception ex) { return false; }
         }
 
-        public bool XoanhomTG(string maSV)
+        public bool XoanhomTG(string maSV, int maNhom)
         {
             try
             {
-                string sql = "DELETE FROM nhomthamgia WHERE maSinhVien = @maSinhVien";
+                string sql = "DELETE FROM nhomthamgia WHERE maSinhVien = @maSinhVien AND maNhom = @maNhom";
 
                 using (MySqlConnection conn = db.GetConnection())
                 {
@@ -108,6 +108,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
 
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@maSinhVien", maSV);
+                    cmd.Parameters.AddWithValue("@maNhom", maNhom);
                     int rowsAffected = cmd.ExecuteNonQuery();
                     return rowsAffected > 0;
                 }

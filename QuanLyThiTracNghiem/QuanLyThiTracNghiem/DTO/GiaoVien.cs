@@ -16,7 +16,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO
 
         public string anhDaiDien { get; set; }
 
-        public string quyen { get; set; }
+        public int quyen { get; set; }
 
         public GiaoVien() { }
        

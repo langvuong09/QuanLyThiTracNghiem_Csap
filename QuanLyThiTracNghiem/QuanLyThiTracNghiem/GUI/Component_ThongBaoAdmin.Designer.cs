@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Component_ThongBaoAdmin));
             btnXoa = new Button();
             btnReload = new Button();
-            button6 = new Button();
             btnXem = new Button();
             pnThongBao = new Panel();
             btnTaoThongBao = new Button();
@@ -60,15 +59,6 @@
             btnReload.Size = new Size(82, 68);
             btnReload.TabIndex = 16;
             btnReload.UseVisualStyleBackColor = false;
-            // 
-            // button6
-            // 
-            button6.Location = new Point(193, 140);
-            button6.Name = "button6";
-            button6.Size = new Size(8, 8);
-            button6.TabIndex = 15;
-            button6.Text = "button6";
-            button6.UseVisualStyleBackColor = true;
             // 
             // btnXem
             // 
@@ -127,9 +117,9 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
+
             Controls.Add(btnXoa);
             Controls.Add(btnReload);
-            Controls.Add(button6);
             Controls.Add(btnXem);
             Controls.Add(pnThongBao);
             Controls.Add(btnTaoThongBao);
@@ -145,7 +135,6 @@
 
         private Button btnXoa;
         private Button btnReload;
-        private Button button6;
         private Button btnXem;
         private Panel pnThongBao;
         private Button btnTaoThongBao;

@@ -1,6 +1,7 @@
 ﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,6 +21,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         GiaoVienBUS gvBUS = new GiaoVienBUS();
         MonHocBUS mhBUS = new MonHocBUS();
         BindingSource bs = new BindingSource();
+        private CTNhomQuyenBUS nqBUS = new CTNhomQuyenBUS();
         private System.Windows.Forms.Timer searchTimer;
         private object currentSelectedItem = null;
 
@@ -27,7 +29,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         public Component_PhanCong()
         {
             InitializeComponent();
-
+            CheckPhanQuyen();
             dataGridView_DSPC.AutoGenerateColumns = true;
             dataGridView_DSPC.DataSource = bs;
 
@@ -406,8 +408,26 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 {
                     return;
                 }
+            }            
+        }
+
+        private void CheckPhanQuyen()
+        {
+            ArrayList dspq = nqBUS.GetListCTNhomQuyen(UserSession.Quyen);
+            foreach(CTNhomQuyen pq in dspq)
+            {
+                if(pq.maChucNang == 6)
+                {
+                    if(pq.them == 0)
+                    {
+                        button_ThemPC.Visible = false;
+                    }
+                    if(pq.xoa == 0)
+                    {
+                        button_HanhDong.Visible = false;
+                    }
+                }
             }
-            
         }
     }
 }
