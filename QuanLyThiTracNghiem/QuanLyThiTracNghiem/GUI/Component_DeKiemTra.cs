@@ -609,7 +609,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             {
                 LoadMonHocDictionary();
                 LoadDeThiData();
-                MessageBox.Show("Đã reload dữ liệu đề kiểm tra!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
