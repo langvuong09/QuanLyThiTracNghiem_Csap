@@ -126,8 +126,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         {
             try
             {
-                string sql = "INSERT INTO bailam(maBaiLam, maSinhVien, maDe, tongDiem)" +
-                    "VaLUES (@maBaiLam, @maSinhVien, @maDe, @tongDiem)";
+                string sql = "INSERT INTO bailam(maBaiLam, maSinhVien, maDe, tongDiem, thoiGianBatDau, thoiGianNopBai)" +
+                    "VALUES (@maBaiLam, @maSinhVien, @maDe, @tongDiem, @thoiGianBatDau, @thoiGianNopBai)";
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
@@ -136,12 +136,67 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                     cmd.Parameters.AddWithValue("@maSinhVien", maSinhVien);
                     cmd.Parameters.AddWithValue("@maDe", maDe);
                     cmd.Parameters.AddWithValue("@tongDiem", tongDiem);
+                    
+                    // Thêm thời gian bắt đầu và thời gian nộp bài
+                    DateTime now = DateTime.Now;
+                    cmd.Parameters.AddWithValue("@thoiGianBatDau", now);
+                    cmd.Parameters.AddWithValue("@thoiGianNopBai", now);
 
                     int rs = cmd.ExecuteNonQuery();
                     return rs > 0;
                 }
             }
-            catch (Exception ex) { return false; }
+            catch (Exception ex) 
+            { 
+                Console.WriteLine($"Lỗi khi thêm bài làm: {ex.Message}");
+                return false; 
+            }
+        }
+        
+        // Overload để có thể truyền thời gian cụ thể
+        public bool ThemBaiLam(int maBaiLam, string maSinhVien, int maDe, float tongDiem, DateTime? thoiGianBatDau, DateTime? thoiGianNopBai)
+        {
+            try
+            {
+                string sql = "INSERT INTO bailam(maBaiLam, maSinhVien, maDe, tongDiem, thoiGianBatDau, thoiGianNopBai)" +
+                    "VALUES (@maBaiLam, @maSinhVien, @maDe, @tongDiem, @thoiGianBatDau, @thoiGianNopBai)";
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maBaiLam", maBaiLam);
+                    cmd.Parameters.AddWithValue("@maSinhVien", maSinhVien);
+                    cmd.Parameters.AddWithValue("@maDe", maDe);
+                    cmd.Parameters.AddWithValue("@tongDiem", tongDiem);
+                    
+                    // Xử lý thời gian có thể null
+                    if (thoiGianBatDau.HasValue)
+                    {
+                        cmd.Parameters.AddWithValue("@thoiGianBatDau", thoiGianBatDau.Value);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@thoiGianBatDau", DBNull.Value);
+                    }
+                    
+                    if (thoiGianNopBai.HasValue)
+                    {
+                        cmd.Parameters.AddWithValue("@thoiGianNopBai", thoiGianNopBai.Value);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@thoiGianNopBai", DBNull.Value);
+                    }
+
+                    int rs = cmd.ExecuteNonQuery();
+                    return rs > 0;
+                }
+            }
+            catch (Exception ex) 
+            { 
+                Console.WriteLine($"Lỗi khi thêm bài làm: {ex.Message}");
+                return false; 
+            }
         }
 
         public bool XoaBaiLam(int maBaiLam)
@@ -258,6 +313,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
             try
             {
+                Console.WriteLine($"=== GetBaiLamByMaDeWithSinhVien: maDe = {maDe} ===");
+                
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
@@ -269,28 +326,55 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                                    WHERE bl.maDe = @maDe
                                    ORDER BY bl.maBaiLam";
                     
+                    Console.WriteLine($"SQL Query: {sql}");
+                    Console.WriteLine($"Parameter: @maDe = {maDe}");
+                    
                     using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@maDe", maDe);
                         
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
+                            int rowCount = 0;
                             while (reader.Read())
                             {
+                                rowCount++;
+                                Console.WriteLine($"Đọc dòng {rowCount}:");
+                                
                                 Dictionary<string, object> row = new Dictionary<string, object>();
+                                
                                 row["maBaiLam"] = reader.GetInt32("maBaiLam");
+                                Console.WriteLine($"  maBaiLam = {row["maBaiLam"]}");
+                                
                                 row["maSinhVien"] = reader.GetString("maSinhVien");
+                                Console.WriteLine($"  maSinhVien = {row["maSinhVien"]}");
+                                
                                 row["maDe"] = reader.GetInt32("maDe");
-                                row["tongDiem"] = reader.GetFloat("tongDiem");
+                                Console.WriteLine($"  maDe = {row["maDe"]}");
+                                
+                                // Xử lý tongDiem
+                                if (reader.IsDBNull(reader.GetOrdinal("tongDiem")))
+                                {
+                                    row["tongDiem"] = 0f;
+                                    Console.WriteLine($"  tongDiem = NULL (set to 0)");
+                                }
+                                else
+                                {
+                                    row["tongDiem"] = reader.GetFloat("tongDiem");
+                                    Console.WriteLine($"  tongDiem = {row["tongDiem"]}");
+                                }
                                 
                                 // Xử lý hoVaTen có thể null
-                                if (reader.IsDBNull(reader.GetOrdinal("hoVaTen")))
+                                int hoVaTenOrdinal = reader.GetOrdinal("hoVaTen");
+                                if (reader.IsDBNull(hoVaTenOrdinal))
                                 {
                                     row["hoVaTen"] = "";
+                                    Console.WriteLine($"  hoVaTen = NULL (set to empty)");
                                 }
                                 else
                                 {
                                     row["hoVaTen"] = reader.GetString("hoVaTen");
+                                    Console.WriteLine($"  hoVaTen = {row["hoVaTen"]}");
                                 }
                                 
                                 // Xử lý thoiGianBatDau có thể null
@@ -298,10 +382,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                                 if (reader.IsDBNull(thoiGianBatDauOrdinal))
                                 {
                                     row["thoiGianBatDau"] = null;
+                                    Console.WriteLine($"  thoiGianBatDau = NULL");
                                 }
                                 else
                                 {
                                     row["thoiGianBatDau"] = reader.GetDateTime("thoiGianBatDau");
+                                    Console.WriteLine($"  thoiGianBatDau = {row["thoiGianBatDau"]}");
                                 }
                                 
                                 // Xử lý thoiGianNopBai có thể null
@@ -309,22 +395,27 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                                 if (reader.IsDBNull(thoiGianNopBaiOrdinal))
                                 {
                                     row["thoiGianNopBai"] = null;
+                                    Console.WriteLine($"  thoiGianNopBai = NULL");
                                 }
                                 else
                                 {
                                     row["thoiGianNopBai"] = reader.GetDateTime("thoiGianNopBai");
+                                    Console.WriteLine($"  thoiGianNopBai = {row["thoiGianNopBai"]}");
                                 }
                                 
                                 result.Add(row);
                             }
+                            Console.WriteLine($"Tổng cộng: {rowCount} dòng được đọc");
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Lỗi khi lấy danh sách bài làm: {ex.Message}");
+                Console.WriteLine($"LỖI KHI LẤY DANH SÁCH BÀI LÀM: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
             }
+            Console.WriteLine($"Trả về {result.Count} bài làm");
             return result;
         }
 

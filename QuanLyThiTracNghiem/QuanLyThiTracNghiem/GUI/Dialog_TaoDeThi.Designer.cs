@@ -38,6 +38,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             textBoxTimeKetThuc = new TextBox();
             dateTimePickerBatDau = new DateTimePicker();
             dateTimePickerKetThuc = new DateTimePicker();
+            btnIconLichBatDau = new Button();
+            btnIconLichKetThuc = new Button();
             labelTimeLambai = new Label();
             labelHocPhan = new Label();
             textBoxTimeLamBai = new TextBox();
@@ -136,9 +138,21 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dateTimePickerBatDau.Format = DateTimePickerFormat.Custom;
             dateTimePickerBatDau.Location = new Point(34, 205);
             dateTimePickerBatDau.Name = "dateTimePickerBatDau";
-            dateTimePickerBatDau.Size = new Size(286, 32);
+            dateTimePickerBatDau.Size = new Size(260, 32);
             dateTimePickerBatDau.TabIndex = 4;
             dateTimePickerBatDau.ValueChanged += DateTimePickerBatDau_ValueChanged;
+            // 
+            // btnIconLichBatDau
+            // 
+            btnIconLichBatDau.BackColor = Color.White;
+            btnIconLichBatDau.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnIconLichBatDau.Location = new Point(300, 205);
+            btnIconLichBatDau.Name = "btnIconLichBatDau";
+            btnIconLichBatDau.Size = new Size(32, 32);
+            btnIconLichBatDau.TabIndex = 30;
+            btnIconLichBatDau.Text = "📅";
+            btnIconLichBatDau.UseVisualStyleBackColor = false;
+            btnIconLichBatDau.Click += BtnIconLichBatDau_Click;
             // 
             // dateTimePickerKetThuc
             // 
@@ -147,9 +161,21 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dateTimePickerKetThuc.Format = DateTimePickerFormat.Custom;
             dateTimePickerKetThuc.Location = new Point(398, 205);
             dateTimePickerKetThuc.Name = "dateTimePickerKetThuc";
-            dateTimePickerKetThuc.Size = new Size(297, 32);
+            dateTimePickerKetThuc.Size = new Size(265, 32);
             dateTimePickerKetThuc.TabIndex = 5;
             dateTimePickerKetThuc.ValueChanged += DateTimePickerKetThuc_ValueChanged;
+            // 
+            // btnIconLichKetThuc
+            // 
+            btnIconLichKetThuc.BackColor = Color.White;
+            btnIconLichKetThuc.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnIconLichKetThuc.Location = new Point(669, 205);
+            btnIconLichKetThuc.Name = "btnIconLichKetThuc";
+            btnIconLichKetThuc.Size = new Size(32, 32);
+            btnIconLichKetThuc.TabIndex = 31;
+            btnIconLichKetThuc.Text = "📅";
+            btnIconLichKetThuc.UseVisualStyleBackColor = false;
+            btnIconLichKetThuc.Click += BtnIconLichKetThuc_Click;
             // 
             // labelTimeLambai
             // 
@@ -461,6 +487,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             Controls.Add(labelTimeLambai);
             Controls.Add(textBoxTimeKetThuc);
             Controls.Add(textBoxTimeBatDau);
+            Controls.Add(btnIconLichKetThuc);
+            Controls.Add(btnIconLichBatDau);
             Controls.Add(dateTimePickerKetThuc);
             Controls.Add(dateTimePickerBatDau);
             Controls.Add(labelTimeKetThuc);
@@ -513,5 +541,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private Label labelNhomLop;
         private CheckBox checkBoxTatCaNhom;
         private FlowLayoutPanel flowLayoutPanelNhom;
+        private Button btnIconLichBatDau;
+        private Button btnIconLichKetThuc;
     }
 }

@@ -111,6 +111,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         {
             try
             {
+                Console.WriteLine($"=== LoadBaiLamData: currentMaDe = {currentMaDe} ===");
+                
                 if (currentMaDe == 0)
                 {
                     dataGridView1.Rows.Clear();
@@ -119,11 +121,26 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
                 danhSachBaiLam = baiLamBUS.GetBaiLamByMaDeWithSinhVien(currentMaDe);
                 
+                Console.WriteLine($"Đã load {danhSachBaiLam?.Count ?? 0} bài làm từ database");
+                
                 if (danhSachBaiLam == null || danhSachBaiLam.Count == 0)
                 {
+                    Console.WriteLine("Không có bài làm nào!");
                     dataGridView1.Rows.Clear();
                     danhSachBaiLamHienTai = new List<Dictionary<string, object>>();
                     return;
+                }
+
+                // Debug: In ra dữ liệu của từng bài làm
+                Console.WriteLine("Dữ liệu bài làm từ database:");
+                foreach (var baiLam in danhSachBaiLam)
+                {
+                    Console.WriteLine($"  Bài làm {baiLam["maBaiLam"]}:");
+                    foreach (var key in baiLam.Keys)
+                    {
+                        var value = baiLam[key];
+                        Console.WriteLine($"    {key} = {value} (type: {value?.GetType().Name ?? "null"})");
+                    }
                 }
 
                 danhSachBaiLamHienTai = danhSachBaiLam;
@@ -131,6 +148,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"LỖI KHI LOAD DỮ LIỆU BÀI LÀM: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 MessageBox.Show($"Lỗi khi load dữ liệu bài làm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 dataGridView1.Rows.Clear();
             }
@@ -145,34 +164,103 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             {
                 dataGridView1.Rows.Clear();
                 
+                Console.WriteLine($"=== Bắt đầu hiển thị {danhSachBaiLamHienTai.Count} bài làm ===");
+                
                 foreach (var baiLam in danhSachBaiLamHienTai)
                 {
-                    string mssv = baiLam["maSinhVien"].ToString();
-                    string tenSV = baiLam["hoVaTen"].ToString();
-                    string diem = baiLam["tongDiem"].ToString();
-                    int maBaiLam = Convert.ToInt32(baiLam["maBaiLam"]);
+                    // Debug: In ra tất cả keys trong dictionary
+                    Console.WriteLine("Keys trong dictionary:");
+                    foreach (var key in baiLam.Keys)
+                    {
+                        Console.WriteLine($"  - {key}: {baiLam[key]} (type: {baiLam[key]?.GetType().Name ?? "null"})");
+                    }
+                    
+                    string mssv = baiLam.ContainsKey("maSinhVien") ? baiLam["maSinhVien"]?.ToString() ?? "" : "";
+                    string tenSV = baiLam.ContainsKey("hoVaTen") ? baiLam["hoVaTen"]?.ToString() ?? "" : "";
+                    
+                    // Xử lý điểm - có thể là float hoặc double
+                    string diem = "0";
+                    if (baiLam.ContainsKey("tongDiem") && baiLam["tongDiem"] != null)
+                    {
+                        if (baiLam["tongDiem"] is float f)
+                        {
+                            diem = f.ToString("F2");
+                        }
+                        else if (baiLam["tongDiem"] is double d)
+                        {
+                            diem = d.ToString("F2");
+                        }
+                        else
+                        {
+                            diem = baiLam["tongDiem"].ToString();
+                        }
+                    }
+                    
+                    int maBaiLam = 0;
+                    if (baiLam.ContainsKey("maBaiLam") && baiLam["maBaiLam"] != null)
+                    {
+                        maBaiLam = Convert.ToInt32(baiLam["maBaiLam"]);
+                    }
                     
                     string timeVaoThi = "N/A";
                     string timeNopBai = "N/A";
                     
-                    if (baiLam.ContainsKey("thoiGianBatDau") && baiLam["thoiGianBatDau"] != null)
+                    if (baiLam.ContainsKey("thoiGianBatDau") && baiLam["thoiGianBatDau"] != null && baiLam["thoiGianBatDau"] != DBNull.Value)
                     {
-                        DateTime thoiGianBatDau = (DateTime)baiLam["thoiGianBatDau"];
-                        timeVaoThi = thoiGianBatDau.ToString("dd/MM/yyyy HH:mm:ss");
+                        try
+                        {
+                            DateTime thoiGianBatDau;
+                            if (baiLam["thoiGianBatDau"] is DateTime dt)
+                            {
+                                thoiGianBatDau = dt;
+                            }
+                            else
+                            {
+                                thoiGianBatDau = Convert.ToDateTime(baiLam["thoiGianBatDau"]);
+                            }
+                            timeVaoThi = thoiGianBatDau.ToString("dd/MM/yyyy HH:mm:ss");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Lỗi khi parse thoiGianBatDau: {ex.Message}");
+                            timeVaoThi = "N/A";
+                        }
                     }
                     
-                    if (baiLam.ContainsKey("thoiGianNopBai") && baiLam["thoiGianNopBai"] != null)
+                    if (baiLam.ContainsKey("thoiGianNopBai") && baiLam["thoiGianNopBai"] != null && baiLam["thoiGianNopBai"] != DBNull.Value)
                     {
-                        DateTime thoiGianNopBai = (DateTime)baiLam["thoiGianNopBai"];
-                        timeNopBai = thoiGianNopBai.ToString("dd/MM/yyyy HH:mm:ss");
+                        try
+                        {
+                            DateTime thoiGianNopBai;
+                            if (baiLam["thoiGianNopBai"] is DateTime dt)
+                            {
+                                thoiGianNopBai = dt;
+                            }
+                            else
+                            {
+                                thoiGianNopBai = Convert.ToDateTime(baiLam["thoiGianNopBai"]);
+                            }
+                            timeNopBai = thoiGianNopBai.ToString("dd/MM/yyyy HH:mm:ss");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Lỗi khi parse thoiGianNopBai: {ex.Message}");
+                            timeNopBai = "N/A";
+                        }
                     }
+                    
+                    Console.WriteLine($"Thêm dòng: MSSV={mssv}, Tên={tenSV}, Điểm={diem}, Vào thi={timeVaoThi}, Nộp bài={timeNopBai}");
                     
                     int rowIndex = dataGridView1.Rows.Add(mssv, tenSV, diem, timeVaoThi, timeNopBai, "Xem");
                     dataGridView1.Rows[rowIndex].Tag = maBaiLam;
                 }
+                
+                Console.WriteLine($"=== Đã hiển thị {dataGridView1.Rows.Count} dòng ===");
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"LỖI KHI HIỂN THỊ DỮ LIỆU: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 MessageBox.Show($"Lỗi khi hiển thị dữ liệu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

@@ -50,8 +50,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         {
             try
             {
-                string sql = "INSERT INTO chitietbailam(maBaiLam, maCauHoi, maDapAnDuocChon)" +
-                    "VaLUES (@maBaiLam, @maCauHoi, @maDapAnDuocChon)";
+                string sql = "INSERT INTO chitietbailam(maBaiLam, maCauHoi, maDapAnDuocChon) " +
+                    "VALUES (@maBaiLam, @maCauHoi, @maDapAnDuocChon)";
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
@@ -61,10 +61,15 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                     cmd.Parameters.AddWithValue("@maDapAnDuocChon", maDapAnDuocChon);
 
                     int rs = cmd.ExecuteNonQuery();
+                    Console.WriteLine($"ThemCTBaiLam: maBaiLam={maBaiLam}, maCauHoi={maCauHoi}, maDapAnDuocChon={maDapAnDuocChon}, result={rs > 0}");
                     return rs > 0;
                 }
             }
-            catch (Exception ex) { return false; }
+            catch (Exception ex) 
+            { 
+                Console.WriteLine($"Lỗi khi thêm chi tiết bài làm: {ex.Message}");
+                return false; 
+            }
         }
 
         public bool XoaCTBaiLam(int maBaiLam)
@@ -130,8 +135,13 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         //Thêm danh sách BaiLam vào database
         public bool ThemDanhSachCTBaiLam(List<ChiTietBaiLam> danhSachCT)
         {
+            Console.WriteLine($"=== ThemDanhSachCTBaiLam: {danhSachCT?.Count ?? 0} chi tiết ===");
+            
             if (danhSachCT == null || danhSachCT.Count == 0)
+            {
+                Console.WriteLine("Danh sách chi tiết bài làm rỗng!");
                 return false;
+            }
 
             try
             {
@@ -151,16 +161,19 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                                 for (int i = 0; i < danhSachCT.Count; i++)
                                 {
                                     var ct = danhSachCT[i];
+                                    Console.WriteLine($"  Chi tiết {i + 1}: maBaiLam={ct.maBaiLam}, maCauHoi={ct.maCauHoi}, maDapAnDuocChon={ct.maDapAnDuocChon}");
                                     values.AppendFormat("({0},{1},{2})", ct.maBaiLam, ct.maCauHoi, ct.maDapAnDuocChon);
                                     if (i < danhSachCT.Count - 1)
                                         values.Append(",");
                                 }
 
                                 sql += values.ToString();
+                                Console.WriteLine($"SQL: {sql}");
 
                                 using (MySqlCommand cmd = new MySqlCommand(sql, conn, tran))
                                 {
-                                    cmd.ExecuteNonQuery();
+                                    int rowsAffected = cmd.ExecuteNonQuery();
+                                    Console.WriteLine($"Đã thêm {rowsAffected} dòng vào chitietbailam");
                                 }
                             }
                             else
@@ -186,12 +199,14 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                             }
 
                             tran.Commit();
+                            Console.WriteLine("=== Đã commit transaction thành công ===");
                             return true;
                         }
                         catch (Exception ex)
                         {
                             tran.Rollback();
-                            Console.WriteLine($"Lỗi khi thêm danh sách ChiTietBaiLam: {ex.Message}");
+                            Console.WriteLine($"LỖI KHI THÊM DANH SÁCH CHITIETBAILAM: {ex.Message}");
+                            Console.WriteLine($"Stack trace: {ex.StackTrace}");
                             return false;
                         }
                     }
@@ -199,7 +214,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"❌ Lỗi kết nối DB: {ex.Message}");
+                Console.WriteLine($"❌ LỖI KẾT NỐI DB: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return false;
             }
         }

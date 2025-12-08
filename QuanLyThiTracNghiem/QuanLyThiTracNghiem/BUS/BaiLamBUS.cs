@@ -27,19 +27,33 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
         Phương thức lưu bài làm của thí sinh vào Database 
          */
         public void LuuBaiLamMoi(BaiLam bailam, List<ChiTietBaiLam>dschitietbaialam) {
-            if(baiLamDAO.ThemBaiLam(bailam.maBaiLam, bailam.maSinhVien, bailam.maDe, bailam.tongDiem))
+            Console.WriteLine($"=== LuuBaiLamMoi: maBaiLam={bailam.maBaiLam}, maSinhVien={bailam.maSinhVien}, maDe={bailam.maDe} ===");
+            Console.WriteLine($"tongDiem={bailam.tongDiem}, thoiGianBatDau={bailam.thoiGianBatDau}, thoiGianNopBai={bailam.thoiGianNopBai}");
+            Console.WriteLine($"Số chi tiết bài làm: {dschitietbaialam?.Count ?? 0}");
+            
+            // Sử dụng overload với thời gian
+            bool themBaiLamOK = baiLamDAO.ThemBaiLam(bailam.maBaiLam, bailam.maSinhVien, bailam.maDe, bailam.tongDiem, bailam.thoiGianBatDau, bailam.thoiGianNopBai);
+            Console.WriteLine($"Kết quả ThemBaiLam: {themBaiLamOK}");
+            
+            if(themBaiLamOK)
             {
-                if (chiTietBaiLamDAO.ThemDanhSachCTBaiLam(dschitietbaialam))
+                bool themChiTietOK = chiTietBaiLamDAO.ThemDanhSachCTBaiLam(dschitietbaialam);
+                Console.WriteLine($"Kết quả ThemDanhSachCTBaiLam: {themChiTietOK}");
+                
+                if (themChiTietOK)
                 {
+                    Console.WriteLine("=== Lưu bài làm thành công ===");
                     MyDialog dialog = new MyDialog("Bạn đã nộp bài thành công.", MyDialog.SUCCESS_DIALOG);
                     dialog.ShowDialog();
                 }
                 else
                 {
-                    MyDialog dialog = new MyDialog("Đã có lỗi xảy ra. Vui lòng báo cáo với giảng viên hướng dẫn.", MyDialog.ERROR_DIALOG);
+                    Console.WriteLine("=== LỖI: Không thể lưu chi tiết bài làm ===");
+                    MyDialog dialog = new MyDialog("Đã có lỗi xảy ra khi lưu chi tiết bài làm. Vui lòng báo cáo với giảng viên hướng dẫn.", MyDialog.ERROR_DIALOG);
                     dialog.ShowDialog();
                     bool xoaChiTiet=chiTietBaiLamDAO.XoaCTBaiLam(bailam.maBaiLam);
                     bool xoaBaiLam= baiLamDAO.XoaBaiLam(bailam.maBaiLam);
+                    Console.WriteLine($"Xóa bài làm: chiTiet={xoaChiTiet}, baiLam={xoaBaiLam}");
                     if(xoaChiTiet && xoaBaiLam)
                     {
                         Console.WriteLine("Đã xóa hết bài làm bị thêm lỗi");
@@ -49,7 +63,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
             else
             {
-                MyDialog dialog = new MyDialog("Đã có lỗi xảy ra. Vui lòng báo cáo với giảng viên hướng dẫn.", MyDialog.ERROR_DIALOG);
+                Console.WriteLine("=== LỖI: Không thể lưu bài làm ===");
+                MyDialog dialog = new MyDialog("Đã có lỗi xảy ra khi lưu bài làm. Vui lòng báo cáo với giảng viên hướng dẫn.", MyDialog.ERROR_DIALOG);
                 dialog.ShowDialog();
             }
         }

@@ -35,6 +35,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private NhomBUS nhomBUS = new NhomBUS();
         private DeKiemTra_NhomBUS deKiemTra_NhomBUS = new DeKiemTra_NhomBUS();
         private CTDeKiemTraBUS ctDeKiemTraBUS = new CTDeKiemTraBUS();
+        private CauHoi_DeKiemTraBUS cauHoi_DeKiemTraBUS = new CauHoi_DeKiemTraBUS();
         private Dictionary<int, CheckBox> checkBoxNhomDict = new Dictionary<int, CheckBox>();
         
         public event EventHandler DataChanged;
@@ -656,6 +657,16 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                     }
                 }
                 
+                // Tạo câu hỏi tự động cho đề thi
+                int soCauDe = int.Parse(textBoxSoCauDe.Text);
+                int soCauTB = int.Parse(textBoxSoCauTB.Text);
+                int soCauKho = int.Parse(textBoxSoCauKho.Text);
+                
+                if (!cauHoi_DeKiemTraBUS.TaoCauHoiTuDongChoDeThi(maDe, selectedChuongIds, soCauDe, soCauTB, soCauKho))
+                {
+                    MessageBox.Show("Tạo đề thi thành công nhưng có lỗi khi tạo câu hỏi tự động!\nVui lòng kiểm tra Console để xem chi tiết lỗi.", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                
                 MessageBox.Show("Tạo đề thi thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ClearForm();
                 DataChanged?.Invoke(this, EventArgs.Empty);
@@ -732,6 +743,16 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 {
                     MessageBox.Show("Cập nhật đề thi thành công nhưng có lỗi khi lưu nhóm học phần!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
+                
+                // Tạo lại câu hỏi tự động cho đề thi
+                int soCauDe = int.Parse(textBoxSoCauDe.Text);
+                int soCauTB = int.Parse(textBoxSoCauTB.Text);
+                int soCauKho = int.Parse(textBoxSoCauKho.Text);
+                
+                if (!cauHoi_DeKiemTraBUS.TaoCauHoiTuDongChoDeThi(currentDeThi.maDe, selectedChuongIds, soCauDe, soCauTB, soCauKho))
+                {
+                    MessageBox.Show("Cập nhật đề thi thành công nhưng có lỗi khi tạo lại câu hỏi tự động!\nVui lòng kiểm tra Console để xem chi tiết lỗi.", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
                 else
                 {
                     MessageBox.Show("Cập nhật đề thi thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -777,6 +798,26 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private void label1_Click_1(object sender, EventArgs e) { }
 
         private void textBoxTimeCB_TextChanged(object sender, EventArgs e) { }
+
+        /// <summary>
+        /// Xử lý sự kiện khi click vào icon lịch của thời gian bắt đầu
+        /// Mở calendar của DateTimePicker bắt đầu
+        /// </summary>
+        private void BtnIconLichBatDau_Click(object sender, EventArgs e)
+        {
+            dateTimePickerBatDau.Focus();
+            SendKeys.Send("%{DOWN}");
+        }
+
+        /// <summary>
+        /// Xử lý sự kiện khi click vào icon lịch của thời gian kết thúc
+        /// Mở calendar của DateTimePicker kết thúc
+        /// </summary>
+        private void BtnIconLichKetThuc_Click(object sender, EventArgs e)
+        {
+            dateTimePickerKetThuc.Focus();
+            SendKeys.Send("%{DOWN}");
+        }
 
         private void textBoxTimeLamBai_TextChanged(object sender, EventArgs e) { }
         

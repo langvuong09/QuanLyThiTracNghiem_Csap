@@ -469,6 +469,75 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             return count;
         }
 
+        /*
+         Phương thức lấy danh sách câu hỏi theo danh sách chương và độ khó
+            Input: List<int> danhSachMaChuong, string doKho
+            Output: List<CauHoi> (danh sách câu hỏi)
+            Created by: Auto
+        */
+        public List<CauHoi> GetCauHoiTheoChuongVaDoKho(List<int> danhSachMaChuong, string doKho)
+        {
+            List<CauHoi> result = new List<CauHoi>();
+            try
+            {
+                if (danhSachMaChuong == null || danhSachMaChuong.Count == 0)
+                {
+                    return result;
+                }
+
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+
+                    // Tạo parameterized query an toàn
+                    var parameters = new List<string>();
+                    for (int i = 0; i < danhSachMaChuong.Count; i++)
+                    {
+                        parameters.Add($"@maChuong{i}");
+                    }
+                    
+                    string chuongList = string.Join(",", parameters);
+                    string sql = $@"
+                        SELECT maCauHoi, maMonHoc, maChuong, doKho, noiDungCauHoi
+                        FROM cauhoi 
+                        WHERE maChuong IN ({chuongList}) 
+                        AND doKho = @doKho";
+
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                    {
+                        // Thêm parameters cho danh sách chương
+                        for (int i = 0; i < danhSachMaChuong.Count; i++)
+                        {
+                            cmd.Parameters.AddWithValue($"@maChuong{i}", danhSachMaChuong[i]);
+                        }
+                        
+                        cmd.Parameters.AddWithValue("@doKho", doKho);
+                        
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                result.Add(new CauHoi
+                                {
+                                    maCauHoi = reader.GetInt32("maCauHoi"),
+                                    maMonHoc = reader.GetString("maMonHoc"),
+                                    maChuong = reader.GetInt32("maChuong"),
+                                    doKho = reader.GetString("doKho"),
+                                    noiDungCauHoi = reader.GetString("noiDungCauHoi")
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi lấy câu hỏi theo chương và độ khó: {ex.Message}");
+            }
+
+            return result;
+        }
+
     }
 
 }

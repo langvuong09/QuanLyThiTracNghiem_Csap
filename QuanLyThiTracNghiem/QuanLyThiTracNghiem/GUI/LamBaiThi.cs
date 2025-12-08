@@ -85,6 +85,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private void LamBaiThi_Load(object sender, EventArgs e)
         {
             this.thoiGianBatDauThucTe = DateTime.Now;
+            // Lưu thời gian bắt đầu vào bailamSinhVien
+            bailamSinhVien.thoiGianBatDau = this.thoiGianBatDauThucTe;
             label_DemThoiGian.Visible = true;
 
             this.timer.Interval = 1000; // 1 giây
@@ -113,31 +115,63 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void NopBai()
         {
+            Console.WriteLine($"=== Bắt đầu nộp bài: maBaiLam={bailamSinhVien.maBaiLam}, số câu hỏi={dsItem.Count} ===");
+            
             int socau = 0;
+            listChiTietBaiLam.Clear(); // Đảm bảo list rỗng trước khi thêm
+            
             foreach (var item in dsItem)
             {
+                Console.WriteLine($"Câu hỏi {item.MaCauHoi}: MaDapAnChon={item.MaDapAnChon}, MaDapAnDung={item.MaDapAnDung}");
+                
                 if (item.MaDapAnChon == -1)
                 {
+                    // Không chọn đáp án, vẫn lưu với maDapAnDuocChon = -1 hoặc 0
+                    Console.WriteLine($"  → Không chọn đáp án, vẫn lưu với maDapAnDuocChon = -1");
+                    listChiTietBaiLam.Add(new ChiTietBaiLam(this.bailamSinhVien.maBaiLam, item.MaCauHoi, -1));
                     item.HienThiDapAnDung();
                     continue;
                 }
+                
                 item.HienThiDapAnDung();
             
                 listChiTietBaiLam.Add(new ChiTietBaiLam(this.bailamSinhVien.maBaiLam, item.MaCauHoi, item.MaDapAnChon));
                 if (item.MaDapAnChon == item.MaDapAnDung)
+                {
                     socau++;
-    
+                    Console.WriteLine($"  → Đáp án đúng!");
+                }
+                else
+                {
+                    Console.WriteLine($"  → Đáp án sai!");
+                }
             }
+            
+            Console.WriteLine($"Tổng cộng: {socau} câu đúng, {listChiTietBaiLam.Count} chi tiết bài làm");
 
 
             float sodiemtren1cau = 10f / this.dsItem.Count;
 
             float diem = socau*sodiemtren1cau;
+            
+            // Cập nhật thông tin bài làm trước khi lưu
+            this.bailamSinhVien.tongDiem = diem;
+            this.bailamSinhVien.thoiGianNopBai = DateTime.Now;
+            // Đảm bảo thời gian bắt đầu đã được set
+            if (!this.bailamSinhVien.thoiGianBatDau.HasValue)
+            {
+                this.bailamSinhVien.thoiGianBatDau = this.thoiGianBatDauThucTe;
+            }
 
             // Kiểm tra nếu là đề chính thức sẽ lưu bài làm và chi tiết bài làm
             if (this.isChinhThuc == 1)
             {
+                Console.WriteLine($"Lưu bài làm: maBaiLam={bailamSinhVien.maBaiLam}, tongDiem={bailamSinhVien.tongDiem}, số chi tiết={listChiTietBaiLam.Count}");
                 baiLamBUS.LuuBaiLamMoi(this.bailamSinhVien, this.listChiTietBaiLam);
+            }
+            else
+            {
+                Console.WriteLine("Đề luyện tập, không lưu vào database");
             }
 
 

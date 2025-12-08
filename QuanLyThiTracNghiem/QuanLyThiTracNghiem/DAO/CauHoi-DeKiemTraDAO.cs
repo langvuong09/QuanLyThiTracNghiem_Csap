@@ -22,7 +22,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
-                    string sql = "SELECT * FROM cauhoi-dekiemtra";
+                    string sql = "SELECT * FROM `cauhoi-dekiemtra`";
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
 
                     MySqlDataReader reader = cmd.ExecuteReader();
@@ -49,8 +49,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         {
             try
             {
-                string sql = "INSERT INTO cauhoi-dekiemtra(maDe, maCauHoi)" +
-                    "VaLUES (@maDe, @maCauHoi)";
+                string sql = "INSERT INTO `cauhoi-dekiemtra`(maDe, maCauHoi) " +
+                    "VALUES (@maDe, @maCauHoi)";
                 using (MySqlConnection conn = db.GetConnection())
                 {
                     conn.Open();
@@ -62,14 +62,18 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                     return rs > 0;
                 }
             }
-            catch (Exception ex) { return false; }
+            catch (Exception ex) 
+            { 
+                Console.WriteLine($"Lỗi khi thêm câu hỏi vào đề thi: {ex.Message}");
+                return false; 
+            }
         }
 
         public bool XoaCH_DKT(int maDe)
         {
             try
             {
-                string sql = "DELETE FROM cauhoi-dekiemtra WHERE maDe = @maDe";
+                string sql = "DELETE FROM `cauhoi-dekiemtra` WHERE maDe = @maDe";
 
                 using (MySqlConnection conn = db.GetConnection())
                 {
@@ -78,11 +82,12 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@maDe", maDe);
                     int rowsAffected = cmd.ExecuteNonQuery();
-                    return rowsAffected > 0;
+                    return rowsAffected >= 0; // >= 0 vì có thể không có dữ liệu để xóa
                 }
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Lỗi khi xóa câu hỏi của đề thi: {ex.Message}");
                 return false;
             }
         }

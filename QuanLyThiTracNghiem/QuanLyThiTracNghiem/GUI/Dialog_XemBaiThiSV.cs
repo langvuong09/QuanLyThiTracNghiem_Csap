@@ -65,22 +65,37 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         {
             try
             {
+                Console.WriteLine($"=== Bắt đầu load dữ liệu: maDe={currentMaDe}, maBaiLam={currentMaBaiLam} ===");
+                
                 if (currentMaDe > 0 && currentMaBaiLam > 0)
                 {
                     // Load chi tiết bài làm của sinh viên trước
                     chiTietBaiLam = chiTietBaiLamBUS.GetChiTietBaiLamByMaBaiLam(currentMaBaiLam);
                     
+                    Console.WriteLine($"Đã load {chiTietBaiLam?.Count ?? 0} chi tiết bài làm");
+                    
                     if (chiTietBaiLam == null || chiTietBaiLam.Count == 0)
                     {
+                        Console.WriteLine("LỖI: Không tìm thấy chi tiết bài làm!");
                         MessageBox.Show("Không tìm thấy chi tiết bài làm của sinh viên!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
+                    }
+                    
+                    // Debug: In ra tất cả chi tiết bài làm
+                    Console.WriteLine("Chi tiết bài làm:");
+                    foreach (var ct in chiTietBaiLam)
+                    {
+                        Console.WriteLine($"  - maCauHoi: {ct.maCauHoi}, maDapAnDuocChon: {ct.maDapAnDuocChon}");
                     }
                     
                     // Load danh sách câu hỏi của đề thi (KHÔNG xáo trộn để giữ thứ tự)
                     danhSachCauHoi = cauHoiBUS.GetCauHoiByDeThiKhongTron(currentMaDe);
                     
+                    Console.WriteLine($"Đã load {danhSachCauHoi?.Count ?? 0} câu hỏi");
+                    
                     if (danhSachCauHoi == null || danhSachCauHoi.Count == 0)
                     {
+                        Console.WriteLine("LỖI: Không tìm thấy câu hỏi!");
                         MessageBox.Show("Không tìm thấy câu hỏi cho đề thi này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
@@ -244,80 +259,117 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 {
                     int maCauHoi = danhSachCauHoi[currentCauHoiIndex].maCauHoi;
                     
+                    // Debug: Kiểm tra chi tiết bài làm
+                    if (chiTietBaiLam == null || chiTietBaiLam.Count == 0)
+                    {
+                        Console.WriteLine($"CẢNH BÁO: chiTietBaiLam rỗng cho câu hỏi {maCauHoi}");
+                        return;
+                    }
+                    
                     // Tìm đáp án sinh viên đã chọn
                     var dapAnDaChon = chiTietBaiLam.FirstOrDefault(ct => ct.maCauHoi == maCauHoi);
                     
-                    if (dapAnDaChon != null)
+                    if (dapAnDaChon == null)
                     {
-                        // Tìm đáp án trong danh sách
-                        var dapAnSVChon = danhSachDapAn.FirstOrDefault(da => da.maDapAn == dapAnDaChon.maDapAnDuocChon);
-                        
-                        // Tìm đáp án đúng
-                        var dapAnDung = danhSachDapAn.FirstOrDefault(da => da.dungSai == 1);
-                        
-                        if (dapAnSVChon != null)
+                        Console.WriteLine($"CẢNH BÁO: Không tìm thấy đáp án đã chọn cho câu hỏi {maCauHoi}");
+                        Console.WriteLine($"Danh sách chi tiết bài làm có {chiTietBaiLam.Count} mục");
+                        foreach (var ct in chiTietBaiLam)
                         {
-                            int index = danhSachDapAn.IndexOf(dapAnSVChon);
-                            RadioButton selectedRadio = null;
-                            
-                            switch (index)
-                            {
-                                case 0: 
-                                    radioA.Checked = true;
-                                    selectedRadio = radioA;
-                                    break;
-                                case 1: 
-                                    radioB.Checked = true;
-                                    selectedRadio = radioB;
-                                    break;
-                                case 2: 
-                                    radioC.Checked = true;
-                                    selectedRadio = radioC;
-                                    break;
-                                case 3: 
-                                    radioD.Checked = true;
-                                    selectedRadio = radioD;
-                                    break;
-                            }
-                            
-                            // Đánh dấu màu sắc: xanh nếu đúng, đỏ nếu sai
-                            if (selectedRadio != null)
-                            {
-                                if (dapAnSVChon.dungSai == 1)
-                                {
-                                    selectedRadio.ForeColor = Color.Green;
-                                }
-                                else
-                                {
-                                    selectedRadio.ForeColor = Color.Red;
-                                }
-                            }
+                            Console.WriteLine($"  - maCauHoi: {ct.maCauHoi}, maDapAnDuocChon: {ct.maDapAnDuocChon}");
+                        }
+                        return;
+                    }
+                    
+                    Console.WriteLine($"Tìm thấy đáp án đã chọn: maCauHoi={maCauHoi}, maDapAnDuocChon={dapAnDaChon.maDapAnDuocChon}");
+                    
+                    // Tìm đáp án trong danh sách bằng maDapAn (không dựa vào index)
+                    var dapAnSVChon = danhSachDapAn.FirstOrDefault(da => da.maDapAn == dapAnDaChon.maDapAnDuocChon);
+                    
+                    // Tìm đáp án đúng
+                    var dapAnDung = danhSachDapAn.FirstOrDefault(da => da.dungSai == 1);
+                    
+                    if (dapAnSVChon == null)
+                    {
+                        Console.WriteLine($"LỖI: Không tìm thấy đáp án có maDapAn={dapAnDaChon.maDapAnDuocChon} trong danh sách đáp án");
+                        Console.WriteLine($"Danh sách đáp án có {danhSachDapAn.Count} mục:");
+                        foreach (var da in danhSachDapAn)
+                        {
+                            Console.WriteLine($"  - maDapAn: {da.maDapAn}, tenDapAn: {da.tenDapAn}, dungSai: {da.dungSai}");
+                        }
+                    }
+                    else
+                    {
+                        // Tìm index của đáp án sinh viên đã chọn
+                        int index = danhSachDapAn.IndexOf(dapAnSVChon);
+                        Console.WriteLine($"Tìm thấy đáp án sinh viên chọn ở index {index}");
+                        
+                        RadioButton selectedRadio = null;
+                        
+                        switch (index)
+                        {
+                            case 0: 
+                                radioA.Checked = true;
+                                selectedRadio = radioA;
+                                break;
+                            case 1: 
+                                radioB.Checked = true;
+                                selectedRadio = radioB;
+                                break;
+                            case 2: 
+                                radioC.Checked = true;
+                                selectedRadio = radioC;
+                                break;
+                            case 3: 
+                                radioD.Checked = true;
+                                selectedRadio = radioD;
+                                break;
+                            default:
+                                Console.WriteLine($"CẢNH BÁO: Index {index} không hợp lệ (chỉ có {danhSachDapAn.Count} đáp án)");
+                                break;
                         }
                         
-                        // Đánh dấu đáp án đúng bằng màu xanh (nếu sinh viên chọn sai)
-                        if (dapAnDung != null && (dapAnSVChon == null || dapAnSVChon.dungSai != 1))
+                        // Đánh dấu màu sắc: xanh nếu đúng, đỏ nếu sai
+                        if (selectedRadio != null)
                         {
-                            int indexDung = danhSachDapAn.IndexOf(dapAnDung);
-                            RadioButton radioDung = null;
-                            
-                            switch (indexDung)
+                            if (dapAnSVChon.dungSai == 1)
                             {
-                                case 0: radioDung = radioA; break;
-                                case 1: radioDung = radioB; break;
-                                case 2: radioDung = radioC; break;
-                                case 3: radioDung = radioD; break;
+                                selectedRadio.ForeColor = Color.Green;
+                                Console.WriteLine($"Đáp án đúng - màu xanh");
                             }
-                            
-                            if (radioDung != null && !radioDung.Checked)
+                            else
                             {
-                                radioDung.ForeColor = Color.Green;
+                                selectedRadio.ForeColor = Color.Red;
+                                Console.WriteLine($"Đáp án sai - màu đỏ");
                             }
+                        }
+                    }
+                    
+                    // Đánh dấu đáp án đúng bằng màu xanh (nếu sinh viên chọn sai hoặc không chọn)
+                    if (dapAnDung != null && (dapAnSVChon == null || dapAnSVChon.dungSai != 1))
+                    {
+                        int indexDung = danhSachDapAn.IndexOf(dapAnDung);
+                        RadioButton radioDung = null;
+                        
+                        switch (indexDung)
+                        {
+                            case 0: radioDung = radioA; break;
+                            case 1: radioDung = radioB; break;
+                            case 2: radioDung = radioC; break;
+                            case 3: radioDung = radioD; break;
+                        }
+                        
+                        if (radioDung != null && !radioDung.Checked)
+                        {
+                            radioDung.ForeColor = Color.Green;
+                            Console.WriteLine($"Hiển thị đáp án đúng ở vị trí {indexDung}");
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"LỖI KHI HIỂN THỊ ĐÁP ÁN SINH VIÊN: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 MessageBox.Show($"Lỗi khi hiển thị đáp án sinh viên: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
