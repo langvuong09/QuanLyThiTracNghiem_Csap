@@ -15,7 +15,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseMySql(
-                "Server=localhost;Database=quanlythitracnghiem;User=root;Password=;",
+                "Server=localhost;Database=quanlythitracnghiem;User=qluser;Password=;",
                 new MySqlServerVersion(new Version(8, 0, 23))
             );
         }

@@ -27,13 +27,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
         Phương thức lưu bài làm của thí sinh vào Database 
          */
         public void LuuBaiLamMoi(BaiLam bailam, List<ChiTietBaiLam>dschitietbaialam) {
-            Console.WriteLine($"=== LuuBaiLamMoi: maBaiLam={bailam.maBaiLam}, maSinhVien={bailam.maSinhVien}, maDe={bailam.maDe} ===");
-            Console.WriteLine($"tongDiem={bailam.tongDiem}, thoiGianBatDau={bailam.thoiGianBatDau}, thoiGianNopBai={bailam.thoiGianNopBai}");
-            Console.WriteLine($"Số chi tiết bài làm: {dschitietbaialam?.Count ?? 0}");
             
             // Sử dụng overload với thời gian
             bool themBaiLamOK = baiLamDAO.ThemBaiLam(bailam.maBaiLam, bailam.maSinhVien, bailam.maDe, bailam.tongDiem, bailam.thoiGianBatDau, bailam.thoiGianNopBai);
-            Console.WriteLine($"Kết quả ThemBaiLam: {themBaiLamOK}");
             
             if(themBaiLamOK)
             {

@@ -10,7 +10,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         private string port = "3306";
         private string database = "quanlythitracnghiem";
         // private string username = "qluser";
-        private string username = "root";
+        private string username = "qluser";
         private string password = "";
         public MySqlConnection GetConnection()
         {

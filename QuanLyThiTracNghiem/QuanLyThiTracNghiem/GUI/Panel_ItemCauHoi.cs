@@ -9,7 +9,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
     public partial class Panel_ItemCauHoi : UserControl
     {
         public int MaCauHoi { get; private set; }
-        public int ?MaDapAnChon { get; private set; } = -1;
+        public int MaDapAnChon { get; private set; } = -1;
         public int MaDapAnDung { get; private set; }
         public bool DaNopBai { get; private set; } = false;
         public int MaBaiLam { get; private set; }
@@ -42,6 +42,19 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             radioButton_D.CheckedChanged += Radio_CheckedChanged;
         }
 
+        /* private void Radio_CheckedChanged(object sender, EventArgs e)
+         {
+             if (DaNopBai) return;
+
+             var r = sender as RadioButton;
+             if (r != null && r.Checked)
+             {
+                 string key = r.Text;
+                 if (mappingDapAn.ContainsKey(key))
+                     MaDapAnChon = mappingDapAn[key];
+                 MessageBox.Show("Đáp án đã chọn:",MaDapAnChon.ToString());
+             }
+         }*/
         private void Radio_CheckedChanged(object sender, EventArgs e)
         {
             if (DaNopBai) return;
@@ -49,11 +62,23 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             var r = sender as RadioButton;
             if (r != null && r.Checked)
             {
-                string key = r.Text;
-                if (mappingDapAn.ContainsKey(key))
-                    MaDapAnChon = mappingDapAn[key];
+                // đọc Tag (an toàn hơn so với Text)
+                if (r.Tag != null && int.TryParse(r.Tag.ToString(), out int ma))
+                {
+                    MaDapAnChon = ma;
+                }
+                else
+                {
+                    // fallback: nếu bạn vẫn muốn dùng mapping theo chữ A/B/C/D
+                    string key = r.Text.Length > 0 ? r.Text.Substring(0, 1) : "";
+                    if (mappingDapAn.ContainsKey(key))
+                        MaDapAnChon = mappingDapAn[key];
+                }
+
             }
         }
+
+
 
         // Khởi tạo câu hỏi mới
         public void KhoiTaoCauHoi(int stt, CauHoi cauHoi, List<DapAn> dsDapAn)
@@ -64,42 +89,37 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
             // Reset trạng thái
             DaNopBai = false;
-            MaDapAnChon = null;
+            MaDapAnChon = -1;
             label_DapAnDung.Visible = false;
 
-            radioButton_A.Checked = false;
-            radioButton_B.Checked = false;
-            radioButton_C.Checked = false;
-            radioButton_D.Checked = false;
-
-            // Mapping đáp án
-            mappingDapAn.Clear();
+            // Gán text cho phần nội dung (nếu bạn muốn hiển thị nội dung trên RadioButton thì dùng Text)
+            radioButton_A.Text = "A. " ;
+            radioButton_A.Tag = dsDapAn[0].maDapAn;
             textBox_A.Text = dsDapAn[0].tenDapAn;
-            mappingDapAn["A"] = dsDapAn[0].maDapAn;
 
+            radioButton_B.Text = "B. " ;
+            radioButton_B.Tag = dsDapAn[1].maDapAn;
             textBox_B.Text = dsDapAn[1].tenDapAn;
-            mappingDapAn["B"] = dsDapAn[1].maDapAn;
 
+            radioButton_C.Text = "C. " ;
+            radioButton_C.Tag = dsDapAn[2].maDapAn;
             textBox_C.Text = dsDapAn[2].tenDapAn;
-            mappingDapAn["C"] = dsDapAn[2].maDapAn;
 
+            radioButton_D.Text = "D. " ;
+            radioButton_D.Tag = dsDapAn[3].maDapAn;
             textBox_D.Text = dsDapAn[3].tenDapAn;
+
+            // giữ mapping nếu cần cho HienThiDapAnDung (không bắt buộc nếu dùng Tag)
+            mappingDapAn.Clear();
+            mappingDapAn["A"] = dsDapAn[0].maDapAn;
+            mappingDapAn["B"] = dsDapAn[1].maDapAn;
+            mappingDapAn["C"] = dsDapAn[2].maDapAn;
             mappingDapAn["D"] = dsDapAn[3].maDapAn;
 
-            // Chỉ có 1 đáp án đúng
             MaDapAnDung = dsDapAn.FirstOrDefault(x => x.dungSai == 1)?.maDapAn ?? -1;
         }
 
-        // Lấy chi tiết bài làm
-        public ChiTietBaiLam LayChiTiet()
-        {
-            return new ChiTietBaiLam
-            {
-                maBaiLam = MaBaiLam,
-                maCauHoi = MaCauHoi,
-                maDapAnDuocChon = MaDapAnChon ?? -1
-            };
-        }
+  
 
         // Hiển thị đáp án đúng
         public void HienThiDapAnDung()
@@ -116,18 +136,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             label_DapAnDung.Visible = true;
         }
 
-        // Lấy RadioButton theo mã đáp án
-        private RadioButton LayRadioTheoMaDapAn(int ma)
-        {
-            string key = mappingDapAn.FirstOrDefault(p => p.Value == ma).Key;
-            return key switch
-            {
-                "A" => radioButton_A,
-                "B" => radioButton_B,
-                "C" => radioButton_C,
-                "D" => radioButton_D,
-                _ => null
-            };
-        }
+  
     }
 }

@@ -118,7 +118,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             Console.WriteLine($"=== Bắt đầu nộp bài: maBaiLam={bailamSinhVien.maBaiLam}, số câu hỏi={dsItem.Count} ===");
             
             int socau = 0;
-            listChiTietBaiLam.Clear(); // Đảm bảo list rỗng trước khi thêm
+            
             
             foreach (var item in dsItem)
             {
@@ -127,8 +127,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 if (item.MaDapAnChon == -1)
                 {
                     // Không chọn đáp án, vẫn lưu với maDapAnDuocChon = -1 hoặc 0
-                    Console.WriteLine($"  → Không chọn đáp án, vẫn lưu với maDapAnDuocChon = -1");
-                    listChiTietBaiLam.Add(new ChiTietBaiLam(this.bailamSinhVien.maBaiLam, item.MaCauHoi, -1));
+                    
                     item.HienThiDapAnDung();
                     continue;
                 }

@@ -61,13 +61,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
                     cmd.Parameters.AddWithValue("@maDapAnDuocChon", maDapAnDuocChon);
 
                     int rs = cmd.ExecuteNonQuery();
-                    Console.WriteLine($"ThemCTBaiLam: maBaiLam={maBaiLam}, maCauHoi={maCauHoi}, maDapAnDuocChon={maDapAnDuocChon}, result={rs > 0}");
                     return rs > 0;
                 }
             }
             catch (Exception ex) 
             { 
-                Console.WriteLine($"Lỗi khi thêm chi tiết bài làm: {ex.Message}");
                 return false; 
             }
         }
@@ -135,11 +133,9 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
         //Thêm danh sách BaiLam vào database
         public bool ThemDanhSachCTBaiLam(List<ChiTietBaiLam> danhSachCT)
         {
-            Console.WriteLine($"=== ThemDanhSachCTBaiLam: {danhSachCT?.Count ?? 0} chi tiết ===");
             
             if (danhSachCT == null || danhSachCT.Count == 0)
             {
-                Console.WriteLine("Danh sách chi tiết bài làm rỗng!");
                 return false;
             }
 
@@ -214,8 +210,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"❌ LỖI KẾT NỐI DB: {ex.Message}");
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return false;
             }
         }
