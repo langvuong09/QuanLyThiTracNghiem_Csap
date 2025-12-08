@@ -324,7 +324,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             button_HocPhan.Name = "button_HocPhan";
             button_HocPhan.Size = new Size(353, 65);
             button_HocPhan.TabIndex = 1;
-            button_HocPhan.Text = "Học Phần";
+            button_HocPhan.Text = "Nhóm tham gia";
             button_HocPhan.UseVisualStyleBackColor = false;
             button_HocPhan.Click += button_HocPhan_Click;
             // 
