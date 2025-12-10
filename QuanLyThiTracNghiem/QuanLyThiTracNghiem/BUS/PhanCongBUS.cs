@@ -33,6 +33,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 
         public bool ThemPhanCong(int maPhanCong, string maMonHoc, string maGiaoVien)
         {
+            if(pcDAO.Existed(maMonHoc, maGiaoVien)){
+                MyDialog dlg = new MyDialog("Phân công đã tồn tại!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return false;
+            }
             if (pcDAO.ThemPhanCong(maPhanCong, maMonHoc, maGiaoVien))
             {
                 MyDialog dlg = new MyDialog("Thêm phân công thành công!", MyDialog.SUCCESS_DIALOG);

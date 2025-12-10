@@ -129,7 +129,7 @@
             btnDSDeKiemTra.BackColor = Color.DarkSlateGray;
             btnDSDeKiemTra.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnDSDeKiemTra.ForeColor = SystemColors.ButtonHighlight;
-            btnDSDeKiemTra.Location = new Point(511, 113);
+            btnDSDeKiemTra.Location = new Point(1211, 113);
             btnDSDeKiemTra.Name = "btnDSDeKiemTra";
             btnDSDeKiemTra.Size = new Size(261, 54);
             btnDSDeKiemTra.TabIndex = 32;
@@ -141,7 +141,7 @@
             btnDSSV.BackColor = Color.DarkSlateGray;
             btnDSSV.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnDSSV.ForeColor = SystemColors.ButtonHighlight;
-            btnDSSV.Location = new Point(234, 113);
+            btnDSSV.Location = new Point(938, 113);
             btnDSSV.Name = "btnDSSV";
             btnDSSV.Size = new Size(250, 54);
             btnDSSV.TabIndex = 33;

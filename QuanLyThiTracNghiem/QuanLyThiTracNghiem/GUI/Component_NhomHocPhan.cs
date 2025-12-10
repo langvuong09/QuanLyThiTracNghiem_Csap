@@ -235,7 +235,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dlgDanhSachDeKiemTra.Controls.Add(dsDeKiemTra);
             dlgDanhSachDeKiemTra.ShowDialog();
         }
-
+        
         private void btnSuaNhom_Click(object sender, EventArgs e)
         {
             if (pnDangChon == null)
@@ -407,6 +407,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                     {
                         btnDSDeKiemTra.Visible = false;
                         btnDSSV.Visible = false;
+                    }
+                    if (pq.capNhat == 0)
+                    {
+                        btnXem.Visible = false;
+
                     }
                 }
             }
