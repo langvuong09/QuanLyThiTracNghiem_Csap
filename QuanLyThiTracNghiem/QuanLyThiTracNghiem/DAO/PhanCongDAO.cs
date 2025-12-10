@@ -43,7 +43,27 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             }
             return dsc;
         }
+        public bool Existed(string maMonHoc, string maGV)
+        {
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT COUNT(*) FROM phancong WHERE maMonHoc = @maMonHoc AND maGiaoVien = @maGV";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maMonHoc", maMonHoc);
+                    cmd.Parameters.AddWithValue("@maGV", maGV);
+                    int count = Convert.ToInt32(cmd.ExecuteScalar());
+                    return count > 0;
+                }
 
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
         public bool ThemPhanCong(int maPhanCong,string maMonHoc, string maGiaoVien)
         {
             try

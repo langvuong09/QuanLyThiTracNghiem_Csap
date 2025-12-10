@@ -373,6 +373,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             {
                 string maMH = comboBox_MonHoc.SelectedValue as string;
                 string maGV = comboBox_GiaoVien.SelectedValue as string;
+
                 if (pcBUS.ThemPhanCong(int.Parse(textBox_MaPC.Text), maMH, maGV))
                 {
                     panel_PhanCong.Visible = false;

@@ -287,7 +287,49 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
             return dsTimKiem;
         }
+        public ArrayList SearchListByAssignment(int role,string tenMonHoc)
+        {
+            ArrayList dsn = nhomDAO.GetListNhom();
+            ArrayList dsmh = monHocBUS.GetListDSMonHoc(tenMonHoc);
+            ArrayList dsTimKiem = new ArrayList();
 
+            if(role == 1)
+            {
+                foreach (Nhom n in dsn)
+                {
+                    foreach (MonHoc mh in dsmh)
+                        if (n.maMonHoc == mh.maMonHoc)
+                        {
+                            dsTimKiem.Add(n);
+                        }
+                }
+            }
+            else
+            {
+                foreach (Nhom n in dsn)
+                {
+                    if ((monHocBUS.GetMonHoc(n.maMonHoc)) == tenMonHoc)
+                    {
+                        dsTimKiem.Add(n);
+                    }
+                }
+            }
+                return dsTimKiem;
+        }
+        public ArrayList GetListByAssignment(string maGV)
+        {
+            ArrayList dsn = nhomDAO.GetListNhom();
+            ArrayList dsTimKiem = new ArrayList();
+
+            foreach (Nhom n in dsn)
+            {
+                    if (n.maGiaoVien == maGV)
+                    {
+                        dsTimKiem.Add(n);
+                    }
+            }
+            return dsTimKiem;
+        }
         /*
          * Phương thức lấy danh sách nhóm học phần theo mã môn học
          * Input: string maMonHoc - Mã môn học cần lấy danh sách nhóm

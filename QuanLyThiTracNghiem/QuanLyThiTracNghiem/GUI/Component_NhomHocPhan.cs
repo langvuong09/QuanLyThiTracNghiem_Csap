@@ -75,9 +75,20 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             flow.WrapContents = false;
             flow.AutoScroll = true;
             flow.Padding = new Padding(0);
-
-            ArrayList dsn = nhomBUS.GetListNhom();
-
+            ArrayList dsn = null;
+            if (UserSession.Quyen == 1)
+            {
+                dsn = nhomBUS.GetListNhom();
+            }
+            else
+            {
+                dsn = nhomBUS.GetListByAssignment(UserSession.userId);
+            }
+            if (dsn == null) {
+                MyDialog dlg = new MyDialog("Không tìm thấy nhóm theo phân công!", MyDialog.ERROR_DIALOG);
+                dlg.ShowDialog();
+                return;
+            }
             foreach (Nhom n in dsn)
             {
                 Panel pnlItem = new Panel();
@@ -224,7 +235,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dlgDanhSachDeKiemTra.Controls.Add(dsDeKiemTra);
             dlgDanhSachDeKiemTra.ShowDialog();
         }
-
+        
         private void btnSuaNhom_Click(object sender, EventArgs e)
         {
             if (pnDangChon == null)
@@ -277,8 +288,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             flow.AutoScroll = true;
             flow.Padding = new Padding(0);
 
-   
-            ArrayList dsn = nhomBUS.GetListNhomTheoMonHoc(tenMonHoc);
+            ArrayList dsn = nhomBUS.SearchListByAssignment(UserSession.Quyen, tenMonHoc);
 
             foreach (Nhom n in dsn)
             {
@@ -397,6 +407,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                     {
                         btnDSDeKiemTra.Visible = false;
                         btnDSSV.Visible = false;
+                    }
+                    if (pq.capNhat == 0)
+                    {
+                        btnXem.Visible = false;
+
                     }
                 }
             }

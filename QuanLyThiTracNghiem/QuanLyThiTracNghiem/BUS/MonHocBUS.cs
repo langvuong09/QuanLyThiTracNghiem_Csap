@@ -273,7 +273,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
 
             return dsTimKiem;
         }
-
         public string GetMonHoc(string maMonHoc)
         {
             MonHoc mh = monHocDAO.GetMonHocByID(maMonHoc);
