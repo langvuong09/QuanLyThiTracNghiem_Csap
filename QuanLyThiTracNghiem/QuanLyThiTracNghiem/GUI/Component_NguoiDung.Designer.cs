@@ -158,7 +158,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             // textBoxNS
             // 
             textBoxNS.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxNS.Format = DateTimePickerFormat.Short;
+            textBoxNS.Format = DateTimePickerFormat.Custom;
+            textBoxNS.CustomFormat = "dd/MM/yyyy";
             textBoxNS.Location = new Point(369, 250);
             textBoxNS.Name = "textBoxNS";
             textBoxNS.Size = new Size(303, 39);

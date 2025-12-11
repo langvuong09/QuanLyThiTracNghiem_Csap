@@ -48,7 +48,9 @@
             // 
             lblThemNhom.AutoSize = true;
             lblThemNhom.Font = new Font("Segoe UI", 36F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblThemNhom.Location = new Point(166, 0);
+            lblThemNhom.ForeColor = Color.FromArgb(30, 30, 30);
+            lblThemNhom.Location = new Point(166, 8);
+            lblThemNhom.Margin = new Padding(4, 0, 4, 0);
             lblThemNhom.Name = "lblThemNhom";
             lblThemNhom.Size = new Size(335, 65);
             lblThemNhom.TabIndex = 0;
@@ -58,7 +60,9 @@
             // 
             lblTenNhom.AutoSize = true;
             lblTenNhom.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblTenNhom.Location = new Point(71, 102);
+            lblTenNhom.ForeColor = Color.FromArgb(50, 50, 50);
+            lblTenNhom.Location = new Point(75, 110);
+            lblTenNhom.Margin = new Padding(4, 0, 4, 0);
             lblTenNhom.Name = "lblTenNhom";
             lblTenNhom.Size = new Size(117, 30);
             lblTenNhom.TabIndex = 1;
@@ -68,7 +72,9 @@
             // 
             lblGhiChu.AutoSize = true;
             lblGhiChu.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblGhiChu.Location = new Point(71, 153);
+            lblGhiChu.ForeColor = Color.FromArgb(50, 50, 50);
+            lblGhiChu.Location = new Point(75, 165);
+            lblGhiChu.Margin = new Padding(4, 0, 4, 0);
             lblGhiChu.Name = "lblGhiChu";
             lblGhiChu.Size = new Size(101, 30);
             lblGhiChu.TabIndex = 2;
@@ -78,7 +84,9 @@
             // 
             lblMonHoc.AutoSize = true;
             lblMonHoc.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblMonHoc.Location = new Point(71, 201);
+            lblMonHoc.ForeColor = Color.FromArgb(50, 50, 50);
+            lblMonHoc.Location = new Point(75, 215);
+            lblMonHoc.Margin = new Padding(4, 0, 4, 0);
             lblMonHoc.Name = "lblMonHoc";
             lblMonHoc.Size = new Size(113, 30);
             lblMonHoc.TabIndex = 3;
@@ -88,7 +96,9 @@
             // 
             lblNamHoc.AutoSize = true;
             lblNamHoc.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblNamHoc.Location = new Point(71, 251);
+            lblNamHoc.ForeColor = Color.FromArgb(50, 50, 50);
+            lblNamHoc.Location = new Point(75, 265);
+            lblNamHoc.Margin = new Padding(4, 0, 4, 0);
             lblNamHoc.Name = "lblNamHoc";
             lblNamHoc.Size = new Size(114, 30);
             lblNamHoc.TabIndex = 4;
@@ -98,7 +108,9 @@
             // 
             lblHocKy.AutoSize = true;
             lblHocKy.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblHocKy.Location = new Point(71, 301);
+            lblHocKy.ForeColor = Color.FromArgb(50, 50, 50);
+            lblHocKy.Location = new Point(75, 315);
+            lblHocKy.Margin = new Padding(4, 0, 4, 0);
             lblHocKy.Name = "lblHocKy";
             lblHocKy.Size = new Size(93, 30);
             lblHocKy.TabIndex = 5;
@@ -108,7 +120,9 @@
             // 
             lblGiangVien.AutoSize = true;
             lblGiangVien.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblGiangVien.Location = new Point(71, 357);
+            lblGiangVien.ForeColor = Color.FromArgb(50, 50, 50);
+            lblGiangVien.Location = new Point(75, 375);
+            lblGiangVien.Margin = new Padding(4, 0, 4, 0);
             lblGiangVien.Name = "lblGiangVien";
             lblGiangVien.Size = new Size(130, 30);
             lblGiangVien.TabIndex = 6;
@@ -116,64 +130,78 @@
             // 
             // txtTenNhom
             // 
+            txtTenNhom.BackColor = Color.FromArgb(255, 255, 255);
             txtTenNhom.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtTenNhom.Location = new Point(222, 102);
+            txtTenNhom.Location = new Point(230, 108);
+            txtTenNhom.Margin = new Padding(4, 3, 4, 3);
             txtTenNhom.Name = "txtTenNhom";
             txtTenNhom.Size = new Size(393, 35);
             txtTenNhom.TabIndex = 7;
             // 
             // txtGhiChu
             // 
+            txtGhiChu.BackColor = Color.FromArgb(255, 255, 255);
             txtGhiChu.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtGhiChu.Location = new Point(222, 150);
+            txtGhiChu.Location = new Point(230, 158);
+            txtGhiChu.Margin = new Padding(4, 3, 4, 3);
             txtGhiChu.Name = "txtGhiChu";
             txtGhiChu.Size = new Size(393, 35);
             txtGhiChu.TabIndex = 8;
             // 
             // cbxMonHoc
             // 
+            cbxMonHoc.BackColor = Color.FromArgb(255, 255, 255);
             cbxMonHoc.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cbxMonHoc.FormattingEnabled = true;
-            cbxMonHoc.Location = new Point(222, 198);
+            cbxMonHoc.Location = new Point(230, 208);
+            cbxMonHoc.Margin = new Padding(4, 3, 4, 3);
             cbxMonHoc.Name = "cbxMonHoc";
             cbxMonHoc.Size = new Size(393, 38);
             cbxMonHoc.TabIndex = 9;
             // 
             // cbxNamHoc
             // 
+            cbxNamHoc.BackColor = Color.FromArgb(255, 255, 255);
             cbxNamHoc.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cbxNamHoc.FormattingEnabled = true;
-            cbxNamHoc.Location = new Point(222, 248);
+            cbxNamHoc.Location = new Point(230, 258);
+            cbxNamHoc.Margin = new Padding(4, 3, 4, 3);
             cbxNamHoc.Name = "cbxNamHoc";
             cbxNamHoc.Size = new Size(393, 38);
             cbxNamHoc.TabIndex = 10;
             // 
             // cbxHocKy
             // 
+            cbxHocKy.BackColor = Color.FromArgb(255, 255, 255);
             cbxHocKy.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cbxHocKy.FormattingEnabled = true;
-            cbxHocKy.Location = new Point(222, 298);
+            cbxHocKy.Location = new Point(230, 308);
+            cbxHocKy.Margin = new Padding(4, 3, 4, 3);
             cbxHocKy.Name = "cbxHocKy";
             cbxHocKy.Size = new Size(393, 38);
             cbxHocKy.TabIndex = 11;
             // 
             // cbxGiangVien
             // 
+            cbxGiangVien.BackColor = Color.FromArgb(255, 255, 255);
             cbxGiangVien.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cbxGiangVien.FormattingEnabled = true;
-            cbxGiangVien.Location = new Point(222, 354);
+            cbxGiangVien.Location = new Point(230, 368);
+            cbxGiangVien.Margin = new Padding(4, 3, 4, 3);
             cbxGiangVien.Name = "cbxGiangVien";
             cbxGiangVien.Size = new Size(393, 38);
             cbxGiangVien.TabIndex = 12;
             // 
             // btnLuu
             // 
-            btnLuu.BackColor = Color.DodgerBlue;
+            btnLuu.BackColor = Color.FromArgb(30, 144, 255);
+            btnLuu.FlatStyle = FlatStyle.Flat;
             btnLuu.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnLuu.ForeColor = SystemColors.Control;
-            btnLuu.Location = new Point(71, 432);
+            btnLuu.Location = new Point(75, 450);
+            btnLuu.Margin = new Padding(4, 3, 4, 3);
             btnLuu.Name = "btnLuu";
-            btnLuu.Size = new Size(544, 48);
+            btnLuu.Size = new Size(544, 52);
             btnLuu.TabIndex = 13;
             btnLuu.Text = "LƯU";
             btnLuu.UseVisualStyleBackColor = false;
@@ -182,6 +210,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(250, 250, 252);
             Controls.Add(btnLuu);
             Controls.Add(cbxGiangVien);
             Controls.Add(cbxMonHoc);
@@ -196,6 +225,7 @@
             Controls.Add(lblGhiChu);
             Controls.Add(lblTenNhom);
             Controls.Add(lblThemNhom);
+            Margin = new Padding(4, 3, 4, 3);
             Name = "Dialog_ThemNhom";
             Size = new Size(698, 519);
             ResumeLayout(false);

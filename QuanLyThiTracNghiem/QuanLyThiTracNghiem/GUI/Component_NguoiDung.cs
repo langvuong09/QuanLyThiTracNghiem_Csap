@@ -273,7 +273,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             if (obj == null) return;
 
             string tenHinh = null;
-            string ngaySinhStr = string.Empty;
+            DateTime? ngaySinh = null;
 
             if (obj is SinhVien sv)
             {
@@ -283,11 +283,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 comboBoxGT.Text = sv.gioiTinh ?? string.Empty;
                 IDaccount = sv.maSinhVien;
 
-                // xử lý ngày nếu nullable
-                if (sv.ngaySinh is DateTime dsv)
-                    ngaySinhStr = dsv.ToString("dd/MM/yyyy");
-                else
-                    ngaySinhStr = string.Empty;
+                // Get date directly from DateTime object
+                ngaySinh = sv.ngaySinh;
 
                 tenHinh = sv.anhDaiDien;
                 checkTrangThai();
@@ -300,10 +297,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 comboBoxGT.Text = gv.gioiTinh ?? string.Empty;
                 IDaccount = gv.maGiaoVien;
 
-                if (gv.ngaySinh is DateTime dgv)
-                    ngaySinhStr = dgv.ToString("dd/MM/yyyy");
-                else
-                    ngaySinhStr = string.Empty;
+                // Get date directly from DateTime object
+                ngaySinh = gv.ngaySinh;
 
                 tenHinh = gv.anhDaiDien;
                 checkTrangThai();
@@ -313,7 +308,16 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 return;
             }
 
-            textBoxNS.Text = ngaySinhStr;
+            // Set DateTimePicker value - display in DD/MM/YYYY format
+            // The DateTimePicker will automatically format it according to CustomFormat
+            if (ngaySinh.HasValue && ngaySinh.Value != DateTime.MinValue)
+            {
+                textBoxNS.Value = ngaySinh.Value;
+            }
+            else
+            {
+                textBoxNS.Value = DateTime.Now;
+            }
 
             // load ảnh an toàn (copy vào Bitmap để không khoá file)
             if (!string.IsNullOrWhiteSpace(tenHinh))
@@ -429,18 +433,8 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                         return;
                     }
 
-                    // Lấy ngày (nếu người dùng nhập)
-                    DateTime? parsedDate = null;
-                    if (!string.IsNullOrWhiteSpace(textBoxNS.Text))
-                    {
-                        if (DateTime.TryParseExact(textBoxNS.Text.Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime d))
-                            parsedDate = d;
-                        else
-                        {
-                            MessageBox.Show("Ngày sinh không đúng định dạng dd/MM/yyyy.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            return;
-                        }
-                    }
+                    // Lấy ngày từ DateTimePicker
+                    DateTime ngaySinh = textBoxNS.Value;
 
 
 
@@ -451,7 +445,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                         string ten = textBoxHoTen.Text.Trim();
                         string email = textBoxEmail.Text?.Trim() ?? string.Empty;
                         string gioiTinh = comboBoxGT.Text?.Trim() ?? string.Empty;
-                        DateTime ngaySinh = parsedDate ?? (sv.ngaySinh is DateTime ds ? ds : DateTime.MinValue);
                         string anh = selectedImageFileName ?? sv.anhDaiDien ?? string.Empty;
 
                         // Gọi BUS.SuaSinhVien
@@ -467,7 +460,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                         string ten = textBoxHoTen.Text.Trim();
                         string email = textBoxEmail.Text?.Trim() ?? string.Empty;
                         string gioiTinh = comboBoxGT.Text?.Trim() ?? string.Empty;
-                        DateTime ngaySinh = parsedDate ?? (gv.ngaySinh is DateTime dg ? dg : DateTime.MinValue);
                         string anh = selectedImageFileName ?? gv.anhDaiDien ?? string.Empty;
 
                         // Gọi BUS.suaGiaoVien (theo BUS bạn đưa)
@@ -604,6 +596,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private void checkTrangThai()
         {
             TaiKhoan tk = tkBUS.GetTaiKhoanById(IDaccount);
+            if (tk == null) { 
+                buttonTrangThai.Visible = false;
+                MessageBox.Show("Người dùng này chưa có tài khoản", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             if (tk.trangThai == 1)
             {
                 buttonTrangThai.Text = "Khóa";
