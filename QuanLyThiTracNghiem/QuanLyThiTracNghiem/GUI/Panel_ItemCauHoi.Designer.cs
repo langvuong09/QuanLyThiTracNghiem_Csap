@@ -51,21 +51,25 @@
             // 
             // textBox_CauHoi
             // 
+            textBox_CauHoi.BackColor = Color.FromArgb(255, 255, 255);
             textBox_CauHoi.BorderStyle = BorderStyle.FixedSingle;
             textBox_CauHoi.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox_CauHoi.Location = new Point(260, 25);
+            textBox_CauHoi.Location = new Point(270, 28);
+            textBox_CauHoi.Margin = new Padding(4, 3, 4, 3);
             textBox_CauHoi.Multiline = true;
             textBox_CauHoi.Name = "textBox_CauHoi";
             textBox_CauHoi.ReadOnly = true;
             textBox_CauHoi.ScrollBars = ScrollBars.Vertical;
-            textBox_CauHoi.Size = new Size(1466, 103);
+            textBox_CauHoi.Size = new Size(1466, 110);
             textBox_CauHoi.TabIndex = 1;
             // 
             // label_STTCauHoi
             // 
             label_STTCauHoi.AutoSize = true;
             label_STTCauHoi.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label_STTCauHoi.Location = new Point(158, 25);
+            label_STTCauHoi.ForeColor = Color.FromArgb(30, 30, 30);
+            label_STTCauHoi.Location = new Point(165, 28);
+            label_STTCauHoi.Margin = new Padding(4, 0, 4, 0);
             label_STTCauHoi.Name = "label_STTCauHoi";
             label_STTCauHoi.Size = new Size(40, 37);
             label_STTCauHoi.TabIndex = 0;
@@ -161,12 +165,13 @@
             // 
             // panel_Bottom
             // 
-            panel_Bottom.BackColor = SystemColors.ScrollBar;
+            panel_Bottom.BackColor = Color.FromArgb(220, 220, 225);
             panel_Bottom.Controls.Add(label_DapAnDung);
             panel_Bottom.Controls.Add(groupBox_CauTraLoi);
-            panel_Bottom.Location = new Point(158, 387);
+            panel_Bottom.Location = new Point(165, 400);
+            panel_Bottom.Margin = new Padding(4, 3, 4, 3);
             panel_Bottom.Name = "panel_Bottom";
-            panel_Bottom.Size = new Size(1568, 91);
+            panel_Bottom.Size = new Size(1568, 95);
             panel_Bottom.TabIndex = 10;
             // 
             // groupBox_CauTraLoi
@@ -244,7 +249,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.ControlLight;
+            BackColor = Color.FromArgb(245, 245, 250);
             Controls.Add(panel_Bottom);
             Controls.Add(textBox_D);
             Controls.Add(textBox_C);
@@ -256,6 +261,7 @@
             Controls.Add(label_A);
             Controls.Add(textBox_CauHoi);
             Controls.Add(label_STTCauHoi);
+            Margin = new Padding(4, 3, 4, 3);
             Name = "Panel_ItemCauHoi";
             Size = new Size(1904, 517);
             panel_Bottom.ResumeLayout(false);

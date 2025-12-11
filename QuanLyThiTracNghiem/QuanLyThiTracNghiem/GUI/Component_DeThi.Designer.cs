@@ -55,37 +55,43 @@
             // button_Reload
             // 
             button_Reload.AutoSize = true;
-            button_Reload.BackColor = Color.Salmon;
+            button_Reload.BackColor = Color.FromArgb(250, 128, 114);
+            button_Reload.FlatStyle = FlatStyle.Flat;
             button_Reload.Image = (Image)resources.GetObject("button_Reload.Image");
-            button_Reload.Location = new Point(1272, 16);
+            button_Reload.Location = new Point(1272, 18);
+            button_Reload.Margin = new Padding(4, 3, 4, 3);
             button_Reload.Name = "button_Reload";
-            button_Reload.Size = new Size(83, 73);
+            button_Reload.Size = new Size(83, 78);
             button_Reload.TabIndex = 2;
             button_Reload.UseVisualStyleBackColor = false;
             button_Reload.Click += button_Reload_Click;
             // 
             // panel_Top
             // 
+            panel_Top.BackColor = Color.FromArgb(240, 248, 255);
             panel_Top.Controls.Add(button_TimKiem);
             panel_Top.Controls.Add(comboBox_LocTheoNhom);
             panel_Top.Controls.Add(button_Reload);
             panel_Top.Controls.Add(textBox_TimKiem);
             panel_Top.Dock = DockStyle.Top;
             panel_Top.Location = new Point(0, 0);
+            panel_Top.Margin = new Padding(4, 3, 4, 3);
             panel_Top.Name = "panel_Top";
-            panel_Top.Size = new Size(1541, 162);
+            panel_Top.Size = new Size(1541, 170);
             panel_Top.TabIndex = 3;
             // 
             // button_TimKiem
             // 
-            button_TimKiem.BackColor = SystemColors.ActiveCaption;
+            button_TimKiem.BackColor = Color.FromArgb(125, 162, 206);
+            button_TimKiem.FlatStyle = FlatStyle.Flat;
             button_TimKiem.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_TimKiem.ForeColor = SystemColors.ButtonFace;
             button_TimKiem.Image = (Image)resources.GetObject("button_TimKiem.Image");
             button_TimKiem.ImageAlign = ContentAlignment.MiddleLeft;
-            button_TimKiem.Location = new Point(1272, 95);
+            button_TimKiem.Location = new Point(1272, 100);
+            button_TimKiem.Margin = new Padding(4, 3, 4, 3);
             button_TimKiem.Name = "button_TimKiem";
-            button_TimKiem.Size = new Size(251, 52);
+            button_TimKiem.Size = new Size(251, 55);
             button_TimKiem.TabIndex = 4;
             button_TimKiem.Text = "Tìm Kiếm";
             button_TimKiem.UseVisualStyleBackColor = false;
@@ -93,10 +99,11 @@
             // 
             // comboBox_LocTheoNhom
             // 
-            comboBox_LocTheoNhom.BackColor = SystemColors.InactiveCaption;
+            comboBox_LocTheoNhom.BackColor = Color.FromArgb(255, 255, 255);
             comboBox_LocTheoNhom.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
             comboBox_LocTheoNhom.FormattingEnabled = true;
-            comboBox_LocTheoNhom.Location = new Point(19, 36);
+            comboBox_LocTheoNhom.Location = new Point(24, 38);
+            comboBox_LocTheoNhom.Margin = new Padding(4, 3, 4, 3);
             comboBox_LocTheoNhom.Name = "comboBox_LocTheoNhom";
             comboBox_LocTheoNhom.Size = new Size(1230, 40);
             comboBox_LocTheoNhom.TabIndex = 3;
@@ -104,20 +111,24 @@
             // 
             // panel_Bottom
             // 
+            panel_Bottom.BackColor = Color.FromArgb(240, 248, 255);
             panel_Bottom.Controls.Add(comboBox_PhanTrang);
             panel_Bottom.Controls.Add(button_Prev);
             panel_Bottom.Controls.Add(button_Next);
             panel_Bottom.Dock = DockStyle.Bottom;
             panel_Bottom.Location = new Point(0, 866);
+            panel_Bottom.Margin = new Padding(4, 3, 4, 3);
             panel_Bottom.Name = "panel_Bottom";
-            panel_Bottom.Size = new Size(1541, 68);
+            panel_Bottom.Size = new Size(1541, 72);
             panel_Bottom.TabIndex = 4;
             // 
             // comboBox_PhanTrang
             // 
+            comboBox_PhanTrang.BackColor = Color.FromArgb(255, 255, 255);
             comboBox_PhanTrang.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             comboBox_PhanTrang.FormattingEnabled = true;
-            comboBox_PhanTrang.Location = new Point(1342, 11);
+            comboBox_PhanTrang.Location = new Point(1342, 12);
+            comboBox_PhanTrang.Margin = new Padding(4, 3, 4, 3);
             comboBox_PhanTrang.Name = "comboBox_PhanTrang";
             comboBox_PhanTrang.Size = new Size(60, 33);
             comboBox_PhanTrang.TabIndex = 2;
@@ -125,12 +136,14 @@
             // 
             // button_Prev
             // 
-            button_Prev.BackColor = SystemColors.ActiveCaption;
+            button_Prev.BackColor = Color.FromArgb(125, 162, 206);
+            button_Prev.FlatStyle = FlatStyle.Flat;
             button_Prev.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_Prev.ForeColor = SystemColors.ButtonFace;
-            button_Prev.Location = new Point(1218, 6);
+            button_Prev.Location = new Point(1218, 8);
+            button_Prev.Margin = new Padding(4, 3, 4, 3);
             button_Prev.Name = "button_Prev";
-            button_Prev.Size = new Size(90, 40);
+            button_Prev.Size = new Size(90, 42);
             button_Prev.TabIndex = 1;
             button_Prev.Text = "Prev";
             button_Prev.UseVisualStyleBackColor = false;
@@ -138,12 +151,14 @@
             // 
             // button_Next
             // 
-            button_Next.BackColor = SystemColors.ActiveCaption;
+            button_Next.BackColor = Color.FromArgb(125, 162, 206);
+            button_Next.FlatStyle = FlatStyle.Flat;
             button_Next.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_Next.ForeColor = SystemColors.ButtonFace;
-            button_Next.Location = new Point(1433, 6);
+            button_Next.Location = new Point(1433, 8);
+            button_Next.Margin = new Padding(4, 3, 4, 3);
             button_Next.Name = "button_Next";
-            button_Next.Size = new Size(90, 40);
+            button_Next.Size = new Size(90, 42);
             button_Next.TabIndex = 0;
             button_Next.Text = "Next";
             button_Next.UseVisualStyleBackColor = false;
@@ -152,10 +167,12 @@
             // flowLayoutPanel_Main
             // 
             flowLayoutPanel_Main.AutoScroll = true;
+            flowLayoutPanel_Main.BackColor = Color.FromArgb(250, 250, 252);
             flowLayoutPanel_Main.Dock = DockStyle.Fill;
-            flowLayoutPanel_Main.Location = new Point(0, 162);
+            flowLayoutPanel_Main.Location = new Point(0, 170);
+            flowLayoutPanel_Main.Margin = new Padding(4, 3, 4, 3);
             flowLayoutPanel_Main.Name = "flowLayoutPanel_Main";
-            flowLayoutPanel_Main.Size = new Size(1541, 704);
+            flowLayoutPanel_Main.Size = new Size(1541, 696);
             flowLayoutPanel_Main.TabIndex = 5;
             flowLayoutPanel_Main.WrapContents = false;
             // 
@@ -163,10 +180,11 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.ButtonFace;
+            BackColor = Color.FromArgb(250, 250, 252);
             Controls.Add(flowLayoutPanel_Main);
             Controls.Add(panel_Bottom);
             Controls.Add(panel_Top);
+            Margin = new Padding(4, 3, 4, 3);
             Name = "Component_DeThi";
             Size = new Size(1541, 934);
             Load += Component_DeThi_Load;

@@ -35,9 +35,10 @@
             // 
             // pictureBox_TrangChu
             // 
-            pictureBox_TrangChu.BackColor = SystemColors.ButtonHighlight;
+            pictureBox_TrangChu.BackColor = Color.FromArgb(250, 250, 252);
             pictureBox_TrangChu.Image = (Image)resources.GetObject("pictureBox_TrangChu.Image");
-            pictureBox_TrangChu.Location = new Point(185, 141);
+            pictureBox_TrangChu.Location = new Point(195, 150);
+            pictureBox_TrangChu.Margin = new Padding(4, 3, 4, 3);
             pictureBox_TrangChu.Name = "pictureBox_TrangChu";
             pictureBox_TrangChu.Size = new Size(1171, 652);
             pictureBox_TrangChu.SizeMode = PictureBoxSizeMode.Zoom;
@@ -49,8 +50,9 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.ButtonHighlight;
+            BackColor = Color.FromArgb(250, 250, 252);
             Controls.Add(pictureBox_TrangChu);
+            Margin = new Padding(4, 3, 4, 3);
             Name = "Component_TrangChu";
             Size = new Size(1541, 934);
             ((System.ComponentModel.ISupportInitialize)pictureBox_TrangChu).EndInit();

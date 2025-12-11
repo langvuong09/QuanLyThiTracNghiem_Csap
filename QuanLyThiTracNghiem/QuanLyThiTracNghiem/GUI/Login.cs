@@ -93,7 +93,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                     GiaoVien gv = gvBUS.GetGiaoVienByID(tk.userId);
                     UserSession.username = gv.tenGiaoVien;
                     UserSession.Quyen = gv.quyen;
-
                 }
                 else
                 {
@@ -101,10 +100,11 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                     UserSession.Quyen = int.Parse(sv.quyen);
                 }
 
-                    new MyDialog("Đăng nhập thành công!", MyDialog.SUCCESS_DIALOG).ShowDialog();
+                new MyDialog("Đăng nhập thành công!", MyDialog.SUCCESS_DIALOG).ShowDialog();
                 TrangChuSinhVien s = new TrangChuSinhVien();
                 s.Show();
-                this.Hide();
+                this.Close();
+
             }
         }
     }

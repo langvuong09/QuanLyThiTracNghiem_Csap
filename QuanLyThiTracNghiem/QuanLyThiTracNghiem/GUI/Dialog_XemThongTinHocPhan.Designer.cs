@@ -50,50 +50,60 @@
             // lblTitle
             // 
             lblTitle.AutoSize = true;
-            lblTitle.Font = new Font("Segoe UI", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblTitle.Location = new Point(487, 0);
+            lblTitle.Font = new Font("Segoe UI", 28F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTitle.ForeColor = Color.FromArgb(70, 130, 180);
+            lblTitle.Location = new Point(487, 15);
+            lblTitle.Margin = new Padding(0);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(199, 45);
+            lblTitle.Size = new Size(230, 51);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "THÔNG TIN";
             // 
             // lblMonHoc
             // 
             lblMonHoc.AutoSize = true;
-            lblMonHoc.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblMonHoc.Location = new Point(41, 67);
+            lblMonHoc.Font = new Font("Segoe UI Semibold", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblMonHoc.ForeColor = Color.FromArgb(70, 130, 180);
+            lblMonHoc.Location = new Point(48, 85);
+            lblMonHoc.Margin = new Padding(0);
             lblMonHoc.Name = "lblMonHoc";
-            lblMonHoc.Size = new Size(113, 30);
+            lblMonHoc.Size = new Size(120, 30);
             lblMonHoc.TabIndex = 1;
             lblMonHoc.Text = "Môn học: ";
             // 
             // lblNhom
             // 
             lblNhom.AutoSize = true;
-            lblNhom.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblNhom.Location = new Point(41, 108);
+            lblNhom.Font = new Font("Segoe UI Semibold", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblNhom.ForeColor = Color.FromArgb(70, 130, 180);
+            lblNhom.Location = new Point(48, 135);
+            lblNhom.Margin = new Padding(0);
             lblNhom.Name = "lblNhom";
-            lblNhom.Size = new Size(87, 30);
+            lblNhom.Size = new Size(92, 30);
             lblNhom.TabIndex = 2;
             lblNhom.Text = "Nhóm: ";
             // 
             // lblGiangVien
             // 
             lblGiangVien.AutoSize = true;
-            lblGiangVien.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblGiangVien.Location = new Point(573, 67);
+            lblGiangVien.Font = new Font("Segoe UI Semibold", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblGiangVien.ForeColor = Color.FromArgb(70, 130, 180);
+            lblGiangVien.Location = new Point(580, 85);
+            lblGiangVien.Margin = new Padding(0);
             lblGiangVien.Name = "lblGiangVien";
-            lblGiangVien.Size = new Size(124, 30);
+            lblGiangVien.Size = new Size(130, 30);
             lblGiangVien.TabIndex = 3;
             lblGiangVien.Text = "Giảng viên:";
             // 
             // lblTongBaiKiemTra
             // 
             lblTongBaiKiemTra.AutoSize = true;
-            lblTongBaiKiemTra.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblTongBaiKiemTra.Location = new Point(573, 108);
+            lblTongBaiKiemTra.Font = new Font("Segoe UI Semibold", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTongBaiKiemTra.ForeColor = Color.FromArgb(70, 130, 180);
+            lblTongBaiKiemTra.Location = new Point(580, 135);
+            lblTongBaiKiemTra.Margin = new Padding(0);
             lblTongBaiKiemTra.Name = "lblTongBaiKiemTra";
-            lblTongBaiKiemTra.Size = new Size(193, 30);
+            lblTongBaiKiemTra.Size = new Size(200, 30);
             lblTongBaiKiemTra.TabIndex = 4;
             lblTongBaiKiemTra.Text = "Tổng bài kiểm tra:";
             // 
@@ -101,21 +111,34 @@
             // 
             dgvBaiKiemTra.AllowUserToAddRows = false;
             dgvBaiKiemTra.AllowUserToDeleteRows = false;
-            dgvBaiKiemTra.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvBaiKiemTra.BackgroundColor = SystemColors.ButtonFace;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(101, 224, 199);
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            dgvBaiKiemTra.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvBaiKiemTra.BackgroundColor = Color.White;
+            dgvBaiKiemTra.BorderStyle = BorderStyle.None;
+            dgvBaiKiemTra.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(70, 130, 180);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.Padding = new Padding(10, 5, 10, 5);
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(70, 130, 180);
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dgvBaiKiemTra.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            dgvBaiKiemTra.ColumnHeadersHeight = 29;
+            dgvBaiKiemTra.ColumnHeadersHeight = 45;
+            dgvBaiKiemTra.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvBaiKiemTra.Columns.AddRange(new DataGridViewColumn[] {colmaDe, coltgBatDau, coltgKetThuc, colTongDiem });
-            dgvBaiKiemTra.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#9BBCFF");           
             dgvBaiKiemTra.EnableHeadersVisualStyles = false;
-            dgvBaiKiemTra.Location = new Point(3, 210);
+            dgvBaiKiemTra.GridColor = Color.FromArgb(230, 230, 235);
+            dgvBaiKiemTra.Location = new Point(8, 250);
+            dgvBaiKiemTra.Margin = new Padding(0);
             dgvBaiKiemTra.MultiSelect = false;
             dgvBaiKiemTra.Name = "dgvBaiKiemTra";
             dgvBaiKiemTra.ReadOnly = true;
+            dgvBaiKiemTra.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dgvBaiKiemTra.RowHeadersWidth = 51;
-            dgvBaiKiemTra.Size = new Size(1176, 493);
+            dgvBaiKiemTra.RowTemplate.Height = 35;
+            dgvBaiKiemTra.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvBaiKiemTra.Size = new Size(1166, 493);
             dgvBaiKiemTra.TabIndex = 5;
             // 
             // colmaDe
@@ -149,53 +172,72 @@
             // lblDeKiemTra
             // 
             lblDeKiemTra.AutoSize = true;
-            lblDeKiemTra.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblDeKiemTra.Location = new Point(450, 167);
+            lblDeKiemTra.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblDeKiemTra.ForeColor = Color.FromArgb(70, 130, 180);
+            lblDeKiemTra.Location = new Point(450, 200);
+            lblDeKiemTra.Margin = new Padding(0);
             lblDeKiemTra.Name = "lblDeKiemTra";
-            lblDeKiemTra.Size = new Size(275, 30);
+            lblDeKiemTra.Size = new Size(310, 32);
             lblDeKiemTra.TabIndex = 6;
             lblDeKiemTra.Text = "DANH SÁCH ĐỀ KIỂM TRA";
             // 
             // txtMonHoc
             // 
+            txtMonHoc.BackColor = Color.White;
+            txtMonHoc.BorderStyle = BorderStyle.FixedSingle;
             txtMonHoc.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtMonHoc.Location = new Point(160, 63);
+            txtMonHoc.Location = new Point(168, 80);
+            txtMonHoc.Margin = new Padding(0);
             txtMonHoc.Name = "txtMonHoc";
             txtMonHoc.Enabled = false;
-            txtMonHoc.Size = new Size(337, 34);
+            txtMonHoc.Padding = new Padding(8);
+            txtMonHoc.Size = new Size(337, 40);
             txtMonHoc.TabIndex = 7;
             // 
             // txtNhom
             // 
+            txtNhom.BackColor = Color.White;
+            txtNhom.BorderStyle = BorderStyle.FixedSingle;
             txtNhom.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtNhom.Location = new Point(160, 104);
+            txtNhom.Location = new Point(168, 130);
+            txtNhom.Margin = new Padding(0);
             txtNhom.Name = "txtNhom";
             txtNhom.Enabled = false;
-            txtNhom.Size = new Size(337, 34);
+            txtNhom.Padding = new Padding(8);
+            txtNhom.Size = new Size(337, 40);
             txtNhom.TabIndex = 8;
             // 
             // txtGiangVien
             // 
+            txtGiangVien.BackColor = Color.White;
+            txtGiangVien.BorderStyle = BorderStyle.FixedSingle;
             txtGiangVien.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtGiangVien.Location = new Point(788, 63);
+            txtGiangVien.Location = new Point(788, 80);
+            txtGiangVien.Margin = new Padding(0);
             txtGiangVien.Name = "txtGiangVien";
             txtGiangVien.Enabled = false;
-            txtGiangVien.Size = new Size(330, 34);
+            txtGiangVien.Padding = new Padding(8);
+            txtGiangVien.Size = new Size(330, 40);
             txtGiangVien.TabIndex = 9;
             // 
             // txtTongbaiKiemTra
             // 
+            txtTongbaiKiemTra.BackColor = Color.White;
+            txtTongbaiKiemTra.BorderStyle = BorderStyle.FixedSingle;
             txtTongbaiKiemTra.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtTongbaiKiemTra.Location = new Point(788, 106);
+            txtTongbaiKiemTra.Location = new Point(788, 130);
+            txtTongbaiKiemTra.Margin = new Padding(0);
             txtTongbaiKiemTra.Name = "txtTongbaiKiemTra";
             txtTongbaiKiemTra.Enabled = false;
-            txtTongbaiKiemTra.Size = new Size(330, 34);
+            txtTongbaiKiemTra.Padding = new Padding(8);
+            txtTongbaiKiemTra.Size = new Size(330, 40);
             txtTongbaiKiemTra.TabIndex = 10;
             // 
             // Dialog_XemThongTinHocPhan
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(248, 250, 252);
             Controls.Add(txtTongbaiKiemTra);
             Controls.Add(txtGiangVien);
             Controls.Add(txtNhom);
@@ -207,6 +249,8 @@
             Controls.Add(lblNhom);
             Controls.Add(lblMonHoc);
             Controls.Add(lblTitle);
+            Margin = new Padding(0);
+            Padding = new Padding(20);
             Name = "Dialog_XemThongTinHocPhan";
             Size = new Size(1182, 706);
             ((System.ComponentModel.ISupportInitialize)dgvBaiKiemTra).EndInit();

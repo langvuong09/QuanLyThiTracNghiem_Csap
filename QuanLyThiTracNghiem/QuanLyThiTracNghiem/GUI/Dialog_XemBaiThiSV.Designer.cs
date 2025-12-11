@@ -53,23 +53,28 @@
             // 
             // panel1
             // 
-            panel1.BackColor = Color.FromArgb(196, 205, 255);
+            panel1.BackColor = Color.FromArgb(70, 130, 180);
+            panel1.BorderStyle = BorderStyle.None;
             panel1.Controls.Add(textBoxTenSV);
             panel1.Controls.Add(textBoxMSSV);
             panel1.Controls.Add(labelMSSV);
             panel1.Controls.Add(labelThiSinh);
-            panel1.Location = new Point(39, 32);
+            panel1.Location = new Point(48, 40);
+            panel1.Margin = new Padding(0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(994, 74);
+            panel1.Padding = new Padding(15);
+            panel1.Size = new Size(994, 90);
             panel1.TabIndex = 0;
             // 
             // labelThiSinh
             // 
             labelThiSinh.AutoSize = true;
-            labelThiSinh.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            labelThiSinh.Location = new Point(463, 32);
+            labelThiSinh.Font = new Font("Segoe UI Semibold", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelThiSinh.ForeColor = Color.White;
+            labelThiSinh.Location = new Point(463, 40);
+            labelThiSinh.Margin = new Padding(0);
             labelThiSinh.Name = "labelThiSinh";
-            labelThiSinh.Size = new Size(91, 25);
+            labelThiSinh.Size = new Size(100, 30);
             labelThiSinh.TabIndex = 0;
             labelThiSinh.Text = "THÍ SINH:";
             labelThiSinh.Click += this.label1_Click;
@@ -77,72 +82,95 @@
             // labelMSSV
             // 
             labelMSSV.AutoSize = true;
-            labelMSSV.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            labelMSSV.Location = new Point(35, 32);
+            labelMSSV.Font = new Font("Segoe UI Semibold", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelMSSV.ForeColor = Color.White;
+            labelMSSV.Location = new Point(40, 40);
+            labelMSSV.Margin = new Padding(0);
             labelMSSV.Name = "labelMSSV";
-            labelMSSV.Size = new Size(70, 25);
+            labelMSSV.Size = new Size(75, 30);
             labelMSSV.TabIndex = 1;
             labelMSSV.Text = "MSSV: ";
             labelMSSV.Click += this.labelMSSV_Click;
             // 
             // textBoxMSSV
             // 
-            textBoxMSSV.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxMSSV.Location = new Point(119, 17);
+            textBoxMSSV.BackColor = Color.White;
+            textBoxMSSV.BorderStyle = BorderStyle.FixedSingle;
+            textBoxMSSV.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBoxMSSV.Location = new Point(125, 25);
+            textBoxMSSV.Margin = new Padding(0);
             textBoxMSSV.Multiline = true;
             textBoxMSSV.Name = "textBoxMSSV";
-            textBoxMSSV.Size = new Size(232, 40);
+            textBoxMSSV.Padding = new Padding(8);
+            textBoxMSSV.Size = new Size(232, 50);
             textBoxMSSV.TabIndex = 2;
             // 
             // textBoxTenSV
             // 
-            textBoxTenSV.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxTenSV.Location = new Point(572, 17);
+            textBoxTenSV.BackColor = Color.White;
+            textBoxTenSV.BorderStyle = BorderStyle.FixedSingle;
+            textBoxTenSV.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBoxTenSV.Location = new Point(578, 25);
+            textBoxTenSV.Margin = new Padding(0);
             textBoxTenSV.Multiline = true;
             textBoxTenSV.Name = "textBoxTenSV";
-            textBoxTenSV.Size = new Size(385, 40);
+            textBoxTenSV.Padding = new Padding(8);
+            textBoxTenSV.Size = new Size(385, 50);
             textBoxTenSV.TabIndex = 3;
             // 
             // panelNoiDung
             // 
+            panelNoiDung.BackColor = Color.FromArgb(248, 250, 252);
+            panelNoiDung.BorderStyle = BorderStyle.FixedSingle;
             panelNoiDung.Controls.Add(panelPhanTrang);
             panelNoiDung.Controls.Add(panelDapAn);
             panelNoiDung.Controls.Add(textBoxCauHoi);
             panelNoiDung.Controls.Add(labelCauHoi);
-            panelNoiDung.Location = new Point(39, 134);
+            panelNoiDung.Location = new Point(48, 150);
+            panelNoiDung.Margin = new Padding(0);
             panelNoiDung.Name = "panelNoiDung";
-            panelNoiDung.Size = new Size(994, 450);
+            panelNoiDung.Padding = new Padding(15);
+            panelNoiDung.Size = new Size(994, 470);
             panelNoiDung.TabIndex = 1;
             // 
             // labelCauHoi
             // 
             labelCauHoi.AutoSize = true;
-            labelCauHoi.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            labelCauHoi.Location = new Point(14, 14);
+            labelCauHoi.Font = new Font("Segoe UI Semibold", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelCauHoi.ForeColor = Color.FromArgb(70, 130, 180);
+            labelCauHoi.Location = new Point(18, 20);
+            labelCauHoi.Margin = new Padding(0);
             labelCauHoi.Name = "labelCauHoi";
-            labelCauHoi.Size = new Size(91, 25);
+            labelCauHoi.Size = new Size(100, 30);
             labelCauHoi.TabIndex = 0;
             labelCauHoi.Text = "CÂU HỎI";
             // 
             // textBoxCauHoi
             // 
-            textBoxCauHoi.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxCauHoi.Location = new Point(119, 14);
+            textBoxCauHoi.BackColor = Color.White;
+            textBoxCauHoi.BorderStyle = BorderStyle.FixedSingle;
+            textBoxCauHoi.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBoxCauHoi.Location = new Point(125, 20);
+            textBoxCauHoi.Margin = new Padding(0);
             textBoxCauHoi.Multiline = true;
             textBoxCauHoi.Name = "textBoxCauHoi";
-            textBoxCauHoi.Size = new Size(838, 273);
+            textBoxCauHoi.Padding = new Padding(10);
+            textBoxCauHoi.Size = new Size(838, 290);
             textBoxCauHoi.TabIndex = 1;
             // 
             // panelDapAn
             // 
-            panelDapAn.BackColor = Color.FromArgb(245, 245, 250);
+            panelDapAn.BackColor = Color.FromArgb(240, 248, 255);
+            panelDapAn.BorderStyle = BorderStyle.FixedSingle;
             panelDapAn.Controls.Add(radioD);
             panelDapAn.Controls.Add(radioC);
             panelDapAn.Controls.Add(radioB);
             panelDapAn.Controls.Add(radioA);
-            panelDapAn.Location = new Point(0, 300);
+            panelDapAn.Location = new Point(0, 320);
+            panelDapAn.Margin = new Padding(0);
             panelDapAn.Name = "panelDapAn";
-            panelDapAn.Size = new Size(994, 94);
+            panelDapAn.Padding = new Padding(10);
+            panelDapAn.Size = new Size(994, 110);
             panelDapAn.TabIndex = 2;
             // 
             // radioA
@@ -200,44 +228,65 @@
             // 
             // panelPhanTrang
             // 
-            panelPhanTrang.BackColor = Color.FromArgb(240, 240, 240);
+            panelPhanTrang.BackColor = Color.FromArgb(240, 248, 255);
+            panelPhanTrang.BorderStyle = BorderStyle.FixedSingle;
             panelPhanTrang.Controls.Add(btnPrevious);
             panelPhanTrang.Controls.Add(btnNext);
             panelPhanTrang.Controls.Add(labelSoCau);
-            panelPhanTrang.Location = new Point(0, 394);
+            panelPhanTrang.Location = new Point(0, 430);
+            panelPhanTrang.Margin = new Padding(0);
             panelPhanTrang.Name = "panelPhanTrang";
-            panelPhanTrang.Size = new Size(994, 56);
+            panelPhanTrang.Padding = new Padding(10);
+            panelPhanTrang.Size = new Size(994, 70);
             panelPhanTrang.TabIndex = 3;
             // 
             // btnPrevious
             // 
-            btnPrevious.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnPrevious.Location = new Point(300, 12);
+            btnPrevious.BackColor = Color.FromArgb(70, 130, 180);
+            btnPrevious.FlatAppearance.BorderSize = 0;
+            btnPrevious.FlatAppearance.MouseDownBackColor = Color.FromArgb(50, 100, 150);
+            btnPrevious.FlatAppearance.MouseOverBackColor = Color.FromArgb(90, 150, 200);
+            btnPrevious.FlatStyle = FlatStyle.Flat;
+            btnPrevious.Font = new Font("Segoe UI Semibold", 13F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnPrevious.ForeColor = Color.White;
+            btnPrevious.Location = new Point(300, 18);
+            btnPrevious.Margin = new Padding(0);
             btnPrevious.Name = "btnPrevious";
-            btnPrevious.Size = new Size(120, 35);
+            btnPrevious.Padding = new Padding(5);
+            btnPrevious.Size = new Size(130, 42);
             btnPrevious.TabIndex = 0;
             btnPrevious.Text = "◄ Câu trước";
-            btnPrevious.UseVisualStyleBackColor = true;
+            btnPrevious.UseVisualStyleBackColor = false;
             btnPrevious.Click += btnPrevious_Click;
             // 
             // btnNext
             // 
-            btnNext.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnNext.Location = new Point(574, 12);
+            btnNext.BackColor = Color.FromArgb(70, 130, 180);
+            btnNext.FlatAppearance.BorderSize = 0;
+            btnNext.FlatAppearance.MouseDownBackColor = Color.FromArgb(50, 100, 150);
+            btnNext.FlatAppearance.MouseOverBackColor = Color.FromArgb(90, 150, 200);
+            btnNext.FlatStyle = FlatStyle.Flat;
+            btnNext.Font = new Font("Segoe UI Semibold", 13F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnNext.ForeColor = Color.White;
+            btnNext.Location = new Point(574, 18);
+            btnNext.Margin = new Padding(0);
             btnNext.Name = "btnNext";
-            btnNext.Size = new Size(120, 35);
+            btnNext.Padding = new Padding(5);
+            btnNext.Size = new Size(130, 42);
             btnNext.TabIndex = 1;
             btnNext.Text = "Câu sau ►";
-            btnNext.UseVisualStyleBackColor = true;
+            btnNext.UseVisualStyleBackColor = false;
             btnNext.Click += btnNext_Click;
             // 
             // labelSoCau
             // 
             labelSoCau.AutoSize = true;
-            labelSoCau.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            labelSoCau.Location = new Point(450, 17);
+            labelSoCau.Font = new Font("Segoe UI Semibold", 15F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelSoCau.ForeColor = Color.FromArgb(70, 130, 180);
+            labelSoCau.Location = new Point(450, 23);
+            labelSoCau.Margin = new Padding(0);
             labelSoCau.Name = "labelSoCau";
-            labelSoCau.Size = new Size(94, 25);
+            labelSoCau.Size = new Size(100, 28);
             labelSoCau.TabIndex = 2;
             labelSoCau.Text = "Câu 1 / 5";
             labelSoCau.TextAlign = ContentAlignment.MiddleCenter;
@@ -246,8 +295,11 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(248, 250, 252);
             Controls.Add(panelNoiDung);
             Controls.Add(panel1);
+            Margin = new Padding(0);
+            Padding = new Padding(20);
             Name = "Dialog_XemBaiThiSV";
             Size = new Size(1086, 633);
             panel1.ResumeLayout(false);
