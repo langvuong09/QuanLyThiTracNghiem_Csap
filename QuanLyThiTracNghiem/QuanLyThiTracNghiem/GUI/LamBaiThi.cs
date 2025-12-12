@@ -221,7 +221,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
 
         private void button_NopBai_Click(object sender, EventArgs e)
         {
-            DateTime now = DateTime.Now;
+            /*DateTime now = DateTime.Now;
 
             if (now < thoiGianCanhBaoThucTe)
             {
@@ -230,7 +230,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 dialog.ShowDialog();
 
                 return;
-            }
+            }*/
 
             // Nếu hợp lệ thì nộp bài
             NopBai();
