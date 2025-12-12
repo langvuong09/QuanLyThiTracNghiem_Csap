@@ -228,7 +228,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dgvChuong.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvChuong.ColumnHeadersHeight = 29;
             dgvChuong.Columns.AddRange(new DataGridViewColumn[] { colMaChuong, colTenChuong });
-            dgvChuong.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#9BBCFF");
             dgvChuong.EnableHeadersVisualStyles = false;
             dgvChuong.Location = new Point(978, 184);
             dgvChuong.MultiSelect = false;
@@ -292,14 +291,13 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             dgvMonHoc.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvMonHoc.ColumnHeadersHeight = 29;
             dgvMonHoc.Columns.AddRange(new DataGridViewColumn[] { colMaMonHoc, colTenMonHoc, colTinChi, colSoTietLT, colSoTietTH, colHeSo });
-            dgvMonHoc.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#9BBCFF");
             dgvMonHoc.EnableHeadersVisualStyles = false;
-            dgvMonHoc.Location = new Point(0, 607);
+            dgvMonHoc.Location = new Point(19, 607);
             dgvMonHoc.MultiSelect = false;
             dgvMonHoc.Name = "dgvMonHoc";
             dgvMonHoc.ReadOnly = true;
             dgvMonHoc.RowHeadersWidth = 51;
-            dgvMonHoc.Size = new Size(1541, 327);
+            dgvMonHoc.Size = new Size(1497, 324);
             dgvMonHoc.TabIndex = 21;
             // 
             // colMaMonHoc

@@ -129,6 +129,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             textBox_MaPC.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBox_MaPC.Location = new Point(198, 48);
             textBox_MaPC.Name = "textBox_MaPC";
+            textBox_MaPC.ReadOnly = true;
             textBox_MaPC.Size = new Size(312, 35);
             textBox_MaPC.TabIndex = 4;
             // 

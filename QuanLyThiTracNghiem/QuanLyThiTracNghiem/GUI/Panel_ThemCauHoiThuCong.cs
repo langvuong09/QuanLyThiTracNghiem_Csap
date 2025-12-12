@@ -108,7 +108,15 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         //===================Load Môn Học==========================
         private void LoadMonHoc(System.Windows.Forms.ComboBox combo)
         {
-            monHocBUS.LayListMonHoc(combo);
+            //Load môn học từ BUS
+            if (UserSession.Quyen != 1)
+            {
+                monHocBUS.getListByAssignment(UserSession.userId, combo);
+            }
+            else
+            {
+                monHocBUS.LayListMonHoc(combo);
+            }
         }
         //=======================Load Độ Khó======================
         private void LoadDoKho(System.Windows.Forms.ComboBox combo)

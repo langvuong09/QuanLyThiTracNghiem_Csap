@@ -1,4 +1,5 @@
-﻿using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
+﻿using QuanLyThiTracNghiem.MyCustom;
+using QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS;
 using QuanLyThiTracNghiem.QuanLyThiTracNghiem.DTO;
 using System;
 using System.Collections;
@@ -373,6 +374,24 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             {
                 string maMH = comboBox_MonHoc.SelectedValue as string;
                 string maGV = comboBox_GiaoVien.SelectedValue as string;
+                ArrayList dspc = pcBUS.GetListPhanCong();
+                ArrayList dspcTheoGV = new ArrayList();
+                foreach (PhanCong pc in dspc)
+                {
+                    if(pc.maGiaoVien == maGV)
+                    {
+                        dspcTheoGV.Add(pc);
+                    }
+                }
+                foreach (PhanCong pc in dspcTheoGV)
+                {
+                    if(pc.maMonHoc == maMH)
+                    {
+                        MyDialog dlg = new MyDialog("Giáo viên đã được phân công môn này!", MyDialog.ERROR_DIALOG);
+                        dlg.ShowDialog();
+                        return;
+                    }
+                }
 
                 if (pcBUS.ThemPhanCong(int.Parse(textBox_MaPC.Text), maMH, maGV))
                 {
