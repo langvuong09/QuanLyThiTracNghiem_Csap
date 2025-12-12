@@ -49,6 +49,44 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             return listMonHoc;
         }
 
+        public ArrayList GetListMonHocByMaGiaoVien(string maGiaoVien)
+        {
+            ArrayList listMonHoc = new ArrayList();
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT m.* FROM monhoc m " +
+                                 "INNER JOIN phancong p ON m.maMonHoc = p.maMonHoc " +
+                                 "WHERE p.maGiaoVien = @maGiaoVien";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@maGiaoVien", maGiaoVien);
+
+                    MySqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        MonHoc monHoc = new MonHoc
+                        {
+                            maMonHoc = reader.GetString(0),
+                            tenMonHoc = reader.GetString(1),
+                            tinChi = reader.GetInt32(2),
+                            soTietLyThuyet = reader.GetInt32(3),
+                            soTietThucHanh = reader.GetInt32(4),
+                            heSo = reader.GetInt32(5),
+                        };
+                        listMonHoc.Add(monHoc);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            return listMonHoc;
+        }
+
         public bool ThemMonHoc(string maMonHoc, string tenMonHoc, int tinChi, int soTietLyThuyet, int soTietThucHanh, int heSo)
         {
             try

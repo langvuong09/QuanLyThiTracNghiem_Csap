@@ -12,6 +12,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private MonHocBUS monHocBUS = new MonHocBUS();
         private CauHoiBUS cauHoiBUS = new CauHoiBUS();
         private ChuongBUS chuongBUS = new ChuongBUS();
+        private PhanCongBUS phanCongBUS = new PhanCongBUS();
         private CTNhomQuyenBUS ctNhomQuyenBUS = new CTNhomQuyenBUS();
 
         //Các biến phục vụ phân trang
@@ -90,8 +91,10 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         {
             try
             {
-                // Lấy dữ liệu và cập nhật DataGridView
-                this.totalPages = cauHoiBUS.LayDSCauHoi_PhanTrang(
+                if (UserSession.Quyen != 1)
+                {
+                    this.totalPages = cauHoiBUS.LayDSCauHoi_PhanTrang(
+                    UserSession.userId,
                     dataGridView_DSCauHoi,
                     this.currentPage,
                     this.pageSize,
@@ -99,7 +102,19 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                     this.is_Chuong,
                     this.is_DoKho
                 );
-
+                }
+                else
+                {
+                    // Lấy dữ liệu và cập nhật DataGridView
+                    this.totalPages = cauHoiBUS.LayDSCauHoi_PhanTrang(
+                        dataGridView_DSCauHoi,
+                        this.currentPage,
+                        this.pageSize,
+                        this.is_MonHocSelected,
+                        this.is_Chuong,
+                        this.is_DoKho
+                    );
+                }
 
                 // Cập nhật combobox phân trang
                 isComboBoxChanging = true;
@@ -233,8 +248,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             comboBox_ChiSo.Enabled = false;
             string tuKhoa = textBox_TimKiem.Text.Trim();
             cauHoiBUS.TimKiemCauHoi(dataGridView_DSCauHoi, tuKhoa);
-
-
         }
 
         private void button_Xem_Click(object sender, EventArgs e)
@@ -320,7 +333,14 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
         private void LoadMonHoc(System.Windows.Forms.ComboBox combo)
         {
             //Load môn học từ BUS
-            monHocBUS.LayListMonHoc(combo);
+            if (UserSession.Quyen != 1)
+            {
+                monHocBUS.getListByAssignment(UserSession.userId, combo);
+            }
+            else
+            {
+                monHocBUS.LayListMonHoc(combo);
+            }
         }
 
         //------------------------------------Load độ khó Vào ComboBox-----------------------------------

@@ -297,6 +297,104 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.DAO
             return (result, totalPages);
         }
 
+        public (List<CauHoi> Data, int TotalPages) GetListCauHoiPhanTrang(
+            int currentPage,
+            int pageSize,
+            string maGiaoVien,
+            string maMonHoc = "",
+            int maChuong = 0,
+            string doKho = "0")
+        {
+            List<CauHoi> result = new List<CauHoi>();
+            int totalRows = 0;
+
+            try
+            {
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+
+                    string sqlFilter = "WHERE 1=1";
+                    if (!string.IsNullOrEmpty(maGiaoVien))
+                        sqlFilter += " AND p.maGiaoVien = @maGiaoVien";
+                    if (!string.IsNullOrEmpty(maMonHoc) && maMonHoc != "0")
+                        sqlFilter += " AND c.maMonHoc = @maMonHoc";
+                    if (maChuong > 0)
+                        sqlFilter += " AND c.maChuong = @maChuong";
+                    if (doKho != "0")
+                        sqlFilter += " AND c.doKho = @doKho";
+
+                    // Đếm tổng số dòng với join phancong (sử dụng DISTINCT để tránh trùng lặp)
+                    string sqlCount = $@"SELECT COUNT(DISTINCT c.maCauHoi) 
+                                        FROM cauhoi c 
+                                        INNER JOIN phancong p ON c.maMonHoc = p.maMonHoc 
+                                        {sqlFilter}";
+                    using (MySqlCommand countCmd = new MySqlCommand(sqlCount, conn))
+                    {
+                        if (!string.IsNullOrEmpty(maGiaoVien))
+                            countCmd.Parameters.AddWithValue("@maGiaoVien", maGiaoVien);
+                        if (!string.IsNullOrEmpty(maMonHoc) && maMonHoc != "0")
+                            countCmd.Parameters.AddWithValue("@maMonHoc", maMonHoc);
+                        if (maChuong > 0)
+                            countCmd.Parameters.AddWithValue("@maChuong", maChuong);
+                        if (doKho != "0")
+                            countCmd.Parameters.AddWithValue("@doKho", doKho);
+
+                        totalRows = Convert.ToInt32(countCmd.ExecuteScalar());
+                    }
+
+                    int offset = Math.Max((currentPage - 1), 0) * pageSize;
+
+                    // Lấy dữ liệu phân trang với join phancong (sử dụng DISTINCT để tránh trùng lặp)
+                    string sqlData = $@"
+                                    SELECT DISTINCT c.* 
+                                    FROM cauhoi c 
+                                    INNER JOIN phancong p ON c.maMonHoc = p.maMonHoc 
+                                    {sqlFilter}
+                                    ORDER BY c.maCauHoi
+                                    LIMIT @PageSize OFFSET @Offset";
+
+                    using (MySqlCommand dataCmd = new MySqlCommand(sqlData, conn))
+                    {
+                        if (!string.IsNullOrEmpty(maGiaoVien))
+                            dataCmd.Parameters.AddWithValue("@maGiaoVien", maGiaoVien);
+                        if (!string.IsNullOrEmpty(maMonHoc) && maMonHoc != "0")
+                            dataCmd.Parameters.AddWithValue("@maMonHoc", maMonHoc);
+                        if (maChuong > 0)
+                            dataCmd.Parameters.AddWithValue("@maChuong", maChuong);
+                        if (doKho != "0")
+                            dataCmd.Parameters.AddWithValue("@doKho", doKho);
+
+                        dataCmd.Parameters.AddWithValue("@PageSize", pageSize);
+                        dataCmd.Parameters.AddWithValue("@Offset", offset);
+
+                        using (MySqlDataReader reader = dataCmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                result.Add(new CauHoi
+                                {
+                                    maCauHoi = reader.GetInt32("maCauHoi"),
+                                    maMonHoc = reader.GetString("maMonHoc"),
+                                    maChuong = reader.GetInt32("maChuong"),
+                                    doKho = reader.GetString("doKho"),
+                                    noiDungCauHoi = reader.GetString("noiDungCauHoi")
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi lấy danh sách câu hỏi phân trang theo giáo viên: {ex}");
+                
+            }
+
+            int totalPages = (int)Math.Ceiling((double)totalRows / pageSize);
+            return (result, totalPages);
+        }
+
         /*
          Phương thức lấy danh sách câu hỏi theo mã đề thi (có trộn ngẫu nhiên)
             Input: int MaDe

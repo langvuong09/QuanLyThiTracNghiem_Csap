@@ -103,7 +103,7 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
                 new MyDialog("Đăng nhập thành công!", MyDialog.SUCCESS_DIALOG).ShowDialog();
                 TrangChuSinhVien s = new TrangChuSinhVien();
                 s.Show();
-                this.Close();
+                this.Hide();
 
             }
         }

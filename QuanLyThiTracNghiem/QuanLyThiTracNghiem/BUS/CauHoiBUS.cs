@@ -71,6 +71,51 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.BUS
             }
         }
 
+        public int LayDSCauHoi_PhanTrang(
+            string maGiaoVien,
+             DataGridView dataGridView,
+             int currentPage,
+             int pageSize,
+             string maMonHoc = "0",
+             int maChuong = 0,
+             string doKho = "0")
+        {
+            try
+            {
+                var result = CauHoiDAO.GetListCauHoiPhanTrang(currentPage, pageSize, maGiaoVien, maMonHoc, maChuong, doKho);
+
+                // Đảm bảo DataGridView có cột
+                if (dataGridView.Columns.Count == 0)
+                {
+                    //Console.WriteLine("⚠ DataGridView chưa có cột — kiểm tra lại quá trình khởi tạo.");
+                    return 0;
+                }
+
+                // Xóa dữ liệu cũ
+                dataGridView.Rows.Clear();
+
+                // Thêm dữ liệu mới
+                foreach (var item in result.Data)
+                {
+                    dataGridView.Rows.Add(
+                        item.maCauHoi,
+                        item.noiDungCauHoi,
+                        item.maMonHoc,
+                        item.maChuong,
+                        item.doKho,
+                        item.noiDungCauHoi
+                    );
+                }
+
+                return result.TotalPages;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("CauHoiBUS => Lỗi khi lấy danh sách câu hỏi theo giáo viên: " + ex.Message);
+                return 0;
+            }
+        }
+
         /*
              Phương thức tìm kiếm theo Mã Câu Hỏi hoặc Nội Dung Câu Hỏi
                 Input: dataGridView
