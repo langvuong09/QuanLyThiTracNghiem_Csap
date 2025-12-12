@@ -65,7 +65,6 @@ namespace QuanLyThiTracNghiem.QuanLyThiTracNghiem.GUI
             }
             catch (Exception ex)
             {
-                Console.WriteLine("[GUI ERROR] Lỗi khi tải danh sách đề thi: " + ex);
             }
         }
 

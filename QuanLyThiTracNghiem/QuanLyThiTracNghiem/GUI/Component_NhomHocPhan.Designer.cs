@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Component_NhomHocPhan));
             pnNhom = new Panel();
             btnXoa = new Button();
-            button6 = new Button();
             btnXem = new Button();
             btnTimKiem = new Button();
             txtTimKiem = new TextBox();
@@ -59,15 +58,6 @@
             btnXoa.Size = new Size(74, 54);
             btnXoa.TabIndex = 30;
             btnXoa.UseVisualStyleBackColor = false;
-            // 
-            // button6
-            // 
-            button6.Location = new Point(159, 113);
-            button6.Name = "button6";
-            button6.Size = new Size(8, 8);
-            button6.TabIndex = 29;
-            button6.Text = "button6";
-            button6.UseVisualStyleBackColor = true;
             // 
             // btnXem
             // 
@@ -129,7 +119,7 @@
             btnDSDeKiemTra.BackColor = Color.DarkSlateGray;
             btnDSDeKiemTra.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnDSDeKiemTra.ForeColor = SystemColors.ButtonHighlight;
-            btnDSDeKiemTra.Location = new Point(1211, 113);
+            btnDSDeKiemTra.Location = new Point(511, 113);
             btnDSDeKiemTra.Name = "btnDSDeKiemTra";
             btnDSDeKiemTra.Size = new Size(261, 54);
             btnDSDeKiemTra.TabIndex = 32;
@@ -141,7 +131,7 @@
             btnDSSV.BackColor = Color.DarkSlateGray;
             btnDSSV.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnDSSV.ForeColor = SystemColors.ButtonHighlight;
-            btnDSSV.Location = new Point(938, 113);
+            btnDSSV.Location = new Point(235, 113);
             btnDSSV.Name = "btnDSSV";
             btnDSSV.Size = new Size(250, 54);
             btnDSSV.TabIndex = 33;
@@ -157,7 +147,6 @@
             Controls.Add(btnDSDeKiemTra);
             Controls.Add(pnNhom);
             Controls.Add(btnXoa);
-            Controls.Add(button6);
             Controls.Add(btnXem);
             Controls.Add(btnTimKiem);
             Controls.Add(txtTimKiem);
@@ -173,7 +162,6 @@
 
         private Panel pnNhom;
         private Button btnXoa;
-        private Button button6;
         private Button btnXem;
         public Button btnTimKiem;
         private TextBox txtTimKiem;
